@@ -1,0 +1,19 @@
+Push Button 1 wired to pin 4
+Push Button 2 wired to pin 5
+Push Button 3 wired to pin 6
+Push Button 4 wired to pin 7
+Push Button 5 wired to pin 8
+Push Button 6 wired to pin 9
+Push Button 7 wired to pin 10
+Push Button 8 wired to pin 11
+Push Button 9 wired to pin 12
+Push Button 10 wired to pin A0
+Push Button 11 wired to pin A1
+Push Button 12 wired to pin A2
+Push Button 13 wired to pin A3
+Push Button 14 wired to pin A4
+Push Button 15 wired to pin A5
+USB Serial 1 wired to pins 1, 0
+Digital Pulser 1 wired to pin 2
+Digital Pulser 2 wired to pin 3
+Slide Switch 1 wired to pin 13

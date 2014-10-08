@@ -1,0 +1,138 @@
+package com.framework.helpers;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.UnauthorizedException;
+import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import com.framework.models.Essentials;
+import com.framework.models.User;
+import com.google.common.collect.ImmutableMap;
+
+public class Helpers 
+{
+	public static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
+	public static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(DATE_FORMAT).withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone("EST")));
+	
+	public static <T> T getParameter(String parameter, Class<T> entityType, Essentials global)
+	{
+		return getParameter(parameter, entityType, global.request, global.errorList);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T getParameter(String parameter, Class<T> entityType, HttpServletRequest request, ArrayList<LocalizedString> errorList)
+	{
+		try
+		{
+			String safeParam = StringEscapeUtils.escapeHtml(request.getParameter(parameter));
+			
+			if(entityType == DateTime.class)
+			{
+				//Long param = Long.valueOf(safeParam);
+				DateTime dateTime = dateTimeFormatter.parseDateTime(safeParam);
+				
+				return (T)dateTime;
+			}
+			else if(entityType == ObjectId.class)
+			{
+				return (T)new ObjectId(safeParam);
+			}
+			else
+			{
+				return (T)safeParam;
+			}
+		}
+		catch(Exception e)
+		{
+			errorList.add( 
+					new LocalizedString(ImmutableMap.of( 	
+							Locale.ENGLISH, "Error in parameter " + parameter, 
+							Locale.FRENCH, 	"Erreur dans le paramètre " + parameter
+							), Helpers.getCurrentLocale()));
+		}
+		
+		return null;
+	}
+	
+	private static final char[] tableOfChar = 
+	{
+		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+		'!', '/', '$', '%', '?', '&', '*', '(', ')'
+	};
+	public static String randomString(int characterCount)
+	{
+		String str = "";
+		for(int i = 0; i < characterCount; i++)
+		{
+			str += tableOfChar[(int)(Math.random() * (tableOfChar.length - 1))];
+		}
+		
+		return str;
+	}
+	
+	public static ObjectId getClientId()
+	{
+		User user = (User)SecurityUtils.getSubject().getSession().getAttribute("user");
+		return user._id;
+	}
+	
+	public static Locale getCurrentLocale()
+	{
+		return Locale.ENGLISH;
+	}
+	
+	public static <T> String getClassName(Class<T> entityType)
+	{
+		return entityType.getSimpleName().toLowerCase();
+	}
+	
+	public static <T> boolean checkWritePermission(Essentials essentials, Class<T> entityType)
+	{
+		return checkPermission(essentials, getClassName(entityType) + ":write");
+	}
+	
+	public static <T> boolean checkReadPermission(Essentials essentials, Class<T> entityType)
+	{
+		return checkPermission(essentials, getClassName(entityType) + ":read");
+	}
+	
+	public static <T> boolean checkPermission(Essentials essentials, String permission)
+	{
+		try
+		{
+			essentials.subject.checkPermission(permission);
+			return true;
+		}
+		catch(UnauthorizedException ex)
+		{
+			essentials.errorList.add( new LocalizedString( essentials,
+					"You don't have the permission to access this page.", 
+					"Vous n'avez pas les autorisations nécessaires pour accéder cette page") );
+			
+			try
+			{
+				essentials.request.setAttribute("errorList", essentials.errorList);
+				essentials.request.getRequestDispatcher("/error").forward(essentials.request, essentials.response);
+			}
+			catch(IOException io)
+			{
+			} catch (ServletException e) {
+			}
+		}
+		
+		return false;
+	}
+}

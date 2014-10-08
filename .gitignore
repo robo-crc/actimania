@@ -1,0 +1,4 @@
+tmp/
+output/
+*.suo
+src/server/.settings/
