@@ -34,6 +34,14 @@ public class Game
 		penalties 	= _penalties;
 	}
 	
+	public ArrayList<School> getSchools()
+	{
+		ArrayList<School> schools = new ArrayList<School>(blueTeam);
+		schools.addAll(yellowTeam);
+		
+		return schools;
+	}
+	
 	public ArrayList<GameState> getGameStates()
 	{
 		ArrayList<GameState> gameStates = new ArrayList<GameState>();

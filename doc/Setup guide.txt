@@ -1,0 +1,16 @@
+1- Download/Install eclipse Luna for J2EE
+2- a. Right click In project explorer
+   b. Import --> Existing Maven projects
+   c. Set Root directory
+   d. Advanced --> profiles: eclipse
+                   Name template: Actimania
+3- To run a unit test, open the unit test file and Select the green button dropdown 
+	-> Run As 
+	-> JUnit Test
+4- To start the server
+	a. Download tomcat7
+	b. Open a command prompt and go to actimania\projects
+	   -> execute command "build.bat server java release" (This starts mongodb)
+	c. In eclipse Select the green button dropdown --> Run as --> Maven build
+	   -> Goals : tomcat7:run
+	d. open http://localhost:8000/backend
