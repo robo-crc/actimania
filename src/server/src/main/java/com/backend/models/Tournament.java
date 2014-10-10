@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.Validate;
@@ -127,62 +128,135 @@ public class Tournament
 		initSchoolWithAgainst(schoolWith, schools);
 		initSchoolWithAgainst(schoolAgainst, schools);
 		
-		ArrayList<School> blueTeam1 = new ArrayList<School>();
-		ArrayList<School> yellowTeam1 = new ArrayList<School>();
-		
-		for(int i = 0; i < schoolsPerTeam; i++)
-		{
-			blueTeam1.add(schools.get(i));
-			yellowTeam1.add(schools.get(i + schoolsPerTeam));
-		}
-		
-		Game previousGame = createGame(schoolWith, schoolAgainst, blueTeam1, yellowTeam1);
+		// fakeGame is used as previous game when starting a round.
+		Game fakeGame = new Game(null, GameTypeEnum.PRELIMINARY, new ArrayList<School>(), new ArrayList<School>(), new ArrayList<GameEvent>(), new ArrayList<SchoolPenalty>());
 		
 		ArrayList<Game> games = new ArrayList<Game>();
-		games.add(previousGame);
-		
+
 		int numberOfGames = (int)Math.ceil(schools.size() * gamePerSchool / (schoolsPerTeam * 2));
 		
-		// 0 - 6
+		Game previousGame = fakeGame;
+		int currentBlockNumber = 0;
+		int gamesPerBlock = numberOfGames / blockNumbers;
+		int blockWithExtraGames = numberOfGames % gamesPerBlock;
+		int blockStartAtGame = 0;
 		
-		for(int i = 1; i < numberOfGames; i++)
+		Random random = new java.util.Random(seed);
+		
+		boolean solutionFound = false;
+		
+		int scheduleTry = 0;
+		
+		for(scheduleTry = 0; scheduleTry < 10000 && !solutionFound; scheduleTry++ )
 		{
-			int gamesPerBlock = numberOfGames / blockNumbers;
-			int maxGamePlayed = (i / gamesPerBlock + 1) * 2;
-			ArrayList<School> blueTeam = new ArrayList<School>();
-			ArrayList<School> yellowTeam = new ArrayList<School>();
+			solutionFound = true;
+			games.clear();
 			
-			// Let's fill the blue team.
-			for(School school : schools)
+			for(int i = 0; i < numberOfGames; i++)
 			{
-				if( getGamesPlayed(games, school, GameTypeEnum.PRELIMINARY).size() < maxGamePlayed &&
-					!previousGame.getSchools().contains(school) && 
-					!hasPlayed(schoolWith, school, blueTeam) && 
-					!hasPlayed(schoolAgainst, school, blueTeam) &&
-					blueTeam.size() < schoolsPerTeam)
+				// This section is to calculate the number of games per block of games.
+				// When we start a new block, it can be the same robot as the previous round.
+				int gamesThisBlock = gamesPerBlock;
+				if(currentBlockNumber < blockWithExtraGames)
 				{
-					blueTeam.add(school);
+					gamesThisBlock++;
 				}
-			}
-			
-			// Now let's fill the yellow team
-			for(School school : schools)
-			{
-				if( getGamesPlayed(games, school, GameTypeEnum.PRELIMINARY).size() < maxGamePlayed &&
-					!blueTeam.contains(school) &&
-					!previousGame.getSchools().contains(school) && 
-					!hasPlayed(schoolWith, school, blueTeam) && 
-					!hasPlayed(schoolAgainst, school, blueTeam) &&
-					!hasPlayed(schoolWith, school, yellowTeam) && 
-					!hasPlayed(schoolAgainst, school, yellowTeam) &&
-					yellowTeam.size() < schoolsPerTeam)
+				if(i >= blockStartAtGame + gamesThisBlock)
 				{
-					yellowTeam.add(school);
+					blockStartAtGame = i;
+					currentBlockNumber++;
+					previousGame = fakeGame;
+					gamesThisBlock = gamesPerBlock;
+					
+					if(currentBlockNumber < blockWithExtraGames)
+					{
+						gamesThisBlock++;
+					}
 				}
+				
+				// Maximum of 2 games per round.
+				int maxGamePlayed = (currentBlockNumber + 1) * 2;
+				if(maxGamePlayed < gamePerSchool)
+				{
+					// We can go to one over the limit.
+					maxGamePlayed++;
+				}
+				ArrayList<School> blueTeam = new ArrayList<School>();
+				ArrayList<School> yellowTeam = new ArrayList<School>();
+				
+				
+				ArrayList<School> schoolCopy = new ArrayList<School>(schools);
+				ArrayList<School> randomSchools = new ArrayList<School>();
+				while(!schoolCopy.isEmpty())
+				{
+					int nextValue = random.nextInt(schoolCopy.size());
+					randomSchools.add(schoolCopy.get(nextValue));
+					schoolCopy.remove(nextValue);
+				}
+				
+				// Let's fill the blue team.
+				for(School school : randomSchools)
+				{
+					if( getGamesPlayed(games, school, GameTypeEnum.PRELIMINARY).size() < maxGamePlayed &&
+						!previousGame.getSchools().contains(school) && 
+						!hasPlayed(schoolWith, school, blueTeam) && 
+						!hasPlayed(schoolAgainst, school, yellowTeam) && // This condition will always return null
+						blueTeam.size() < schoolsPerTeam)
+					{
+						blueTeam.add(school);
+					}
+				}
+				
+				/*
+				schoolCopy = new ArrayList<School>(schools);
+				randomSchools = new ArrayList<School>();
+				while(!schoolCopy.isEmpty())
+				{
+					int nextValue = random.nextInt(schoolCopy.size());
+					randomSchools.add(schoolCopy.get(nextValue));
+					schoolCopy.remove(nextValue);
+				}
+				*/
+				
+				// Now let's fill the yellow team
+				for(School school : randomSchools)
+				{
+					if( getGamesPlayed(games, school, GameTypeEnum.PRELIMINARY).size() < maxGamePlayed &&
+						!blueTeam.contains(school) &&
+						!previousGame.getSchools().contains(school) && 
+						!hasPlayed(schoolAgainst, school, blueTeam) &&
+						!hasPlayed(schoolWith, school, yellowTeam) && 
+						yellowTeam.size() < schoolsPerTeam)
+					{
+						yellowTeam.add(school);
+					}
+				}
+				
+				// We did not feed our entire team, so let's remove the against rule.
+				if(yellowTeam.size() < schoolsPerTeam)
+				{
+					for(School school : randomSchools)
+					{
+						if( getGamesPlayed(games, school, GameTypeEnum.PRELIMINARY).size() < maxGamePlayed &&
+								!blueTeam.contains(school) &&
+								!previousGame.getSchools().contains(school) && 
+								!hasPlayed(schoolWith, school, yellowTeam) && 
+								yellowTeam.size() < schoolsPerTeam)
+							{
+								yellowTeam.add(school);
+							}
+					}
+				}
+				
+				if(blueTeam.size() == 0 || blueTeam.size() != yellowTeam.size())
+				{
+					solutionFound = false;
+					break;
+				}
+				
+				previousGame = createGame(schoolWith, schoolAgainst, blueTeam, yellowTeam);
+				games.add(previousGame);
 			}
-			
-			previousGame = createGame(schoolWith, schoolAgainst, blueTeam, yellowTeam);
-			games.add(previousGame);
 		}
 		
 		return games;
