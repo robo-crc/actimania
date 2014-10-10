@@ -3,7 +3,6 @@ package com.backend.models;
 import java.util.ArrayList;
 
 import org.apache.commons.lang.Validate;
-import org.bson.types.ObjectId;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,10 +20,10 @@ public class TournamentTests
 	}
 	
 	/*
-	 *  - Pas 2 game d'affilé
-		- Entre 1 et 3 game par block * 4 block. Idéal 2
-		- 8 games par équipe
-		- Pas 2 fois en équipe ou contre 2 fois le même robot. Surtout le avec
+	 *  - Pas 2 game d'affilï¿½
+		- Entre 1 et 3 game par block * 4 block. Idï¿½al 2
+		- 8 games par ï¿½quipe
+		- Pas 2 fois en ï¿½quipe ou contre 2 fois le mï¿½me robot. Surtout le avec
 	 */
 	@Test
 	public void testSchedualGeneration()
