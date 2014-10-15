@@ -147,7 +147,7 @@ public class Tournament
 		
 		int scheduleTry = 0;
 		
-		for(scheduleTry = 0; scheduleTry < 10000 && !solutionFound; scheduleTry++ )
+		for(scheduleTry = 0; scheduleTry < 1000 && !solutionFound; scheduleTry++ )
 		{
 			solutionFound = true;
 			games.clear();

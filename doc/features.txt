@@ -1,0 +1,21 @@
+Pour le programme de display
+* Couleurs pour indiquer quel actuateur/cible est en quelle possession
+* Nombres pour indiquer la valeur actuelle de la cible
+Mode automatique et manuel ainsi qu'une option simulation (pour débugger) et une option pratique pour que les jeunes puissent pratiquer le jeudi
+Détection automatique des écoles du match en cours grâce à l'horaire
+Timer + Sirène
+* Pénalités individuelles 
+* Pénalités d'équipe (ou pouvoir accéder à un log pour enlever une entrée... en fait, le log serait bcp plus simple à gérer sur le terrain)
+! Pénalité unsportsmanlike (score de 0 qui ne peut pas être enlevé au cumulatif)
+* Compilation automatique des scores
+Intégration de la cédule
+Remplissage automatique du canevas des playoffs à la lumière du classement
+Option d'impression de l'horaire des playoffs.
+Streaming du pointage su le site web
+Streaming de la compétition aussi !
+Streaming du pointage par-dessus les images du jeu (?)
+Importation des classements des autres compétitions depuis le site web de la CRC
+Classement général automatique
+Interface pour entrer et calculer les volets jugés à la compétition
+Générer un "powerpoint" pour la cérémonie de remise de prix
+Conquérir le monde

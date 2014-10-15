@@ -83,6 +83,13 @@
 	        <scope>provided</scope>
 	    </dependency>
 	    
+	    <!-- Scheduling -->
+	    <dependency>
+	      <groupId>org.optaplanner</groupId>
+	      <artifactId>optaplanner-core</artifactId>
+	      <version>6.1.0.Final</version>
+	    </dependency>
+		    
 	    <!-- Security framework -->
 	    <dependency>
 		  <groupId>org.apache.shiro</groupId>
