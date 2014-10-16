@@ -5,7 +5,7 @@
 	<packaging>war</packaging>
 	<version>0.1</version>
 	<name>Appbuilder backend</name>
-	<url>http://espace-libre.ca</url>
+	<url>http://actimania</url>
 
 	<properties>
 		<target.directory>../../output/backend</target.directory>
@@ -17,7 +17,7 @@
 	
 		<profiles>
 		<profile>
-			<id>eclipse-folders</id>
+			<id>eclipse</id>
 			<activation>
 				<property>
 					<name>m2e.version</name>

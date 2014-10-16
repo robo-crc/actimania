@@ -6,18 +6,20 @@ import java.util.List;
 
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.solution.Solution;
-import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
-import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
+import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
 
 import com.backend.models.Game;
 import com.backend.models.School;
+import com.backend.models.Tournament;
 
 @PlanningSolution
-public class ScheduleSolution implements Solution<HardSoftScore>
+public class TournamentPlanner extends Tournament implements Solution<HardMediumSoftScore>
 {
-	public ArrayList<School> 	schools;
-	private ArrayList<Game> 	games;
-	private HardSoftScore 		score;
+	public TournamentPlanner(ArrayList<School> _schools, ArrayList<Game> _games) {
+		super(_schools, _games);
+	}
+	
+	private HardMediumSoftScore 		score;
 	
 	@Override
 	public Collection<? extends Object> getProblemFacts() 
@@ -29,15 +31,20 @@ public class ScheduleSolution implements Solution<HardSoftScore>
         // Do not add the planning entity's (games) because that will be done automatically
         return facts;
 	}
+
+	public ArrayList<Game> getGames()
+	{
+		return games;
+	}
 	
 	@Override
-	public HardSoftScore getScore() 
+	public HardMediumSoftScore getScore() 
 	{
 		return score;
 	}
 	
 	@Override
-	public void setScore(HardSoftScore arg0) 
+	public void setScore(HardMediumSoftScore arg0) 
 	{
 		score = arg0;
 	}

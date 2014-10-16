@@ -6,16 +6,13 @@ public class SchoolPenalty
 {
 	public final School	 	school;
 	public final int 		pointsDeduction;
-	public final boolean 	isMisconductPenalty;
-	
+
 	public SchoolPenalty(
 			@JsonProperty("school") 				School	 	_school, 
-			@JsonProperty("pointsDeduction") 		int 		_pointsDeduction, 
-			@JsonProperty("isMisconductPenalty") 	boolean 	_isMisconductPenalty
+			@JsonProperty("pointsDeduction") 		int 		_pointsDeduction
 			)
 	{
 		school 				= _school;
 		pointsDeduction 	= _pointsDeduction;
-		isMisconductPenalty = _isMisconductPenalty;
 	}
 }

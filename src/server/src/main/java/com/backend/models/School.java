@@ -1,8 +1,12 @@
 package com.backend.models;
 
+import java.util.ArrayList;
+
 import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.framework.models.Essentials;
+import com.google.common.collect.Lists;
 
 public class School implements Comparable<School>
 {
@@ -21,5 +25,10 @@ public class School implements Comparable<School>
 	public int compareTo(School o) 
 	{
 		return name.compareTo(o.name);
+	}
+	
+	public static ArrayList<School> getSchools(Essentials essentials)
+	{
+		return Lists.newArrayList(essentials.database.find(School.class, "{ }"));
 	}
 }

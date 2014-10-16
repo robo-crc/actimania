@@ -16,22 +16,25 @@ public class Game
 	public final ArrayList<GameEvent> 		gameEvents;
 	
 	public final ArrayList<SchoolPenalty>	penalties;
+	public final ArrayList<School>			misconductPenalties;
 
 	public Game(
-			@JsonProperty("_id")		ObjectId 					_gameId,
-			@JsonProperty("gameType")	GameTypeEnum				_gameType,
-			@JsonProperty("blueTeam")	ArrayList<School> 			_blueTeam,
-			@JsonProperty("yellowTeam")	ArrayList<School>			_yellowTeam,
-			@JsonProperty("gameEvents")	ArrayList<GameEvent>		_gameEvents,
-			@JsonProperty("penalties")	ArrayList<SchoolPenalty>	_penalties
+			@JsonProperty("_id")					ObjectId 					_gameId,
+			@JsonProperty("gameType")				GameTypeEnum				_gameType,
+			@JsonProperty("blueTeam")				ArrayList<School> 			_blueTeam,
+			@JsonProperty("yellowTeam")				ArrayList<School>			_yellowTeam,
+			@JsonProperty("gameEvents")				ArrayList<GameEvent>		_gameEvents,
+			@JsonProperty("penalties")				ArrayList<SchoolPenalty>	_penalties,
+			@JsonProperty("misconductPenalties")	ArrayList<School>			_misconductPenalties
 			)
 	{
-		_id 		= _gameId;
-		gameType	= _gameType;
-		yellowTeam 	= _yellowTeam;
-		blueTeam 	= _blueTeam;
-		gameEvents 	= _gameEvents;
-		penalties 	= _penalties;
+		_id 				= _gameId;
+		gameType			= _gameType;
+		yellowTeam 			= _yellowTeam;
+		blueTeam 			= _blueTeam;
+		gameEvents 			= _gameEvents;
+		penalties 			= _penalties;
+		misconductPenalties = _misconductPenalties;
 	}
 	
 	public ArrayList<School> getSchools()
@@ -86,10 +89,16 @@ public class Game
 		for(SchoolPenalty penalty : penalties)
 		{
 			// Misconduct penalty is calculated globally
-			if(penalty.school.equals(school) && !penalty.isMisconductPenalty)
+			if(penalty.school.equals(school))
 			{
 				score -= penalty.pointsDeduction;
 			}
+		}
+		
+		// A 0 score is given if we give a misconduct penalty.
+		if(misconductPenalties.contains(school))
+		{
+			score = 0;
 		}
 		
 		return score;

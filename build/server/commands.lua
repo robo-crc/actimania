@@ -7,7 +7,7 @@ function preBuild()
 	local dataPath = path.getabsolute("../tmp/mongodb/data")
 
 	-- We really need to clean this dir because we don't quit gracefully
-	os.rmdir(path.getabsolute("../tmp/mongodb"))
+	-- os.rmdir(path.getabsolute("../tmp/mongodb"))
 	
 	os.mkdir(dataPath)
 	
