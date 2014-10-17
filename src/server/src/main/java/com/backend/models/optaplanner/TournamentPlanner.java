@@ -4,19 +4,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.solution.Solution;
+import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
 
-import com.backend.models.Game;
 import com.backend.models.School;
-import com.backend.models.Tournament;
 
 @PlanningSolution
-public class TournamentPlanner extends Tournament implements Solution<HardMediumSoftScore>
+public class TournamentPlanner implements Solution<HardMediumSoftScore>
 {
-	public TournamentPlanner(ArrayList<School> _schools, ArrayList<Game> _games) {
-		super(_schools, _games);
+	public ArrayList<School> schools;
+	public ArrayList<GameProcess> games;
+	
+	public TournamentPlanner() 
+	{
+		
+	}
+	public TournamentPlanner(ArrayList<School> _schools, ArrayList<GameProcess> _games) 
+	{
+		schools = _schools;
+		games = _games;
 	}
 	
 	private HardMediumSoftScore 		score;
@@ -31,8 +40,21 @@ public class TournamentPlanner extends Tournament implements Solution<HardMedium
         // Do not add the planning entity's (games) because that will be done automatically
         return facts;
 	}
+	
+	@ValueRangeProvider(id = "blueTeam")
+	public ArrayList<School> getSchoolsBlue()
+	{
+		return schools;
+	}
+	
+	@ValueRangeProvider(id = "yellowTeam")
+	public ArrayList<School> getSchoolsYellow()
+	{
+		return schools;
+	}
 
-	public ArrayList<Game> getGames()
+	@PlanningEntityCollectionProperty
+	public ArrayList<GameProcess> getGames()
 	{
 		return games;
 	}
@@ -47,5 +69,18 @@ public class TournamentPlanner extends Tournament implements Solution<HardMedium
 	public void setScore(HardMediumSoftScore arg0) 
 	{
 		score = arg0;
+	}
+	
+	public static int getGamesPlayed(ArrayList<GameProcess> games, School school)
+	{
+		int gamesPlayed = 0;
+		for(GameProcess game : games)
+		{
+			if(game.getBlueTeam().contains(school) || game.getYellowTeam().contains(school))
+			{
+				gamesPlayed++;
+			}
+		}
+		return gamesPlayed;
 	}
 }

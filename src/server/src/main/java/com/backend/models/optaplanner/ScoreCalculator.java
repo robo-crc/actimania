@@ -8,18 +8,11 @@ import java.util.TreeMap;
 import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
 import org.optaplanner.core.impl.score.director.easy.EasyScoreCalculator;
 
-import com.backend.models.Game;
-import com.backend.models.GameEvent;
 import com.backend.models.School;
-import com.backend.models.SchoolPenalty;
 import com.backend.models.Tournament;
-import com.backend.models.enums.GameTypeEnum;
 
 public class ScoreCalculator implements EasyScoreCalculator<TournamentPlanner> 
 {
-	private static final int GAME_PER_SCHOOL = 8;
-	private static final int SCHOOLS_PER_TEAM = 2;
-	private static final int BLOCK_NUMBERS = 4;
 	
 	@Override
 	public HardMediumSoftScore calculateScore(TournamentPlanner tournament) 
@@ -31,21 +24,29 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentPlanner>
 		initSchoolWithAgainst(schoolAgainst, tournament.schools);
 		
 		// fakeGame is used as previous game when starting a round.
-		Game fakeGame = new Game(null, GameTypeEnum.PRELIMINARY, new ArrayList<School>(), new ArrayList<School>(), new ArrayList<GameEvent>(), new ArrayList<SchoolPenalty>(), new ArrayList<School>());
+		GameProcess fakeGame = new GameProcess(new ArrayList<School>(), new ArrayList<School>());
 		
 		int numberOfGames = tournament.games.size();
 		
-		Game previousGame 		= fakeGame;
+		GameProcess previousGame = fakeGame;
 		int currentBlockNumber 	= 0;
-		int gamesPerBlock 		= numberOfGames / BLOCK_NUMBERS;
+		int gamesPerBlock 		= numberOfGames / Tournament.BLOCK_NUMBERS;
 		int blockWithExtraGames = numberOfGames % gamesPerBlock;
 		int blockStartAtGame 	= 0;
 		
-		ArrayList<Game> gamesToIteration = new ArrayList<Game>();
+		ArrayList<GameProcess> gamesToIteration = new ArrayList<GameProcess>();
 		
 		int hardScore 	= 0;
 		int mediumScore = 0;
 		int softScore 	= 0;
+		
+		for(School school : tournament.schools)
+		{
+			if( TournamentPlanner.getGamesPlayed(tournament.games, school) != Tournament.GAME_PER_SCHOOL)
+			{
+				hardScore -= 1;
+			}
+		}
 		
 		for(int i = 0; i < numberOfGames; i++)
 		{
@@ -71,70 +72,80 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentPlanner>
 			
 			// Maximum of 2 games per round.
 			int maxGamePlayed = (currentBlockNumber + 1) * 2;
-			if(maxGamePlayed < GAME_PER_SCHOOL)
+			if(maxGamePlayed < Tournament.GAME_PER_SCHOOL)
 			{
 				// We can go to one over the limit.
 				maxGamePlayed++;
 			}
 			
-			Game game = tournament.games.get(i);
+			GameProcess game = tournament.games.get(i);
 			gamesToIteration.add(game);
 			
 			for(School school : game.getSchools())
 			{
-				if( Tournament.getGamesPlayed(gamesToIteration, school, GameTypeEnum.PRELIMINARY).size() > maxGamePlayed)
+				if( game.getSchools().indexOf(school) != game.getSchools().lastIndexOf(school) )
 				{
+					// The school is present 2 times in the game!
 					hardScore -= 1;
 				}
-				if( previousGame.getSchools().contains(school) )
+				else
 				{
-					hardScore -= 1;
+					// At this point in the tournament, a school should not have played more than maxGamePlayed.
+					if( TournamentPlanner.getGamesPlayed(gamesToIteration, school) > maxGamePlayed)
+					{
+						hardScore -= 1;
+					}
+					// School played in previous game.
+					if( previousGame.getSchools().contains(school) )
+					{
+						hardScore -= 1;
+					}
 				}
 			}
 			
-			if(game.yellowTeam.size() != game.blueTeam.size())
+			if(game.getYellowTeam().size() != game.getBlueTeam().size())
 			{
 				hardScore -= 1;
 			}
 			
-			if(game.blueTeam.size() != SCHOOLS_PER_TEAM)
+			if(game.getBlueTeam().size() != Tournament.SCHOOLS_PER_TEAM)
 			{
 				hardScore -= 1;
 			}
 			
-			if(game.yellowTeam.size() != SCHOOLS_PER_TEAM)
+			if(game.getYellowTeam().size() != Tournament.SCHOOLS_PER_TEAM)
 			{
 				hardScore -= 1;
 			}
 			
-			for(School school : game.blueTeam)
+			for(School school : game.getBlueTeam())
 			{
-				if( hasPlayed(schoolWith, school, game.blueTeam) )
+				if( hasPlayed(schoolWith, school, game.getBlueTeam()) )
 				{
 					mediumScore -= 1;
 				}
 				
-				if( hasPlayed(schoolAgainst, school, game.yellowTeam) )
+				if( hasPlayed(schoolAgainst, school, game.getYellowTeam()) )
 				{
 					softScore -= 1;
 				}
 			}
 			
-			for(School school : game.yellowTeam)
+			for(School school : game.getYellowTeam())
 			{
-				if( hasPlayed(schoolWith, school, game.yellowTeam) )
+				if( hasPlayed(schoolWith, school, game.getYellowTeam()) )
 				{
 					mediumScore -= 1;
 				}
 				
-				if( hasPlayed(schoolAgainst, school, game.blueTeam) )
+				if( hasPlayed(schoolAgainst, school, game.getBlueTeam()) )
 				{
 					softScore -= 1;
 				}
 			}
 			
-			manageSchoolWithAgainst(schoolWith, schoolAgainst, game.blueTeam, game.yellowTeam);
-			previousGame = tournament.games.get(i);
+//			manageSchoolWithAgainst(schoolWith, schoolAgainst, game.getBlueTeam(), game.getYellowTeam());
+			previousGame = tournament.getGames().get(i);
 		}
 	
 		return HardMediumSoftScore.valueOf(hardScore, mediumScore, softScore);
@@ -193,9 +204,9 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentPlanner>
 	{
 		for(School schoolWithAgainst : schoolWithAgainstList)
 		{
-			if( !schoolWithAgainst.equals(schoolCompare) && schoolList.get(schoolCompare).get(schoolWithAgainst) > 0 )
+//			if( !schoolWithAgainst.equals(schoolCompare) && schoolList.get(schoolCompare).get(schoolWithAgainst) > 0 )
 			{
-				return true;
+//				return true;
 			}
 		}
 		return false;

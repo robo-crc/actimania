@@ -6,6 +6,11 @@ import org.apache.commons.lang.Validate;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.optaplanner.core.api.solver.Solver;
+import org.optaplanner.core.api.solver.SolverFactory;
+
+import com.backend.models.optaplanner.GameProcess;
+import com.backend.models.optaplanner.TournamentPlanner;
 
 public class TournamentTests 
 {
@@ -28,36 +33,46 @@ public class TournamentTests
 	@Test
 	public void testSchedualGeneration()
 	{
+		int SCHOOL_NUMBER = 30;
+		int NUMBER_OF_GAME = SCHOOL_NUMBER * Tournament.GAME_PER_SCHOOL / (Tournament.SCHOOLS_PER_TEAM * 2);
+		
 		ArrayList<School> schools = new ArrayList<School>();
-		for(int i = 0; i < 30; i++)
+		for(int i = 0; i < SCHOOL_NUMBER; i++)
 		{
 			String iString = String.valueOf(i);
 			schools.add(new School(null, iString));
 		}
 		
-		int gamesPerSchool = 4;
-		int schoolsPerTeam = 3;
-		ArrayList<Game> games = Tournament.createPreliminaryRoundSchedual(schools, gamesPerSchool, 1, schoolsPerTeam, 0);
-		int supposedNbGames = schools.size() * gamesPerSchool / (schoolsPerTeam * 2);
-		Validate.isTrue(games.size() == supposedNbGames);
-		
-		for(int i = 0; i < games.size(); i++)
+		ArrayList<GameProcess> games = new ArrayList<GameProcess>();
+		for(int i = 0; i < NUMBER_OF_GAME; i++)
 		{
-			Validate.isTrue(games.get(i).blueTeam.size() > 0);
-			Validate.isTrue(games.get(i).blueTeam.size() == games.get(i).yellowTeam.size());
-//			ArrayList<School> currentGamesSchool = games.get(i).getSchools();
+			ArrayList<School> blueTeam = new ArrayList<School>();
+			ArrayList<School> yellowTeam = new ArrayList<School>();
 			
-			if( i > 0 )
+			//for(int j = 0; j < Tournament.SCHOOLS_PER_TEAM; j++)
 			{
-				// No 2 consecutive games for a school
-//				for(School previousGameSchool : games.get(i - 1).getSchools())
-				{
-					//Validate.isTrue(currentGamesSchool.contains(previousGameSchool) == false);
-				}
+				//blueTeam.add(new School(null, "null"));
+				//yellowTeam.add(new School(null, "null"));
 			}
+			games.add(new GameProcess(blueTeam, yellowTeam));
 		}
 		
-		// Between 1 and 3 games per block, ideally 2
+		TournamentPlanner solvedTournament = null;
+		try
+		{
+			SolverFactory solverFactory = SolverFactory.createFromXmlResource("com/backend/models/optaplanner/solverConfig.xml");
+	        Solver solver = solverFactory.buildSolver();
+	        
+	        TournamentPlanner unsolvedTournament = new TournamentPlanner(schools, games);
+	        solver.solve(unsolvedTournament);
+	        solvedTournament = (TournamentPlanner) solver.getBestSolution();
+		}
+		catch(Exception ex)
+		{
+			int i = 0;
+		}
 		
+        
+        Validate.isTrue(solvedTournament.getScore().getHardScore() == 0);
 	}
 }
