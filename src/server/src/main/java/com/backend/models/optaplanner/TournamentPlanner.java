@@ -18,6 +18,8 @@ public class TournamentPlanner implements Solution<HardMediumSoftScore>
 	public ArrayList<School> schools;
 	public ArrayList<GameProcess> games;
 	
+	private List<TeamAssignment> teamAssignmentList;
+	
 	public TournamentPlanner() 
 	{
 		
@@ -36,6 +38,7 @@ public class TournamentPlanner implements Solution<HardMediumSoftScore>
 		List<Object> facts = new ArrayList<Object>();
 
         facts.addAll(schools);
+        facts.addAll(games);
 
         // Do not add the planning entity's (games) because that will be done automatically
         return facts;
@@ -53,7 +56,6 @@ public class TournamentPlanner implements Solution<HardMediumSoftScore>
 		return schools;
 	}
 
-	@PlanningEntityCollectionProperty
 	public ArrayList<GameProcess> getGames()
 	{
 		return games;
@@ -82,5 +84,14 @@ public class TournamentPlanner implements Solution<HardMediumSoftScore>
 			}
 		}
 		return gamesPlayed;
+	}
+	
+	@PlanningEntityCollectionProperty
+	public List<TeamAssignment> getTeamAssignmentList() {
+		return teamAssignmentList;
+	}
+	
+	public void setTeamAssignmentList(List<TeamAssignment> teamAssignmentList) {
+		this.teamAssignmentList = teamAssignmentList;
 	}
 }

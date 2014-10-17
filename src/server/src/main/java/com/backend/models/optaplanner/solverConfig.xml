@@ -4,7 +4,7 @@
 
   <!-- Domain model configuration -->
   <solutionClass>com.backend.models.optaplanner.TournamentPlanner</solutionClass>
-  <entityClass>com.backend.models.optaplanner.GameProcess</entityClass>
+  <entityClass>com.backend.models.optaplanner.TeamAssignment</entityClass>
 
   <!-- Score configuration -->
   <scoreDirectorFactory>

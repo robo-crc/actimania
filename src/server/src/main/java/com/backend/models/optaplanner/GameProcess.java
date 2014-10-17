@@ -32,7 +32,7 @@ public class GameProcess
 		yellowTeam = _yellowTeam;
 	}
 	
-	@PlanningVariable(valueRangeProviderRefs = {"blueTeam"})
+	@PlanningEntityCollectionProperty
 	public ArrayList<School> getBlueTeam()
 	{
 		return blueTeam;
@@ -43,7 +43,7 @@ public class GameProcess
 		blueTeam = _blueTeam;
 	}
 	
-	//@PlanningVariable(valueRangeProviderRefs = {"yellowTeam"})
+	@PlanningEntityCollectionProperty
 	public ArrayList<School> getYellowTeam()
 	{
 		return yellowTeam;
