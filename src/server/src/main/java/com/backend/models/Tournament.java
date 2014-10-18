@@ -13,9 +13,13 @@ public class Tournament
 	@JsonIgnore
 	public static final int PRELIMINARY_GAMES_SKIPPED_IN_SCORE = 2;
 	
-	public static final int GAME_PER_SCHOOL = 8;
-	public static final int SCHOOLS_PER_TEAM = 2;
+	public static final int GAME_PER_SCHOOL = 10;
+	public static final int SCHOOLS_PER_TEAM = 3;
 	public static final int BLOCK_NUMBERS = 4;
+	
+	public static final int NUMBER_OF_JUDGES = 20;
+	public static final int EACH_SCHOOL_JUDGED = 4;
+	public static final int SCHOOL_NUMBER = 33;
 	
 	public final ArrayList<School> 	schools;
 	public final ArrayList<Game> 	games;

@@ -31,14 +31,19 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 		
 		int numberOfGames = tournament.getTeamAssignment().size() / (Tournament.SCHOOLS_PER_TEAM * 2);
 		int IDEAL_GAMES_PER_BLOCK = Tournament.GAME_PER_SCHOOL / Tournament.BLOCK_NUMBERS;
+		boolean USE_IDEAL_GAMES_SCORE = (numberOfGames % Tournament.BLOCK_NUMBERS) == 0;
 
 		ArrayList<GameProcess> gamesToIteration = new ArrayList<GameProcess>();
 		
 		int blockStart = 0;
 		
-		for(int currentBlockNumber = 0; currentBlockNumber < getGamesPerBlockCount(numberOfGames).size(); currentBlockNumber++)
+		ArrayList<Integer> gamesPerBlock = getGamesPerBlockCount(numberOfGames);
+		
+		boolean fastExit = false;
+		
+		for(int currentBlockNumber = 0; currentBlockNumber < gamesPerBlock.size() && !fastExit; currentBlockNumber++)
 		{
-			int blockEnd = blockStart + getGamesPerBlockCount(numberOfGames).get(currentBlockNumber);
+			int blockEnd = blockStart + gamesPerBlock.get(currentBlockNumber);
 			GameProcess previous1Game = fakeGame;
 			GameProcess previous2Game = previous1Game;
 			GameProcess previous3Game = previous2Game;
@@ -50,7 +55,6 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 				int startJ = i * Tournament.SCHOOLS_PER_TEAM * 2;
 				ArrayList<School> blueTeam = new ArrayList<School>();
 				ArrayList<School> yellowTeam = new ArrayList<School>();
-				boolean skip = false;
 				
 				for(int j = startJ; j < startJ + Tournament.SCHOOLS_PER_TEAM; j++)
 				{
@@ -62,15 +66,16 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 					
 					if(yellowSchool == null || blueSchool == null)
 					{
-						hardScore -= 5;
-						skip = true;
+						hardScore -= 1000;
+						fastExit = true;
+						break;
 					}
 				}
 				
 				// We got a null result, so skip.
-				if(skip)
+				if(fastExit)
 				{
-					continue;
+					break;
 				}
 				
 				GameProcess game = new GameProcess(blueTeam, yellowTeam);
@@ -107,12 +112,12 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 				{
 					if( hasPlayed(schoolWith, school, game.getBlueTeam()) )
 					{
-						mediumScore -= 2;
+						mediumScore -= 5;
 					}
 					
 					if( hasPlayed(schoolAgainst, school, game.getYellowTeam()) )
 					{
-						mediumScore -= 1;
+						mediumScore -= 2;
 					}
 				}
 				
@@ -120,12 +125,12 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 				{
 					if( hasPlayed(schoolWith, school, game.getYellowTeam()) )
 					{
-						mediumScore -= 2;
+						mediumScore -= 5;
 					}
 					
 					if( hasPlayed(schoolAgainst, school, game.getBlueTeam()) )
 					{
-						mediumScore -= 1;
+						mediumScore -= 2;
 					}
 				}
 				
@@ -145,8 +150,9 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 				{
 					hardScore -= 1;
 				}
+				
 				// Let's give a small bonus when we play 2 games in a round.
-				if( gamesPlayed != IDEAL_GAMES_PER_BLOCK )
+				if( USE_IDEAL_GAMES_SCORE && gamesPlayed != IDEAL_GAMES_PER_BLOCK )
 				{
 					softScore -= 1;
 				}
@@ -154,27 +160,27 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 			
 			blockStart = blockEnd;
 		}
-		
-		tournament.games = gamesToIteration;
 
 		for(School school : tournament.schools)
 		{
-			if( TournamentSolution.getGamesPlayed(tournament.games, school) != Tournament.GAME_PER_SCHOOL)
+			if( TournamentSolution.getGamesPlayed(gamesToIteration, school) != Tournament.GAME_PER_SCHOOL)
 			{
 				hardScore -= 1;
 			}
 		}
 		
+		tournament.setGames(gamesToIteration);
+		tournament.setSchoolWith(schoolWith);
+		tournament.setSchoolAgainst(schoolAgainst);
+		
 		return HardMediumSoftScore.valueOf(hardScore, mediumScore, softScore);
 	}
-	
-	
 	
 	public static ArrayList<Integer> getGamesPerBlockCount(int numberOfGames)
 	{
 		ArrayList<Integer> ret = new ArrayList<Integer>();
 		int gamesPerBlock 		= numberOfGames / Tournament.BLOCK_NUMBERS;
-		int blockWithExtraGames = numberOfGames % gamesPerBlock;
+		int blockWithExtraGames = numberOfGames % Tournament.BLOCK_NUMBERS;
 		
 		for(int currentBlockCount = 0; currentBlockCount <Tournament.BLOCK_NUMBERS; currentBlockCount++)
 		{
@@ -187,6 +193,21 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 		}
 		
 		return ret;
+	}
+	
+	public static boolean isStartOfBlock(int index, int numberOfGames)
+	{
+		int blockStart = 0;
+		for(int currentBlockNumber = 0; currentBlockNumber < getGamesPerBlockCount(numberOfGames).size(); currentBlockNumber++)
+		{
+			int blockEnd = blockStart + getGamesPerBlockCount(numberOfGames).get(currentBlockNumber);
+			if(index == blockStart)
+			{
+				return true;
+			}
+			blockStart = blockEnd;
+		}
+		return false;
 	}
 	
 	// Manage the schoolWith and schoolAgainst array.

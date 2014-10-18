@@ -14,7 +14,7 @@ import org.optaplanner.core.api.solver.event.SolverEventListener;
 import com.backend.models.optaplanner.TeamAssignment;
 import com.backend.models.optaplanner.TournamentSolution;
 
-public class TournamentTests 
+public class JudgmentSchedule
 {
 	@BeforeClass
 	public static void setUp()
@@ -35,8 +35,6 @@ public class TournamentTests
 	@Test
 	public void testSchedualGeneration()
 	{
-		int NUMBER_OF_GAME = Tournament.SCHOOL_NUMBER * Tournament.GAME_PER_SCHOOL / (Tournament.SCHOOLS_PER_TEAM * 2);
-		
 		ArrayList<School> schools = new ArrayList<School>();
 		for(int i = 0; i < Tournament.SCHOOL_NUMBER; i++)
 		{
@@ -45,18 +43,15 @@ public class TournamentTests
 		}
 		
 		ArrayList<TeamAssignment> teamAssignments = new ArrayList<TeamAssignment>();
-		for(int i = 0; i < NUMBER_OF_GAME; i++)
+		for(int i = 0; i < Tournament.SCHOOL_NUMBER * Tournament.EACH_SCHOOL_JUDGED; i++)
 		{
-			for(int j = 0; j < Tournament.SCHOOLS_PER_TEAM * 2; j++)
-			{
-				teamAssignments.add(new TeamAssignment(i));
-			}
+			teamAssignments.add(new TeamAssignment(i));
 		}
 		
  		TournamentSolution solvedTournament = null;
 		try
 		{
-			SolverFactory solverFactory = SolverFactory.createFromXmlResource("com/backend/models/optaplanner/solverConfig.xml");
+			SolverFactory solverFactory = SolverFactory.createFromXmlResource("com/backend/models/optaplanner/judgeAssignmentConfig.xml");
 	        Solver solver = solverFactory.buildSolver();
 	        
 	        TournamentSolution unsolvedTournament = new TournamentSolution(schools, teamAssignments);
@@ -81,7 +76,7 @@ public class TournamentTests
 			System.out.println(ex.getMessage());
 		}
 		
-		solvedTournament.outputTournamentSolution();
+		solvedTournament.outputJudgmentSolution();
         
         Validate.isTrue(solvedTournament.getScore().getHardScore() == 0);
 	}
