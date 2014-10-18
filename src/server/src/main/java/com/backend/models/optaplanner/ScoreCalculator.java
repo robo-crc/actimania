@@ -30,137 +30,129 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 		GameProcess fakeGame = new GameProcess(new ArrayList<School>(), new ArrayList<School>());
 		
 		int numberOfGames = tournament.getTeamAssignment().size() / (Tournament.SCHOOLS_PER_TEAM * 2);
+		int IDEAL_GAMES_PER_BLOCK = Tournament.GAME_PER_SCHOOL / Tournament.BLOCK_NUMBERS;
 
-		GameProcess previousGame = fakeGame;
-		GameProcess previousPreviousGame = previousGame;
-		int currentBlockNumber 	= 0;
-		int gamesPerBlock 		= numberOfGames / Tournament.BLOCK_NUMBERS;
-		int blockWithExtraGames = numberOfGames % gamesPerBlock;
-		int blockStartAtGame 	= 0;
-		
 		ArrayList<GameProcess> gamesToIteration = new ArrayList<GameProcess>();
 		
-		for(int i = 0; i < numberOfGames; i++)
+		int blockStart = 0;
+		
+		for(int currentBlockNumber = 0; currentBlockNumber < getGamesPerBlockCount(numberOfGames).size(); currentBlockNumber++)
 		{
-			int startJ = i * Tournament.SCHOOLS_PER_TEAM * 2;
-			ArrayList<School> blueTeam = new ArrayList<School>();
-			ArrayList<School> yellowTeam = new ArrayList<School>();
-			boolean skip = false;
-			for(int j = startJ; j < startJ + Tournament.SCHOOLS_PER_TEAM; j++)
+			int blockEnd = blockStart + getGamesPerBlockCount(numberOfGames).get(currentBlockNumber);
+			GameProcess previous1Game = fakeGame;
+			GameProcess previous2Game = previous1Game;
+			GameProcess previous3Game = previous2Game;
+			ArrayList<GameProcess> gamesThisBlock = new ArrayList<GameProcess>();
+			
+			for(int i = blockStart; i < blockEnd; i++)
 			{
-				School blueSchool = tournament.getTeamAssignment().get(j).getSchool();
-				School yellowSchool = tournament.getTeamAssignment().get(j + Tournament.SCHOOLS_PER_TEAM).getSchool();
-
-				blueTeam.add(blueSchool);
-				yellowTeam.add(yellowSchool);
+				// We start by checking that there's no null result.
+				int startJ = i * Tournament.SCHOOLS_PER_TEAM * 2;
+				ArrayList<School> blueTeam = new ArrayList<School>();
+				ArrayList<School> yellowTeam = new ArrayList<School>();
+				boolean skip = false;
 				
-				if(yellowSchool == null || blueSchool == null)
+				for(int j = startJ; j < startJ + Tournament.SCHOOLS_PER_TEAM; j++)
 				{
-					hardScore -= 5;
-					skip = true;
+					School blueSchool = tournament.getTeamAssignment().get(j).getSchool();
+					School yellowSchool = tournament.getTeamAssignment().get(j + Tournament.SCHOOLS_PER_TEAM).getSchool();
+	
+					blueTeam.add(blueSchool);
+					yellowTeam.add(yellowSchool);
+					
+					if(yellowSchool == null || blueSchool == null)
+					{
+						hardScore -= 5;
+						skip = true;
+					}
 				}
-			}
-			
-			if(skip)
-			{
-				continue;
-			}
-			// This section is to calculate the number of games per block of games.
-			// When we start a new block, it can be the same robot as the previous round.
-			int gamesThisBlock = gamesPerBlock;
-			if(currentBlockNumber < blockWithExtraGames)
-			{
-				gamesThisBlock++;
-			}
-			if(i >= blockStartAtGame + gamesThisBlock)
-			{
-				blockStartAtGame = i;
-				currentBlockNumber++;
-				previousGame = fakeGame;
-				previousPreviousGame = previousGame;
-				gamesThisBlock = gamesPerBlock;
 				
-				if(currentBlockNumber < blockWithExtraGames)
+				// We got a null result, so skip.
+				if(skip)
 				{
-					gamesThisBlock++;
+					continue;
 				}
-			}
-			
-			// Maximum of 2 games per round.
-			int maxGamePlayed = (currentBlockNumber + 1) * 2;
-			if(maxGamePlayed < Tournament.GAME_PER_SCHOOL)
-			{
-				// We can go to one over the limit.
-				maxGamePlayed++;
-			}
-			
-			int minGamePlayed = (currentBlockNumber) * 2 - 1;
-			
-			GameProcess game = new GameProcess(blueTeam, yellowTeam);
-			
-			gamesToIteration.add(game);
-			
-			for(School school : game.getSchools())
-			{
-				if( game.getSchools().indexOf(school) != game.getSchools().lastIndexOf(school) )
+				
+				GameProcess game = new GameProcess(blueTeam, yellowTeam);
+				
+				gamesToIteration.add(game);
+				gamesThisBlock.add(game);
+				
+				for(School school : game.getSchools())
 				{
-					// The school is present 2 times in the game!
+					if( game.getSchools().indexOf(school) != game.getSchools().lastIndexOf(school) )
+					{
+						// The school is present 2 times in the game!
+						hardScore -= 1;
+					}
+					
+					// School played in previous game.
+					if( previous1Game.getSchools().contains(school) )
+					{
+						hardScore -= 1;
+					}
+					
+					if(previous2Game.getSchools().contains(school))
+					{
+						mediumScore -= 1;
+					}
+					
+					if(previous3Game.getSchools().contains(school))
+					{
+						softScore -= 1;
+					}
+				}
+				
+				for(School school : game.getBlueTeam())
+				{
+					if( hasPlayed(schoolWith, school, game.getBlueTeam()) )
+					{
+						mediumScore -= 2;
+					}
+					
+					if( hasPlayed(schoolAgainst, school, game.getYellowTeam()) )
+					{
+						mediumScore -= 1;
+					}
+				}
+				
+				for(School school : game.getYellowTeam())
+				{
+					if( hasPlayed(schoolWith, school, game.getYellowTeam()) )
+					{
+						mediumScore -= 2;
+					}
+					
+					if( hasPlayed(schoolAgainst, school, game.getBlueTeam()) )
+					{
+						mediumScore -= 1;
+					}
+				}
+				
+				manageSchoolWithAgainst(schoolWith, schoolAgainst, game.getBlueTeam(), game.getYellowTeam());
+				previous3Game = previous2Game;
+				previous2Game = previous1Game;
+				previous1Game = game;
+			}
+			
+			// Check if at the end of this round, we have the required games played
+			for(School school : tournament.getSchools())
+			{
+				int gamesPlayed = TournamentSolution.getGamesPlayed(gamesThisBlock, school);
+				
+				// In each block, a school should play between 1 and 3 games.
+				if( gamesPlayed < IDEAL_GAMES_PER_BLOCK - 1 || gamesPlayed > IDEAL_GAMES_PER_BLOCK + 1 )
+				{
 					hardScore -= 1;
 				}
-
-				int gamesPlayed = TournamentSolution.getGamesPlayed(gamesToIteration, school);
-				// At this point in the tournament, a school should not have played more than maxGamePlayed.
-				if( gamesPlayed > maxGamePlayed)
-				{
-					hardScore -= 1;
-				}
-				
-				if(gamesPlayed < minGamePlayed)
-				{
-					hardScore -= 1;
-				}
-				
-				// School played in previous game.
-				if( previousGame.getSchools().contains(school) )
-				{
-					hardScore -= 1;
-				}
-				
-				if(previousPreviousGame.getSchools().contains(school))
+				// Let's give a small bonus when we play 2 games in a round.
+				if( gamesPlayed != IDEAL_GAMES_PER_BLOCK )
 				{
 					softScore -= 1;
 				}
 			}
 			
-			for(School school : game.getBlueTeam())
-			{
-				if( hasPlayed(schoolWith, school, game.getBlueTeam()) )
-				{
-					mediumScore -= 1;
-				}
-				
-				if( hasPlayed(schoolAgainst, school, game.getYellowTeam()) )
-				{
-					softScore -= 5;
-				}
-			}
-			
-			for(School school : game.getYellowTeam())
-			{
-				if( hasPlayed(schoolWith, school, game.getYellowTeam()) )
-				{
-					mediumScore -= 1;
-				}
-				
-				if( hasPlayed(schoolAgainst, school, game.getBlueTeam()) )
-				{
-					softScore -= 1;
-				}
-			}
-			
-			manageSchoolWithAgainst(schoolWith, schoolAgainst, game.getBlueTeam(), game.getYellowTeam());
-			previousPreviousGame = previousGame;
-			previousGame = game;
+			blockStart = blockEnd;
 		}
 		
 		tournament.games = gamesToIteration;
@@ -174,6 +166,27 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 		}
 		
 		return HardMediumSoftScore.valueOf(hardScore, mediumScore, softScore);
+	}
+	
+	
+	
+	public static ArrayList<Integer> getGamesPerBlockCount(int numberOfGames)
+	{
+		ArrayList<Integer> ret = new ArrayList<Integer>();
+		int gamesPerBlock 		= numberOfGames / Tournament.BLOCK_NUMBERS;
+		int blockWithExtraGames = numberOfGames % gamesPerBlock;
+		
+		for(int currentBlockCount = 0; currentBlockCount <Tournament.BLOCK_NUMBERS; currentBlockCount++)
+		{
+			int gamesThisBlock = gamesPerBlock;
+			if(currentBlockCount < blockWithExtraGames)
+			{
+				gamesThisBlock++;
+			}
+			ret.add(gamesThisBlock);
+		}
+		
+		return ret;
 	}
 	
 	// Manage the schoolWith and schoolAgainst array.
