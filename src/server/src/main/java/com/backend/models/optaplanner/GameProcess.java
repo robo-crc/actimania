@@ -2,22 +2,16 @@ package com.backend.models.optaplanner;
 
 import java.util.ArrayList;
 
-import org.bson.types.ObjectId;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
-import org.optaplanner.core.api.domain.variable.PlanningVariable;
-
-import com.backend.models.Game;
-import com.backend.models.GameEvent;
 import com.backend.models.School;
-import com.backend.models.SchoolPenalty;
-import com.backend.models.enums.GameTypeEnum;
 
 @PlanningEntity
 public class GameProcess 
 {
 	private ArrayList<School> blueTeam;
 	private ArrayList<School> yellowTeam;
+	private ArrayList<School> schools;
 	
 	public GameProcess()
 	{
@@ -30,6 +24,9 @@ public class GameProcess
 	{
 		blueTeam = _blueTeam;
 		yellowTeam = _yellowTeam;
+		schools = new ArrayList<School>();
+		schools.addAll(blueTeam);
+		schools.addAll(yellowTeam);
 	}
 	
 	@PlanningEntityCollectionProperty
@@ -56,9 +53,6 @@ public class GameProcess
 	
 	public ArrayList<School> getSchools()
 	{
-		ArrayList<School> schools = new ArrayList<School>(blueTeam);
-		schools.addAll(yellowTeam);
-		
 		return schools;
 	}
 	

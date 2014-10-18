@@ -1,11 +1,8 @@
 package com.backend.models;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.apache.commons.lang.Validate;
-import org.bson.types.ObjectId;
-import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,7 +10,6 @@ import org.junit.Test;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.framework.models.Essentials;
-import com.google.common.collect.Lists;
 
 public class SchoolTests 
 {

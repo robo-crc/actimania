@@ -22,39 +22,33 @@ import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 
 @PlanningEntity
-public class TeamAssignment 
+public class TeamAssignment
 {
-    private GameProcess game;
+    private int gameNo;
 
     // planning variable
     private School school;
 
-    public TeamAssignment() {
+    public TeamAssignment() 
+    {
     }
 
-    public TeamAssignment(GameProcess game) {
-        this.game = game;
+    public TeamAssignment(int _gameNo) {
+        this.gameNo = _gameNo;
+    }
+    
+    public int getGameNo()
+    {
+    	return gameNo;
     }
 
-    public GameProcess getGame() {
-        return game;
-    }
-
-    public void setGame(GameProcess game) {
-        this.game = game;
-    }
-
-    @PlanningVariable(valueRangeProviderRefs = {"blueTeam"})
-    public School getBlueTeam() {
+    @PlanningVariable(valueRangeProviderRefs = {"school"})
+    public School getSchool() {
         return school;
     }
     
-    @PlanningVariable(valueRangeProviderRefs = {"yellowTeam"})
-    public School getYellowTeam() {
-        return school;
-    }
-
-    public void setSchool(School school) {
-        this.school = school;
+    public void setSchool(School _school) 
+    {
+        school = _school;
     }
 }

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <solver>
-  <!--<environmentMode>FAST_ASSERT</environmentMode>-->
-
   <!-- Domain model configuration -->
-  <solutionClass>com.backend.models.optaplanner.TournamentPlanner</solutionClass>
+  <solutionClass>com.backend.models.optaplanner.TournamentSolution</solutionClass>
   <entityClass>com.backend.models.optaplanner.TeamAssignment</entityClass>
 
   <!-- Score configuration -->
@@ -12,7 +10,6 @@
     <easyScoreCalculatorClass>com.backend.models.optaplanner.ScoreCalculator</easyScoreCalculatorClass>
     <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
   </scoreDirectorFactory>
-
 
 
   <!-- Optimization algorithms configuration -->
