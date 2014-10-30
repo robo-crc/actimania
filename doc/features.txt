@@ -6,9 +6,9 @@ Détection automatique des écoles du match en cours grâce à l'horaire
 Timer + Sirène
 * Pénalités individuelles 
 * Pénalités d'équipe (ou pouvoir accéder à un log pour enlever une entrée... en fait, le log serait bcp plus simple à gérer sur le terrain)
-! Pénalité unsportsmanlike (score de 0 qui ne peut pas être enlevé au cumulatif)
+* Pénalité unsportsmanlike (score de 0 qui ne peut pas être enlevé au cumulatif)
 * Compilation automatique des scores
-Intégration de la cédule
+* Intégration de la cédule
 Remplissage automatique du canevas des playoffs à la lumière du classement
 Option d'impression de l'horaire des playoffs.
 Streaming du pointage su le site web

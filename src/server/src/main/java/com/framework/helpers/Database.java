@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.mongodb.MongoClient;
 import com.mongodb.WriteConcern;
+import com.mongodb.WriteResult;
 
 public class Database
 {
@@ -146,6 +147,16 @@ public class Database
 		MongoCollection collection = jongo.getCollection(getCollectionName(entityType));
 
 		return collection.find(query, parameters).as(entityType);
+	}
+	
+	public <T> WriteResult remove(Class<T> entityType, ObjectId _id)
+	{
+		Validate.notNull(entityType);
+		Validate.notNull(_id);
+		
+		MongoCollection collection = jongo.getCollection(getCollectionName(entityType));
+		
+		return collection.remove(_id);
 	}
 
 	private <T> String getCollectionName(Class<T> entityType)

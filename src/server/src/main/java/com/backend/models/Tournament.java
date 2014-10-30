@@ -19,7 +19,6 @@ public class Tournament
 	
 	public static final int NUMBER_OF_JUDGES = 20;
 	public static final int EACH_SCHOOL_JUDGED = 4;
-	public static final int SCHOOL_NUMBER = 33;
 	
 	public final ArrayList<School> 	schools;
 	public final ArrayList<Game> 	games;
