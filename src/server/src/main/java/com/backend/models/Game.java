@@ -6,6 +6,8 @@ import org.bson.types.ObjectId;
 
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.framework.models.Essentials;
+import com.google.common.collect.Lists;
 
 public class Game 
 {
@@ -102,5 +104,10 @@ public class Game
 		}
 		
 		return score;
+	}
+	
+	public static ArrayList<Game> getGames(Essentials essentials)
+	{
+		return Lists.newArrayList(essentials.database.find(Game.class, "{ }"));
 	}
 }

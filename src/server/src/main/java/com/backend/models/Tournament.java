@@ -7,6 +7,7 @@ import java.util.Comparator;
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.framework.models.Essentials;
 
 public class Tournament
 {
@@ -103,5 +104,9 @@ public class Tournament
 		}
 		return gamesPlayed;
 	}
-
+	
+	public static Tournament getTournament(Essentials essentials)
+	{
+		return new Tournament(School.getSchools(essentials), Game.getGames(essentials));
+	}
 }

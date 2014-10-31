@@ -14,8 +14,8 @@ import com.backend.models.School;
 import com.framework.helpers.Helpers;
 import com.framework.models.Essentials;
 
-@WebServlet("/company/company")
-public class SchoolController  extends HttpServlet
+@WebServlet("/admin/schools")
+public class SchoolController extends HttpServlet
 {
 	private static final long serialVersionUID = 2943193194399939430L;
 
@@ -58,6 +58,7 @@ public class SchoolController  extends HttpServlet
 	private void showPage(Essentials essentials) throws ServletException, IOException
 	{
 		essentials.request.setAttribute("schools", School.getSchools(essentials));
-		essentials.request.getRequestDispatcher("/WEB-INF/framework/schools.jsp").forward(essentials.request, essentials.response);
+		essentials.request.setAttribute("errorList", essentials.errorList);
+		essentials.request.getRequestDispatcher("/WEB-INF/admin/schools.jsp").forward(essentials.request, essentials.response);
 	}
 }
