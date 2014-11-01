@@ -3,6 +3,7 @@ package com.backend.models;
 import java.util.ArrayList;
 
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
 
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,6 +17,7 @@ public class Game
 	public final ArrayList<School> 			blueTeam;
 	public final ArrayList<School> 			yellowTeam;
 	public final ArrayList<GameEvent> 		gameEvents;
+	public final boolean					isLive;
 	
 	public final ArrayList<SchoolPenalty>	penalties;
 	public final ArrayList<School>			misconductPenalties;
@@ -26,6 +28,7 @@ public class Game
 			@JsonProperty("blueTeam")				ArrayList<School> 			_blueTeam,
 			@JsonProperty("yellowTeam")				ArrayList<School>			_yellowTeam,
 			@JsonProperty("gameEvents")				ArrayList<GameEvent>		_gameEvents,
+			@JsonProperty("isLive")					boolean						_isLive,
 			@JsonProperty("penalties")				ArrayList<SchoolPenalty>	_penalties,
 			@JsonProperty("misconductPenalties")	ArrayList<School>			_misconductPenalties
 			)
@@ -35,6 +38,7 @@ public class Game
 		yellowTeam 			= _yellowTeam;
 		blueTeam 			= _blueTeam;
 		gameEvents 			= _gameEvents;
+		isLive				= _isLive;
 		penalties 			= _penalties;
 		misconductPenalties = _misconductPenalties;
 	}
@@ -109,5 +113,15 @@ public class Game
 	public static ArrayList<Game> getGames(Essentials essentials)
 	{
 		return Lists.newArrayList(essentials.database.find(Game.class, "{ }"));
+	}
+	
+	public static Game getLiveGame(Essentials essentials)
+	{
+		return essentials.database.findOne(Game.class, "{ isLive : True }");
+	}
+	
+	public static DateTime getGameLength()
+	{
+		return new DateTime(0,0,0,0,5);
 	}
 }

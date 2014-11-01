@@ -32,7 +32,7 @@ public class GameController extends HttpServlet
 			
 			essentials.request.setAttribute("game", game);
 			essentials.request.setAttribute("errorList", essentials.errorList);
-			essentials.request.getRequestDispatcher("/WEB-INF/game.jsp").forward(essentials.request, essentials.response);
+			essentials.request.getRequestDispatcher("/WEB-INF/frontend/game.jsp").forward(essentials.request, essentials.response);
 		}
 	}
 }

@@ -24,7 +24,7 @@ public class School implements Comparable<School>
 	@Override
 	public int compareTo(School o) 
 	{
-		return name.compareTo(o.name);
+		return _id.compareTo(o._id);
 	}
 	
 	public static ArrayList<School> getSchools(Essentials essentials)

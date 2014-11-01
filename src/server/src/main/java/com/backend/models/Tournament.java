@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -108,5 +109,17 @@ public class Tournament
 	public static Tournament getTournament(Essentials essentials)
 	{
 		return new Tournament(School.getSchools(essentials), Game.getGames(essentials));
+	}
+	
+	public static Game getNextGame(ArrayList<Game> games)
+	{
+		for(Game game : games)
+		{
+			if(!game.gameEvents.contains(GameEventEnum.START_GAME))
+			{
+				return game;
+			}
+		}
+		return null;
 	}
 }

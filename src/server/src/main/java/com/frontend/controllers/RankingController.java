@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.backend.models.Tournament;
+import com.backend.models.enums.GameTypeEnum;
 import com.framework.models.Essentials;
 
 // Show the whole tournament ranking.
@@ -22,7 +24,10 @@ public class RankingController extends HttpServlet
 	{
 		try(Essentials essentials = Essentials.createEssentials(request,  response))
 		{
+			Tournament tournament = Tournament.getTournament(essentials);
 			
+			essentials.request.setAttribute("ranking", tournament.getRanking(GameTypeEnum.PRELIMINARY));
+			essentials.request.getRequestDispatcher("/WEB-INF/frontend/ranking.jsp").forward(essentials.request, essentials.response);
 		}
 	}
 }

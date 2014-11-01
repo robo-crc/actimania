@@ -9,7 +9,7 @@ public class JudgeMain {
 	{
 		try(Essentials essentials = new Essentials(new Database(Database.DatabaseType.PRODUCTION), null, null, null, null))
 		{
-			TournamentSolution solvedTournament = TournamentSolver.solve(essentials, Tournament.EACH_SCHOOL_JUDGED, 1, "com/backend/models/optaplanner/judgeAssignmentConfig.xml");
+			TournamentSolution solvedTournament = TournamentSolver.solve(essentials, Tournament.EACH_SCHOOL_JUDGED, 1, "com/backend/models/optaplanner/JudgeAssignmentConfig.xml");
 			if(solvedTournament != null)
 			{
 				solvedTournament.outputJudgmentSolution();

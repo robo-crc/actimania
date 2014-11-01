@@ -19,18 +19,21 @@ public class GameState
 	
 	public final ObjectId 			_id;
 	public final ActuatorEnum[][] 	actuatorsStates;
+	public final GameEvent			lastGameEvent;
 	public final int 				blueScore;
 	public final int 				yellowScore;
 	
 	public GameState(
 			@JsonProperty("_id")				ObjectId 			_gameEventId,
 			@JsonProperty("actuatorsStates")	ActuatorEnum[][]	_actuatorsStates,
+			@JsonProperty("lastGameEvent")		GameEvent			_lastGameEvent,
 			@JsonProperty("blueScore")			int 				_blueScore,
 			@JsonProperty("yellowScore")		int 				_yellowScore
 			)
 	{
 		_id 			= _gameEventId;
 		actuatorsStates = _actuatorsStates;
+		lastGameEvent	= _lastGameEvent;
 		blueScore 		= _blueScore;
 		yellowScore 	= _yellowScore;
 	}
@@ -38,6 +41,7 @@ public class GameState
 	public GameState(GameState previousState, GameEvent gameEvent)
 	{
 		_id = null;
+		lastGameEvent = gameEvent;
 
 		ActuatorEnum[][] localActuatorState = null;
 		int localBlueScore = 0;

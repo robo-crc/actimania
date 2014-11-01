@@ -13,11 +13,6 @@
 ArrayList<LocalizedString> errorList = (ArrayList<LocalizedString>) request.getAttribute("errorList"); 
 
 @SuppressWarnings("unchecked")
-Set<String> roles = (Set<String>) request.getAttribute("roles");
-
-String defaultRole = (String) request.getAttribute("defaultRole");
-
-@SuppressWarnings("unchecked")
 ArrayList<School> schools = (ArrayList<School>) request.getAttribute("schools");
 
 Locale currentLocale = request.getLocale();

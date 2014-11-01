@@ -1,6 +1,7 @@
 package com.frontend.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,15 +31,15 @@ public class SchoolController extends HttpServlet
 	{
 		try(Essentials essentials = Essentials.createEssentials(request,  response))
 		{
-			ObjectId schoolId = Helpers.getParameter("schoolId", ObjectId.class, essentials);
+			School school = essentials.database.findOne(School.class, Helpers.getParameter("schoolId", ObjectId.class, essentials));
 			
 			Tournament tournament = Tournament.getTournament(essentials);
 			
-			tournament.getGamesPlayed(tournament.games, new School(id, ""), GameTypeEnum.PRELIMINARY);
+			ArrayList<Game> schoolGames = Tournament.getGamesPlayed(tournament.games, school, GameTypeEnum.PRELIMINARY);
 			
-			essentials.request.setAttribute("tournament", tournament);
-			essentials.request.setAttribute("errorList", essentials.errorList);
-			essentials.request.getRequestDispatcher("/WEB-INF/game.jsp").forward(essentials.request, essentials.response);
+			essentials.request.setAttribute("school", school);
+			essentials.request.setAttribute("schoolGames", schoolGames);
+			essentials.request.getRequestDispatcher("/WEB-INF/frontend/school.jsp").forward(essentials.request, essentials.response);
 		}
 	}
 }
