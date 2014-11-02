@@ -3,7 +3,7 @@ package com.backend.models;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
-import com.backend.models.enums.ActuatorEnum;
+import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TargetEnum;
@@ -16,7 +16,7 @@ public class GameEvent
 	public final GameEventEnum 	gameEvent;
 	public final TargetEnum 	target;
 	public final SideEnum 		side;
-	public final ActuatorEnum	actuator;
+	public final ActuatorStateEnum	actuator;
 	public final PointModifier	pointModifier;
 	public final DateTime		time;
 
@@ -26,7 +26,7 @@ public class GameEvent
 			@JsonProperty("gameEvent")		GameEventEnum	_gameEvent, 
 			@JsonProperty("side") 			SideEnum 		_side, 
 			@JsonProperty("target") 		TargetEnum 		_target, 
-			@JsonProperty("actuator") 		ActuatorEnum	_actuator,
+			@JsonProperty("actuator") 		ActuatorStateEnum	_actuator,
 			@JsonProperty("pointModifier")	PointModifier 	_pointModifier,
 			@JsonProperty("time")			DateTime		_time)
 	{
@@ -64,7 +64,7 @@ public class GameEvent
 				);
 	}
 	
-	public static GameEvent actuatorChangedEvent(SideEnum _side, TargetEnum _target, ActuatorEnum _actuator)
+	public static GameEvent actuatorChangedEvent(SideEnum _side, TargetEnum _target, ActuatorStateEnum _actuator)
 	{
 		return new GameEvent(
 				null,

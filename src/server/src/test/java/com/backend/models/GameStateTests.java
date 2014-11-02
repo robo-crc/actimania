@@ -7,12 +7,15 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.backend.models.enums.ActuatorEnum;
+import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
+import com.backend.models.enums.GameTypeEnum;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TargetEnum;
 import com.backend.models.enums.TeamEnum;
+import com.framework.helpers.Database;
 import com.framework.helpers.LocalizedString;
+import com.framework.helpers.Database.DatabaseType;
 
 public class GameStateTests 
 {
@@ -45,12 +48,12 @@ public class GameStateTests
 		validateInitialState(gameState4);
 		
 		// Let's change one actuator
-		GameState gameState5 = new GameState(gameState4, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorEnum.BLUE));
-		Validate.isTrue(gameState5.actuatorsStates[SideEnum.BLUE.ordinal()][TargetEnum.LOW.ordinal()] == ActuatorEnum.BLUE);
+		GameState gameState5 = new GameState(gameState4, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.BLUE));
+		Validate.isTrue(gameState5.actuatorsStates[SideEnum.BLUE.ordinal()][TargetEnum.LOW.ordinal()] == ActuatorStateEnum.BLUE);
 		
 		// YELLOW team is turning it again.
-		GameState gameState6 = new GameState(gameState5, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorEnum.YELLOW));
-		Validate.isTrue(gameState6.actuatorsStates[SideEnum.BLUE.ordinal()][TargetEnum.LOW.ordinal()] == ActuatorEnum.YELLOW);
+		GameState gameState6 = new GameState(gameState5, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.YELLOW));
+		Validate.isTrue(gameState6.actuatorsStates[SideEnum.BLUE.ordinal()][TargetEnum.LOW.ordinal()] == ActuatorStateEnum.YELLOW);
 		
 		// Ok now the target is hit.
 		GameState gameState7 = new GameState(gameState6, GameEvent.targetHitEvent(SideEnum.BLUE, TargetEnum.LOW));
@@ -62,11 +65,11 @@ public class GameStateTests
 		Validate.isTrue(gameState8.blueScore == 0);
 		Validate.isTrue(gameState8.yellowScore == 20);
 		
-		GameState gameState9 = new GameState(gameState8, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.MID, ActuatorEnum.BLUE));
-		Validate.isTrue(gameState9.actuatorsStates[SideEnum.BLUE.ordinal()][TargetEnum.MID.ordinal()] == ActuatorEnum.BLUE);
+		GameState gameState9 = new GameState(gameState8, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.MID, ActuatorStateEnum.BLUE));
+		Validate.isTrue(gameState9.actuatorsStates[SideEnum.BLUE.ordinal()][TargetEnum.MID.ordinal()] == ActuatorStateEnum.BLUE);
 		
-		GameState gameState10 = new GameState(gameState9, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.HIGH, ActuatorEnum.BLUE));
-		Validate.isTrue(gameState10.actuatorsStates[SideEnum.BLUE.ordinal()][TargetEnum.HIGH.ordinal()] == ActuatorEnum.BLUE);
+		GameState gameState10 = new GameState(gameState9, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.HIGH, ActuatorStateEnum.BLUE));
+		Validate.isTrue(gameState10.actuatorsStates[SideEnum.BLUE.ordinal()][TargetEnum.HIGH.ordinal()] == ActuatorStateEnum.BLUE);
 		
 		GameState gameState11 = new GameState(gameState10, GameEvent.targetHitEvent(SideEnum.BLUE, TargetEnum.HIGH));
 		Validate.isTrue(gameState11.blueScore == 80);
@@ -81,7 +84,7 @@ public class GameStateTests
 		Validate.isTrue(gameState13.blueScore == 80);
 		Validate.isTrue(gameState13.yellowScore == 30);
 		
-		GameState gameState14 = new GameState(gameState13, GameEvent.actuatorChangedEvent(SideEnum.YELLOW, TargetEnum.MID, ActuatorEnum.YELLOW));
+		GameState gameState14 = new GameState(gameState13, GameEvent.actuatorChangedEvent(SideEnum.YELLOW, TargetEnum.MID, ActuatorStateEnum.YELLOW));
 		Validate.isTrue(gameState14.blueScore == 80);
 		Validate.isTrue(gameState14.yellowScore == 30);
 		
@@ -93,8 +96,8 @@ public class GameStateTests
 		Validate.isTrue(gameState16.blueScore == 80);
 		Validate.isTrue(gameState16.yellowScore == 50);
 		
-		GameState gameState17 = new GameState(gameState16, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorEnum.BLUE));
-		Validate.isTrue(gameState17.actuatorsStates[SideEnum.BLUE.ordinal()][TargetEnum.LOW.ordinal()] == ActuatorEnum.BLUE);
+		GameState gameState17 = new GameState(gameState16, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.BLUE));
+		Validate.isTrue(gameState17.actuatorsStates[SideEnum.BLUE.ordinal()][TargetEnum.LOW.ordinal()] == ActuatorStateEnum.BLUE);
 		
 		GameState gameState18 = new GameState(gameState17, GameEvent.targetHitEvent(SideEnum.BLUE, TargetEnum.HIGH));
 		Validate.isTrue(gameState18.blueScore == 280);
@@ -122,8 +125,8 @@ public class GameStateTests
 		{
 			for( TargetEnum target : TargetEnum.values() )
 			{
-				ActuatorEnum actuator = gameState.actuatorsStates[side.ordinal()][target.ordinal()];
-				Validate.isTrue(actuator == ActuatorEnum.CLOSED);
+				ActuatorStateEnum actuator = gameState.actuatorsStates[side.ordinal()][target.ordinal()];
+				Validate.isTrue(actuator == ActuatorStateEnum.CLOSED);
 			}
 		}
 	}
@@ -136,32 +139,32 @@ public class GameStateTests
 		Validate.isTrue(GameState.areAllActuatorSameColor(gameState.actuatorsStates) == false);
 		
 		GameState previousGameState = gameState;
-		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorEnum.BLUE));
+		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.BLUE));
 		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
 
 		previousGameState = gameState;
-		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.MID, ActuatorEnum.BLUE));
+		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.MID, ActuatorStateEnum.BLUE));
 		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
 		
 		previousGameState = gameState;
-		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.HIGH, ActuatorEnum.BLUE));
+		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.HIGH, ActuatorStateEnum.BLUE));
 		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
 		
 		previousGameState = gameState;
-		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.YELLOW, TargetEnum.LOW, ActuatorEnum.BLUE));
+		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.YELLOW, TargetEnum.LOW, ActuatorStateEnum.BLUE));
 		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
 		
 		previousGameState = gameState;
-		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.YELLOW, TargetEnum.MID, ActuatorEnum.BLUE));
+		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.YELLOW, TargetEnum.MID, ActuatorStateEnum.BLUE));
 		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
 		
 		// Yippi all actuator are the same color!
 		previousGameState = gameState;
-		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.YELLOW, TargetEnum.HIGH, ActuatorEnum.BLUE));
+		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.YELLOW, TargetEnum.HIGH, ActuatorStateEnum.BLUE));
 		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == true);
 		
 		previousGameState = gameState;
-		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.MID, ActuatorEnum.YELLOW));
+		gameState = new GameState(previousGameState, GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.MID, ActuatorStateEnum.YELLOW));
 		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
 	}
 }

@@ -18,6 +18,11 @@ public class ApplicationSpecific
 		// , school // I don't see a use case for school to have a login yet.
 	}
 	
+	public static String getDatabaseName()
+	{
+		return "Actimania";
+	}
+	
 	public static Set<String> getAllRoles()
 	{
 		Set<String> roles = new TreeSet<String>();

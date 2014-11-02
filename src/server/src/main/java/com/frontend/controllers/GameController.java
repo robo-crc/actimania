@@ -31,7 +31,6 @@ public class GameController extends HttpServlet
 			Game game = essentials.database.findOne(Game.class, gameId);
 			
 			essentials.request.setAttribute("game", game);
-			essentials.request.setAttribute("errorList", essentials.errorList);
 			essentials.request.getRequestDispatcher("/WEB-INF/frontend/game.jsp").forward(essentials.request, essentials.response);
 		}
 	}

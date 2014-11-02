@@ -36,10 +36,10 @@ public class Database
 		switch (_databaseType)
 		{
 		case TEST_DB:
-			databaseName = "AppBuilderTestDB" + String.valueOf(Math.round((Math.random() * 10000)));
+			databaseName = ApplicationSpecific.getDatabaseName() + "TestDB" + String.valueOf(Math.round((Math.random() * 10000)));
 			break;
 		case PRODUCTION:
-			databaseName = "AppBuilderProduction";
+			databaseName = ApplicationSpecific.getDatabaseName() + "Production";
 			break;
 		default:
 			databaseName = "WrongDatabaseName";

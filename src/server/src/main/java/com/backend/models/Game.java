@@ -3,7 +3,7 @@ package com.backend.models;
 import java.util.ArrayList;
 
 import org.bson.types.ObjectId;
-import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -120,8 +120,8 @@ public class Game
 		return essentials.database.findOne(Game.class, "{ isLive : True }");
 	}
 	
-	public static DateTime getGameLength()
+	public static Duration getGameLength()
 	{
-		return new DateTime(0,0,0,0,5);
+		return new Duration(5 * 60 * 1000);
 	}
 }

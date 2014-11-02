@@ -2,7 +2,7 @@ package com.backend.models;
 
 import org.bson.types.ObjectId;
 
-import com.backend.models.enums.ActuatorEnum;
+import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TargetEnum;
@@ -18,14 +18,14 @@ public class GameState
 	public static final int[] TARGET_VALUE = { 10, 20, 40 };
 	
 	public final ObjectId 			_id;
-	public final ActuatorEnum[][] 	actuatorsStates;
+	public final ActuatorStateEnum[][] 	actuatorsStates;
 	public final GameEvent			lastGameEvent;
 	public final int 				blueScore;
 	public final int 				yellowScore;
 	
 	public GameState(
 			@JsonProperty("_id")				ObjectId 			_gameEventId,
-			@JsonProperty("actuatorsStates")	ActuatorEnum[][]	_actuatorsStates,
+			@JsonProperty("actuatorsStates")	ActuatorStateEnum[][]	_actuatorsStates,
 			@JsonProperty("lastGameEvent")		GameEvent			_lastGameEvent,
 			@JsonProperty("blueScore")			int 				_blueScore,
 			@JsonProperty("yellowScore")		int 				_yellowScore
@@ -43,18 +43,18 @@ public class GameState
 		_id = null;
 		lastGameEvent = gameEvent;
 
-		ActuatorEnum[][] localActuatorState = null;
+		ActuatorStateEnum[][] localActuatorState = null;
 		int localBlueScore = 0;
 		int localYellowScore = 0;
 		
 		if(gameEvent.gameEvent == GameEventEnum.START_GAME)
 		{
-			localActuatorState = new ActuatorEnum[SideEnum.values().length][TargetEnum.values().length];
+			localActuatorState = new ActuatorStateEnum[SideEnum.values().length][TargetEnum.values().length];
 			for( SideEnum side : SideEnum.values() )
 			{
 				for( TargetEnum target : TargetEnum.values() )
 				{
-					localActuatorState[side.ordinal()][target.ordinal()] = ActuatorEnum.CLOSED;
+					localActuatorState[side.ordinal()][target.ordinal()] = ActuatorStateEnum.CLOSED;
 				}
 			}
 			localBlueScore = 0;
@@ -63,7 +63,7 @@ public class GameState
 		else
 		{
 			// We need to make a copy of the array so that the array is not a reference of each
-			localActuatorState = new ActuatorEnum[SideEnum.values().length][TargetEnum.values().length];
+			localActuatorState = new ActuatorStateEnum[SideEnum.values().length][TargetEnum.values().length];
 			for( SideEnum side : SideEnum.values() )
 			{
 				for( TargetEnum target : TargetEnum.values() )
@@ -76,12 +76,12 @@ public class GameState
 
 			if(gameEvent.gameEvent == GameEventEnum.TARGET_HIT)
 			{
-				ActuatorEnum currentActuator = localActuatorState[gameEvent.side.ordinal()][gameEvent.target.ordinal()];
-				if(currentActuator == ActuatorEnum.BLUE)
+				ActuatorStateEnum currentActuator = localActuatorState[gameEvent.side.ordinal()][gameEvent.target.ordinal()];
+				if(currentActuator == ActuatorStateEnum.BLUE)
 				{
 					localBlueScore += calculateTargetHitValue(localActuatorState, gameEvent.side, gameEvent.target);
 				}
-				else if(currentActuator == ActuatorEnum.YELLOW)
+				else if(currentActuator == ActuatorStateEnum.YELLOW)
 				{
 					localYellowScore += calculateTargetHitValue(localActuatorState, gameEvent.side, gameEvent.target);
 				}
@@ -112,13 +112,13 @@ public class GameState
 		yellowScore 	= localYellowScore;
 	}
 	
-	public static int calculateTargetHitValue(ActuatorEnum[][] localActuatorStates, SideEnum side, TargetEnum targetHit)
+	public static int calculateTargetHitValue(ActuatorStateEnum[][] localActuatorStates, SideEnum side, TargetEnum targetHit)
 	{
-		ActuatorEnum actuatorValue = localActuatorStates[side.ordinal()][targetHit.ordinal()];
+		ActuatorStateEnum actuatorValue = localActuatorStates[side.ordinal()][targetHit.ordinal()];
 		
 		int numMultiplier = 0;
 		
-		for(ActuatorEnum actuator : localActuatorStates[side.ordinal()])
+		for(ActuatorStateEnum actuator : localActuatorStates[side.ordinal()])
 		{
 			if(actuatorValue == actuator)
 			{
@@ -129,16 +129,16 @@ public class GameState
 		return ACTUATOR_MULTIPLIERS[numMultiplier] * TARGET_VALUE[targetHit.ordinal()];
 	}
 	
-	public static boolean areAllActuatorSameColor(ActuatorEnum[][] localActuatorStates)
+	public static boolean areAllActuatorSameColor(ActuatorStateEnum[][] localActuatorStates)
 	{
-		ActuatorEnum actuatorState = localActuatorStates[0][0];
+		ActuatorStateEnum actuatorState = localActuatorStates[0][0];
 		
 		for( SideEnum side : SideEnum.values() )
 		{
 			for( TargetEnum target : TargetEnum.values() )
 			{
-				ActuatorEnum currentState = localActuatorStates[side.ordinal()][target.ordinal()];
-				if(currentState == ActuatorEnum.CLOSED || actuatorState != currentState)
+				ActuatorStateEnum currentState = localActuatorStates[side.ordinal()][target.ordinal()];
+				if(currentState == ActuatorStateEnum.CLOSED || actuatorState != currentState)
 				{
 					return false;
 				}
