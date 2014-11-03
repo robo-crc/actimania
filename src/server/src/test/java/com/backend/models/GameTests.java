@@ -23,14 +23,14 @@ public class GameTests
 	@BeforeClass
 	public static void setUp()
     {
-        database = new Database(DatabaseType.TEST_DB);
+        database = new Database(DatabaseType.PRODUCTION);
         database.initializeDatabase();
     }
 	
 	@AfterClass
 	public static void tearDown()
 	{
-		database.dropDatabase();
+		//database.dropDatabase();
 		database.close();
 	}
 	

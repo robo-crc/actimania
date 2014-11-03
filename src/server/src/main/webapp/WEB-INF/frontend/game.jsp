@@ -48,6 +48,7 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><%=strGame%></title>
+<link rel="stylesheet" type="text/css" href="css/game.css"/>
 </head>
 <body>
 
@@ -88,7 +89,7 @@ if(game.penalties.size() > 0)
 
 <div class="gameStates">
 <%
-	Duration gameLength = Game.getGameLength();
+Duration gameLength = Game.getGameLength();
 
 for(GameState state : game.getGameStates())
 {
@@ -102,11 +103,11 @@ for(GameState state : game.getGameStates())
 		ActuatorStateEnum targetHitColor = state.actuatorsStates[state.lastGameEvent.side.ordinal()][state.lastGameEvent.target.ordinal()];
 		if( targetHitColor == ActuatorStateEnum.BLUE )
 		{
-	blueScored = true;
+			blueScored = true;
 		}
 		else if(targetHitColor == ActuatorStateEnum.YELLOW)
 		{
-	yellowScored = true;
+			yellowScored = true;
 		}
 	}
 %>
@@ -117,8 +118,9 @@ for(GameState state : game.getGameStates())
 <%!public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, boolean isTarget, JspWriter out) throws IOException
 	{
 		ActuatorStateEnum actuatorColor = state.actuatorsStates[side.ordinal()][target.ordinal()];
-		out.write("<div class=\"" + target.name() + "Target " + side.name() + "Side " +  actuatorColor.name() + "Actuator");
+		out.write("<img src=\"images/" + "side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".png\"" );
 		
+		out.write(" class=\"fieldImage");
 		if(isTarget)
 		{
 			out.write(" isTarget");
@@ -142,8 +144,11 @@ for(GameState state : game.getGameStates())
 				out.write(" TargetHitEvent");
 			}
 		}
-		out.write("\"></div>");
+		out.write("\"></div>\n");
+		//out.write("background: url('../images/templates/background_image.jpg') no-repeat center center fixed;")
 	}%>
+	
+<div class="playfield">
 <%
 // Targets
 outputTargetActuator(state, SideEnum.BLUE, TargetEnum.LOW, true, out);
@@ -155,7 +160,7 @@ outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.MID, true, out);
 outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.HIGH, true, out);
 
 // Actuators
-
+/*
 outputTargetActuator(state, SideEnum.BLUE, TargetEnum.LOW, false, out);
 outputTargetActuator(state, SideEnum.BLUE, TargetEnum.MID, false, out);
 outputTargetActuator(state, SideEnum.BLUE, TargetEnum.HIGH, false, out);
@@ -163,13 +168,12 @@ outputTargetActuator(state, SideEnum.BLUE, TargetEnum.HIGH, false, out);
 outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.LOW, false, out);
 outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.MID, false, out);
 outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.HIGH, false, out);
+*/
 %>
-
+</div>
 <%
 }
 %>
 </div>
-
-
 </body>
 </html>

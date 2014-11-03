@@ -1,0 +1,11 @@
+.fieldImage
+{
+	position:absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.playfield
+{
+	position: relative;
+}

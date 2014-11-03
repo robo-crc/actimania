@@ -9,13 +9,10 @@ import org.junit.Test;
 
 import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
-import com.backend.models.enums.GameTypeEnum;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TargetEnum;
 import com.backend.models.enums.TeamEnum;
-import com.framework.helpers.Database;
 import com.framework.helpers.LocalizedString;
-import com.framework.helpers.Database.DatabaseType;
 
 public class GameStateTests 
 {
