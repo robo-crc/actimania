@@ -82,7 +82,7 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 if(game.penalties.size() > 0)
 {
 %>
-<h2><%=strPenalties%></h2>
+<h2><%= strPenalties %></h2>
 <%
 	for(SchoolPenalty penalty : game.penalties)
 	{
@@ -120,7 +120,8 @@ for(GameState state : game.getGameStates())
 <div class="blueScore<% if(blueScored) out.write("teamScored"); %>"><%= state.blueScore %></div>
 <div class="yellowScore<% if(blueScored) out.write("teamScored");%>"><%= state.yellowScore %></div>
 <br/>
-<%!public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
+<%!
+	public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
 	{
 		ActuatorStateEnum actuatorColor = state.actuatorsStates[side.ordinal()][target.ordinal()];
 		out.write("\t<img src=\"images/" + "side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".png\"" );
@@ -144,8 +145,10 @@ for(GameState state : game.getGameStates())
 		out.write("\"/>\n");
 		//out.write("background: url('../images/templates/background_image.jpg') no-repeat center center fixed;")
 	}%>
-	
+
+
 <div class="playfield">
+<img src="images/playfield.png" class="playfieldBackground fieldImage" />
 <%
 // Targets
 outputTargetActuator(state, SideEnum.BLUE, TargetEnum.LOW, out);
