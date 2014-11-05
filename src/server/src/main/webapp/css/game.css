@@ -1,11 +1,27 @@
 .fieldImage
 {
-	position:absolute;
-	top: 0px;
-	left: 0px;
+	position:relative;
+	float: left;
+	left: 100%;
+	margin-left: -100%;
+	width:100%;
 }
 
 .playfield
 {
 	position: relative;
+	display: block;
+	float:left;
+}
+
+.team
+{
+	float:left;
+	padding-left: 25%;
+}
+
+
+.clear
+{
+	clear:both;
 }

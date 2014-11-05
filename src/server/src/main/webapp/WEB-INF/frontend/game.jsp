@@ -52,26 +52,31 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 </head>
 <body>
 
-<h2><%=strBlueTeam%></h2>
-<div class="teamName">
-<%
-for(School school : game.blueTeam)
-{
-	out.print(school.name + "<br/>");
-}
-%>
+<div class="team">
+	<h2><%=strBlueTeam%></h2>
+	<div class="teamName">
+	<%
+	for(School school : game.blueTeam)
+	{
+		out.print(school.name + "<br/>");
+	}
+	%>
+	</div>
 </div>
 
-
-<h2><%=strYellowTeam%></h2>
-<div class="teamName">
-<%
-for(School school : game.yellowTeam)
-{
-	out.print(school.name + "<br/>");
-}
-%>
+<div class="team">
+	<h2><%=strYellowTeam%></h2>
+	<div class="teamName">
+	<%
+	for(School school : game.yellowTeam)
+	{
+		out.print(school.name + "<br/>");
+	}
+	%>
+	</div>
 </div>
+
+<div class="clear"></div>
 
 <%
 if(game.penalties.size() > 0)
@@ -115,21 +120,13 @@ for(GameState state : game.getGameStates())
 <div class="blueScore<% if(blueScored) out.write("teamScored"); %>"><%= state.blueScore %></div>
 <div class="yellowScore<% if(blueScored) out.write("teamScored");%>"><%= state.yellowScore %></div>
 <br/>
-<%!public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, boolean isTarget, JspWriter out) throws IOException
+<%!public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
 	{
 		ActuatorStateEnum actuatorColor = state.actuatorsStates[side.ordinal()][target.ordinal()];
-		out.write("<img src=\"images/" + "side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".png\"" );
+		out.write("\t<img src=\"images/" + "side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".png\"" );
 		
 		out.write(" class=\"fieldImage");
-		if(isTarget)
-		{
-			out.write(" isTarget");
-		}
-		else
-		{
-			out.write(" isActuator");
-		}
-		
+
 		if(state.lastGameEvent.gameEvent == GameEventEnum.ACTUATOR_CHANGED)
 		{
 			if(state.lastGameEvent.side == side && state.lastGameEvent.target == target)
@@ -137,40 +134,30 @@ for(GameState state : game.getGameStates())
 				out.write(" ActuatorChangedEvent");
 			}
 		}
-		else if(isTarget && state.lastGameEvent.gameEvent == GameEventEnum.TARGET_HIT)
+		else if(state.lastGameEvent.gameEvent == GameEventEnum.TARGET_HIT)
 		{
 			if(state.lastGameEvent.side == side && state.lastGameEvent.target == target)
 			{
 				out.write(" TargetHitEvent");
 			}
 		}
-		out.write("\"></div>\n");
+		out.write("\"/>\n");
 		//out.write("background: url('../images/templates/background_image.jpg') no-repeat center center fixed;")
 	}%>
 	
 <div class="playfield">
 <%
 // Targets
-outputTargetActuator(state, SideEnum.BLUE, TargetEnum.LOW, true, out);
-outputTargetActuator(state, SideEnum.BLUE, TargetEnum.MID, true, out);
-outputTargetActuator(state, SideEnum.BLUE, TargetEnum.HIGH, true, out);
+outputTargetActuator(state, SideEnum.BLUE, TargetEnum.LOW, out);
+outputTargetActuator(state, SideEnum.BLUE, TargetEnum.MID, out);
+outputTargetActuator(state, SideEnum.BLUE, TargetEnum.HIGH, out);
 
-outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.LOW, true, out);
-outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.MID, true, out);
-outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.HIGH, true, out);
-
-// Actuators
-/*
-outputTargetActuator(state, SideEnum.BLUE, TargetEnum.LOW, false, out);
-outputTargetActuator(state, SideEnum.BLUE, TargetEnum.MID, false, out);
-outputTargetActuator(state, SideEnum.BLUE, TargetEnum.HIGH, false, out);
-
-outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.LOW, false, out);
-outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.MID, false, out);
-outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.HIGH, false, out);
-*/
+outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.LOW, out);
+outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.MID, out);
+outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.HIGH, out);
 %>
 </div>
+<div class="clear"></div>
 <%
 }
 %>
