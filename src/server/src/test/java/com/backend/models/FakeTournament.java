@@ -32,6 +32,20 @@ public class FakeTournament
 		database.close();
 	}
 	
+	//@Test
+	public void resetMatches()
+	{
+		try(Essentials essentials = new Essentials(database, null, null, null, null))
+		{
+			Tournament tournament = Tournament.getTournament(essentials);
+			for(int i = 0; i < tournament.games.size(); i++)
+			{
+				Game currentGame = tournament.games.get(i).getGameInitialState();
+				database.save(currentGame);
+			}
+		}
+	}
+	
 	@Test
 	public void PopulateDatabase()
 	{
@@ -44,7 +58,7 @@ public class FakeTournament
 				Game currentGame = tournament.games.get(i).getGameInitialState();
 				currentGame.gameEvents.add(new GameEvent(GameEventEnum.START_GAME));
 				
-				int nbEvents = random.nextInt(80) + 20;
+				int nbEvents = random.nextInt(200) + 20;
 				
 				for(int eventNo = 0; eventNo < nbEvents; eventNo++)
 				{

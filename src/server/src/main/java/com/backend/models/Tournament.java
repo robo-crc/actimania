@@ -3,6 +3,7 @@ package com.backend.models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.TreeMap;
 
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
@@ -34,15 +35,22 @@ public class Tournament
 		games	= _games;
 	}
 	
-	public ArrayList<School> getRanking(Essentials essentials, final GameTypeEnum gameType)
+	public ArrayList<School> getRanking(ArrayList<School> schools, final GameTypeEnum gameType)
 	{
-		ArrayList<School> ranking = School.getSchools(essentials);
+		ArrayList<School> ranking = new ArrayList<School>(schools);
 		
+		// Optimization : Let's just calculate the score once instead of each time we sort.
+		final TreeMap<School, Integer> score = new TreeMap<School, Integer>();
+		for(School school : ranking)
+		{
+			score.put(school, getTotalScore(school, gameType));
+		}
+
 		Collections.sort(ranking, new Comparator<School>() {
 	        @Override
 	        public int compare(School school1, School school2)
 	        {
-	            return getTotalScore(school2, gameType) - getTotalScore(school1, gameType);
+	            return score.get(school2) - score.get(school1);
 	        }
 	    });
 		
@@ -59,6 +67,13 @@ public class Tournament
 			{
 				gamesForType.add(game);
 			}
+		}
+		
+		// Optimization : Let's just calculate the score once instead of each time we sort.
+		final TreeMap<Game, Integer> score = new TreeMap<Game, Integer>();
+		for(Game game : gamesForType)
+		{
+			score.put(game, game.getScore(school));
 		}
 
 		Collections.sort(gamesForType, new Comparator<Game>() 
@@ -78,7 +93,7 @@ public class Tournament
 	        	}
 	        	else
 	        	{
-	        		return game2.getScore(school) - game1.getScore(school);
+	        		return score.get(game2) - score.get(game1);
 	        	}
 	        }
 	    });

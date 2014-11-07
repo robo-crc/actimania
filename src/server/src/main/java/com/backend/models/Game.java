@@ -122,6 +122,21 @@ public class Game implements Comparable<Game>
 	}
 	
 	@Override
+	public boolean equals(Object o)
+	{
+		if(o == null)
+			return false;
+		
+		if(o == this)
+			return true;
+		
+		if(!(o instanceof Game))
+			return false;
+		
+		return _id.equals(((Game)o)._id);
+	}
+	
+	@Override
 	public int compareTo(Game o) 
 	{
 		return this.gameNumber - o.gameNumber;
