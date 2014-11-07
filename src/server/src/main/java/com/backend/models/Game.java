@@ -1,6 +1,7 @@
 package com.backend.models;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
@@ -11,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.models.Essentials;
 import com.google.common.collect.Lists;
 
-public class Game 
+public class Game implements Comparable<Game>
 {
 	public final ObjectId 					_id;
 	public final int						gameNumber;
@@ -120,14 +121,27 @@ public class Game
 		return score;
 	}
 	
+	@Override
+	public int compareTo(Game o) 
+	{
+		return this.gameNumber - o.gameNumber;
+	}
+	
 	public static ArrayList<Game> getGames(Essentials essentials)
 	{
-		return Lists.newArrayList(essentials.database.find(Game.class, "{ }"));
+		ArrayList<Game> games = Lists.newArrayList(essentials.database.find(Game.class, "{ }"));
+		Collections.sort(games);
+		return games;
 	}
 	
 	public static Game getLiveGame(Essentials essentials)
 	{
 		return essentials.database.findOne(Game.class, "{ isLive : True }");
+	}
+	
+	public Game getGameInitialState()
+	{
+		return new Game(_id, gameNumber, scheduledTime, gameType, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
 	}
 	
 	public static Duration getGameLength()

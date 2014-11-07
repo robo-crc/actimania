@@ -12,6 +12,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <%
+Tournament tournament = (Tournament) request.getAttribute("tournament");
 School school	= (School) request.getAttribute("school");
 Integer rank 	= (Integer) request.getAttribute("rank");
 Integer score	= (Integer) request.getAttribute("score");
@@ -81,7 +82,7 @@ LocalizedString strYellowScore = new LocalizedString(ImmutableMap.of(
 <body>
 
 <h1><%= school.name %></h1>
-<div class="rank"><%= strRank + rank.toString() %></div>
+<div class="rank"><%= strRank + rank.toString() + " / " + tournament.schools.size() %></div>
 <div class="clear"></div>
 <div class="score"><%= strScore + score.toString() %></div>
 <div class="clear"></div>

@@ -24,14 +24,14 @@ public class GameTests
 	@BeforeClass
 	public static void setUp()
     {
-        database = new Database(DatabaseType.PRODUCTION);
+        database = new Database(DatabaseType.TEST_DB);
         database.initializeDatabase();
     }
 	
 	@AfterClass
 	public static void tearDown()
 	{
-		//database.dropDatabase();
+		database.dropDatabase();
 		database.close();
 	}
 	
@@ -59,10 +59,11 @@ public class GameTests
 	@Test
 	public void testSchool()
 	{
-		Essentials essentials = new Essentials(database, null, null, null, null);
-
-		database.save(getFakeGame());
-		
-		Validate.isTrue(Game.getGames(essentials).size() == 1);
+		try(Essentials essentials = new Essentials(database, null, null, null, null))
+		{
+			database.save(getFakeGame());
+			
+			Validate.isTrue(Game.getGames(essentials).size() == 1);
+		}
 	}
 }
