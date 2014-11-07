@@ -15,7 +15,7 @@ public class Tournament
 	@JsonIgnore
 	public static final int PRELIMINARY_GAMES_SKIPPED_IN_SCORE = 2;
 	
-	public static final int GAME_PER_SCHOOL = 10;
+	public static final int GAME_PER_SCHOOL = 12;
 	public static final int SCHOOLS_PER_TEAM = 3;
 	public static final int BLOCK_NUMBERS = 4;
 	
@@ -34,9 +34,9 @@ public class Tournament
 		games	= _games;
 	}
 	
-	public ArrayList<School> getRanking(final GameTypeEnum gameType)
+	public ArrayList<School> getRanking(Essentials essentials, final GameTypeEnum gameType)
 	{
-		ArrayList<School> ranking = new ArrayList<School>();
+		ArrayList<School> ranking = School.getSchools(essentials);
 		
 		Collections.sort(ranking, new Comparator<School>() {
 	        @Override
@@ -98,7 +98,7 @@ public class Tournament
 		
 		for(Game game : games)
 		{
-			if( game.gameType == gameType && (game.blueTeam.contains(school) || game.yellowTeam.contains(school)) )
+			if( game.gameType.equals(gameType) && (game.blueTeam.contains(school) || game.yellowTeam.contains(school)) )
 			{
 				gamesPlayed.add(game);
 			}

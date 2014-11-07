@@ -12,28 +12,18 @@
     pageEncoding="ISO-8859-1"%>
 
 <%
-School school	= (School) request.getAttribute("school");
-Integer rank 	= (Integer) request.getAttribute("rank");
-Integer score	= (Integer) request.getAttribute("score");
-
-@SuppressWarnings("unchecked")
-ArrayList<Game> games = (ArrayList<Game>)request.getAttribute("games");
+Tournament tournament = (Tournament)request.getAttribute("tournament");
 
 Locale currentLocale = request.getLocale();
-
-LocalizedString strRank = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Tournament rank : ", 
-		Locale.FRENCH, 	"Position au classement : "
-		), currentLocale);
-
-LocalizedString strScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Tournament score : ", 
-		Locale.FRENCH, 	"Pointage cumulatif du tournoi : "
-		), currentLocale);
 
 LocalizedString strSchool = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "School", 
 		Locale.FRENCH, 	"École"
+		), currentLocale);
+
+LocalizedString strScore = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Score", 
+		Locale.FRENCH, 	"Pointage"
 		), currentLocale);
 
 LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
@@ -52,13 +42,18 @@ LocalizedString strGameNumber = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strGameTime = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Game date/time", 
-		Locale.FRENCH, 	"Date/Heure de la partie"
+		Locale.ENGLISH, "Game time", 
+		Locale.FRENCH, 	"Heure de la partie"
 		), currentLocale);
 
-LocalizedString strSchoolScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "School score", 
-		Locale.FRENCH, 	"Pointage de l'école"
+LocalizedString strBlueTeam = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Blue team", 
+		Locale.FRENCH, 	"Équipe bleue"
+		), currentLocale);
+
+LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Yellow team", 
+		Locale.FRENCH, 	"Équipe jaune"
 		), currentLocale);
 
 LocalizedString strBlueScore = new LocalizedString(ImmutableMap.of( 	
@@ -76,22 +71,16 @@ LocalizedString strYellowScore = new LocalizedString(ImmutableMap.of(
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title><%= strSchool %></title>
+<title><%= strSchedule %></title>
 </head>
 <body>
 
-<h1><%= school.name %></h1>
-<div class="rank"><%= strRank + rank.toString() %></div>
-<div class="clear"></div>
-<div class="score"><%= strScore + score.toString() %></div>
-<div class="clear"></div>
-<br/>
 <table>
 <tr>
-<td><%= strGameNumber %></td><td><%= strGameTime %></td><td><%= strSchoolScore %></td><td><%= strBlueScore %></td><td><%= strYellowScore %></td>
+<td><%= strGameNumber %></td><td><%= strGameTime %></td><td><%= strBlueTeam %></td><td><%= strBlueScore %></td><td><%= strYellowTeam %></td><td><%= strYellowScore %></td>
 </tr>
 <%
-for( Game game : games )
+for( Game game : tournament.games )
 {
 	ArrayList<GameState> gameStates = game.getGameStates();
 	String blueScore = "";
@@ -104,19 +93,37 @@ for( Game game : games )
 		yellowScore = String.valueOf(gameState.yellowScore);
 	}
 %>
-<tr>
+<tr class="<%= game.isLive ? "isLive" : "" %>">
 	<td><a href="game?gameId=<%= game._id %>"><%= game.gameNumber %></a></td>
 	<td><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></td>
-	<td><%= game.getScore(school) %></td>
+	<td>
+<%
+for( School school : game.blueTeam )
+{
+	%>
+	<a href="school?schoolId=<%= school._id %>"><%= school.name %></a><br/>
+	<%
+}
+%>
+	</td>
 	<td><%= blueScore %></td>
+		<td>
+<%
+for( School school : game.yellowTeam )
+{
+	%>
+	<a href="school?schoolId=<%= school._id %>"><%= school.name %></a><br/>
+	<%
+}
+%>
+	</td>
 	<td><%= yellowScore %></td>
 </tr>
 <%
 }
 %>
 </table>
-<br/>
-<a href="schedule"><%= strSchedule %></a><br/>
+
 <a href="ranking"><%= strRanking %></a>
 </body>
 </html>

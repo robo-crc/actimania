@@ -38,7 +38,9 @@ public class SchoolController extends HttpServlet
 			ArrayList<Game> schoolGames = Tournament.getGamesPlayed(tournament.games, school, GameTypeEnum.PRELIMINARY);
 			
 			essentials.request.setAttribute("school", school);
-			essentials.request.setAttribute("schoolGames", schoolGames);
+			essentials.request.setAttribute("rank", tournament.getRanking(essentials, GameTypeEnum.PRELIMINARY).indexOf(school) + 1);
+			essentials.request.setAttribute("score", tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY));
+			essentials.request.setAttribute("games", schoolGames);
 			essentials.request.getRequestDispatcher("/WEB-INF/frontend/school.jsp").forward(essentials.request, essentials.response);
 		}
 	}

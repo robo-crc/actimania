@@ -158,6 +158,16 @@ public class Database
 		
 		return collection.remove(_id);
 	}
+	
+	public <T> void dropCollection(Class<T> entityType)
+	{
+		Validate.notNull(entityType);
+		
+		MongoCollection collection = jongo.getCollection(getCollectionName(entityType));
+		
+		collection.drop();
+	}
+
 
 	private <T> String getCollectionName(Class<T> entityType)
 	{

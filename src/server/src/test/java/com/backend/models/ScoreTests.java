@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import org.apache.commons.lang.Validate;
+import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,7 +45,7 @@ public class ScoreTests
 		ArrayList<School> blueTeam = new ArrayList<School>();
 		blueTeam.add(school);
 		
-		Game game = new Game(null, GameTypeEnum.PRELIMINARY, blueTeam, new ArrayList<School>(), getGameEvents(), false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
+		Game game = new Game(null, 1, DateTime.now(), GameTypeEnum.PRELIMINARY, blueTeam, new ArrayList<School>(), getGameEvents(), false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
 		Tournament tournament = new Tournament(new ArrayList<School>(), new ArrayList<Game>());
 		tournament.schools.add(school);
 		tournament.games.add(game);
@@ -60,7 +61,7 @@ public class ScoreTests
 		
 		ArrayList<GameEvent> game2Events = getGameEvents();
 		game2Events.add(GameEvent.pointModifierEvent(new PointModifier(TeamEnum.BLUE, -20, null)));
-		Game game2 = new Game(null, GameTypeEnum.PRELIMINARY, blueTeam, new ArrayList<School>(), game2Events, false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
+		Game game2 = new Game(null, 2, DateTime.now(), GameTypeEnum.PRELIMINARY, blueTeam, new ArrayList<School>(), game2Events, false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
 		Validate.isTrue(game2.getScore(school) == 80);
 		tournament.games.add(game2);
 		
@@ -70,7 +71,7 @@ public class ScoreTests
 		ArrayList<School> yellowTeam = new ArrayList<School>();
 		yellowTeam.add(school);
 		
-		Game game3 = new Game(null, GameTypeEnum.PRELIMINARY, new ArrayList<School>(), yellowTeam, game3Events, false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
+		Game game3 = new Game(null, 3, DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), yellowTeam, game3Events, false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
 		
 		tournament.games.add(game3);
 		Validate.isTrue(game3.getScore(school) == 40);
@@ -89,7 +90,7 @@ public class ScoreTests
 		yellowTeam = new ArrayList<School>();
 		yellowTeam.add(school);
 		
-		Game game4 = new Game(null, GameTypeEnum.PRELIMINARY, new ArrayList<School>(), yellowTeam, game4Events, false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
+		Game game4 = new Game(null, 4, DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), yellowTeam, game4Events, false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
 		tournament.games.add(game4);
 		Validate.isTrue(tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) == 120);
 		
@@ -99,7 +100,7 @@ public class ScoreTests
 		yellowTeam = new ArrayList<School>();
 		yellowTeam.add(school);
 		
-		Game game5 = new Game(null, GameTypeEnum.PRELIMINARY, new ArrayList<School>(), yellowTeam, game5Events, false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
+		Game game5 = new Game(null, 5, DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), yellowTeam, game5Events, false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
 		tournament.games.add(game5);
 		// 3 "best games" are 0 (misconduct penalty), 120, 90
 		Validate.isTrue(tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) == 210);

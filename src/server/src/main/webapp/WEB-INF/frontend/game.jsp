@@ -1,3 +1,4 @@
+<%@page import="com.framework.helpers.Helpers"%>
 <%@page import="com.backend.models.SchoolPenalty"%>
 <%@page import="org.joda.time.Duration"%>
 <%@page import="java.io.IOException"%>
@@ -26,6 +27,16 @@ LocalizedString strGame = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Partie"
 		), currentLocale);
 
+LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Schedule", 
+		Locale.FRENCH, 	"Horaire"
+		), currentLocale);
+
+LocalizedString strRanking = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Ranking", 
+		Locale.FRENCH, 	"Classement"
+		), currentLocale);
+
 LocalizedString strPenalties = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Penalties", 
 		Locale.FRENCH, 	"Pénalitées"
@@ -42,6 +53,33 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 %>
 
+<%!
+public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
+{
+	ActuatorStateEnum actuatorColor = state.actuatorsStates[side.ordinal()][target.ordinal()];
+	out.write("\t<img src=\"images/" + "side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".png\"" );
+	
+	out.write(" class=\"fieldImage");
+
+	if(state.lastGameEvent.gameEvent == GameEventEnum.ACTUATOR_CHANGED)
+	{
+		if(state.lastGameEvent.side == side && state.lastGameEvent.target == target)
+		{
+			out.write(" ActuatorChangedEvent");
+		}
+	}
+	else if(state.lastGameEvent.gameEvent == GameEventEnum.TARGET_HIT)
+	{
+		if(state.lastGameEvent.side == side && state.lastGameEvent.target == target)
+		{
+			out.write(" TargetHitEvent");
+		}
+	}
+	out.write("\"/>\n");
+	//out.write("background: url('../images/templates/background_image.jpg') no-repeat center center fixed;")
+}
+%>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -49,8 +87,27 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><%=strGame%></title>
 <link rel="stylesheet" type="text/css" href="css/game.css"/>
+<link rel="stylesheet" type="text/css" href="css/bjqs.css"/>
+    <script type="text/javascript" src="jquery/jquery.js"></script>
+    <script type="text/javascript" src="jquery/bjqs-1.3.js"></script>
+	
+    <script>
+    $(function() {
+    	$('#my-slideshow').bjqs({
+    		width : 2825,
+    		height : 1475,
+            responsive : true,
+            showcontrols : false,
+            automatic : false,
+            randomstart : false
+        });
+    });
+    </script>
 </head>
 <body>
+
+<h1><%= strGame + " " + String.valueOf(game.gameNumber) %></h1>
+<div class="scheduledTime"><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></div>
 
 <div class="team">
 	<h2><%=strBlueTeam%></h2>
@@ -58,7 +115,9 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 	<%
 	for(School school : game.blueTeam)
 	{
-		out.print(school.name + "<br/>");
+		%>
+		<a href="school?schoolId=<%= school._id %>"><%= school.name %></a><br/>
+		<%
 	}
 	%>
 	</div>
@@ -70,7 +129,9 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 	<%
 	for(School school : game.yellowTeam)
 	{
-		out.print(school.name + "<br/>");
+		%>
+		<a href="school?schoolId=<%= school._id %>"><%= school.name %></a><br/>
+		<%
 	}
 	%>
 	</div>
@@ -92,78 +153,59 @@ if(game.penalties.size() > 0)
 %>
 <br/>
 
-<div class="gameStates">
-<%
-Duration gameLength = Game.getGameLength();
-
-for(GameState state : game.getGameStates())
-{
-	Duration timeSinceStart = new Duration(state.lastGameEvent.time, game.gameEvents.get(0).time);
-	DateTime timeInGame = new DateTime(gameLength.getMillis() - timeSinceStart.getMillis());
-
-	boolean blueScored = false;
-	boolean yellowScored = false;
-	if(state.lastGameEvent.gameEvent == GameEventEnum.TARGET_HIT)
-	{
-		ActuatorStateEnum targetHitColor = state.actuatorsStates[state.lastGameEvent.side.ordinal()][state.lastGameEvent.target.ordinal()];
-		if( targetHitColor == ActuatorStateEnum.BLUE )
-		{
-			blueScored = true;
-		}
-		else if(targetHitColor == ActuatorStateEnum.YELLOW)
-		{
-			yellowScored = true;
-		}
-	}
-%>
-<div class="timer"><%= timeInGame.getMinuteOfHour() + ":" + (timeInGame.getSecondOfMinute() < 10 ? "0" : "") + timeInGame.getSecondOfMinute() %></div>
-<div class="blueScore<% if(blueScored) out.write("teamScored"); %>"><%= state.blueScore %></div>
-<div class="yellowScore<% if(blueScored) out.write("teamScored");%>"><%= state.yellowScore %></div>
-<br/>
-<%!
-	public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
-	{
-		ActuatorStateEnum actuatorColor = state.actuatorsStates[side.ordinal()][target.ordinal()];
-		out.write("\t<img src=\"images/" + "side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".png\"" );
+<div id="my-slideshow">
+	<ul class="bjqs">
+	<!-- Slides Container -->
+		<%
+		Duration gameLength = Game.getGameLength();
 		
-		out.write(" class=\"fieldImage");
-
-		if(state.lastGameEvent.gameEvent == GameEventEnum.ACTUATOR_CHANGED)
+		for(GameState state : game.getGameStates())
 		{
-			if(state.lastGameEvent.side == side && state.lastGameEvent.target == target)
+			Duration timeSinceStart = new Duration(state.lastGameEvent.time, game.gameEvents.get(0).time);
+			DateTime timeInGame = new DateTime(gameLength.getMillis() - timeSinceStart.getMillis());
+		
+			boolean blueScored = false;
+			boolean yellowScored = false;
+			if(state.lastGameEvent.gameEvent == GameEventEnum.TARGET_HIT)
 			{
-				out.write(" ActuatorChangedEvent");
+				ActuatorStateEnum targetHitColor = state.actuatorsStates[state.lastGameEvent.side.ordinal()][state.lastGameEvent.target.ordinal()];
+				if( targetHitColor == ActuatorStateEnum.BLUE )
+				{
+					blueScored = true;
+				}
+				else if(targetHitColor == ActuatorStateEnum.YELLOW)
+				{
+					yellowScored = true;
+				}
 			}
-		}
-		else if(state.lastGameEvent.gameEvent == GameEventEnum.TARGET_HIT)
-		{
-			if(state.lastGameEvent.side == side && state.lastGameEvent.target == target)
-			{
-				out.write(" TargetHitEvent");
-			}
-		}
-		out.write("\"/>\n");
-		//out.write("background: url('../images/templates/background_image.jpg') no-repeat center center fixed;")
-	}%>
+		%>
+		<li>
+			<div class="timer"><%= timeInGame.getMinuteOfHour() + ":" + (timeInGame.getSecondOfMinute() < 10 ? "0" : "") + timeInGame.getSecondOfMinute() %></div>
+			<div class="blueScore<% if(blueScored) out.write("teamScored"); %>"><%= state.blueScore %></div>
+			<div class="yellowScore<% if(blueScored) out.write("teamScored");%>"><%= state.yellowScore %></div>
+			<br/>
 
-
-<div class="playfield">
-<img src="images/playfield.png" class="playfieldBackground fieldImage" />
-<%
-// Targets
-outputTargetActuator(state, SideEnum.BLUE, TargetEnum.LOW, out);
-outputTargetActuator(state, SideEnum.BLUE, TargetEnum.MID, out);
-outputTargetActuator(state, SideEnum.BLUE, TargetEnum.HIGH, out);
-
-outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.LOW, out);
-outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.MID, out);
-outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.HIGH, out);
-%>
+			<div class="playfield">
+				<img src="images/playfield.png" class="playfieldBackground fieldImage" />
+				<%
+				// Targets
+				outputTargetActuator(state, SideEnum.BLUE, TargetEnum.LOW, out);
+				outputTargetActuator(state, SideEnum.BLUE, TargetEnum.MID, out);
+				outputTargetActuator(state, SideEnum.BLUE, TargetEnum.HIGH, out);
+				
+				outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.LOW, out);
+				outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.MID, out);
+				outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.HIGH, out);
+				%>
+			</div>
+		</li>
+	<%
+	}
+	%>
+	</ul>
 </div>
-<div class="clear"></div>
-<%
-}
-%>
-</div>
+
+<a href="schedule"><%= strSchedule %></a><br/>
+<a href="ranking"><%= strRanking %></a>
 </body>
 </html>

@@ -21,6 +21,11 @@ LocalizedString strRanking = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Classement"
 		), currentLocale);
 
+LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Schedule", 
+		Locale.FRENCH, 	"Horaire"
+		), currentLocale);
+
 LocalizedString strPosition = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Position", 
 		Locale.FRENCH, 	"Position"
@@ -48,20 +53,25 @@ LocalizedString strScore = new LocalizedString(ImmutableMap.of(
 <table>
 <tr>
 <td><%= strPosition %></td><td><%= strSchool %></td><td><%= strScore %></td>
+</tr>
 <%
 for( int position = 0; position < ranking.size(); position++ )
 {
 	School school = ranking.get(position);
 	int score = tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY);
 %>
-	<td><%= position %></td>
-	<td><a href="school/schoolId?=<%= school._id %>"><%= school.name %></a></td>
-	<td><%= score %></td>
+	<tr>
+		<td><%= position + 1 %></td>
+		<td><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
+		<td><%= score %></td>
+	</tr>
 <%
 }
 %>
-</tr>
+
 </table>
+
+<a href="schedule"><%= strSchedule %></a>
 
 </body>
 </html>

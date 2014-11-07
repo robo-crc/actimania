@@ -163,10 +163,7 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 
 		for(School school : tournament.schools)
 		{
-			if( TournamentSolution.getGamesPlayed(gamesToIteration, school) != Tournament.GAME_PER_SCHOOL)
-			{
-				hardScore -= 1;
-			}
+			hardScore -= Math.abs(Tournament.GAME_PER_SCHOOL - TournamentSolution.getGamesPlayed(gamesToIteration, school));
 		}
 		
 		tournament.setGames(gamesToIteration);

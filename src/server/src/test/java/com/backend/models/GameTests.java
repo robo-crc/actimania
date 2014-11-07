@@ -3,6 +3,7 @@ package com.backend.models;
 import java.util.ArrayList;
 
 import org.apache.commons.lang.Validate;
+import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,7 +53,7 @@ public class GameTests
 		gameEvents.add(GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.BLUE));
 		gameEvents.add(GameEvent.targetHitEvent(SideEnum.BLUE, TargetEnum.LOW));
 		gameEvents.add(new GameEvent(GameEventEnum.END_GAME));
-		return new Game(null, GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, gameEvents, false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
+		return new Game(null, 1, DateTime.now(), GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, gameEvents, false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
 	}
 	
 	@Test

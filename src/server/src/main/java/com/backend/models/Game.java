@@ -3,6 +3,7 @@ package com.backend.models;
 import java.util.ArrayList;
 
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import com.backend.models.enums.GameTypeEnum;
@@ -13,6 +14,8 @@ import com.google.common.collect.Lists;
 public class Game 
 {
 	public final ObjectId 					_id;
+	public final int						gameNumber;
+	public final DateTime					scheduledTime;
 	public final GameTypeEnum				gameType;
 	public final ArrayList<School> 			blueTeam;
 	public final ArrayList<School> 			yellowTeam;
@@ -24,6 +27,8 @@ public class Game
 
 	public Game(
 			@JsonProperty("_id")					ObjectId 					_gameId,
+			@JsonProperty("gameNumber")				int 						_gameNumber,
+			@JsonProperty("scheduledTime")			DateTime					_scheduledTime,
 			@JsonProperty("gameType")				GameTypeEnum				_gameType,
 			@JsonProperty("blueTeam")				ArrayList<School> 			_blueTeam,
 			@JsonProperty("yellowTeam")				ArrayList<School>			_yellowTeam,
@@ -34,6 +39,8 @@ public class Game
 			)
 	{
 		_id 				= _gameId;
+		gameNumber			= _gameNumber;
+		scheduledTime		= _scheduledTime;
 		gameType			= _gameType;
 		yellowTeam 			= _yellowTeam;
 		blueTeam 			= _blueTeam;
@@ -80,6 +87,9 @@ public class Game
 		
 		// This might be a performance bottleneck ...
 		ArrayList<GameState> gameStates = getGameStates();
+		if(gameStates.size() == 0)
+			return 0;
+		
 		GameState gameState = gameStates.get(gameStates.size() - 1);
 		
 		int score = 0;

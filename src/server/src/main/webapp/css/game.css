@@ -4,8 +4,9 @@
 	float: left;
 	left: 100%;
 	margin-left: -100%;
-	width:100%;
+	width:85%;
 	z-index: 1;
+	padding-bottom: 3%;
 }
 
 .playfieldBackground
@@ -26,8 +27,51 @@
 	padding-left: 25%;
 }
 
-
 .clear
 {
 	clear:both;
 }
+
+.active-marker
+{
+	-webkit-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	-moz-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	-ms-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	-o-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+}
+
+ol.bjqs-markers
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 20px;
+}
+
+ol.bjqs-markers li
+{
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	margin: 0 4px;
+	
+	text-indent: -999em;
+	
+	border: 2px solid #fff;
+	border-radius: 6px;
+	
+	cursor: pointer;
+	opacity: .4;
+	
+	-webkit-transition: background .5s, opacity .5s;
+	-moz-transition: background .5s, opacity .5s;
+	transition: background .5s, opacity .5s;
+}
+
+.active-marker
+{
+	background: #fff;
+	opacity: 1;
+}
+
