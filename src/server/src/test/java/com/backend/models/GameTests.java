@@ -59,7 +59,7 @@ public class GameTests
 	@Test
 	public void testSchool()
 	{
-		try(Essentials essentials = new Essentials(database, null, null, null, null))
+		Essentials essentials = new Essentials(database, null, null, null, null);
 		{
 			database.save(getFakeGame());
 			

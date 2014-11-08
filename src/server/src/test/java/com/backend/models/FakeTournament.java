@@ -28,12 +28,11 @@ public class FakeTournament
 	@AfterClass
 	public static void tearDown()
 	{
-		database.dropDatabase();
+		//database.dropDatabase();
 		database.close();
 	}
 	
-	//@Test
-	public void resetMatches()
+	public static void resetMatches()
 	{
 		try(Essentials essentials = new Essentials(database, null, null, null, null))
 		{
@@ -50,37 +49,36 @@ public class FakeTournament
 	public void PopulateDatabase()
 	{
 		Random random = new Random(0);
-		try(Essentials essentials = new Essentials(database, null, null, null, null))
+		Essentials essentials = new Essentials(database, null, null, null, null);
+
+		Tournament tournament = Tournament.getTournament(essentials);
+		for(int i = 0; i < tournament.games.size() / 2; i++)
 		{
-			Tournament tournament = Tournament.getTournament(essentials);
-			for(int i = 0; i < tournament.games.size(); i++)
+			Game currentGame = tournament.games.get(i).getGameInitialState();
+			currentGame.gameEvents.add(new GameEvent(GameEventEnum.START_GAME));
+			
+			int nbEvents = random.nextInt(30) + 20;
+			
+			for(int eventNo = 0; eventNo < nbEvents; eventNo++)
 			{
-				Game currentGame = tournament.games.get(i).getGameInitialState();
-				currentGame.gameEvents.add(new GameEvent(GameEventEnum.START_GAME));
+				SideEnum side = SideEnum.values()[random.nextInt(SideEnum.values().length)];
+				TargetEnum target = TargetEnum.values()[random.nextInt(TargetEnum.values().length)];
 				
-				int nbEvents = random.nextInt(200) + 20;
-				
-				for(int eventNo = 0; eventNo < nbEvents; eventNo++)
+				boolean isTargetHit = random.nextBoolean();
+				if(isTargetHit)
 				{
-					SideEnum side = SideEnum.values()[random.nextInt(SideEnum.values().length)];
-					TargetEnum target = TargetEnum.values()[random.nextInt(TargetEnum.values().length)];
-					
-					boolean isTargetHit = random.nextBoolean();
-					if(isTargetHit)
-					{
-						currentGame.gameEvents.add(GameEvent.targetHitEvent(side, target));
-					}
-					else
-					{
-						ActuatorStateEnum actuator = ActuatorStateEnum.values()[random.nextInt(ActuatorStateEnum.values().length)];
-						currentGame.gameEvents.add(GameEvent.actuatorChangedEvent(side, target, actuator));
-					}
+					currentGame.gameEvents.add(GameEvent.targetHitEvent(side, target));
 				}
-				
-				tournament.games.get(i).gameEvents.add(new GameEvent(GameEventEnum.END_GAME));
-				
-				essentials.database.save(currentGame);
+				else
+				{
+					ActuatorStateEnum actuator = ActuatorStateEnum.values()[random.nextInt(ActuatorStateEnum.values().length)];
+					currentGame.gameEvents.add(GameEvent.actuatorChangedEvent(side, target, actuator));
+				}
 			}
-		}
+			
+			tournament.games.get(i).gameEvents.add(new GameEvent(GameEventEnum.END_GAME));
+			
+			essentials.database.save(currentGame);
+		}		
 	}
 }

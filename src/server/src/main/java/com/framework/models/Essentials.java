@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.joda.time.DateTime;
 
 import com.framework.helpers.Database;
 import com.framework.helpers.LocalizedString;
@@ -18,6 +19,7 @@ public class Essentials implements java.lang.AutoCloseable
 	public final HttpServletRequest request;
 	public final HttpServletResponse response;
 	public final ArrayList<LocalizedString> errorList;
+	public final DateTime creationTime;
 	
 	public Essentials(
 				Database _database,
@@ -32,6 +34,7 @@ public class Essentials implements java.lang.AutoCloseable
 		request = _request;
 		response = _response;
 		errorList = _errorList;
+		creationTime = DateTime.now();
 	}
 	
 	public static Essentials createEssentials(HttpServletRequest _request, HttpServletResponse _response)
@@ -46,6 +49,7 @@ public class Essentials implements java.lang.AutoCloseable
 	{
 		try
 		{
+			System.out.println("Time spent in essentials : " + String.valueOf(DateTime.now().getMillis() - creationTime.getMillis()));
 			if(database != null)
 			{
 				database.close();

@@ -11,7 +11,7 @@ import org.optaplanner.core.impl.score.director.easy.EasyScoreCalculator;
 import com.backend.models.School;
 import com.backend.models.Tournament;
 
-public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution> 
+public class TournamentScoreCalculator implements EasyScoreCalculator<TournamentSolution> 
 {
 	@Override
 	public HardMediumSoftScore calculateScore(TournamentSolution tournament) 
@@ -190,6 +190,22 @@ public class ScoreCalculator implements EasyScoreCalculator<TournamentSolution>
 		}
 		
 		return ret;
+	}
+	
+	public static int getBlockForIndex(int index, int numberOfGames)
+	{
+		int blockStart = 0;
+		for(int currentBlockNumber = 0; currentBlockNumber < getGamesPerBlockCount(numberOfGames).size(); currentBlockNumber++)
+		{
+			int blockEnd = blockStart + getGamesPerBlockCount(numberOfGames).get(currentBlockNumber);
+			if(index >= blockStart && index < blockEnd)
+			{
+				return currentBlockNumber;
+			}
+			blockStart = blockEnd;
+		}
+		
+		return -1;
 	}
 	
 	public static boolean isStartOfBlock(int index, int numberOfGames)

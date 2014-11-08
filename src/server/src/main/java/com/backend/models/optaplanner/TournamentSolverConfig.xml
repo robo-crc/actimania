@@ -7,14 +7,14 @@
   <!-- Score configuration -->
   <scoreDirectorFactory>
     <scoreDefinitionType>HARD_MEDIUM_SOFT</scoreDefinitionType>
-    <easyScoreCalculatorClass>com.backend.models.optaplanner.ScoreCalculator</easyScoreCalculatorClass>
+    <easyScoreCalculatorClass>com.backend.models.optaplanner.TournamentScoreCalculator</easyScoreCalculatorClass>
     <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
   </scoreDirectorFactory>
 
 
   <!-- Optimization algorithms configuration -->
   <termination>
-    <secondsSpentLimit>120</secondsSpentLimit>
+    <secondsSpentLimit>30</secondsSpentLimit>
   </termination>
 
   <constructionHeuristic>

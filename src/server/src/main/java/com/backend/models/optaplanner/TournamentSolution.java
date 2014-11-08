@@ -109,7 +109,7 @@ public class TournamentSolution implements Solution<HardMediumSoftScore>
 			int nbGames = 0;
 			for(int col = 0; col < games.size(); col++)
 			{
-				if(col != 0 && ScoreCalculator.isStartOfBlock(col, games.size()))
+				if(col != 0 && TournamentScoreCalculator.isStartOfBlock(col, games.size()))
 				{
 					System.out.print(" ");
 				}
