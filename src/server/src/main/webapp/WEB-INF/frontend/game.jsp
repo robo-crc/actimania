@@ -1,3 +1,6 @@
+<%@page import="com.backend.models.SchoolPenalty"%>
+<%@page import="com.backend.models.GameEvent.TargetHitEvent"%>
+<%@page import="com.backend.models.GameEvent.ActuatorStateChangedEvent"%>
 <%@page import="com.framework.helpers.Helpers"%>
 <%@page import="com.backend.models.GameEvent.SchoolPenaltyEvent"%>
 <%@page import="org.joda.time.Duration"%>
@@ -62,14 +65,16 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 
 	if(state.lastGameEvent.gameEvent == GameEventEnum.ACTUATOR_CHANGED)
 	{
-		if(state.lastGameEvent.side == side && state.lastGameEvent.target == target)
+		ActuatorStateChangedEvent actuatorStateChanged = (ActuatorStateChangedEvent) state.lastGameEvent;
+		if(actuatorStateChanged.side == side && actuatorStateChanged.target == target)
 		{
 			out.write(" ActuatorChangedEvent");
 		}
 	}
 	else if(state.lastGameEvent.gameEvent == GameEventEnum.TARGET_HIT)
 	{
-		if(state.lastGameEvent.side == side && state.lastGameEvent.target == target)
+		TargetHitEvent targetHitEvent = (TargetHitEvent) state.lastGameEvent;
+		if(targetHitEvent.side == side && targetHitEvent.target == target)
 		{
 			out.write(" TargetHitEvent");
 		}
@@ -137,19 +142,6 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 
 <div class="clear"></div>
 
-<%
-	if(game.schoolPenalties.size() > 0)
-{
-%>
-<h2><%=strPenalties%></h2>
-<%
-	for(SchoolPenaltyEvent penalty : game.schoolPenalties)
-	{
-		out.print(penalty.school + " : " + penalty.pointsDeduction);
-	}
-}
-%>
-<br/>
 
 <div id="my-slideshow">
 	<ul class="bjqs">
@@ -166,7 +158,8 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 			boolean yellowScored = false;
 			if(state.lastGameEvent.gameEvent == GameEventEnum.TARGET_HIT)
 			{
-				ActuatorStateEnum targetHitColor = state.actuatorsStates[state.lastGameEvent.side.ordinal()][state.lastGameEvent.target.ordinal()];
+				TargetHitEvent targetHitEvent = (TargetHitEvent) state.lastGameEvent;
+				ActuatorStateEnum targetHitColor = state.actuatorsStates[targetHitEvent.side.ordinal()][targetHitEvent.target.ordinal()];
 				if( targetHitColor == ActuatorStateEnum.BLUE )
 				{
 					blueScored = true;
@@ -181,6 +174,19 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 			<div class="timer"><%= timeInGame.getMinuteOfHour() + ":" + (timeInGame.getSecondOfMinute() < 10 ? "0" : "") + timeInGame.getSecondOfMinute() %></div>
 			<div class="blueScore<% if(blueScored) out.write("teamScored"); %>"><%= state.blueScore %></div>
 			<div class="yellowScore<% if(blueScored) out.write("teamScored");%>"><%= state.yellowScore %></div>
+			
+			<%
+if(state.penalties.size() > 0)
+{
+%>
+<h2><%=strPenalties%></h2>
+<%
+	for(SchoolPenalty penalty : state.penalties)
+	{
+		out.print(penalty.school + " : " + penalty.pointsDeduction);
+	}
+}
+%>
 			<br/>
 
 			<div class="playfield">
