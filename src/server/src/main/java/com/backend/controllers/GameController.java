@@ -12,7 +12,17 @@ import org.bson.types.ObjectId;
 
 import com.backend.models.Game;
 import com.backend.models.School;
+import com.backend.models.GameEvent.ActuatorStateChangedEvent;
+import com.backend.models.GameEvent.GameEvent;
+import com.backend.models.GameEvent.PointModifierEvent;
+import com.backend.models.GameEvent.TargetHitEvent;
+import com.backend.models.enums.ActuatorStateEnum;
+import com.backend.models.enums.GameEventEnum;
+import com.backend.models.enums.SideEnum;
+import com.backend.models.enums.TargetEnum;
+import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.Helpers;
+import com.framework.helpers.LocalizedString;
 import com.framework.models.Essentials;
 
 @WebServlet("/admin/game")
@@ -37,7 +47,8 @@ public class GameController extends HttpServlet
 			ObjectId gameId = Helpers.getParameter("gameId", ObjectId.class, essentials);
 			Game game = essentials.database.findOne(Game.class, gameId);
 			
-			String 	action 		= Helpers.getParameter("action", String.class, essentials);
+			String 	gameEvent	= Helpers.getParameter("gameEvent", String.class, essentials);
+			//String 	action		= Helpers.getParameter("action", String.class, essentials);
 			
 			// Possible actions
 			// Start game
@@ -46,22 +57,49 @@ public class GameController extends HttpServlet
 			// Target hit event
 			// Actuator hit event
 			// End game ?
-			/*
-			ObjectId id = null;
-			if(action.equals("edit") || action.equals("delete"))
+			boolean actionProcessed = true;
+			if( gameEvent.equalsIgnoreCase(GameEventEnum.START_GAME.toString()) )
 			{
-				id 	= Helpers.getParameter("id", ObjectId.class, essentials);
+				game.gameEvents.add(new GameEvent(GameEventEnum.START_GAME));
+			}
+			else if( gameEvent.equalsIgnoreCase(GameEventEnum.ACTUATOR_CHANGED.toString()) )
+			{
+				SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
+				TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
+				ActuatorStateEnum actuatorState = ActuatorStateEnum.valueOf(Helpers.getParameter("actuatorState", String.class, essentials));
+				
+				game.gameEvents.add(new ActuatorStateChangedEvent(side, target, actuatorState));
+			}
+			else if( gameEvent.equalsIgnoreCase(GameEventEnum.TARGET_HIT.toString()) )
+			{
+				SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
+				TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
+				
+				game.gameEvents.add(new TargetHitEvent(side, target));
+			}
+			else if( gameEvent.equalsIgnoreCase(GameEventEnum.POINT_MODIFIER.toString()) )
+			{
+				TeamEnum team = TeamEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
+				Integer points = Helpers.getParameter("target", Integer.class, essentials);
+				LocalizedString comment = new LocalizedString(essentials, 
+						Helpers.getParameter("commentEn", String.class, essentials),
+						Helpers.getParameter("commentFr", String.class, essentials));
+				
+				game.gameEvents.add(new PointModifierEvent(team, points, comment));
+			}
+			else if( gameEvent.equalsIgnoreCase(GameEventEnum.END_GAME.toString()) )
+			{
+				
+			}
+			else
+			{
+				actionProcessed = false;
 			}
 			
-			if(action.equals("create") || action.equals("edit"))
+			if(actionProcessed)
 			{
-				essentials.database.save(school);
+				essentials.database.save(game);
 			}
-			else if(action.equals("delete"))
-			{
-				essentials.database.remove(School.class, id);
-			}
-			*/
 			showPage(essentials);
 		}
 	}

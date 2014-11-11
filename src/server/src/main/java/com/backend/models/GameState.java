@@ -1,7 +1,16 @@
 package com.backend.models;
 
+import java.util.ArrayList;
+
 import org.bson.types.ObjectId;
 
+import com.backend.models.GameEvent.ActuatorStateChangedEvent;
+import com.backend.models.GameEvent.GameEvent;
+import com.backend.models.GameEvent.MisconductPenaltyEvent;
+import com.backend.models.GameEvent.PointModifierEvent;
+import com.backend.models.GameEvent.SchoolPenaltyEvent;
+import com.backend.models.GameEvent.TargetHitEvent;
+import com.backend.models.GameEvent.TeamPenaltyEvent;
 import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.SideEnum;
@@ -23,19 +32,26 @@ public class GameState
 	public final int 				blueScore;
 	public final int 				yellowScore;
 	
+	public final ArrayList<SchoolPenalty>	penalties;
+	public final ArrayList<School>	misconductPenalties;
+	
 	public GameState(
-			@JsonProperty("_id")				ObjectId 			_gameEventId,
-			@JsonProperty("actuatorsStates")	ActuatorStateEnum[][]	_actuatorsStates,
-			@JsonProperty("lastGameEvent")		GameEvent			_lastGameEvent,
-			@JsonProperty("blueScore")			int 				_blueScore,
-			@JsonProperty("yellowScore")		int 				_yellowScore
+			@JsonProperty("_id")					ObjectId 				_gameEventId,
+			@JsonProperty("actuatorsStates")		ActuatorStateEnum[][]	_actuatorsStates,
+			@JsonProperty("lastGameEvent")			GameEvent				_lastGameEvent,
+			@JsonProperty("blueScore")				int 					_blueScore,
+			@JsonProperty("yellowScore")			int 					_yellowScore,
+			@JsonProperty("penalties")				ArrayList<SchoolPenalty>		_penalties,
+			@JsonProperty("misconductPenalties")	ArrayList<School>		_misconductPenalties
 			)
 	{
-		_id 			= _gameEventId;
-		actuatorsStates = _actuatorsStates;
-		lastGameEvent	= _lastGameEvent;
-		blueScore 		= _blueScore;
-		yellowScore 	= _yellowScore;
+		_id 				= _gameEventId;
+		actuatorsStates 	= _actuatorsStates;
+		lastGameEvent		= _lastGameEvent;
+		blueScore 			= _blueScore;
+		yellowScore 		= _yellowScore;
+		penalties 			= _penalties;
+		misconductPenalties	= _misconductPenalties;
 	}
 	
 	public GameState(GameState previousState, GameEvent gameEvent)
@@ -46,6 +62,8 @@ public class GameState
 		ActuatorStateEnum[][] localActuatorState = null;
 		int localBlueScore = 0;
 		int localYellowScore = 0;
+		ArrayList<SchoolPenalty> 	localPenalties = null;
+		ArrayList<School> 	localMisconductPenalties = null;
 		
 		if(gameEvent.gameEvent == GameEventEnum.START_GAME)
 		{
@@ -59,6 +77,9 @@ public class GameState
 			}
 			localBlueScore = 0;
 			localYellowScore = 0;
+			
+			localPenalties = new ArrayList<SchoolPenalty>();
+			localMisconductPenalties = new ArrayList<School>();
 		}
 		else
 		{
@@ -71,45 +92,76 @@ public class GameState
 					localActuatorState[side.ordinal()][target.ordinal()] = previousState.actuatorsStates[side.ordinal()][target.ordinal()];
 				}
 			}
-			localBlueScore = previousState.blueScore;
+			
+			localBlueScore	 = previousState.blueScore;
 			localYellowScore = previousState.yellowScore;
+			
+			localPenalties 				= previousState.penalties;
+			localMisconductPenalties	= previousState.misconductPenalties;
 
 			if(gameEvent.gameEvent == GameEventEnum.TARGET_HIT)
 			{
-				ActuatorStateEnum currentActuator = localActuatorState[gameEvent.side.ordinal()][gameEvent.target.ordinal()];
+				TargetHitEvent targetHitevent = (TargetHitEvent)gameEvent;
+				ActuatorStateEnum currentActuator = localActuatorState[targetHitevent.side.ordinal()][targetHitevent.target.ordinal()];
 				if(currentActuator == ActuatorStateEnum.BLUE)
 				{
-					localBlueScore += calculateTargetHitValue(localActuatorState, gameEvent.side, gameEvent.target);
+					localBlueScore += calculateTargetHitValue(localActuatorState, targetHitevent.side, targetHitevent.target);
 				}
 				else if(currentActuator == ActuatorStateEnum.YELLOW)
 				{
-					localYellowScore += calculateTargetHitValue(localActuatorState, gameEvent.side, gameEvent.target);
+					localYellowScore += calculateTargetHitValue(localActuatorState, targetHitevent.side, targetHitevent.target);
 				}
 			}
 			else if(gameEvent.gameEvent == GameEventEnum.ACTUATOR_CHANGED)
 			{
-				localActuatorState[gameEvent.side.ordinal()][gameEvent.target.ordinal()] = gameEvent.actuator;
+				ActuatorStateChangedEvent actuatorStateChangedEvent = (ActuatorStateChangedEvent)gameEvent;
+				localActuatorState[actuatorStateChangedEvent.side.ordinal()][actuatorStateChangedEvent.target.ordinal()] = actuatorStateChangedEvent.actuatorState;
 			}
 			else if(gameEvent.gameEvent == GameEventEnum.POINT_MODIFIER)
 			{
-				if(gameEvent.pointModifier.team == TeamEnum.BLUE)
+				PointModifierEvent pointModifierEvent = (PointModifierEvent) gameEvent;
+				if(pointModifierEvent.team == TeamEnum.BLUE)
 				{
-					localBlueScore += gameEvent.pointModifier.points;
+					localBlueScore += pointModifierEvent.points;
 				}
-				else if(gameEvent.pointModifier.team == TeamEnum.YELLOW)
+				else if(pointModifierEvent.team == TeamEnum.YELLOW)
 				{
-					localYellowScore += gameEvent.pointModifier.points;
+					localYellowScore += pointModifierEvent.points;
 				}
+			}
+			else if(gameEvent.gameEvent == GameEventEnum.SCHOOL_PENALTY)
+			{
+				SchoolPenaltyEvent schoolPenaltyEvent = (SchoolPenaltyEvent) gameEvent;
+				localPenalties.add(new SchoolPenalty(schoolPenaltyEvent.school, schoolPenaltyEvent.pointsDeduction));
+			}
+			else if(gameEvent.gameEvent == GameEventEnum.TEAM_PENALTY)
+			{
+				TeamPenaltyEvent teamPenaltyEvent = (TeamPenaltyEvent) gameEvent;
+				if(teamPenaltyEvent.team == TeamEnum.BLUE)
+				{
+					localBlueScore += teamPenaltyEvent.pointsDeduction;
+				}
+				else if(teamPenaltyEvent.team == TeamEnum.YELLOW)
+				{
+					localYellowScore += teamPenaltyEvent.pointsDeduction;
+				}
+			}
+			else if(gameEvent.gameEvent == GameEventEnum.MISCONDUCT_PENALTY)
+			{
+				MisconductPenaltyEvent misconductPenaltyEvent = (MisconductPenaltyEvent) gameEvent;
+				localMisconductPenalties.add(misconductPenaltyEvent.school);
 			}
 			else if(gameEvent.gameEvent == GameEventEnum.END_GAME)
 			{
 				// Nothing to do for now.
 			}
 		}
-				
-		actuatorsStates = localActuatorState;
-		blueScore 		= localBlueScore;
-		yellowScore 	= localYellowScore;
+
+		actuatorsStates 	= localActuatorState;
+		blueScore 			= localBlueScore;
+		yellowScore 		= localYellowScore;
+		penalties			= localPenalties;
+		misconductPenalties	= localMisconductPenalties;
 	}
 	
 	public static int calculateTargetHitValue(ActuatorStateEnum[][] localActuatorStates, SideEnum side, TargetEnum targetHit)

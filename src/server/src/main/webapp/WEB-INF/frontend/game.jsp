@@ -1,5 +1,5 @@
 <%@page import="com.framework.helpers.Helpers"%>
-<%@page import="com.backend.models.SchoolPenalty"%>
+<%@page import="com.backend.models.GameEvent.SchoolPenaltyEvent"%>
 <%@page import="org.joda.time.Duration"%>
 <%@page import="java.io.IOException"%>
 <%@page import="com.backend.models.enums.SideEnum"%>
@@ -18,7 +18,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <%
-Game game = (Game) request.getAttribute("game");
+	Game game = (Game) request.getAttribute("game");
 
 Locale currentLocale = request.getLocale();
 
@@ -53,8 +53,7 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 %>
 
-<%!
-public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
+<%!public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
 {
 	ActuatorStateEnum actuatorColor = state.actuatorsStates[side.ordinal()][target.ordinal()];
 	out.write("\t<img src=\"images/" + "side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".png\"" );
@@ -77,8 +76,7 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 	}
 	out.write("\"/>\n");
 	//out.write("background: url('../images/templates/background_image.jpg') no-repeat center center fixed;")
-}
-%>
+}%>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -106,20 +104,20 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 </head>
 <body>
 
-<h1><%= strGame + " " + String.valueOf(game.gameNumber) %></h1>
-<div class="scheduledTime"><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></div>
+<h1><%=strGame + " " + String.valueOf(game.gameNumber)%></h1>
+<div class="scheduledTime"><%=Helpers.dateTimeFormatter.print(game.scheduledTime)%></div>
 
 <div class="team">
 	<h2><%=strBlueTeam%></h2>
 	<div class="teamName">
 	<%
-	for(School school : game.blueTeam)
-	{
-		%>
-		<a href="school?schoolId=<%= school._id %>"><%= school.name %></a><br/>
-		<%
-	}
+		for(School school : game.blueTeam)
+		{
 	%>
+		<a href="school?schoolId=<%=school._id%>"><%=school.name%></a><br/>
+		<%
+			}
+		%>
 	</div>
 </div>
 
@@ -127,25 +125,25 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 	<h2><%=strYellowTeam%></h2>
 	<div class="teamName">
 	<%
-	for(School school : game.yellowTeam)
-	{
-		%>
-		<a href="school?schoolId=<%= school._id %>"><%= school.name %></a><br/>
-		<%
-	}
+		for(School school : game.yellowTeam)
+		{
 	%>
+		<a href="school?schoolId=<%=school._id%>"><%=school.name%></a><br/>
+		<%
+			}
+		%>
 	</div>
 </div>
 
 <div class="clear"></div>
 
 <%
-if(game.penalties.size() > 0)
+	if(game.schoolPenalties.size() > 0)
 {
 %>
-<h2><%= strPenalties %></h2>
+<h2><%=strPenalties%></h2>
 <%
-	for(SchoolPenalty penalty : game.penalties)
+	for(SchoolPenaltyEvent penalty : game.schoolPenalties)
 	{
 		out.print(penalty.school + " : " + penalty.pointsDeduction);
 	}

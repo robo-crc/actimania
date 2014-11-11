@@ -6,6 +6,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.backend.models.GameEvent.ActuatorStateChangedEvent;
+import com.backend.models.GameEvent.GameEvent;
+import com.backend.models.GameEvent.TargetHitEvent;
 import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.SideEnum;
@@ -67,12 +70,12 @@ public class FakeTournament
 				boolean isTargetHit = random.nextBoolean();
 				if(isTargetHit)
 				{
-					currentGame.gameEvents.add(GameEvent.targetHitEvent(side, target));
+					currentGame.gameEvents.add(new TargetHitEvent(side, target));
 				}
 				else
 				{
 					ActuatorStateEnum actuator = ActuatorStateEnum.values()[random.nextInt(ActuatorStateEnum.values().length)];
-					currentGame.gameEvents.add(GameEvent.actuatorChangedEvent(side, target, actuator));
+					currentGame.gameEvents.add(new ActuatorStateChangedEvent(side, target, actuator));
 				}
 			}
 			

@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.models.Essentials;
@@ -22,9 +23,6 @@ public class Game implements Comparable<Game>
 	public final ArrayList<School> 			yellowTeam;
 	public final ArrayList<GameEvent> 		gameEvents;
 	public final boolean					isLive;
-	
-	public final ArrayList<SchoolPenalty>	penalties;
-	public final ArrayList<School>			misconductPenalties;
 
 	public Game(
 			@JsonProperty("_id")					ObjectId 					_gameId,
@@ -34,9 +32,7 @@ public class Game implements Comparable<Game>
 			@JsonProperty("blueTeam")				ArrayList<School> 			_blueTeam,
 			@JsonProperty("yellowTeam")				ArrayList<School>			_yellowTeam,
 			@JsonProperty("gameEvents")				ArrayList<GameEvent>		_gameEvents,
-			@JsonProperty("isLive")					boolean						_isLive,
-			@JsonProperty("penalties")				ArrayList<SchoolPenalty>	_penalties,
-			@JsonProperty("misconductPenalties")	ArrayList<School>			_misconductPenalties
+			@JsonProperty("isLive")					boolean						_isLive
 			)
 	{
 		_id 				= _gameId;
@@ -47,8 +43,6 @@ public class Game implements Comparable<Game>
 		blueTeam 			= _blueTeam;
 		gameEvents 			= _gameEvents;
 		isLive				= _isLive;
-		penalties 			= _penalties;
-		misconductPenalties = _misconductPenalties;
 	}
 	
 	public ArrayList<School> getSchools()
@@ -74,6 +68,33 @@ public class Game implements Comparable<Game>
 		return gameStates;
 	}
 	
+	public boolean hasMisconductPenalty(School school)
+	{
+		boolean isBlueTeam 		= blueTeam.contains(school);
+		boolean isYellowTeam 	= yellowTeam.contains(school);
+		
+		if(!isBlueTeam && !isYellowTeam)
+		{
+			// The school is not in this game
+			return false;
+		}
+		
+		// This might be a performance bottleneck ...
+		ArrayList<GameState> gameStates = getGameStates();
+		if(gameStates.size() == 0)
+			return false;
+		
+		GameState gameState = gameStates.get(gameStates.size() - 1);
+		
+		// A 0 score is given if we give a misconduct penalty.
+		if(gameState.misconductPenalties.contains(school))
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
 	// Score does not take into account misconduct penalties since they are global penalties.
 	public int getScore(School school)
 	{
@@ -93,6 +114,12 @@ public class Game implements Comparable<Game>
 		
 		GameState gameState = gameStates.get(gameStates.size() - 1);
 		
+		// A 0 score is given if we give a misconduct penalty.
+		if(gameState.misconductPenalties.contains(school))
+		{
+			return 0;
+		}
+		
 		int score = 0;
 		if( isBlueTeam )
 		{
@@ -103,19 +130,13 @@ public class Game implements Comparable<Game>
 			score = gameState.yellowScore;
 		}
 		
-		for(SchoolPenalty penalty : penalties)
+		for(SchoolPenalty penalty : gameState.penalties)
 		{
 			// Misconduct penalty is calculated globally
 			if(penalty.school.equals(school))
 			{
 				score -= penalty.pointsDeduction;
 			}
-		}
-		
-		// A 0 score is given if we give a misconduct penalty.
-		if(misconductPenalties.contains(school))
-		{
-			score = 0;
 		}
 		
 		return score;
@@ -156,7 +177,7 @@ public class Game implements Comparable<Game>
 	
 	public Game getGameInitialState()
 	{
-		return new Game(_id, gameNumber, scheduledTime, gameType, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
+		return new Game(_id, gameNumber, scheduledTime, gameType, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false);
 	}
 	
 	public static Duration getGameLength()

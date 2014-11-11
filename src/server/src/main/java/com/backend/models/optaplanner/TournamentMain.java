@@ -7,10 +7,9 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import com.backend.models.Game;
-import com.backend.models.GameEvent;
 import com.backend.models.School;
-import com.backend.models.SchoolPenalty;
 import com.backend.models.Tournament;
+import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameTypeEnum;
 import com.framework.helpers.Database;
 import com.framework.models.Essentials;
@@ -71,9 +70,7 @@ public class TournamentMain
 		        					games.get(currentGame).getBlueTeam(), 
 		        					games.get(currentGame).getYellowTeam(), 
 		        					new ArrayList<GameEvent>(),
-		        					(currentGame == 0) ? true : false,
-		        					new ArrayList<SchoolPenalty>(),
-		        					new ArrayList<School>()
+		        					(currentGame == 0) ? true : false
 		        					);
 		        			
 		        			essentials.database.save(game);

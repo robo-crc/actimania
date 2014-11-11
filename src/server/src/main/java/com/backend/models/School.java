@@ -30,7 +30,7 @@ public class School implements Comparable<School>
 	@Override
 	public boolean equals(Object o)
 	{
-		if(o == null)
+		if(o == null )
 			return false;
 		
 		if(o == this)
@@ -39,7 +39,12 @@ public class School implements Comparable<School>
 		if(!(o instanceof School))
 			return false;
 		
-		return _id.equals(((School)o)._id);
+		School otherSchool = (School)o;
+		
+		if(_id == null || otherSchool._id == null)
+			return false;
+		
+		return _id.equals(otherSchool._id);
 	}
 	
 	public static ArrayList<School> getSchools(Essentials essentials)

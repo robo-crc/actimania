@@ -75,18 +75,24 @@ public class Tournament
 		{
 			score.put(game, game.getScore(school));
 		}
+		
+		final TreeMap<Game, Boolean> hasMisconductPenalty = new TreeMap<Game, Boolean>();
+		for(Game game : gamesForType)
+		{
+			hasMisconductPenalty.put(game, game.hasMisconductPenalty(school));
+		}
 
 		Collections.sort(gamesForType, new Comparator<Game>() 
 		{
 	        @Override
 	        public int compare(Game game1, Game game2)
 	        {
-	        	if(game1.misconductPenalties.contains(school))
+	        	if(hasMisconductPenalty.get(game1))
 	        	{
 	        		// We put the misconduct penalties at the top
 	        		return -1;
 	        	}
-	        	else if(game2.misconductPenalties.contains(school))
+	        	else if(hasMisconductPenalty.get(game2))
 	        	{
 	        		// We put the misconduct penalties at the top
 	        		return 1;

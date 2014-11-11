@@ -8,6 +8,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.backend.models.GameEvent.ActuatorStateChangedEvent;
+import com.backend.models.GameEvent.GameEvent;
+import com.backend.models.GameEvent.TargetHitEvent;
 import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
@@ -50,10 +53,10 @@ public class GameTests
 		
 		ArrayList<GameEvent> gameEvents = new ArrayList<GameEvent>();
 		gameEvents.add(new GameEvent(GameEventEnum.START_GAME));
-		gameEvents.add(GameEvent.actuatorChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.BLUE));
-		gameEvents.add(GameEvent.targetHitEvent(SideEnum.BLUE, TargetEnum.LOW));
+		gameEvents.add(new ActuatorStateChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.BLUE));
+		gameEvents.add(new TargetHitEvent(SideEnum.BLUE, TargetEnum.LOW));
 		gameEvents.add(new GameEvent(GameEventEnum.END_GAME));
-		return new Game(null, 1, DateTime.now(), GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, gameEvents, false, new ArrayList<SchoolPenalty>(), new ArrayList<School>());
+		return new Game(null, 1, DateTime.now(), GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, gameEvents, false);
 	}
 	
 	@Test
