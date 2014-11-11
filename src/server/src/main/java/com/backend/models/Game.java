@@ -175,6 +175,25 @@ public class Game implements Comparable<Game>
 		return essentials.database.findOne(Game.class, "{ isLive : True }");
 	}
 	
+	public static Game setLiveGame(Essentials essentials, ObjectId gameId)
+	{
+		Game currentLive = getLiveGame(essentials);
+		if(currentLive != null)
+		{
+			Game nonLive = new Game(currentLive._id, currentLive.gameNumber, currentLive.scheduledTime, currentLive.gameType, currentLive.blueTeam, currentLive.yellowTeam, currentLive.gameEvents, false);
+			essentials.database.save(nonLive);
+		}
+		
+		Game game = essentials.database.findOne(Game.class, gameId);
+		if(game != null)
+		{
+			Game newLive = new Game(game._id, game.gameNumber, game.scheduledTime, game.gameType, game.blueTeam, game.yellowTeam, game.gameEvents, true);
+			return newLive;
+		}
+		
+		return null;
+	}
+	
 	public Game getGameInitialState()
 	{
 		return new Game(_id, gameNumber, scheduledTime, gameType, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false);

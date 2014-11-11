@@ -9,7 +9,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.backend.models.GameEvent.ActuatorStateChangedEvent;
+import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.GameEvent;
+import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.GameEvent.TargetHitEvent;
 import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
@@ -52,10 +54,10 @@ public class GameTests
 		yellowTeam.add(new School(null, "F"));
 		
 		ArrayList<GameEvent> gameEvents = new ArrayList<GameEvent>();
-		gameEvents.add(new GameEvent(GameEventEnum.START_GAME));
-		gameEvents.add(new ActuatorStateChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.BLUE));
-		gameEvents.add(new TargetHitEvent(SideEnum.BLUE, TargetEnum.LOW));
-		gameEvents.add(new GameEvent(GameEventEnum.END_GAME));
+		gameEvents.add(new StartGameEvent(DateTime.now()));
+		gameEvents.add(new ActuatorStateChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.BLUE, DateTime.now()));
+		gameEvents.add(new TargetHitEvent(SideEnum.BLUE, TargetEnum.LOW, DateTime.now()));
+		gameEvents.add(new EndGameEvent(DateTime.now()));
 		return new Game(null, 1, DateTime.now(), GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, gameEvents, false);
 	}
 	

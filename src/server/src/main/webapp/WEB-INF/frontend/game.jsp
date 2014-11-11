@@ -63,7 +63,7 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 	
 	out.write(" class=\"fieldImage");
 
-	if(state.lastGameEvent.gameEvent == GameEventEnum.ACTUATOR_CHANGED)
+	if(state.lastGameEvent.gameEvent == GameEventEnum.ACTUATOR_STATE_CHANGED)
 	{
 		ActuatorStateChangedEvent actuatorStateChanged = (ActuatorStateChangedEvent) state.lastGameEvent;
 		if(actuatorStateChanged.side == side && actuatorStateChanged.target == target)

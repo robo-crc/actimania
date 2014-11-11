@@ -14,7 +14,7 @@ import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
-import com.backend.models.enums.GameEventEnum;
+import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.enums.GameTypeEnum;
 import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.LocalizedString;
@@ -34,9 +34,9 @@ public class ScoreTests
 	private ArrayList<GameEvent> getGameEvents()
 	{
 		ArrayList<GameEvent> gameEvents = new ArrayList<GameEvent>();
-		gameEvents.add(new GameEvent(GameEventEnum.START_GAME));
+		gameEvents.add(new StartGameEvent(DateTime.now()));
 		
-		gameEvents.add(new PointModifierEvent(TeamEnum.BLUE, 100, new LocalizedString(Locale.ENGLISH, "fake game", "Game truquée")));
+		gameEvents.add(new PointModifierEvent(TeamEnum.BLUE, 100, new LocalizedString(Locale.ENGLISH, "fake game", "Game truquée"), DateTime.now()));
 		
 		return gameEvents;
 	}
@@ -56,7 +56,7 @@ public class ScoreTests
 		
 		Validate.isTrue(game.getScore(school) == 100);
 		
-		SchoolPenaltyEvent penalty = new SchoolPenaltyEvent(school, 10);
+		SchoolPenaltyEvent penalty = new SchoolPenaltyEvent(school, 10, DateTime.now());
 		game.gameEvents.add(penalty);
 		Validate.isTrue(game.getScore(school) == 90);
 		
@@ -64,14 +64,14 @@ public class ScoreTests
 		Validate.isTrue(tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) == 0);
 		
 		ArrayList<GameEvent> game2Events = getGameEvents();
-		game2Events.add(new PointModifierEvent(TeamEnum.BLUE, -20, null));
+		game2Events.add(new PointModifierEvent(TeamEnum.BLUE, -20, null, DateTime.now()));
 		Game game2 = new Game(null, 2, DateTime.now(), GameTypeEnum.PRELIMINARY, blueTeam, new ArrayList<School>(), game2Events, false);
 		Validate.isTrue(game2.getScore(school) == 80);
 		tournament.games.add(game2);
 		
 		ArrayList<GameEvent> game3Events = new ArrayList<GameEvent>();
-		game3Events.add(new GameEvent(GameEventEnum.START_GAME));
-		game3Events.add(new PointModifierEvent(TeamEnum.YELLOW, 40, null));
+		game3Events.add(new StartGameEvent(DateTime.now()));
+		game3Events.add(new PointModifierEvent(TeamEnum.YELLOW, 40, null, DateTime.now()));
 		ArrayList<School> yellowTeam = new ArrayList<School>();
 		yellowTeam.add(school);
 		
@@ -85,12 +85,12 @@ public class ScoreTests
 		Validate.isTrue(tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) == 90);
 		
 		// Bad kids. A misconduct penalty!
-		game3Events.add(new MisconductPenaltyEvent(school));
+		game3Events.add(new MisconductPenaltyEvent(school, DateTime.now()));
 		Validate.isTrue(tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) == 0);
 		
 		ArrayList<GameEvent> game4Events = new ArrayList<GameEvent>();
-		game4Events.add(new GameEvent(GameEventEnum.START_GAME));
-		game4Events.add(new PointModifierEvent(TeamEnum.YELLOW, 120, null));
+		game4Events.add(new StartGameEvent(DateTime.now()));
+		game4Events.add(new PointModifierEvent(TeamEnum.YELLOW, 120, null, DateTime.now()));
 		yellowTeam = new ArrayList<School>();
 		yellowTeam.add(school);
 		
@@ -99,8 +99,8 @@ public class ScoreTests
 		Validate.isTrue(tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) == 120);
 		
 		ArrayList<GameEvent> game5Events = new ArrayList<GameEvent>();
-		game5Events.add(new GameEvent(GameEventEnum.START_GAME));
-		game5Events.add(new PointModifierEvent(TeamEnum.YELLOW, 30, null));
+		game5Events.add(new StartGameEvent(DateTime.now()));
+		game5Events.add(new PointModifierEvent(TeamEnum.YELLOW, 30, null, DateTime.now()));
 		yellowTeam = new ArrayList<School>();
 		yellowTeam.add(school);
 		

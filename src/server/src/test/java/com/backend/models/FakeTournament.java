@@ -2,12 +2,15 @@ package com.backend.models;
 
 import java.util.Random;
 
+import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.backend.models.GameEvent.ActuatorStateChangedEvent;
+import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.GameEvent;
+import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.GameEvent.TargetHitEvent;
 import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
@@ -58,7 +61,7 @@ public class FakeTournament
 		for(int i = 0; i < tournament.games.size() / 2; i++)
 		{
 			Game currentGame = tournament.games.get(i).getGameInitialState();
-			currentGame.gameEvents.add(new GameEvent(GameEventEnum.START_GAME));
+			currentGame.gameEvents.add(new StartGameEvent(DateTime.now()));
 			
 			int nbEvents = random.nextInt(30) + 20;
 			
@@ -70,16 +73,16 @@ public class FakeTournament
 				boolean isTargetHit = random.nextBoolean();
 				if(isTargetHit)
 				{
-					currentGame.gameEvents.add(new TargetHitEvent(side, target));
+					currentGame.gameEvents.add(new TargetHitEvent(side, target, DateTime.now()));
 				}
 				else
 				{
 					ActuatorStateEnum actuator = ActuatorStateEnum.values()[random.nextInt(ActuatorStateEnum.values().length)];
-					currentGame.gameEvents.add(new ActuatorStateChangedEvent(side, target, actuator));
+					currentGame.gameEvents.add(new ActuatorStateChangedEvent(side, target, actuator, DateTime.now()));
 				}
 			}
 			
-			tournament.games.get(i).gameEvents.add(new GameEvent(GameEventEnum.END_GAME));
+			tournament.games.get(i).gameEvents.add(new EndGameEvent(DateTime.now()));
 			
 			essentials.database.save(currentGame);
 		}		

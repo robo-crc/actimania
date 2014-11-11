@@ -13,7 +13,7 @@ import com.framework.models.Essentials;
 
 public class SchoolTests 
 {
-private static Database database;
+	private static Database database;
 	
 	@BeforeClass
 	public static void setUp()

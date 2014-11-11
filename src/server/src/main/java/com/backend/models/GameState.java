@@ -65,7 +65,7 @@ public class GameState
 		ArrayList<SchoolPenalty> 	localPenalties = null;
 		ArrayList<School> 	localMisconductPenalties = null;
 		
-		if(gameEvent.gameEvent == GameEventEnum.START_GAME)
+		if(gameEvent.getGameEventEnum() == GameEventEnum.START_GAME)
 		{
 			localActuatorState = new ActuatorStateEnum[SideEnum.values().length][TargetEnum.values().length];
 			for( SideEnum side : SideEnum.values() )
@@ -99,7 +99,7 @@ public class GameState
 			localPenalties 				= previousState.penalties;
 			localMisconductPenalties	= previousState.misconductPenalties;
 
-			if(gameEvent.gameEvent == GameEventEnum.TARGET_HIT)
+			if(gameEvent.getGameEventEnum() == GameEventEnum.TARGET_HIT)
 			{
 				TargetHitEvent targetHitevent = (TargetHitEvent)gameEvent;
 				ActuatorStateEnum currentActuator = localActuatorState[targetHitevent.side.ordinal()][targetHitevent.target.ordinal()];
@@ -112,12 +112,12 @@ public class GameState
 					localYellowScore += calculateTargetHitValue(localActuatorState, targetHitevent.side, targetHitevent.target);
 				}
 			}
-			else if(gameEvent.gameEvent == GameEventEnum.ACTUATOR_CHANGED)
+			else if(gameEvent.getGameEventEnum() == GameEventEnum.ACTUATOR_STATE_CHANGED)
 			{
 				ActuatorStateChangedEvent actuatorStateChangedEvent = (ActuatorStateChangedEvent)gameEvent;
 				localActuatorState[actuatorStateChangedEvent.side.ordinal()][actuatorStateChangedEvent.target.ordinal()] = actuatorStateChangedEvent.actuatorState;
 			}
-			else if(gameEvent.gameEvent == GameEventEnum.POINT_MODIFIER)
+			else if(gameEvent.getGameEventEnum() == GameEventEnum.POINT_MODIFIER)
 			{
 				PointModifierEvent pointModifierEvent = (PointModifierEvent) gameEvent;
 				if(pointModifierEvent.team == TeamEnum.BLUE)
@@ -129,12 +129,12 @@ public class GameState
 					localYellowScore += pointModifierEvent.points;
 				}
 			}
-			else if(gameEvent.gameEvent == GameEventEnum.SCHOOL_PENALTY)
+			else if(gameEvent.getGameEventEnum() == GameEventEnum.SCHOOL_PENALTY)
 			{
 				SchoolPenaltyEvent schoolPenaltyEvent = (SchoolPenaltyEvent) gameEvent;
 				localPenalties.add(new SchoolPenalty(schoolPenaltyEvent.school, schoolPenaltyEvent.pointsDeduction));
 			}
-			else if(gameEvent.gameEvent == GameEventEnum.TEAM_PENALTY)
+			else if(gameEvent.getGameEventEnum() == GameEventEnum.TEAM_PENALTY)
 			{
 				TeamPenaltyEvent teamPenaltyEvent = (TeamPenaltyEvent) gameEvent;
 				if(teamPenaltyEvent.team == TeamEnum.BLUE)
@@ -146,12 +146,12 @@ public class GameState
 					localYellowScore += teamPenaltyEvent.pointsDeduction;
 				}
 			}
-			else if(gameEvent.gameEvent == GameEventEnum.MISCONDUCT_PENALTY)
+			else if(gameEvent.getGameEventEnum() == GameEventEnum.MISCONDUCT_PENALTY)
 			{
 				MisconductPenaltyEvent misconductPenaltyEvent = (MisconductPenaltyEvent) gameEvent;
 				localMisconductPenalties.add(misconductPenaltyEvent.school);
 			}
-			else if(gameEvent.gameEvent == GameEventEnum.END_GAME)
+			else if(gameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
 			{
 				// Nothing to do for now.
 			}

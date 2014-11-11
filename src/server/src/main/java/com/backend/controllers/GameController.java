@@ -9,12 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
 
 import com.backend.models.Game;
-import com.backend.models.School;
 import com.backend.models.GameEvent.ActuatorStateChangedEvent;
-import com.backend.models.GameEvent.GameEvent;
+import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
+import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.GameEvent.TargetHitEvent;
 import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
@@ -35,7 +36,9 @@ public class GameController extends HttpServlet
 	{
 		try(Essentials essentials = Essentials.createEssentials(request,  response))
 		{
-			showPage(essentials);
+			ObjectId gameId = Helpers.getParameter("gameId", ObjectId.class, essentials);
+			Game game = essentials.database.findOne(Game.class, gameId);
+			showPage(essentials, game);
 		}
 	}	
 	
@@ -60,22 +63,26 @@ public class GameController extends HttpServlet
 			boolean actionProcessed = true;
 			if( gameEvent.equalsIgnoreCase(GameEventEnum.START_GAME.toString()) )
 			{
-				game.gameEvents.add(new GameEvent(GameEventEnum.START_GAME));
+				game = Game.setLiveGame(essentials, game._id);
+				// Reset any state the game could had previously.
+				game = game.getGameInitialState();
+				
+				game.gameEvents.add(new StartGameEvent(DateTime.now()));
 			}
-			else if( gameEvent.equalsIgnoreCase(GameEventEnum.ACTUATOR_CHANGED.toString()) )
+			else if( gameEvent.equalsIgnoreCase(GameEventEnum.ACTUATOR_STATE_CHANGED.toString()) )
 			{
 				SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
 				TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
 				ActuatorStateEnum actuatorState = ActuatorStateEnum.valueOf(Helpers.getParameter("actuatorState", String.class, essentials));
 				
-				game.gameEvents.add(new ActuatorStateChangedEvent(side, target, actuatorState));
+				game.gameEvents.add(new ActuatorStateChangedEvent(side, target, actuatorState, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.TARGET_HIT.toString()) )
 			{
 				SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
 				TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
 				
-				game.gameEvents.add(new TargetHitEvent(side, target));
+				game.gameEvents.add(new TargetHitEvent(side, target, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.POINT_MODIFIER.toString()) )
 			{
@@ -85,11 +92,11 @@ public class GameController extends HttpServlet
 						Helpers.getParameter("commentEn", String.class, essentials),
 						Helpers.getParameter("commentFr", String.class, essentials));
 				
-				game.gameEvents.add(new PointModifierEvent(team, points, comment));
+				game.gameEvents.add(new PointModifierEvent(team, points, comment, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.END_GAME.toString()) )
 			{
-				
+				game.gameEvents.add(new EndGameEvent(DateTime.now()));
 			}
 			else
 			{
@@ -100,14 +107,14 @@ public class GameController extends HttpServlet
 			{
 				essentials.database.save(game);
 			}
-			showPage(essentials);
+			showPage(essentials, game);
 		}
 	}
 	
-	private void showPage(Essentials essentials) throws ServletException, IOException
+	private void showPage(Essentials essentials, Game game) throws ServletException, IOException
 	{
-		essentials.request.setAttribute("schools", School.getSchools(essentials));
+		essentials.request.setAttribute("game", game);
 		essentials.request.setAttribute("errorList", essentials.errorList);
-		essentials.request.getRequestDispatcher("/WEB-INF/admin/schools.jsp").forward(essentials.request, essentials.response);
+		essentials.request.getRequestDispatcher("/WEB-INF/admin/game.jsp").forward(essentials.request, essentials.response);
 	}
 }
