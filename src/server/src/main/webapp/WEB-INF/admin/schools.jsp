@@ -75,16 +75,16 @@ LocalizedString strLogout = new LocalizedString(ImmutableMap.of(
 	{
 	%>
 		<form method="post">
-		<input type="hidden" name="action" value="edit" />
-		<input type="hidden" name="id" value="<%= school._id %>" />
-		<span><%= strSchoolName %><input type="text" name="schoolName" value="<%= school.name %>" /> </span><br/>
-		<input type="submit" value="<%= strEditSchool %>">
+			<input type="hidden" name="action" value="edit" />
+			<input type="hidden" name="id" value="<%= school._id %>" />
+			<span><%= strSchoolName %><input type="text" name="schoolName" value="<%= school.name %>" /> </span><br/>
+			<input type="submit" value="<%= strEditSchool %>" />
 		</form>
 		
 		<form method="post">
 			<input type="hidden" name="action" value="delete" />
 			<input type="hidden" name="id" value="<%= school._id %>" />
-			<input type="submit" value="<%= strDeleteSchool %>">
+			<input type="submit" value="<%= strDeleteSchool %>" />
 		</form>
 		<br/>
 	<% 

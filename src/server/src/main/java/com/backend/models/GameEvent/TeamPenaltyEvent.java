@@ -1,10 +1,13 @@
 package com.backend.models.GameEvent;
 
+import java.util.Locale;
+
 import org.joda.time.DateTime;
 
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.TeamEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.framework.helpers.LocalizedString;
 
 public class TeamPenaltyEvent implements GameEvent
 {
@@ -31,5 +34,24 @@ public class TeamPenaltyEvent implements GameEvent
 	public GameEventEnum getGameEventEnum()
 	{
 		return GameEventEnum.TEAM_PENALTY;
+	}
+	
+	public LocalizedString getLocalizedString(Locale locale)
+	{
+		String frenchTeam = "";
+		switch(team)
+		{
+		case YELLOW:
+			frenchTeam = "jaune";
+			break;
+		case BLUE:
+			frenchTeam = "bleue";
+			break;
+		}
+		
+		return new LocalizedString(locale,
+				String.valueOf(pointsDeduction) + " points penalty for " + team.name() + " team.",
+				 "Pénalitée de " + String.valueOf(pointsDeduction) + " points pour l'équipe " + frenchTeam + "."
+				);
 	}
 }

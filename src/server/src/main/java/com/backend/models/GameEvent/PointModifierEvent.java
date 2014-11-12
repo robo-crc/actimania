@@ -1,5 +1,7 @@
 package com.backend.models.GameEvent;
 
+import java.util.Locale;
+
 import org.joda.time.DateTime;
 
 import com.backend.models.enums.GameEventEnum;
@@ -35,5 +37,10 @@ public class PointModifierEvent implements GameEvent
 	public GameEventEnum getGameEventEnum()
 	{
 		return GameEventEnum.POINT_MODIFIER;
+	}
+	
+	public LocalizedString getLocalizedString(Locale locale)
+	{
+		return comment;
 	}
 }

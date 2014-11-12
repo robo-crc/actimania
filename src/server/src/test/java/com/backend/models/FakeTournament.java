@@ -9,11 +9,9 @@ import org.junit.Test;
 
 import com.backend.models.GameEvent.ActuatorStateChangedEvent;
 import com.backend.models.GameEvent.EndGameEvent;
-import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.GameEvent.TargetHitEvent;
 import com.backend.models.enums.ActuatorStateEnum;
-import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TargetEnum;
 import com.framework.helpers.Database;
@@ -82,7 +80,7 @@ public class FakeTournament
 				}
 			}
 			
-			tournament.games.get(i).gameEvents.add(new EndGameEvent(DateTime.now()));
+			currentGame.gameEvents.add(new EndGameEvent(DateTime.now()));
 			
 			essentials.database.save(currentGame);
 		}		

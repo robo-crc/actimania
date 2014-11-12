@@ -203,4 +203,13 @@ public class Game implements Comparable<Game>
 	{
 		return new Duration(5 * 60 * 1000);
 	}
+	
+	public DateTime getTimeInGame(GameState gameState)
+	{
+		if(gameEvents.size() == 0)
+			return new DateTime(0);
+		
+		Duration timeSinceStart = new Duration(gameState.lastGameEvent.getTime(), gameEvents.get(0).getTime());
+		return new DateTime(getGameLength().getMillis() - timeSinceStart.getMillis());
+	}
 }

@@ -1,9 +1,12 @@
 package com.backend.models.GameEvent;
 
+import java.util.Locale;
+
 import org.joda.time.DateTime;
 
 import com.backend.models.enums.GameEventEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.framework.helpers.LocalizedString;
 
 public class EndGameEvent implements GameEvent 
 {
@@ -24,5 +27,13 @@ public class EndGameEvent implements GameEvent
 	public GameEventEnum getGameEventEnum()
 	{
 		return GameEventEnum.END_GAME;
+	}
+	
+	public LocalizedString getLocalizedString(Locale locale)
+	{
+		return new LocalizedString(locale,
+				"End of game",
+				"Fin de la partie"
+				);
 	}
 }

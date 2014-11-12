@@ -63,7 +63,7 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 	
 	out.write(" class=\"fieldImage");
 
-	if(state.lastGameEvent.gameEvent == GameEventEnum.ACTUATOR_STATE_CHANGED)
+	if(state.lastGameEvent.getGameEventEnum() == GameEventEnum.ACTUATOR_STATE_CHANGED)
 	{
 		ActuatorStateChangedEvent actuatorStateChanged = (ActuatorStateChangedEvent) state.lastGameEvent;
 		if(actuatorStateChanged.side == side && actuatorStateChanged.target == target)
@@ -71,7 +71,7 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 			out.write(" ActuatorChangedEvent");
 		}
 	}
-	else if(state.lastGameEvent.gameEvent == GameEventEnum.TARGET_HIT)
+	else if(state.lastGameEvent.getGameEventEnum() == GameEventEnum.TARGET_HIT)
 	{
 		TargetHitEvent targetHitEvent = (TargetHitEvent) state.lastGameEvent;
 		if(targetHitEvent.side == side && targetHitEvent.target == target)
@@ -147,16 +147,13 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 	<ul class="bjqs">
 	<!-- Slides Container -->
 		<%
-		Duration gameLength = Game.getGameLength();
-		
 		for(GameState state : game.getGameStates())
 		{
-			Duration timeSinceStart = new Duration(state.lastGameEvent.time, game.gameEvents.get(0).time);
-			DateTime timeInGame = new DateTime(gameLength.getMillis() - timeSinceStart.getMillis());
-		
+			DateTime timeInGame = game.getTimeInGame(state);
+
 			boolean blueScored = false;
 			boolean yellowScored = false;
-			if(state.lastGameEvent.gameEvent == GameEventEnum.TARGET_HIT)
+			if(state.lastGameEvent.getGameEventEnum() == GameEventEnum.TARGET_HIT)
 			{
 				TargetHitEvent targetHitEvent = (TargetHitEvent) state.lastGameEvent;
 				ActuatorStateEnum targetHitColor = state.actuatorsStates[targetHitEvent.side.ordinal()][targetHitEvent.target.ordinal()];
@@ -174,7 +171,7 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 			<div class="timer"><%= timeInGame.getMinuteOfHour() + ":" + (timeInGame.getSecondOfMinute() < 10 ? "0" : "") + timeInGame.getSecondOfMinute() %></div>
 			<div class="blueScore<% if(blueScored) out.write("teamScored"); %>"><%= state.blueScore %></div>
 			<div class="yellowScore<% if(blueScored) out.write("teamScored");%>"><%= state.yellowScore %></div>
-			
+			<div class="gameEvent"><%= state.lastGameEvent.getLocalizedString(currentLocale) %></div>
 			<%
 if(state.penalties.size() > 0)
 {
