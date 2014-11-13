@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.GameEvent.GameEvent"%>
 <%@page import="com.backend.models.enums.TeamEnum"%>
 <%@page import="com.backend.models.enums.ActuatorStateEnum"%>
 <%@page import="java.io.IOException"%>
@@ -161,15 +162,21 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 	out.write(strAddAfter.toString());
 	out.write("<select name=\"insertAfter\">");
 
-	for(int i = 0; i < game.getGameStates().size(); i++)
+	ArrayList<GameEvent> gameEvents = game.gameEvents;
+	int iterationEnd = gameEvents.size();
+	if(gameEvents.size() > 0 && gameEvents.get(gameEvents.size() - 1).getGameEventEnum() == GameEventEnum.END_GAME)
+	{
+		iterationEnd--;
+	}
+	for(int i = 0; i < iterationEnd; i++)
 	{
 		String selected = "";
-		if( i == game.getGameStates().size() - 1)
+		if(i == iterationEnd - 1)
 		{
 			selected = "selected=\"selected\"";
 		}
 		
-		out.write("<option " + selected + " value=\"" + i + "\">" + String.valueOf(i + 1) + "</option>");
+		out.write("<option " + selected + " value=\"" + String.valueOf(i + 1) + "\">" + String.valueOf(i + 1) + "</option>");
 	}
 	out.write("</select>");
 }
@@ -343,12 +350,20 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 			<td><%= state.blueScore %></td>
 			<td><%= state.yellowScore %></td>
 			<td><%= state.lastGameEvent.getLocalizedString(currentLocale) %></td>
-			<td><form method="post" >
+			<td>
+			<% 	if( state.lastGameEvent.getGameEventEnum() != GameEventEnum.START_GAME &&
+					state.lastGameEvent.getGameEventEnum() != GameEventEnum.END_GAME )
+				{ %>
+			<form method="post" >
 				<input type="hidden" name="gameEvent" value="delete" />
 				<input type="hidden" name="id" value="<%= game._id %>" />
 				<input type="hidden" name="gameEventIndex" value="<%= i %>" />
 				<input type="submit" value="<%= strDelete %>" />
-			</form></td>
+			</form>
+			<%
+				}
+			%>
+			</td>
 		</tr>
 		<%
 			i++;
