@@ -12,11 +12,15 @@ import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
 import com.backend.models.Game;
+import com.backend.models.School;
 import com.backend.models.GameEvent.ActuatorStateChangedEvent;
 import com.backend.models.GameEvent.EndGameEvent;
+import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
+import com.backend.models.GameEvent.SchoolPenaltyEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.GameEvent.TargetHitEvent;
+import com.backend.models.GameEvent.TeamPenaltyEvent;
 import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.SideEnum;
@@ -51,7 +55,6 @@ public class GameController extends HttpServlet
 			Game game = essentials.database.findOne(Game.class, gameId);
 			
 			String 	gameEvent	= Helpers.getParameter("gameEvent", String.class, essentials);
-			//String 	action		= Helpers.getParameter("action", String.class, essentials);
 			
 			// Possible actions
 			// Start game
@@ -59,7 +62,7 @@ public class GameController extends HttpServlet
 			// Point modifier CRUD
 			// Target hit event
 			// Actuator hit event
-			// End game ?
+			// End game
 			boolean actionProcessed = true;
 			if( gameEvent.equalsIgnoreCase(GameEventEnum.START_GAME.toString()) )
 			{
@@ -71,32 +74,65 @@ public class GameController extends HttpServlet
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.ACTUATOR_STATE_CHANGED.toString()) )
 			{
+				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
 				SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
 				TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
 				ActuatorStateEnum actuatorState = ActuatorStateEnum.valueOf(Helpers.getParameter("actuatorState", String.class, essentials));
 				
-				game.gameEvents.add(new ActuatorStateChangedEvent(side, target, actuatorState, DateTime.now()));
+				game.gameEvents.add(insertAfter, new ActuatorStateChangedEvent(side, target, actuatorState, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.TARGET_HIT.toString()) )
 			{
+				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
 				SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
 				TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
 				
-				game.gameEvents.add(new TargetHitEvent(side, target, DateTime.now()));
+				game.gameEvents.add(insertAfter, new TargetHitEvent(side, target, DateTime.now()));
+			}
+			else if( gameEvent.equalsIgnoreCase(GameEventEnum.SCHOOL_PENALTY.toString()) )
+			{
+				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
+				ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
+				Integer points = Helpers.getParameter("points", Integer.class, essentials);
+				School school = essentials.database.findOne(School.class, schoolId);
+				
+				game.gameEvents.add(insertAfter, new SchoolPenaltyEvent(school, points, DateTime.now()));
+			}
+			else if( gameEvent.equalsIgnoreCase(GameEventEnum.TEAM_PENALTY.toString()) )
+			{
+				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
+				TeamEnum team = TeamEnum.valueOf(Helpers.getParameter("team", String.class, essentials));
+				Integer points = Helpers.getParameter("points", Integer.class, essentials);
+								
+				game.gameEvents.add(insertAfter, new TeamPenaltyEvent(team, points, DateTime.now()));
+			}
+			else if( gameEvent.equalsIgnoreCase(GameEventEnum.MISCONDUCT_PENALTY.toString()) )
+			{
+				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
+				ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
+				School school = essentials.database.findOne(School.class, schoolId);
+				
+				game.gameEvents.add(insertAfter, new MisconductPenaltyEvent(school, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.POINT_MODIFIER.toString()) )
 			{
+				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
 				TeamEnum team = TeamEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
-				Integer points = Helpers.getParameter("target", Integer.class, essentials);
+				Integer points = Helpers.getParameter("points", Integer.class, essentials);
 				LocalizedString comment = new LocalizedString(essentials, 
 						Helpers.getParameter("commentEn", String.class, essentials),
 						Helpers.getParameter("commentFr", String.class, essentials));
 				
-				game.gameEvents.add(new PointModifierEvent(team, points, comment, DateTime.now()));
+				game.gameEvents.add(insertAfter, new PointModifierEvent(team, points, comment, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.END_GAME.toString()) )
 			{
 				game.gameEvents.add(new EndGameEvent(DateTime.now()));
+			}
+			else if( gameEvent.equalsIgnoreCase("delete") )
+			{
+				Integer gameEventIndex = Helpers.getParameter("gameEventIndex", Integer.class, essentials);
+				game.gameEvents.remove(gameEventIndex.intValue());
 			}
 			else
 			{

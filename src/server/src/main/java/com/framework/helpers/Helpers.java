@@ -49,6 +49,10 @@ public class Helpers
 			{
 				return (T)new ObjectId(safeParam);
 			}
+			else if(entityType == Integer.class)
+			{
+				return (T)Integer.valueOf(safeParam);
+			}
 			else
 			{
 				return (T)safeParam;
