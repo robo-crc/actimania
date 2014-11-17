@@ -56,6 +56,11 @@ LocalizedString strStartGame = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Démarrer la partie"
 		), currentLocale);
 
+LocalizedString strRestartGame = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Re-Start Game", 
+		Locale.FRENCH, 	"Redémarrer la partie"
+		), currentLocale);
+
 LocalizedString strTargetHit = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Target hit", 
 		Locale.FRENCH, 	"Démarrer la partie"
@@ -154,6 +159,18 @@ LocalizedString strEndGame = new LocalizedString(ImmutableMap.of(
 <title><%= strGameAdmin %></title>
 <link rel="icon" type="image/png" href="favicon.png">
 
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<script src="../jquery/jquery.js"></script>
+<script src="../jquery/jquery.numeric.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+<script>
+$(document).ready(function(){
+	$( ".spinner" ).spinner({ min: 0 });
+	$( ".spinner" ).numeric();
+});
+</script>
+
 </head>
 <body>
 <%!
@@ -162,7 +179,7 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 	out.write(strAddAfter.toString());
 	out.write("<select name=\"insertAfter\">");
 
-	ArrayList<GameEvent> gameEvents = game.gameEvents;
+	ArrayList<GameEvent> gameEvents = game.getGameEvents();
 	int iterationEnd = gameEvents.size();
 	if(gameEvents.size() > 0 && gameEvents.get(gameEvents.size() - 1).getGameEventEnum() == GameEventEnum.END_GAME)
 	{
@@ -222,18 +239,35 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 	}
 	%>
 	
-	<form method="post" 
-	<% 	if(game.gameEvents.size() > 0)
-		{ %>
-		onsubmit="return confirm('<%= strSubmitConfirm %>');"
-	<%	} %>
-		>
+	<%
+	if(game.containsStartGameEvent())
+	{
+	%>
+	<form method="post" onsubmit="return confirm('<%= strSubmitConfirm %>');">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.START_GAME.toString() %>" />
 		<input type="hidden" name="id" value="<%= game._id %>" />
-		<h2><%= strStartGame %></h2>
-		<input type="submit" value="<%= strStartGame %>" />
+		<h2><%= strRestartGame %></h2>
+		<input type="submit" value="<%= strRestartGame %>" />
 	</form>
+	<%
+	}
+	else
+	{
+		%>
+		<form method="post">
+			<input type="hidden" name="gameEvent" value="<%= GameEventEnum.START_GAME.toString() %>" />
+			<input type="hidden" name="id" value="<%= game._id %>" />
+			<h2><%= strStartGame %></h2>
+			<input type="submit" value="<%= strStartGame %>" />
+		</form>
+		<%
+	}
+	%>
 	
+	<%
+	if(game.containsStartGameEvent())
+	{
+	%>
 	<br/>
 	
 	<form method="post">
@@ -283,7 +317,7 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 	 <% } %>
 		</select>
 		<br/>
-		<%= strPointDeduction %><input name="points" />
+		<%= strPointDeduction %><input class="spinner" name="points" />
 		<br/>
 		<% outputAddAfter(game, strAddAfter, out); %>
 		<br/>
@@ -302,7 +336,7 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 	 <% } %>
 		</select>
 		<br/>
-		<%= strPointDeduction %><input name="points" />
+		<%= strPointDeduction %><input class="spinner" name="points" />
 		<br/>
 		<% outputAddAfter(game, strAddAfter, out); %>
 		<br/>
@@ -327,12 +361,21 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
 	
+	<% if( !game.containsEndGameEvent() )
+		{
+		%>
 	<form method="post">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.END_GAME.toString() %>" />
 		<input type="hidden" name="id" value="<%= game._id %>" />
 		<h2><%= strEndGame %></h2>
 		<input type="submit" value="<%= strEndGame %>" />
 	</form>
+	<%
+		}
+	%>
+	<%
+	}
+	%>
 	
 	<h1><%= strGameEvents %></h1>
 	

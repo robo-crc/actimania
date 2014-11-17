@@ -40,9 +40,14 @@ LocalizedString strRanking = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Classement"
 		), currentLocale);
 
-LocalizedString strPenalties = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Penalties", 
-		Locale.FRENCH, 	"Pénalitées"
+LocalizedString strSchoolPenalties = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "School penalties", 
+		Locale.FRENCH, 	"Pénalitées d'école"
+		), currentLocale);
+
+LocalizedString strMisconductPenalties = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Misconduct penalties", 
+		Locale.FRENCH, 	"Pénalité pour conduite anti-sportive"
 		), currentLocale);
 
 LocalizedString strBlueTeam = new LocalizedString(ImmutableMap.of( 	
@@ -80,7 +85,6 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 		}
 	}
 	out.write("\"/>\n");
-	//out.write("background: url('../images/templates/background_image.jpg') no-repeat center center fixed;")
 }%>
 
 
@@ -171,21 +175,32 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 			<div class="timer"><%= timeInGame.getMinuteOfHour() + ":" + (timeInGame.getSecondOfMinute() < 10 ? "0" : "") + timeInGame.getSecondOfMinute() %></div>
 			<div class="blueScore<% if(blueScored) out.write("teamScored"); %>"><%= state.blueScore %></div>
 			<div class="yellowScore<% if(blueScored) out.write("teamScored");%>"><%= state.yellowScore %></div>
-			<div class="gameEvent"><%= state.lastGameEvent.getLocalizedString(currentLocale) %></div>
-			<%
+			<br/>
+<%
 if(state.penalties.size() > 0)
 {
 %>
-<h2><%=strPenalties%></h2>
+<h2><%= strSchoolPenalties %></h2>
 <%
 	for(SchoolPenalty penalty : state.penalties)
 	{
-		out.print(penalty.school + " : " + penalty.pointsDeduction);
+		out.print(penalty.school.name + " : " + penalty.pointsDeduction + "<br/>");
+	}
+}
+
+if(state.misconductPenalties.size() > 0)
+{
+%>
+<h2><%= strMisconductPenalties %></h2>
+<%
+	for(School school : state.misconductPenalties)
+	{
+		out.print(school.name + "<br/>");
 	}
 }
 %>
 			<br/>
-
+			<h3 class="gameEvent"><%= state.lastGameEvent.getLocalizedString(currentLocale) %></h3>
 			<div class="playfield">
 				<img src="images/playfield.png" class="playfieldBackground fieldImage" />
 				<%

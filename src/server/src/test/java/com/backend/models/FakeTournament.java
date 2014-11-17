@@ -59,7 +59,7 @@ public class FakeTournament
 		for(int i = 0; i < tournament.games.size() / 2; i++)
 		{
 			Game currentGame = tournament.games.get(i).getGameInitialState();
-			currentGame.gameEvents.add(new StartGameEvent(DateTime.now()));
+			currentGame.addGameEvent(new StartGameEvent(DateTime.now()));
 			
 			int nbEvents = random.nextInt(30) + 20;
 			
@@ -71,16 +71,16 @@ public class FakeTournament
 				boolean isTargetHit = random.nextBoolean();
 				if(isTargetHit)
 				{
-					currentGame.gameEvents.add(new TargetHitEvent(side, target, DateTime.now()));
+					currentGame.addGameEvent(new TargetHitEvent(side, target, DateTime.now()));
 				}
 				else
 				{
 					ActuatorStateEnum actuator = ActuatorStateEnum.values()[random.nextInt(ActuatorStateEnum.values().length)];
-					currentGame.gameEvents.add(new ActuatorStateChangedEvent(side, target, actuator, DateTime.now()));
+					currentGame.addGameEvent(new ActuatorStateChangedEvent(side, target, actuator, DateTime.now()));
 				}
 			}
 			
-			currentGame.gameEvents.add(new EndGameEvent(DateTime.now()));
+			currentGame.addGameEvent(new EndGameEvent(DateTime.now()));
 			
 			essentials.database.save(currentGame);
 		}		

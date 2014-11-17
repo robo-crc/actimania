@@ -57,7 +57,8 @@ public class ScoreTests
 		Validate.isTrue(game.getScore(school) == 100);
 		
 		SchoolPenaltyEvent penalty = new SchoolPenaltyEvent(school, 10, DateTime.now());
-		game.gameEvents.add(penalty);
+		game.addGameEvent(new StartGameEvent(DateTime.now()));
+		game.addGameEvent(penalty);
 		Validate.isTrue(game.getScore(school) == 90);
 		
 		// Not 3 games yet.

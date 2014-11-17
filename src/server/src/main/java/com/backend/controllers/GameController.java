@@ -70,7 +70,7 @@ public class GameController extends HttpServlet
 				// Reset any state the game could had previously.
 				game = game.getGameInitialState();
 				
-				game.gameEvents.add(new StartGameEvent(DateTime.now()));
+				game.addGameEvent(new StartGameEvent(DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.ACTUATOR_STATE_CHANGED.toString()) )
 			{
@@ -79,7 +79,7 @@ public class GameController extends HttpServlet
 				TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
 				ActuatorStateEnum actuatorState = ActuatorStateEnum.valueOf(Helpers.getParameter("actuatorState", String.class, essentials));
 				
-				game.gameEvents.add(insertAfter, new ActuatorStateChangedEvent(side, target, actuatorState, DateTime.now()));
+				game.addGameEvent(insertAfter, new ActuatorStateChangedEvent(side, target, actuatorState, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.TARGET_HIT.toString()) )
 			{
@@ -87,7 +87,7 @@ public class GameController extends HttpServlet
 				SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
 				TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
 				
-				game.gameEvents.add(insertAfter, new TargetHitEvent(side, target, DateTime.now()));
+				game.addGameEvent(insertAfter, new TargetHitEvent(side, target, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.SCHOOL_PENALTY.toString()) )
 			{
@@ -96,7 +96,7 @@ public class GameController extends HttpServlet
 				Integer points = Helpers.getParameter("points", Integer.class, essentials);
 				School school = essentials.database.findOne(School.class, schoolId);
 				
-				game.gameEvents.add(insertAfter, new SchoolPenaltyEvent(school, points, DateTime.now()));
+				game.addGameEvent(insertAfter, new SchoolPenaltyEvent(school, points, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.TEAM_PENALTY.toString()) )
 			{
@@ -104,7 +104,7 @@ public class GameController extends HttpServlet
 				TeamEnum team = TeamEnum.valueOf(Helpers.getParameter("team", String.class, essentials));
 				Integer points = Helpers.getParameter("points", Integer.class, essentials);
 								
-				game.gameEvents.add(insertAfter, new TeamPenaltyEvent(team, points, DateTime.now()));
+				game.addGameEvent(insertAfter, new TeamPenaltyEvent(team, points, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.MISCONDUCT_PENALTY.toString()) )
 			{
@@ -112,7 +112,7 @@ public class GameController extends HttpServlet
 				ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
 				School school = essentials.database.findOne(School.class, schoolId);
 				
-				game.gameEvents.add(insertAfter, new MisconductPenaltyEvent(school, DateTime.now()));
+				game.addGameEvent(insertAfter, new MisconductPenaltyEvent(school, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.POINT_MODIFIER.toString()) )
 			{
@@ -123,16 +123,16 @@ public class GameController extends HttpServlet
 						Helpers.getParameter("commentEn", String.class, essentials),
 						Helpers.getParameter("commentFr", String.class, essentials));
 				
-				game.gameEvents.add(insertAfter, new PointModifierEvent(team, points, comment, DateTime.now()));
+				game.addGameEvent(insertAfter, new PointModifierEvent(team, points, comment, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.END_GAME.toString()) )
 			{
-				game.gameEvents.add(new EndGameEvent(DateTime.now()));
+				game.addGameEvent(new EndGameEvent(DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase("delete") )
 			{
 				Integer gameEventIndex = Helpers.getParameter("gameEventIndex", Integer.class, essentials);
-				game.gameEvents.remove(gameEventIndex.intValue());
+				game.removeGameEvent(gameEventIndex.intValue());
 			}
 			else
 			{

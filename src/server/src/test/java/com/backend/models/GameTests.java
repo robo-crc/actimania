@@ -14,6 +14,7 @@ import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.GameEvent.TargetHitEvent;
 import com.backend.models.enums.ActuatorStateEnum;
+import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TargetEnum;
@@ -69,5 +70,35 @@ public class GameTests
 			
 			Validate.isTrue(Game.getGames(essentials).size() == 1);
 		}
+	}
+	
+	@Test
+	public void testGameEvent()
+	{
+		Game game = new Game(null, 0, DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), new ArrayList<School>(), new ArrayList<GameEvent>(), false);
+		game.addGameEvent(new StartGameEvent(DateTime.now()));
+		
+		Validate.isTrue(game.getGameEvents().size() == 1);
+		
+		game.addGameEvent(new EndGameEvent(DateTime.now()));
+		Validate.isTrue(game.getGameEvents().get(0).getGameEventEnum() == GameEventEnum.START_GAME);
+		Validate.isTrue(game.getGameEvents().get(1).getGameEventEnum() == GameEventEnum.END_GAME);
+		game.addGameEvent(new TargetHitEvent(SideEnum.BLUE, TargetEnum.MID, DateTime.now()));
+		
+		Validate.isTrue(game.getGameEvents().size() == 2);
+		
+		game.addGameEvent(1, new TargetHitEvent(SideEnum.BLUE, TargetEnum.MID, DateTime.now()));
+		
+		Validate.isTrue(game.getGameEvents().get(0).getGameEventEnum() == GameEventEnum.START_GAME);
+		Validate.isTrue(game.getGameEvents().get(1).getGameEventEnum() == GameEventEnum.TARGET_HIT);
+		Validate.isTrue(game.getGameEvents().get(2).getGameEventEnum() == GameEventEnum.END_GAME);
+		
+		Game game2 = new Game(null, 0, DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), new ArrayList<School>(), new ArrayList<GameEvent>(), false);
+	
+		game2.addGameEvent(new TargetHitEvent(SideEnum.BLUE, TargetEnum.MID, DateTime.now()));
+		Validate.isTrue(game2.getGameEvents().size() == 0);
+		game2.addGameEvent(new StartGameEvent(DateTime.now()));
+		game2.addGameEvent(new TargetHitEvent(SideEnum.BLUE, TargetEnum.MID, DateTime.now()));
+		Validate.isTrue(game2.getGameEvents().size() == 2);
 	}
 }

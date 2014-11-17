@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import com.backend.models.GameEvent.GameEvent;
+import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.models.Essentials;
@@ -21,7 +22,7 @@ public class Game implements Comparable<Game>
 	public final GameTypeEnum				gameType;
 	public final ArrayList<School> 			blueTeam;
 	public final ArrayList<School> 			yellowTeam;
-	public final ArrayList<GameEvent> 		gameEvents;
+	private final ArrayList<GameEvent> 		gameEvents;
 	public final boolean					isLive;
 
 	public Game(
@@ -66,6 +67,67 @@ public class Game implements Comparable<Game>
 		}
 		
 		return gameStates;
+	}
+	
+	public ArrayList<GameEvent> getGameEvents()
+	{
+		return new ArrayList<GameEvent>(gameEvents);
+	}
+	
+	public void addGameEvent(GameEvent gameEvent)
+	{
+		addGameEvent(gameEvents.size(), gameEvent);
+	}
+	
+	public boolean containsStartGameEvent()
+	{
+		return gameEvents.size() > 0 && gameEvents.get(0).getGameEventEnum() == GameEventEnum.START_GAME;
+	}
+	
+	public boolean containsEndGameEvent()
+	{
+		return gameEvents.size() > 0 && gameEvents.get(gameEvents.size() - 1).getGameEventEnum() == GameEventEnum.END_GAME;
+	}
+	
+	public void addGameEvent(int pos, GameEvent gameEvent)
+	{
+		switch(gameEvent.getGameEventEnum())
+		{
+		case START_GAME:
+			if( pos == 0 && gameEvents.size() == 0 )
+			{
+				gameEvents.add(pos, gameEvent);
+			}
+			break;
+		case END_GAME:
+			if( pos == gameEvents.size() && !containsEndGameEvent() )
+			{
+				gameEvents.add(pos, gameEvent);
+			}
+			break;
+		default:
+			if( pos > 0 && pos < gameEvents.size() )
+			{
+				gameEvents.add(pos, gameEvent);
+			}
+			// Add game event to last element only if there's no END_GAME already present.
+			else if(pos > 0 && pos == gameEvents.size() && !containsEndGameEvent() )
+			{
+				gameEvents.add(pos, gameEvent);
+			}
+			break;
+		}
+	}
+	
+	public void removeGameEvent(int pos)
+	{
+		// Accept to remove start event only
+		// if it's the only event present.
+		if(pos > 0 && pos < gameEvents.size()
+		|| pos == 0 && gameEvents.size() == 1 )
+		{
+			gameEvents.remove(pos);
+		}
 	}
 	
 	public boolean hasMisconductPenalty(School school)

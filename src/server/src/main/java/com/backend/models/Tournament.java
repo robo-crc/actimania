@@ -136,7 +136,7 @@ public class Tournament
 	{
 		for(Game game : games)
 		{
-			if(!game.gameEvents.contains(GameEventEnum.START_GAME))
+			if(!game.getGameEvents().contains(GameEventEnum.START_GAME))
 			{
 				return game;
 			}

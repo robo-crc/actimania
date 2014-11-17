@@ -46,11 +46,11 @@ public class GameEventTests
 		
 		Game gameRetrieved = database.findOne(Game.class, game._id);
 		
-		Validate.isTrue(gameRetrieved.gameEvents.size() == 1);
+		Validate.isTrue(gameRetrieved.getGameEvents().size() == 1);
 		
-		Validate.isTrue(gameRetrieved.gameEvents.get(0).getGameEventEnum() == GameEventEnum.TARGET_HIT);
+		Validate.isTrue(gameRetrieved.getGameEvents().get(0).getGameEventEnum() == GameEventEnum.TARGET_HIT);
 		
-		TargetHitEvent targetHitRetrieved = (TargetHitEvent)gameRetrieved.gameEvents.get(0);
+		TargetHitEvent targetHitRetrieved = (TargetHitEvent)gameRetrieved.getGameEvents().get(0);
 		
 		Validate.isTrue(targetHitRetrieved.side.equals(targetHit.side));
 		Validate.isTrue(targetHitRetrieved.target.equals(targetHit.target));
