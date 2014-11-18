@@ -2,15 +2,21 @@ package com.backend.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.framework.helpers.Database;
 import com.framework.models.Essentials;
 import com.google.common.collect.Lists;
 
@@ -117,6 +123,37 @@ public class Game implements Comparable<Game>
 			}
 			break;
 		}
+	}
+	
+
+	public static void processEndGame(final ObjectId gameId)
+	{
+		ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+
+		scheduledExecutorService.schedule(
+			new Callable<GameEvent>() 
+			{
+				public GameEvent call() throws Exception 
+			    {
+					EndGameEvent endGameEvent = new EndGameEvent(DateTime.now());
+					Database database = new Database(Database.DatabaseType.PRODUCTION);
+					try
+					{
+						Game game = database.findOne(Game.class, gameId);
+						game.addGameEvent(endGameEvent);
+						database.save(game);
+					}
+					finally
+					{
+						database.close();
+					}
+					return endGameEvent;
+			    }
+			},
+		    10,
+		    TimeUnit.SECONDS);
+
+		scheduledExecutorService.shutdown();
 	}
 	
 	public void removeGameEvent(int pos)
@@ -234,7 +271,7 @@ public class Game implements Comparable<Game>
 	
 	public static Game getLiveGame(Essentials essentials)
 	{
-		return essentials.database.findOne(Game.class, "{ isLive : True }");
+		return essentials.database.findOne(Game.class, "{ isLive : true }");
 	}
 	
 	public static Game setLiveGame(Essentials essentials, ObjectId gameId)
@@ -271,7 +308,9 @@ public class Game implements Comparable<Game>
 		if(gameEvents.size() == 0)
 			return new DateTime(0);
 		
-		Duration timeSinceStart = new Duration(gameState.lastGameEvent.getTime(), gameEvents.get(0).getTime());
-		return new DateTime(getGameLength().getMillis() - timeSinceStart.getMillis());
+		Duration timeSinceStart = new Duration(gameEvents.get(0).getTime(), gameState.lastGameEvent.getTime());
+		long timeInGameMillis = getGameLength().getMillis() - timeSinceStart.getMillis();
+		timeInGameMillis = timeInGameMillis > 0 ? timeInGameMillis : 0;
+		return new DateTime(timeInGameMillis);
 	}
 }

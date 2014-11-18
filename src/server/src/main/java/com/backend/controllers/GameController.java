@@ -44,7 +44,7 @@ public class GameController extends HttpServlet
 			Game game = essentials.database.findOne(Game.class, gameId);
 			showPage(essentials, game);
 		}
-	}	
+	}
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -71,6 +71,8 @@ public class GameController extends HttpServlet
 				game = game.getGameInitialState();
 				
 				game.addGameEvent(new StartGameEvent(DateTime.now()));
+				
+				Game.processEndGame(gameId);
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.ACTUATOR_STATE_CHANGED.toString()) )
 			{
