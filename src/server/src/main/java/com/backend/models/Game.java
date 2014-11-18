@@ -150,7 +150,7 @@ public class Game implements Comparable<Game>
 					return endGameEvent;
 			    }
 			},
-		    10,
+		    getGameLength().getStandardSeconds(),
 		    TimeUnit.SECONDS);
 
 		scheduledExecutorService.shutdown();
