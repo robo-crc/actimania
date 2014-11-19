@@ -101,4 +101,24 @@ public class GameTests
 		game2.addGameEvent(new TargetHitEvent(SideEnum.BLUE, TargetEnum.MID, DateTime.now()));
 		Validate.isTrue(game2.getGameEvents().size() == 2);
 	}
+	
+	@Test
+	public void testEndGameEvent()
+	{
+		Game game = new Game(null, 0, DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), new ArrayList<School>(), new ArrayList<GameEvent>(), false);
+		game.addGameEvent(new StartGameEvent(DateTime.now()));
+		
+		Validate.isTrue(!game.containsEndGameEvent());
+		game.addGameEvent(new ActuatorStateChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.BLUE, DateTime.now()));
+		Validate.isTrue(!game.containsEndGameEvent());
+		game.addGameEvent(new ActuatorStateChangedEvent(SideEnum.BLUE, TargetEnum.MID, ActuatorStateEnum.BLUE, DateTime.now()));
+		Validate.isTrue(!game.containsEndGameEvent());
+		game.addGameEvent(new ActuatorStateChangedEvent(SideEnum.BLUE, TargetEnum.HIGH, ActuatorStateEnum.BLUE, DateTime.now()));
+		game.addGameEvent(new ActuatorStateChangedEvent(SideEnum.YELLOW, TargetEnum.LOW, ActuatorStateEnum.BLUE, DateTime.now()));
+		game.addGameEvent(new ActuatorStateChangedEvent(SideEnum.YELLOW, TargetEnum.MID, ActuatorStateEnum.BLUE, DateTime.now()));
+		Validate.isTrue(!game.containsEndGameEvent());
+		game.addGameEvent(new ActuatorStateChangedEvent(SideEnum.YELLOW, TargetEnum.HIGH, ActuatorStateEnum.BLUE, DateTime.now()));
+		
+		Validate.isTrue(game.containsEndGameEvent());
+	}
 }

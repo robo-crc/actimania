@@ -112,14 +112,21 @@ public class Game implements Comparable<Game>
 			}
 			break;
 		default:
-			if( pos > 0 && pos < gameEvents.size() )
+			if( pos > 0 && pos < gameEvents.size()
+				// Add game event to last element only if there's no END_GAME already present.
+				|| pos > 0 && pos == gameEvents.size() && !containsEndGameEvent())
 			{
 				gameEvents.add(pos, gameEvent);
-			}
-			// Add game event to last element only if there's no END_GAME already present.
-			else if(pos > 0 && pos == gameEvents.size() && !containsEndGameEvent() )
-			{
-				gameEvents.add(pos, gameEvent);
+				
+				// When all 6 actuator state are the same color, the game ends.
+				if(gameEvent.getGameEventEnum() == GameEventEnum.ACTUATOR_STATE_CHANGED)
+				{
+					ArrayList<GameState> gameStates = getGameStates();
+					if(GameState.areAllActuatorSameColor(gameStates.get(gameStates.size() - 1).actuatorsStates))
+					{
+						gameEvents.add(new EndGameEvent(DateTime.now()));
+					}
+				}
 			}
 			break;
 		}
