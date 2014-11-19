@@ -55,6 +55,16 @@ LocalizedString strLogout = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Logout", 
 		Locale.FRENCH, 	"Déconnexion"
 		), currentLocale);
+
+LocalizedString strSchools = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Schools", 
+		Locale.FRENCH, 	"Écoles"
+		), currentLocale);
+
+LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Schedule", 
+		Locale.FRENCH, 	"Horaire"
+		), currentLocale);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -136,7 +146,10 @@ LocalizedString strLogout = new LocalizedString(ImmutableMap.of(
 	<% 
 	} 
 	%>
-	
+	<br/>
+	<a href="../schedule"><%= strSchedule %></a>
+	<br/>
+	<a href="schools"><%= strSchools %></a>
 	<br/>
 	<a href="../logout"><%= strLogout %></a>
 </body>

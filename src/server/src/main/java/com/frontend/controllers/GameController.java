@@ -26,6 +26,12 @@ public class GameController extends HttpServlet
 	{
 		try(Essentials essentials = Essentials.createEssentials(request,  response))
 		{
+			essentials.request.setAttribute("isLoggedIn", Boolean.FALSE);
+			if(essentials.subject.isAuthenticated())
+			{
+				essentials.request.setAttribute("isLoggedIn", Boolean.TRUE);
+			}
+			
 			ObjectId gameId = Helpers.getParameter("gameId", ObjectId.class, essentials);
 			
 			Game game = essentials.database.findOne(Game.class, gameId);

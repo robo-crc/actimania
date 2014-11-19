@@ -75,7 +75,7 @@ public class ApplicationSpecific
 		
 		if(login.roles.contains(AuthorizationRole.admin.name()))
 		{
-			essentials.response.sendRedirect("admin/users");
+			essentials.response.sendRedirect("schedule");
 		}
 	}
 }

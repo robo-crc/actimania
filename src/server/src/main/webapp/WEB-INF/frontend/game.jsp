@@ -21,7 +21,8 @@
     pageEncoding="ISO-8859-1"%>
 
 <%
-	Game game = (Game) request.getAttribute("game");
+Game game = (Game) request.getAttribute("game");
+boolean isLoggedIn = ((Boolean) request.getAttribute("isLoggedIn")).booleanValue();
 
 Locale currentLocale = request.getLocale();
 
@@ -58,6 +59,11 @@ LocalizedString strBlueTeam = new LocalizedString(ImmutableMap.of(
 LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Yellow Team", 
 		Locale.FRENCH, 	"Équipe jaune"
+		), currentLocale);
+
+LocalizedString strGameAdministration = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Game administration", 
+		Locale.FRENCH, 	"Administration de la partie"
 		), currentLocale);
 %>
 
@@ -221,6 +227,12 @@ if(state.misconductPenalties.size() > 0)
 	</ul>
 </div>
 
+<% if( isLoggedIn )
+	{%>
+	<a href="admin/game?gameId=<%= game._id %>"><%= strGameAdministration %></a><br/>
+	<%
+	}
+	%>
 <a href="schedule"><%= strSchedule %></a><br/>
 <a href="ranking"><%= strRanking %></a>
 </body>

@@ -14,6 +14,8 @@
 <%
 Tournament tournament = (Tournament)request.getAttribute("tournament");
 
+String gamePrefix = (String)request.getAttribute("gamePrefix");
+
 Locale currentLocale = request.getLocale();
 
 LocalizedString strSchool = new LocalizedString(ImmutableMap.of( 	
@@ -94,7 +96,7 @@ for( Game game : tournament.games )
 	}
 %>
 <tr class="<%= game.isLive ? "isLive" : "" %>">
-	<td><a href="game?gameId=<%= game._id %>"><%= game.gameNumber %></a></td>
+	<td><a href="<%= gamePrefix %>game?gameId=<%= game._id %>"><%= game.gameNumber %></a></td>
 	<td><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></td>
 	<td>
 <%

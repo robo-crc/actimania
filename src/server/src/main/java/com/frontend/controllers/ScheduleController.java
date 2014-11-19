@@ -24,6 +24,12 @@ public class ScheduleController extends HttpServlet
 	{
 		try(Essentials essentials = Essentials.createEssentials(request,  response))
 		{
+			essentials.request.setAttribute("gamePrefix", "");
+			if(essentials.subject.isAuthenticated())
+			{
+				essentials.request.setAttribute("gamePrefix", "admin/");
+			}
+			
 			Tournament tournament = Tournament.getTournament(essentials);
 
 			essentials.request.setAttribute("tournament", tournament);

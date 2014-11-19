@@ -111,6 +111,16 @@ LocalizedString strTeam = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Équipe"
 		), currentLocale);
 
+LocalizedString strSchools = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Schools", 
+		Locale.FRENCH, 	"Écoles"
+		), currentLocale);
+
+LocalizedString strUsers = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Users", 
+		Locale.FRENCH, 	"Utilisateurs"
+		), currentLocale);
+
 LocalizedString strGameEvents = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Game events", 
 		Locale.FRENCH, 	"Événements de la partie"
@@ -149,6 +159,16 @@ LocalizedString strMisconductPenalty = new LocalizedString(ImmutableMap.of(
 LocalizedString strEndGame = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "End game", 
 		Locale.FRENCH, 	"Fin de partie"
+		), currentLocale);
+
+LocalizedString strGamePage = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Frontend game page", 
+		Locale.FRENCH, 	"Page de la partie publique"
+		), currentLocale);
+
+LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Schedule", 
+		Locale.FRENCH, 	"Horaire"
 		), currentLocale);
 %>
 
@@ -413,6 +433,14 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 		}
 		%>
 	</table>
+	<br/>
+	<a href="../game?gameId=<%= game._id %>"><%= strGamePage %></a>
+	<br/>
+	<a href="../schedule"><%= strSchedule %></a>
+	<br/>
+	<a href="schools"><%= strSchools %></a>
+	<br/>
+	<a href="users"><%= strUsers %></a>
 	<br/>
 	<a href="../logout"><%= strLogout %></a>
 </body>
