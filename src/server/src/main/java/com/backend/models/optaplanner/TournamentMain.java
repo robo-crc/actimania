@@ -27,12 +27,12 @@ public class TournamentMain
 	        	return;
 			}
 			
-			Duration TIME_BETWEEN_GAMES = new Duration(3 * 60 * 1000);
+			Duration TIME_BETWEEN_GAMES = new Duration(5 * 60 * 1000);
 			DateTime[] RoundStartHour = new DateTime[Tournament.BLOCK_NUMBERS];
-			RoundStartHour[0] = new DateTime(2015, 2, 5, 12, 0);
-			RoundStartHour[1] = new DateTime(2015, 2, 5, 18, 0);
-			RoundStartHour[2] = new DateTime(2015, 2, 6, 8, 0);
-			RoundStartHour[3] = new DateTime(2015, 2, 6, 13, 0);
+			RoundStartHour[0] = new DateTime(2015, 2, 12, 18, 30);
+			RoundStartHour[1] = new DateTime(2015, 2, 13, 9, 0);
+			RoundStartHour[2] = new DateTime(2015, 2, 13, 13, 30);
+			RoundStartHour[3] = new DateTime(2015, 2, 13, 18, 30);
 			
 			TournamentSolution solvedTournament = TournamentSolver.solve(essentials, Tournament.GAME_PER_SCHOOL / (Tournament.SCHOOLS_PER_TEAM * 2), Tournament.SCHOOLS_PER_TEAM * 2, "com/backend/models/optaplanner/TournamentSolverConfig.xml");
 			if(solvedTournament != null)
