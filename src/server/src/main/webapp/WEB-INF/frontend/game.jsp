@@ -108,7 +108,7 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
     <script>
     $(function() {
     	$('#game-slideshow').bjqs({
-    		width : 2825,
+    		width : 1000,
     		height : 700,
             responsive : false,
             showcontrols : false,
