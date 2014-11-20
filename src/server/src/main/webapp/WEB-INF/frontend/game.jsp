@@ -67,7 +67,8 @@ LocalizedString strGameAdministration = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 %>
 
-<%!public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
+<%!
+public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
 {
 	ActuatorStateEnum actuatorColor = state.actuatorsStates[side.ordinal()][target.ordinal()];
 	out.write("\t<img src=\"images/" + "side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".png\"" );
@@ -106,13 +107,15 @@ LocalizedString strGameAdministration = new LocalizedString(ImmutableMap.of(
 	
     <script>
     $(function() {
-    	$('#my-slideshow').bjqs({
+    	$('#game-slideshow').bjqs({
     		width : 2825,
-    		height : 1475,
-            responsive : true,
+    		height : 700,
+            responsive : false,
             showcontrols : false,
             automatic : false,
-            randomstart : false
+            randomstart : false,
+            centermarkers : false,
+            startAt : <%= game.getGameEvents().size() %>
         });
     });
     </script>
@@ -153,7 +156,7 @@ LocalizedString strGameAdministration = new LocalizedString(ImmutableMap.of(
 <div class="clear"></div>
 
 
-<div id="my-slideshow">
+<div id="game-slideshow">
 	<ul class="bjqs">
 	<!-- Slides Container -->
 		<%

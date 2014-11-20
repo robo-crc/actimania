@@ -118,6 +118,11 @@
                 if (settings.randomstart){
                     conf_random();
                 }
+                
+                if (settings.startAt){
+                	state.currentslide  = settings.startAt;
+                    state.currentindex  = settings.startAt-1;
+                }
 
                 // create and show controls
                 if( settings.showcontrols ){

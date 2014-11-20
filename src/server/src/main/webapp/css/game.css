@@ -4,7 +4,7 @@
 	float: left;
 	left: 100%;
 	margin-left: -100%;
-	width:85%;
+	width: 1000px;
 	z-index: 1;
 	padding-bottom: 3%;
 }
@@ -27,6 +27,12 @@
 	padding-left: 25%;
 }
 
+#game-slideshow
+{
+	padding-top : 15px;
+	margin-top : 30px;
+}
+
 .clear
 {
 	clear:both;
@@ -46,7 +52,7 @@ ol.bjqs-markers
 	position: absolute;
 	left: 0;
 	right: 0;
-	top: 20px;
+	top: -20px;
 }
 
 ol.bjqs-markers li
@@ -62,7 +68,7 @@ ol.bjqs-markers li
 	border-radius: 6px;
 	
 	cursor: pointer;
-	opacity: .4;
+	opacity: .9;
 	
 	-webkit-transition: background .5s, opacity .5s;
 	-moz-transition: background .5s, opacity .5s;
