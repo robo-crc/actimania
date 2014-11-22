@@ -168,6 +168,11 @@ public class GameState
 	{
 		ActuatorStateEnum actuatorValue = localActuatorStates[side.ordinal()][targetHit.ordinal()];
 		
+		if(actuatorValue == ActuatorStateEnum.CLOSED)
+		{
+			return 0;
+		}
+		
 		int numMultiplier = 0;
 		
 		for(ActuatorStateEnum actuator : localActuatorStates[side.ordinal()])

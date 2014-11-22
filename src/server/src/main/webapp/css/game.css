@@ -9,6 +9,64 @@
 	padding-bottom: 3%;
 }
 
+.targetValue
+{
+	position: absolute;
+	font-size: 3em;
+	z-index: 2;
+}
+
+.sideBLUEtargetLOW
+{
+	left: 18%;
+	top: 64%;
+}
+
+.sideBLUEtargetMID
+{
+	left: 18%;
+	top: 20%;
+}
+
+.sideBLUEtargetHIGH
+{
+	left: 8%;
+	top: 43%;
+}
+
+.sideYELLOWtargetLOW
+{
+	left: 78%;
+	top: 23%;
+}
+
+.sideYELLOWtargetMID
+{
+	left: 78%;
+	top: 64%;
+}
+
+.sideYELLOWtargetHIGH
+{
+	left: 88%;
+	top: 44%;
+}
+
+.actuatorCLOSED
+{
+	color: green;
+}
+
+.actuatorYELLOW
+{
+	color: yellow;
+}
+
+.actuatorBLUE
+{
+	color: blue;
+}
+
 .playfieldBackground
 {
 	z-index: 0;

@@ -92,8 +92,12 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 		}
 	}
 	out.write("\"/>\n");
-}%>
-
+	
+	int targetValue = GameState.calculateTargetHitValue(state.actuatorsStates, side, target);
+	
+	out.write("\t<div class=\"targetValue side" + side.name() + "target" + target.name() + " actuator" + actuatorColor.name() + "\">" + targetValue + "</div>" );
+}
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -109,7 +113,7 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
     $(function() {
     	$('#game-slideshow').bjqs({
     		width : 1000,
-    		height : 700,
+    		height : 900,
             responsive : false,
             showcontrols : false,
             automatic : false,
