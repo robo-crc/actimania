@@ -71,30 +71,21 @@ LocalizedString strGameAdministration = new LocalizedString(ImmutableMap.of(
 public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
 {
 	ActuatorStateEnum actuatorColor = state.actuatorsStates[side.ordinal()][target.ordinal()];
-	out.write("\t<img src=\"images/" + "side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".png\"" );
+	out.write("\t<img src=\"images/side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".png\"" );
 	
 	out.write(" class=\"fieldImage");
+	out.write("\"/>\n");
 
-	if(state.lastGameEvent.getGameEventEnum() == GameEventEnum.ACTUATOR_STATE_CHANGED)
-	{
-		ActuatorStateChangedEvent actuatorStateChanged = (ActuatorStateChangedEvent) state.lastGameEvent;
-		if(actuatorStateChanged.side == side && actuatorStateChanged.target == target)
-		{
-			out.write(" ActuatorChangedEvent");
-		}
-	}
-	else if(state.lastGameEvent.getGameEventEnum() == GameEventEnum.TARGET_HIT)
+	if(state.lastGameEvent.getGameEventEnum() == GameEventEnum.TARGET_HIT)
 	{
 		TargetHitEvent targetHitEvent = (TargetHitEvent) state.lastGameEvent;
-		if(targetHitEvent.side == side && targetHitEvent.target == target)
+		if(targetHitEvent.side == side && targetHitEvent.target == target && actuatorColor != ActuatorStateEnum.CLOSED)
 		{
-			out.write(" TargetHitEvent");
+			out.write("\t<img src=\"images/blip" + actuatorColor.name() + ".gif\" class=\"targetValue targetHit side" + side.name() + "target" + target.name() + "\">" );
 		}
 	}
-	out.write("\"/>\n");
 	
 	int targetValue = GameState.calculateTargetHitValue(state.actuatorsStates, side, target);
-	
 	out.write("\t<div class=\"targetValue side" + side.name() + "target" + target.name() + " actuator" + actuatorColor.name() + "\">" + targetValue + "</div>" );
 }
 %>
@@ -167,27 +158,11 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 		for(GameState state : game.getGameStates())
 		{
 			DateTime timeInGame = game.getTimeInGame(state);
-
-			boolean blueScored = false;
-			boolean yellowScored = false;
-			if(state.lastGameEvent.getGameEventEnum() == GameEventEnum.TARGET_HIT)
-			{
-				TargetHitEvent targetHitEvent = (TargetHitEvent) state.lastGameEvent;
-				ActuatorStateEnum targetHitColor = state.actuatorsStates[targetHitEvent.side.ordinal()][targetHitEvent.target.ordinal()];
-				if( targetHitColor == ActuatorStateEnum.BLUE )
-				{
-					blueScored = true;
-				}
-				else if(targetHitColor == ActuatorStateEnum.YELLOW)
-				{
-					yellowScored = true;
-				}
-			}
 		%>
 		<li>
 			<div class="timer"><%= timeInGame.getMinuteOfHour() + ":" + (timeInGame.getSecondOfMinute() < 10 ? "0" : "") + timeInGame.getSecondOfMinute() %></div>
-			<div class="blueScore<% if(blueScored) out.write("teamScored"); %>"><%= state.blueScore %></div>
-			<div class="yellowScore<% if(blueScored) out.write("teamScored");%>"><%= state.yellowScore %></div>
+			<div class="blueScore"><%= state.blueScore %></div>
+			<div class="yellowScore"><%= state.yellowScore %></div>
 			<br/>
 <%
 if(state.penalties.size() > 0)

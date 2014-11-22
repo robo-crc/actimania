@@ -16,6 +16,12 @@
 	z-index: 2;
 }
 
+.targetHit
+{
+	margin-left: -52px;
+	margin-top: -45px;
+}
+
 .sideBLUEtargetLOW
 {
 	left: 18%;
