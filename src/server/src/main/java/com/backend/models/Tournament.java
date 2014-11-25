@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.TreeMap;
 
-import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -136,7 +135,7 @@ public class Tournament
 	{
 		for(Game game : games)
 		{
-			if(!game.getGameEvents().contains(GameEventEnum.START_GAME))
+			if(game.getGameEvents().size() == 0)
 			{
 				return game;
 			}

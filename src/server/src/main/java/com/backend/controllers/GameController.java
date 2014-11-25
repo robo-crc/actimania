@@ -15,6 +15,7 @@ import com.backend.models.Game;
 import com.backend.models.School;
 import com.backend.models.GameEvent.ActuatorStateChangedEvent;
 import com.backend.models.GameEvent.EndGameEvent;
+import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
@@ -46,23 +47,46 @@ public class GameController extends HttpServlet
 		}
 	}
 	
+	private void addToGame(Essentials essentials, Game game, GameEvent gameEvent)
+	{
+		// If we don't have a insertAfter, it means we want to add it to the end
+		if( essentials.request.getAttribute("insertAfter") != null)
+		{
+			int insertAfter = Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
+			game.addGameEvent(insertAfter, gameEvent);
+		}
+		else
+		{
+			game.addGameEvent(gameEvent);
+		}
+	}
+	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		try(Essentials essentials = Essentials.createEssentials(request,  response))
 		{
-			ObjectId gameId = Helpers.getParameter("gameId", ObjectId.class, essentials);
-			Game game = essentials.database.findOne(Game.class, gameId);
+			ObjectId gameId = null;
+			Game game = null;
+			String gameIdString = Helpers.getParameter("gameId", String.class, essentials);
+			if( gameIdString == null )
+			{
+				game = Game.getLiveGame(essentials);
+				// Currently no live game, so nothing to process.
+				if( game == null )
+				{
+					return;
+				}
+				gameId = game._id;
+			}
+			else
+			{
+				gameId = Helpers.getParameter("gameId", ObjectId.class, essentials);
+				game = essentials.database.findOne(Game.class, gameId);
+			}
 			
 			String 	gameEvent	= Helpers.getParameter("gameEvent", String.class, essentials);
 			
-			// Possible actions
-			// Start game
-			// Penalty CRUD
-			// Point modifier CRUD
-			// Target hit event
-			// Actuator hit event
-			// End game
 			boolean actionProcessed = true;
 			if( gameEvent.equalsIgnoreCase(GameEventEnum.START_GAME.toString()) )
 			{
@@ -70,66 +94,60 @@ public class GameController extends HttpServlet
 				// Reset any state the game could had previously.
 				game = game.getGameInitialState();
 				
-				game.addGameEvent(new StartGameEvent(DateTime.now()));
+				addToGame(essentials, game, new StartGameEvent(DateTime.now()));
 				
-				Game.processEndGame(gameId);
+				Game.createEndGameCallback(gameId);
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.ACTUATOR_STATE_CHANGED.toString()) )
 			{
-				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
 				SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
 				TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
 				ActuatorStateEnum actuatorState = ActuatorStateEnum.valueOf(Helpers.getParameter("actuatorState", String.class, essentials));
 				
-				game.addGameEvent(insertAfter, new ActuatorStateChangedEvent(side, target, actuatorState, DateTime.now()));
+				addToGame(essentials, game, new ActuatorStateChangedEvent(side, target, actuatorState, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.TARGET_HIT.toString()) )
 			{
-				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
 				SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
 				TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
 				
-				game.addGameEvent(insertAfter, new TargetHitEvent(side, target, DateTime.now()));
+				addToGame(essentials, game, new TargetHitEvent(side, target, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.SCHOOL_PENALTY.toString()) )
 			{
-				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
 				ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
 				Integer points = Helpers.getParameter("points", Integer.class, essentials);
 				School school = essentials.database.findOne(School.class, schoolId);
 				
-				game.addGameEvent(insertAfter, new SchoolPenaltyEvent(school, points, DateTime.now()));
+				addToGame(essentials, game, new SchoolPenaltyEvent(school, points, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.TEAM_PENALTY.toString()) )
 			{
-				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
 				TeamEnum team = TeamEnum.valueOf(Helpers.getParameter("team", String.class, essentials));
 				Integer points = Helpers.getParameter("points", Integer.class, essentials);
 								
-				game.addGameEvent(insertAfter, new TeamPenaltyEvent(team, points, DateTime.now()));
+				addToGame(essentials, game, new TeamPenaltyEvent(team, points, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.MISCONDUCT_PENALTY.toString()) )
 			{
-				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
 				ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
 				School school = essentials.database.findOne(School.class, schoolId);
 				
-				game.addGameEvent(insertAfter, new MisconductPenaltyEvent(school, DateTime.now()));
+				addToGame(essentials, game, new MisconductPenaltyEvent(school, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.POINT_MODIFIER.toString()) )
 			{
-				int insertAfter 	= Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
 				TeamEnum team = TeamEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
 				Integer points = Helpers.getParameter("points", Integer.class, essentials);
 				LocalizedString comment = new LocalizedString(essentials, 
 						Helpers.getParameter("commentEn", String.class, essentials),
 						Helpers.getParameter("commentFr", String.class, essentials));
 				
-				game.addGameEvent(insertAfter, new PointModifierEvent(team, points, comment, DateTime.now()));
+				addToGame(essentials, game, new PointModifierEvent(team, points, comment, DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.END_GAME.toString()) )
 			{
-				game.addGameEvent(new EndGameEvent(DateTime.now()));
+				addToGame(essentials, game, new EndGameEvent(DateTime.now()));
 			}
 			else if( gameEvent.equalsIgnoreCase("delete") )
 			{

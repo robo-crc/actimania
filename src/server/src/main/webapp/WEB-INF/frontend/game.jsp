@@ -23,6 +23,7 @@
 <%
 Game game = (Game) request.getAttribute("game");
 boolean isLoggedIn = ((Boolean) request.getAttribute("isLoggedIn")).booleanValue();
+boolean isLive = ((Boolean) request.getAttribute("isLive")).booleanValue();
 
 Locale currentLocale = request.getLocale();
 
@@ -64,6 +65,11 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 LocalizedString strGameAdministration = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Game administration", 
 		Locale.FRENCH, 	"Administration de la partie"
+		), currentLocale);
+
+LocalizedString strLiveHeader = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, " - Live!", 
+		Locale.FRENCH, 	" - En cours!"
 		), currentLocale);
 %>
 
@@ -117,7 +123,7 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 </head>
 <body>
 
-<h1><%=strGame + " " + String.valueOf(game.gameNumber)%></h1>
+<h1><%=strGame + " " + String.valueOf(game.gameNumber)%><% if(isLive) out.write(strLiveHeader.get(currentLocale)); %></h1>
 <div class="scheduledTime"><%=Helpers.dateTimeFormatter.print(game.scheduledTime)%></div>
 
 <div class="team">

@@ -133,7 +133,7 @@ public class Game implements Comparable<Game>
 	}
 	
 
-	public static void processEndGame(final ObjectId gameId)
+	public static void createEndGameCallback(final ObjectId gameId)
 	{
 		ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
@@ -294,6 +294,7 @@ public class Game implements Comparable<Game>
 		if(game != null)
 		{
 			Game newLive = new Game(game._id, game.gameNumber, game.scheduledTime, game.gameType, game.blueTeam, game.yellowTeam, game.gameEvents, true);
+			essentials.database.save(newLive);
 			return newLive;
 		}
 		
@@ -302,7 +303,7 @@ public class Game implements Comparable<Game>
 	
 	public Game getGameInitialState()
 	{
-		return new Game(_id, gameNumber, scheduledTime, gameType, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false);
+		return new Game(_id, gameNumber, scheduledTime, gameType, blueTeam, yellowTeam, new ArrayList<GameEvent>(), isLive);
 	}
 	
 	public static Duration getGameLength()
