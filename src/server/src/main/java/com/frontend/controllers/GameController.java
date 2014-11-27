@@ -22,49 +22,56 @@ import com.framework.models.Essentials;
 public class GameController extends HttpServlet 
 {
 	private static final long serialVersionUID = 357914572265696822L;
-	
+
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		try(Essentials essentials = Essentials.createEssentials(request,  response))
+		try (Essentials essentials = Essentials.createEssentials(request, response)) 
 		{
 			essentials.request.setAttribute("isLoggedIn", Boolean.FALSE);
-			if(essentials.subject.isAuthenticated())
+			if (essentials.subject.isAuthenticated()) 
 			{
 				essentials.request.setAttribute("isLoggedIn", Boolean.TRUE);
 			}
-			
+
+			essentials.request.setAttribute("liveRefresh", Boolean.FALSE);
 			Game liveGame = Game.getLiveGame(essentials);
-			
+
 			Game game = null;
 			String gameIdString = Helpers.getParameter("gameId", String.class, essentials);
-			if( gameIdString == null )
+			if (gameIdString == null) 
 			{
 				game = liveGame;
-				
-				if(game == null)
+
+				if (game == null) 
 				{
-					// There's no live game actually, show the next planned game.
+					// There's no live game actually, show the next planned
+					// game.
 					Tournament tournament = Tournament.getTournament(essentials);
 					game = Tournament.getNextGame(tournament.games);
 				}
-			}
-			else
+				
+				if( game != null )
+				{
+					essentials.request.setAttribute("liveRefresh", Boolean.TRUE);
+				}
+			} 
+			else 
 			{
 				ObjectId gameId = Helpers.getParameter("gameId", ObjectId.class, essentials);
-				if(gameId != null)
+				if (gameId != null) 
 				{
 					game = essentials.database.findOne(Game.class, gameId);
 				}
 			}
-			
-			if( game != null )
+
+			if (game != null) 
 			{
 				essentials.request.setAttribute("isLive", Boolean.valueOf(game.equals(liveGame)));
 				essentials.request.setAttribute("game", game);
 				essentials.request.getRequestDispatcher("/WEB-INF/frontend/game.jsp").forward(essentials.request, essentials.response);
-			}
-			else
+			} 
+			else 
 			{
 				// Game not found, display the schedule.
 				essentials.response.sendRedirect("schedule");

@@ -67,12 +67,18 @@ LocalizedString strYellowScore = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Yellow score", 
 		Locale.FRENCH, 	"Pointage équipe jaune"
 		), currentLocale);
+
+LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Live game", 
+		Locale.FRENCH, 	"Partie en cours"
+		), currentLocale);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="shortcut icon" href="images/favicon.ico" />
 <title><%= strSchedule %></title>
 </head>
 <body>
@@ -126,6 +132,7 @@ for( School school : game.yellowTeam )
 %>
 </table>
 
-<a href="ranking"><%= strRanking %></a>
+<a href="ranking"><%= strRanking %></a><br/>
+<a href="live"><%= strLiveGame %></a>
 </body>
 </html>

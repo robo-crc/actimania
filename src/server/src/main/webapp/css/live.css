@@ -1,0 +1,15 @@
+html, body 
+{ 
+	height: 100%; 
+}
+
+.twitchStream
+{
+    display: block;   
+    margin: auto;
+}
+
+.gameFrame
+{
+    height: 1500px;
+}

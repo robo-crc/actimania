@@ -80,9 +80,9 @@ public class Game implements Comparable<Game>
 		return new ArrayList<GameEvent>(gameEvents);
 	}
 	
-	public void addGameEvent(GameEvent gameEvent)
+	public boolean addGameEvent(GameEvent gameEvent)
 	{
-		addGameEvent(gameEvents.size(), gameEvent);
+		return addGameEvent(gameEvents.size(), gameEvent);
 	}
 	
 	public boolean containsStartGameEvent()
@@ -95,20 +95,23 @@ public class Game implements Comparable<Game>
 		return gameEvents.size() > 0 && gameEvents.get(gameEvents.size() - 1).getGameEventEnum() == GameEventEnum.END_GAME;
 	}
 	
-	public void addGameEvent(int pos, GameEvent gameEvent)
+	public boolean addGameEvent(int pos, GameEvent gameEvent)
 	{
+		boolean added = false;
 		switch(gameEvent.getGameEventEnum())
 		{
 		case START_GAME:
 			if( pos == 0 && gameEvents.size() == 0 )
 			{
 				gameEvents.add(pos, gameEvent);
+				added = true;
 			}
 			break;
 		case END_GAME:
 			if( pos == gameEvents.size() && !containsEndGameEvent() )
 			{
 				gameEvents.add(pos, gameEvent);
+				added = true;
 			}
 			break;
 		default:
@@ -117,6 +120,7 @@ public class Game implements Comparable<Game>
 				|| pos > 0 && pos == gameEvents.size() && !containsEndGameEvent())
 			{
 				gameEvents.add(pos, gameEvent);
+				added = true;
 				
 				// When all 6 actuator state are the same color, the game ends.
 				if(gameEvent.getGameEventEnum() == GameEventEnum.ACTUATOR_STATE_CHANGED)
@@ -130,6 +134,8 @@ public class Game implements Comparable<Game>
 			}
 			break;
 		}
+		
+		return added;
 	}
 	
 

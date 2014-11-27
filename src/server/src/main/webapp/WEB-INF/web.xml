@@ -24,7 +24,6 @@
     </filter-mapping>
     
     <welcome-file-list>
-        <welcome-file>fe_home.jsp</welcome-file>
+        <welcome-file>schedule.jsp</welcome-file>
     </welcome-file-list>
-    
 </web-app>

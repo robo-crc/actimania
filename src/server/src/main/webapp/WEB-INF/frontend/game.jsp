@@ -24,6 +24,7 @@
 Game game = (Game) request.getAttribute("game");
 boolean isLoggedIn = ((Boolean) request.getAttribute("isLoggedIn")).booleanValue();
 boolean isLive = ((Boolean) request.getAttribute("isLive")).booleanValue();
+boolean liveRefresh = ((Boolean) request.getAttribute("liveRefresh")).booleanValue();
 
 Locale currentLocale = request.getLocale();
 
@@ -100,6 +101,7 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="shortcut icon" href="images/favicon.ico" />
 <title><%=strGame%></title>
 <link rel="stylesheet" type="text/css" href="css/game.css"/>
 <link rel="stylesheet" type="text/css" href="css/bjqs.css"/>
@@ -119,6 +121,29 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
             startAt : <%= game.getGameEvents().size() %>
         });
     });
+    
+    <% 
+    if(liveRefresh || isLive) 
+    {
+    %>
+    function refreshPage() {
+        var source = new EventSource('gameRefresh');
+        source.onopen = function(event) 
+        {
+            console.log("eventsource opened!");
+        };
+
+        source.onmessage = function(event) 
+        {
+           	var data = event.data;
+            location.reload();
+        };
+    }
+    window.addEventListener("load", refreshPage);
+    <%
+    }
+    %>
+    
     </script>
 </head>
 <body>
@@ -155,7 +180,6 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 </div>
 
 <div class="clear"></div>
-
 
 <div id="game-slideshow">
 	<ul class="bjqs">

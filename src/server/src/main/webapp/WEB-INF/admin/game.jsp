@@ -176,6 +176,7 @@ LocalizedString strSchedule = new LocalizedString(ImmutableMap.of(
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="shortcut icon" href="images/favicon.ico" />
 <title><%= strGameAdmin %></title>
 <link rel="icon" type="image/png" href="favicon.png">
 
@@ -337,7 +338,7 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 	 <% } %>
 		</select>
 		<br/>
-		<%= strPointDeduction %><input class="spinner" name="points" />
+		<%= strPointDeduction %><input class="spinner" name="points" value="0" />
 		<br/>
 		<% outputAddAfter(game, strAddAfter, out); %>
 		<br/>
@@ -356,7 +357,7 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 	 <% } %>
 		</select>
 		<br/>
-		<%= strPointDeduction %><input class="spinner" name="points" />
+		<%= strPointDeduction %><input class="spinner" name="points" value="0" />
 		<br/>
 		<% outputAddAfter(game, strAddAfter, out); %>
 		<br/>

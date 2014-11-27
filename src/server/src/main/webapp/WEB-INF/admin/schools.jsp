@@ -63,8 +63,7 @@ LocalizedString strSchedule = new LocalizedString(ImmutableMap.of(
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><%= strAddSchool %></title>
-<link rel="icon" type="image/png" href="favicon.png">
-
+<link rel="shortcut icon" href="images/favicon.ico" />
 </head>
 <body>
 	<%

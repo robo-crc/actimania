@@ -49,15 +49,22 @@ public class GameController extends HttpServlet
 	
 	private void addToGame(Essentials essentials, Game game, GameEvent gameEvent)
 	{
+		boolean addSuccess = false;
 		// If we don't have a insertAfter, it means we want to add it to the end
-		if( essentials.request.getAttribute("insertAfter") != null)
+		if( essentials.request.getParameter("insertAfter") != null)
 		{
 			int insertAfter = Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
-			game.addGameEvent(insertAfter, gameEvent);
+			addSuccess = game.addGameEvent(insertAfter, gameEvent);
 		}
 		else
 		{
-			game.addGameEvent(gameEvent);
+			addSuccess = game.addGameEvent(gameEvent);
+		}
+		
+		// Something has been added to game event. Auto-refresh the page for the clients.
+		if(addSuccess)
+		{
+			com.frontend.controllers.GameRefreshController.setRefreshNeeded(true);
 		}
 	}
 	
