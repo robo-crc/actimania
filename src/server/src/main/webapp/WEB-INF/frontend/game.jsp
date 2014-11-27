@@ -105,8 +105,11 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 <title><%=strGame%></title>
 <link rel="stylesheet" type="text/css" href="css/game.css"/>
 <link rel="stylesheet" type="text/css" href="css/bjqs.css"/>
-    <script type="text/javascript" src="jquery/jquery.js"></script>
-    <script type="text/javascript" src="jquery/bjqs-1.3.js"></script>
+<link rel="stylesheet" type="text/css" href="css/jquery.countdown.css"/>
+<script type="text/javascript" src="jquery/jquery.js"></script>
+<script type="text/javascript" src="jquery/bjqs-1.3.js"></script>
+<script type="text/javascript" src="jquery/jquery.plugin.min.js"></script> 
+<script type="text/javascript" src="jquery/jquery.countdown.min.js"></script>
 	
     <script>
     $(function() {
@@ -120,22 +123,30 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
             centermarkers : false,
             startAt : <%= game.getGameEvents().size() %>
         });
+    
+	    <%
+	    boolean hasCountdown = false;
+	    ArrayList<GameState> gameStates = game.getGameStates();
+	    
+		if(isLive && gameStates.size() > 0 && gameStates.get(gameStates.size() - 1).lastGameEvent.getGameEventEnum() != GameEventEnum.END_GAME)
+		{
+			hasCountdown = true; 
+			
+			out.write("var liftoffTime = new Date(" + (game.getGameEvents().get(0).getTime().plus(Game.getGameLength())).getMillis() + ");\n" );
+			out.write("$('.countdown').countdown({until: liftoffTime, compact: true, layout: '{mn}{sep}{snn}', description: ''})");
+		}
+	    %>
     });
     
-    <% 
+    <%
     if(liveRefresh || isLive) 
     {
     %>
     function refreshPage() {
         var source = new EventSource('gameRefresh');
-        source.onopen = function(event) 
-        {
-            console.log("eventsource opened!");
-        };
 
         source.onmessage = function(event) 
         {
-           	var data = event.data;
             location.reload();
         };
     }
@@ -185,12 +196,21 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 	<ul class="bjqs">
 	<!-- Slides Container -->
 		<%
-		for(GameState state : game.getGameStates())
+		for(int i = 0; i < gameStates.size(); i++)
 		{
+			GameState state = gameStates.get(i);
 			DateTime timeInGame = game.getTimeInGame(state);
+			
 		%>
 		<li>
-			<div class="timer"><%= timeInGame.getMinuteOfHour() + ":" + (timeInGame.getSecondOfMinute() < 10 ? "0" : "") + timeInGame.getSecondOfMinute() %></div>
+			<div class="timer
+			<% 
+			if(hasCountdown && i == gameStates.size() - 1) 
+			{ 
+				out.write("countdown"); 
+			}%>">
+				<%= timeInGame.getMinuteOfHour() + ":" + (timeInGame.getSecondOfMinute() < 10 ? "0" : "") + timeInGame.getSecondOfMinute() %>
+			</div>
 			<div class="blueScore"><%= state.blueScore %></div>
 			<div class="yellowScore"><%= state.yellowScore %></div>
 			<br/>
@@ -215,6 +235,17 @@ if(state.misconductPenalties.size() > 0)
 	{
 		out.print(school.name + "<br/>");
 	}
+}
+%>
+	
+<%
+if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
+{
+%>
+	<audio autoplay>
+		<source src="sounds/horn.mp3" type="audio/mpeg">
+	</audio>
+<%
 }
 %>
 			<br/>

@@ -207,9 +207,10 @@ LocalizedString strCommentFrench = new LocalizedString(ImmutableMap.of(
 
 <script>
 $(document).ready(function(){
-	$( ".spinner" ).spinner({ min: 0 });
+	$( ".spinner" ).spinner();
 	$( ".spinner" ).numeric();
 });
+
 </script>
 
 </head>
