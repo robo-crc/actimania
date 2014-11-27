@@ -43,7 +43,7 @@ public class FakeTournament
 			Tournament tournament = Tournament.getTournament(essentials);
 			for(int i = 0; i < tournament.games.size(); i++)
 			{
-				Game currentGame = tournament.games.get(i).getGameInitialState();
+				Game currentGame = tournament.games.get(i).getInitialState();
 				database.save(currentGame);
 			}
 		}
@@ -58,7 +58,7 @@ public class FakeTournament
 		Tournament tournament = Tournament.getTournament(essentials);
 		for(int i = 0; i < tournament.games.size() / 2; i++)
 		{
-			Game currentGame = tournament.games.get(i).getGameInitialState();
+			Game currentGame = tournament.games.get(i).getInitialState();
 			currentGame.addGameEvent(new StartGameEvent(DateTime.now()));
 			
 			int nbEvents = random.nextInt(30) + 20;

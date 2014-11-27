@@ -17,7 +17,9 @@ import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.helpers.Database;
+import com.framework.helpers.Database.DatabaseType;
 import com.framework.models.Essentials;
+import com.frontend.controllers.GameRefreshController;
 import com.google.common.collect.Lists;
 
 public class Game implements Comparable<Game>
@@ -31,6 +33,8 @@ public class Game implements Comparable<Game>
 	private final ArrayList<GameEvent> 		gameEvents;
 	public final boolean					isLive;
 
+	public final static Duration END_LIVE_DELAY	= new Duration(60 * 1000);
+	
 	public Game(
 			@JsonProperty("_id")					ObjectId 					_gameId,
 			@JsonProperty("gameNumber")				int 						_gameNumber,
@@ -111,6 +115,7 @@ public class Game implements Comparable<Game>
 			if( pos == gameEvents.size() && !containsEndGameEvent() )
 			{
 				gameEvents.add(pos, gameEvent);
+				createEndLiveCallback(_id, DatabaseType.PRODUCTION);
 				added = true;
 			}
 			break;
@@ -138,6 +143,34 @@ public class Game implements Comparable<Game>
 		return added;
 	}
 	
+	public static void createEndLiveCallback(final ObjectId gameId, final Database.DatabaseType databaseType)
+	{
+		ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+
+		scheduledExecutorService.schedule(
+			new Callable<Boolean>() 
+			{
+				public Boolean call() throws Exception 
+			    {
+					Database database = new Database(databaseType);
+					try
+					{
+						Game.setLiveGame(database, gameId, false);
+						GameRefreshController.setRefreshNeeded(true);
+					}
+					finally
+					{
+						database.close();
+					}
+					
+					return Boolean.TRUE;
+			    }
+			},
+			END_LIVE_DELAY.getStandardSeconds(),
+		    TimeUnit.SECONDS);
+
+		scheduledExecutorService.shutdown();
+	}
 
 	public static void createEndGameCallback(final ObjectId gameId)
 	{
@@ -282,32 +315,41 @@ public class Game implements Comparable<Game>
 		return games;
 	}
 	
-	public static Game getLiveGame(Essentials essentials)
+	public static Game getLiveGame(Database database)
 	{
-		return essentials.database.findOne(Game.class, "{ isLive : true }");
+		return database.findOne(Game.class, "{ isLive : true }");
 	}
 	
-	public static Game setLiveGame(Essentials essentials, ObjectId gameId)
+	public static Game setLiveGame(Database database, ObjectId gameId, boolean isLive)
 	{
-		Game currentLive = getLiveGame(essentials);
-		if(currentLive != null)
+		if(isLive)
 		{
-			Game nonLive = new Game(currentLive._id, currentLive.gameNumber, currentLive.scheduledTime, currentLive.gameType, currentLive.blueTeam, currentLive.yellowTeam, currentLive.gameEvents, false);
-			essentials.database.save(nonLive);
+			// Cannot have 2 simultaneous live game.
+			Game currentLive = getLiveGame(database);
+			if(currentLive != null)
+			{
+				Game nonLive = setLiveGame(currentLive, false);
+				database.save(nonLive);
+			}
 		}
-		
-		Game game = essentials.database.findOne(Game.class, gameId);
+
+		Game game = database.findOne(Game.class, gameId);
 		if(game != null)
 		{
-			Game newLive = new Game(game._id, game.gameNumber, game.scheduledTime, game.gameType, game.blueTeam, game.yellowTeam, game.gameEvents, true);
-			essentials.database.save(newLive);
+			Game newLive = setLiveGame(game, isLive);
+			database.save(newLive);
 			return newLive;
 		}
-		
+	
 		return null;
 	}
 	
-	public Game getGameInitialState()
+	private static Game setLiveGame(Game game, boolean isLive)
+	{
+		return new Game(game._id, game.gameNumber, game.scheduledTime, game.gameType, game.blueTeam, game.yellowTeam, game.gameEvents, isLive);
+	}
+	
+	public Game getInitialState()
 	{
 		return new Game(_id, gameNumber, scheduledTime, gameType, blueTeam, yellowTeam, new ArrayList<GameEvent>(), isLive);
 	}

@@ -170,6 +170,26 @@ LocalizedString strSchedule = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Schedule", 
 		Locale.FRENCH, 	"Horaire"
 		), currentLocale);
+
+LocalizedString strPointModifier = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Point Modifier", 
+		Locale.FRENCH, 	"Modifcation de points"
+		), currentLocale);
+
+LocalizedString strPoints = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Points", 
+		Locale.FRENCH, 	"Points"
+		), currentLocale);
+
+LocalizedString strCommentEnglish = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Comment in english", 
+		Locale.FRENCH, 	"Commentaire en anglais"
+		), currentLocale);
+
+LocalizedString strCommentFrench = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Comment in french", 
+		Locale.FRENCH, 	"Commentaire en français"
+		), currentLocale);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -358,6 +378,27 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 		</select>
 		<br/>
 		<%= strPointDeduction %><input class="spinner" name="points" value="0" />
+		<br/>
+		<% outputAddAfter(game, strAddAfter, out); %>
+		<br/>
+		<input type="submit" value="<%= strAdd %>" />
+	</form>
+	
+	<form method="post">
+		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.POINT_MODIFIER.toString() %>" />
+		<input type="hidden" name="id" value="<%= game._id %>" />
+		<h2><%= strPointModifier %></h2>
+		<%= strTeam %>
+		<select name="team">
+	<% 	for(TeamEnum teamEnum : TeamEnum.values())
+		{ %>
+			<option value="<%= teamEnum.name() %>"> <%= teamEnum.name() %></option>
+	 <% } %>
+		</select>
+		<br/>
+		<%= strPoints %><input class="spinner" name="points" value="0" /><br/>
+		<%= strCommentEnglish %><input type="text" name="commentEn" /><br/>
+		<%= strCommentFrench %><input type="text" name="commentFr" />
 		<br/>
 		<% outputAddAfter(game, strAddAfter, out); %>
 		<br/>

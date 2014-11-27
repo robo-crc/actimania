@@ -26,23 +26,23 @@ public class GameState
 	@JsonIgnore
 	public static final int[] TARGET_VALUE = { 10, 20, 40 };
 	
-	public final ObjectId 			_id;
-	public final ActuatorStateEnum[][] 	actuatorsStates;
-	public final GameEvent			lastGameEvent;
-	public final int 				blueScore;
-	public final int 				yellowScore;
+	public final ObjectId 					_id;
+	public final ActuatorStateEnum[][] 		actuatorsStates;
+	public final GameEvent					lastGameEvent;
+	public final int 						blueScore;
+	public final int 						yellowScore;
 	
 	public final ArrayList<SchoolPenalty>	penalties;
-	public final ArrayList<School>	misconductPenalties;
+	public final ArrayList<School>			misconductPenalties;
 	
 	public GameState(
-			@JsonProperty("_id")					ObjectId 				_gameEventId,
-			@JsonProperty("actuatorsStates")		ActuatorStateEnum[][]	_actuatorsStates,
-			@JsonProperty("lastGameEvent")			GameEvent				_lastGameEvent,
-			@JsonProperty("blueScore")				int 					_blueScore,
-			@JsonProperty("yellowScore")			int 					_yellowScore,
-			@JsonProperty("penalties")				ArrayList<SchoolPenalty>		_penalties,
-			@JsonProperty("misconductPenalties")	ArrayList<School>		_misconductPenalties
+			@JsonProperty("_id")					ObjectId 					_gameEventId,
+			@JsonProperty("actuatorsStates")		ActuatorStateEnum[][]		_actuatorsStates,
+			@JsonProperty("lastGameEvent")			GameEvent					_lastGameEvent,
+			@JsonProperty("blueScore")				int 						_blueScore,
+			@JsonProperty("yellowScore")			int 						_yellowScore,
+			@JsonProperty("penalties")				ArrayList<SchoolPenalty>	_penalties,
+			@JsonProperty("misconductPenalties")	ArrayList<School>			_misconductPenalties
 			)
 	{
 		_id 				= _gameEventId;
@@ -96,8 +96,8 @@ public class GameState
 			localBlueScore	 = previousState.blueScore;
 			localYellowScore = previousState.yellowScore;
 			
-			localPenalties 				= previousState.penalties;
-			localMisconductPenalties	= previousState.misconductPenalties;
+			localPenalties 				= new ArrayList<SchoolPenalty>(previousState.penalties);
+			localMisconductPenalties	= new ArrayList<School>(previousState.misconductPenalties);
 
 			if(gameEvent.getGameEventEnum() == GameEventEnum.TARGET_HIT)
 			{
@@ -139,11 +139,11 @@ public class GameState
 				TeamPenaltyEvent teamPenaltyEvent = (TeamPenaltyEvent) gameEvent;
 				if(teamPenaltyEvent.team == TeamEnum.BLUE)
 				{
-					localBlueScore += teamPenaltyEvent.pointsDeduction;
+					localBlueScore -= teamPenaltyEvent.pointsDeduction;
 				}
 				else if(teamPenaltyEvent.team == TeamEnum.YELLOW)
 				{
-					localYellowScore += teamPenaltyEvent.pointsDeduction;
+					localYellowScore -= teamPenaltyEvent.pointsDeduction;
 				}
 			}
 			else if(gameEvent.getGameEventEnum() == GameEventEnum.MISCONDUCT_PENALTY)

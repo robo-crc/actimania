@@ -35,7 +35,7 @@ public class GameController extends HttpServlet
 			}
 
 			essentials.request.setAttribute("liveRefresh", Boolean.FALSE);
-			Game liveGame = Game.getLiveGame(essentials);
+			Game liveGame = Game.getLiveGame(essentials.database);
 
 			Game game = null;
 			String gameIdString = Helpers.getParameter("gameId", String.class, essentials);

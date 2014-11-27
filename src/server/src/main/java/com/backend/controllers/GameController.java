@@ -78,7 +78,7 @@ public class GameController extends HttpServlet
 			String gameIdString = Helpers.getParameter("gameId", String.class, essentials);
 			if( gameIdString == null )
 			{
-				game = Game.getLiveGame(essentials);
+				game = Game.getLiveGame(essentials.database);
 				// Currently no live game, so nothing to process.
 				if( game == null )
 				{
@@ -97,9 +97,9 @@ public class GameController extends HttpServlet
 			boolean actionProcessed = true;
 			if( gameEvent.equalsIgnoreCase(GameEventEnum.START_GAME.toString()) )
 			{
-				game = Game.setLiveGame(essentials, game._id);
+				game = Game.setLiveGame(essentials.database, game._id, true);
 				// Reset any state the game could had previously.
-				game = game.getGameInitialState();
+				game = game.getInitialState();
 				
 				addToGame(essentials, game, new StartGameEvent(DateTime.now()));
 				
@@ -144,7 +144,7 @@ public class GameController extends HttpServlet
 			}
 			else if( gameEvent.equalsIgnoreCase(GameEventEnum.POINT_MODIFIER.toString()) )
 			{
-				TeamEnum team = TeamEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
+				TeamEnum team = TeamEnum.valueOf(Helpers.getParameter("team", String.class, essentials));
 				Integer points = Helpers.getParameter("points", Integer.class, essentials);
 				LocalizedString comment = new LocalizedString(essentials, 
 						Helpers.getParameter("commentEn", String.class, essentials),

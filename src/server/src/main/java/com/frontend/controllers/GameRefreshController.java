@@ -29,7 +29,7 @@ public class GameRefreshController extends HttpServlet
 {
 	private static final long serialVersionUID = -6890088129187673292L;
 
-	private static AtomicBoolean refreshNeeded;
+	private static AtomicBoolean refreshNeeded = new AtomicBoolean();
 
 	private final Queue<AsyncContext> ongoingRequests = new ConcurrentLinkedQueue<>();
 	private ScheduledExecutorService service;
@@ -42,9 +42,6 @@ public class GameRefreshController extends HttpServlet
 	@Override
 	public void init(ServletConfig config) throws ServletException 
 	{
-		refreshNeeded = new AtomicBoolean();
-		refreshNeeded.set(false);
-		
 		final Runnable notifier = new Runnable() 
 		{
 			@Override
