@@ -1,21 +1,40 @@
 Pour le programme de display
 * Couleurs pour indiquer quel actuateur/cible est en quelle possession
 * Nombres pour indiquer la valeur actuelle de la cible
-Mode automatique et manuel ainsi qu'une option simulation (pour débugger) et une option pratique pour que les jeunes puissent pratiquer le jeudi
+* Mode automatique et manuel ainsi qu'une option simulation (pour débugger) et une option pratique pour que les jeunes puissent pratiquer le jeudi
 * Détection automatique des écoles du match en cours grâce à l'horaire
-Timer + Sirène
+* Timer + Sirène
 * Pénalités individuelles 
 * Pénalités d'équipe (ou pouvoir accéder à un log pour enlever une entrée... en fait, le log serait bcp plus simple à gérer sur le terrain)
 * Pénalité unsportsmanlike (score de 0 qui ne peut pas être enlevé au cumulatif)
 * Compilation automatique des scores
 * Intégration de la cédule
+* Streaming du pointage su le site web
+* Streaming de la compétition aussi !
+* Streaming du pointage par-dessus les images du jeu (?)
+* Classement général automatique
 Remplissage automatique du canevas des playoffs à la lumière du classement
 Option d'impression de l'horaire des playoffs.
-* Streaming du pointage su le site web
-Streaming de la compétition aussi !
-* Streaming du pointage par-dessus les images du jeu (?)
-Importation des classements des autres compétitions depuis le site web de la CRC
-* Classement général automatique
+Importation des classements des autres compétitions depuis le site web de la CRC (Rank pour Vidéo et Site web) --> Michael Sanford
 Interface pour entrer et calculer les volets jugés à la compétition
 Générer un "powerpoint" pour la cérémonie de remise de prix
 Conquérir le monde
+
+Calcul du classement final
+2 Jeu
+1 Vidéo
+1 Site web (design)
+1 Site web (journalisme)
+1 Kiosque
+1 Design du robot
+1 Construction du robot
+1 Esprit sportif
+1 Compétition de programmation
+
+Skills competition (30% de la note du jeu)
+skills : sur le classement préliminaire :
+skills (1 à 32 qui vaut pour 30%)
+skills 1 10% -> Ramasser le plus de balles (Égalité == meilleur rang niveau score)
+skills 2 10% -> Scorer dans 2 cibles le plus rapidement possible (Centième de seconde)
+skills 3 10% -> Activer 2 actuateurs sur 3 le plus rapidement possible (Centième de seconde)
++ jeu (70%) donne le classement pour les playoffs
