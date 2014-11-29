@@ -34,7 +34,7 @@ public class Tournament
 		games	= _games;
 	}
 	
-	public ArrayList<School> getRanking(ArrayList<School> schools, final GameTypeEnum gameType)
+	public ArrayList<School> getRanking(final GameTypeEnum gameType)
 	{
 		ArrayList<School> ranking = new ArrayList<School>(schools);
 		

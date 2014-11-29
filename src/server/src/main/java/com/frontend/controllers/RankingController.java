@@ -27,7 +27,7 @@ public class RankingController extends HttpServlet
 			Tournament tournament = Tournament.getTournament(essentials);
 			
 			essentials.request.setAttribute("tournament", tournament);
-			essentials.request.setAttribute("ranking", tournament.getRanking(tournament.schools, GameTypeEnum.PRELIMINARY));
+			essentials.request.setAttribute("ranking", tournament.getRanking(GameTypeEnum.PRELIMINARY));
 			essentials.request.getRequestDispatcher("/WEB-INF/frontend/ranking.jsp").forward(essentials.request, essentials.response);
 		}
 	}

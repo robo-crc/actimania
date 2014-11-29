@@ -2,21 +2,85 @@ package com.backend.models.optaplanner;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import com.backend.models.Competition;
 import com.backend.models.Game;
 import com.backend.models.School;
+import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameTypeEnum;
 import com.framework.helpers.Database;
 import com.framework.models.Essentials;
 
-public class TournamentMain 
+public class TournamentSetup 
 {
 	public static void main(String[] args) 
+	{
+		setupCompetitions();
+		setupSchedule();
+	}
+	
+	public static void setupCompetitions()
+	{
+		System.out.println("Do you want to setup competitions and skill competitions?");
+    	Scanner keyboard = new Scanner(System.in);
+    	String valueEntered = "";
+    	while(!(valueEntered.toLowerCase().equals("y") || valueEntered.toLowerCase().equals("n")))
+    	{
+    		valueEntered = keyboard.next();
+    	}
+    	keyboard.close();
+    	if(valueEntered.toLowerCase().equals("y"))
+    	{
+    		try(Essentials essentials = new Essentials(new Database(Database.DatabaseType.PRODUCTION), null, null, null, null))
+    		{
+    			ArrayList<School> schools = School.getSchools(essentials);
+    			SkillsCompetition skillsCompetition = new SkillsCompetition(
+						new TreeMap<School, Integer>(), 
+						new TreeMap<School, Duration>(),
+						new TreeMap<School, Duration>());
+    			
+    			Competition competition = new Competition(
+    					new ArrayList<School>(),
+    					new ArrayList<School>(),
+    					new ArrayList<School>(),
+    					new ArrayList<School>(),
+    					new ArrayList<School>(),
+    					new ArrayList<School>(),
+    					new ArrayList<School>(),
+    					new ArrayList<School>());
+    			
+    			for(School school : schools)
+    			{
+    				skillsCompetition.pickBalls.put(school, 0);
+    				// Initialize to 99 minutes.
+    				skillsCompetition.twoActuatorChanged.put(school, new Duration(99 * 60 * 1000));
+    				skillsCompetition.twoTargetHits.put(school, new Duration(99 * 60 * 1000));
+    				
+    				competition.kiosk.add(school);
+    				competition.programming.add(school);
+    				competition.robotConstruction.add(school);
+    				competition.robotDesign.add(school);
+    				competition.sportsmanship.add(school);
+    				competition.video.add(school);
+    				competition.websiteDesign.add(school);
+    				competition.websiteJournalism.add(school);
+    			}
+    			essentials.database.dropCollection(SkillsCompetition.class);
+    			essentials.database.dropCollection(Competition.class);
+    			
+    			essentials.database.save(skillsCompetition);
+    			essentials.database.save(competition);
+    		}
+    	}
+	}
+	
+	public static void setupSchedule()
 	{
 		try(Essentials essentials = new Essentials(new Database(Database.DatabaseType.PRODUCTION), null, null, null, null))
 		{
@@ -76,7 +140,6 @@ public class TournamentMain
 		        			essentials.database.save(game);
 		        		}
 		        	}
-		        	
 		        }
 			}
 		}
