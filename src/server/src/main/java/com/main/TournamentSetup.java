@@ -1,4 +1,4 @@
-package com.backend.models.optaplanner;
+package com.main;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,6 +14,10 @@ import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameTypeEnum;
+import com.backend.models.optaplanner.GameProcess;
+import com.backend.models.optaplanner.TournamentScoreCalculator;
+import com.backend.models.optaplanner.TournamentSolution;
+import com.backend.models.optaplanner.TournamentSolver;
 import com.framework.helpers.Database;
 import com.framework.models.Essentials;
 
@@ -46,6 +50,7 @@ public class TournamentSetup
 						new TreeMap<School, Duration>());
     			
     			Competition competition = new Competition(
+    					null,
     					new ArrayList<School>(),
     					new ArrayList<School>(),
     					new ArrayList<School>(),

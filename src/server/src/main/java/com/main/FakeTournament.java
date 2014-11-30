@@ -1,4 +1,4 @@
-package com.backend.models;
+package com.main;
 
 import java.util.Random;
 
@@ -7,6 +7,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.backend.models.Game;
+import com.backend.models.Tournament;
 import com.backend.models.GameEvent.ActuatorStateChangedEvent;
 import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.StartGameEvent;

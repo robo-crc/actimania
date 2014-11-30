@@ -1,5 +1,7 @@
-package com.backend.models.optaplanner;
+package com.main;
 import com.backend.models.Tournament;
+import com.backend.models.optaplanner.TournamentSolution;
+import com.backend.models.optaplanner.TournamentSolver;
 import com.framework.helpers.Database;
 import com.framework.models.Essentials;
 

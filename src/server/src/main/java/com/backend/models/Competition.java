@@ -5,31 +5,36 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.TreeMap;
 
+import org.bson.types.ObjectId;
+
 import com.backend.models.enums.GameTypeEnum;
 import com.framework.models.Essentials;
 
 public class Competition 
 {
-	public final ArrayList<School> robotConstruction;
-	public final ArrayList<School> robotDesign;
-	public final ArrayList<School> video;
-	public final ArrayList<School> websiteDesign;
-	public final ArrayList<School> websiteJournalism;
-	public final ArrayList<School> kiosk;
-	public final ArrayList<School> sportsmanship;
-	public final ArrayList<School> programming;
+	public final ObjectId 			_id;
+	public final ArrayList<School> 	robotConstruction;
+	public final ArrayList<School> 	robotDesign;
+	public final ArrayList<School> 	video;
+	public final ArrayList<School> 	websiteDesign;
+	public final ArrayList<School> 	websiteJournalism;
+	public final ArrayList<School> 	kiosk;
+	public final ArrayList<School> 	sportsmanship;
+	public final ArrayList<School> 	programming;
 	
 	public Competition(
-			ArrayList<School> _robotConstruction,
-			ArrayList<School> _robotDesign,
-			ArrayList<School> _video,
-			ArrayList<School> _websiteDesign,
-			ArrayList<School> _websiteJournalism,
-			ArrayList<School> _kiosk,
-			ArrayList<School> _sportsmanship,
-			ArrayList<School> _programming
+			ObjectId			_competitionId,
+			ArrayList<School> 	_robotConstruction,
+			ArrayList<School> 	_robotDesign,
+			ArrayList<School> 	_video,
+			ArrayList<School> 	_websiteDesign,
+			ArrayList<School> 	_websiteJournalism,
+			ArrayList<School> 	_kiosk,
+			ArrayList<School> 	_sportsmanship,
+			ArrayList<School> 	_programming
 			)
 	{
+		_id 				= _competitionId;
 		robotDesign 		= _robotDesign;
 		robotConstruction 	= _robotConstruction;
 		video 				= _video;
@@ -45,10 +50,8 @@ public class Competition
 		return aspect.size() - aspect.indexOf(school);
 	}
 	
-	public int getSchoolScore(Tournament tournament, School school)
+	public int getSchoolScore(ArrayList<School> playoffRanking, School school)
 	{
-		ArrayList<School> playoffRanking = tournament.getRanking(GameTypeEnum.PLAYOFF);
-		
 		int score = getAspectPoints(playoffRanking, school) * 2;
 		score += getAspectPoints(robotDesign, school);
 		score += getAspectPoints(robotConstruction, school);
@@ -71,7 +74,7 @@ public class Competition
 		
 		for(School school : schoolsRanking)
 		{
-			schoolsScore.put(school, getSchoolScore(tournament, school));
+			schoolsScore.put(school, getSchoolScore(tournament.getRanking(GameTypeEnum.PLAYOFF), school));
 		}
 		
 		Collections.sort(schoolsRanking, new Comparator<School>() {
