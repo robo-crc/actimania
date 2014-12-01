@@ -8,41 +8,42 @@ import java.util.TreeMap;
 import org.bson.types.ObjectId;
 
 import com.backend.models.enums.GameTypeEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.models.Essentials;
 
 public class Competition 
 {
 	public final ObjectId 			_id;
+	public final ArrayList<School> 	kiosk;
+	public final ArrayList<School> 	programming;
 	public final ArrayList<School> 	robotConstruction;
 	public final ArrayList<School> 	robotDesign;
+	public final ArrayList<School> 	sportsmanship;
 	public final ArrayList<School> 	video;
 	public final ArrayList<School> 	websiteDesign;
 	public final ArrayList<School> 	websiteJournalism;
-	public final ArrayList<School> 	kiosk;
-	public final ArrayList<School> 	sportsmanship;
-	public final ArrayList<School> 	programming;
 	
 	public Competition(
-			ObjectId			_competitionId,
-			ArrayList<School> 	_robotConstruction,
-			ArrayList<School> 	_robotDesign,
-			ArrayList<School> 	_video,
-			ArrayList<School> 	_websiteDesign,
-			ArrayList<School> 	_websiteJournalism,
-			ArrayList<School> 	_kiosk,
-			ArrayList<School> 	_sportsmanship,
-			ArrayList<School> 	_programming
+			@JsonProperty("_id") 				ObjectId			_competitionId,
+			@JsonProperty("kiosk") 				ArrayList<School> 	_kiosk,
+			@JsonProperty("programming") 		ArrayList<School> 	_programming,
+			@JsonProperty("robotConstruction") 	ArrayList<School> 	_robotConstruction,
+			@JsonProperty("robotDesign") 		ArrayList<School> 	_robotDesign,
+			@JsonProperty("sportsmanship") 		ArrayList<School> 	_sportsmanship,
+			@JsonProperty("video") 				ArrayList<School> 	_video,
+			@JsonProperty("websiteDesign") 		ArrayList<School> 	_websiteDesign,
+			@JsonProperty("websiteJournalism") 	ArrayList<School> 	_websiteJournalism
 			)
 	{
 		_id 				= _competitionId;
-		robotDesign 		= _robotDesign;
+		kiosk 				= _kiosk;
+		programming 		= _programming;
 		robotConstruction 	= _robotConstruction;
+		robotDesign 		= _robotDesign;
+		sportsmanship		= _sportsmanship;
 		video 				= _video;
 		websiteDesign 		= _websiteDesign;
 		websiteJournalism 	= _websiteJournalism;
-		kiosk 				= _kiosk;
-		sportsmanship		= _sportsmanship;
-		programming 		= _programming;
 	}
 	
 	public static int getAspectPoints(ArrayList<School> aspect, School school)

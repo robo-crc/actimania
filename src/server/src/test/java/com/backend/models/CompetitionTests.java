@@ -13,7 +13,7 @@ import com.framework.helpers.Database.DatabaseType;
 
 public class CompetitionTests 
 {
-private static Database database;
+	private static Database database;
 	
 	@BeforeClass
 	public static void setUp()
@@ -30,7 +30,7 @@ private static Database database;
 	}
 	
 	@Test
-	public void gameEventTest()
+	public void compeitionTest()
 	{
 		School school1 = new School(new ObjectId("111111111111111111111111"), "1");
 		School school2 = new School(new ObjectId("222222222222222222222222"), "2");
@@ -77,12 +77,12 @@ private static Database database;
 		Validate.isTrue(Competition.getAspectPoints(video, school4) == 1);
 		
 		Competition competition = new Competition(null, 
+				new ArrayList<School>(schools), 
+				new ArrayList<School>(schools), 
 				robotConstruction, 
 				robotDesign, 
+				new ArrayList<School>(schools), 
 				video, 
-				new ArrayList<School>(schools), 
-				new ArrayList<School>(schools), 
-				new ArrayList<School>(schools), 
 				new ArrayList<School>(schools), 
 				new ArrayList<School>(schools));
 		

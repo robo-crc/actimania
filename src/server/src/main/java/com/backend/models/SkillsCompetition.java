@@ -6,21 +6,28 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.bson.types.ObjectId;
 import org.joda.time.Duration;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.framework.helpers.Database;
 import com.framework.models.Essentials;
 
 public class SkillsCompetition 
 {
+	public final ObjectId 					_id;
+	
 	public final TreeMap<School, Integer> 	pickBalls;
 	public final TreeMap<School, Duration> 	twoTargetHits;
 	public final TreeMap<School, Duration> 	twoActuatorChanged;
 	
 	public SkillsCompetition(
-			TreeMap<School, Integer> 	_pickBalls,
-			TreeMap<School, Duration> 	_twoTargetHits,
-			TreeMap<School, Duration> 	_twoActuatorChanged)
+			@JsonProperty("_id") 				ObjectId 					_skillCompetitionId,
+			@JsonProperty("pickBalls") 			TreeMap<School, Integer> 	_pickBalls,
+			@JsonProperty("twoTargetHits") 		TreeMap<School, Duration> 	_twoTargetHits,
+			@JsonProperty("twoActuatorChanged") TreeMap<School, Duration> 	_twoActuatorChanged)
 	{
+		_id 				=_skillCompetitionId;
 		pickBalls 			= _pickBalls;
 		twoTargetHits 		= _twoTargetHits;
 		twoActuatorChanged 	= _twoActuatorChanged;
@@ -60,7 +67,7 @@ public class SkillsCompetition
 		T score = schoolsScore.get(school);
 		
 		// In case of equality, we give the best points
-		while(position > 0 && score.equals(schoolsRanking.get(position - 1)))
+		while(position > 0 && score.equals(schoolsScore.get(schoolsRanking.get(position - 1))))
 		{
 			position--;
 		}
@@ -98,8 +105,8 @@ public class SkillsCompetition
 		return schoolsRanking;
 	}
 	
-	public static SkillsCompetition get(Essentials essentials)
+	public static SkillsCompetition get(Database database)
 	{
-		return essentials.database.findOne(SkillsCompetition.class, "{ }");
+		return database.findOne(SkillsCompetition.class, "{ }");
 	}
 }

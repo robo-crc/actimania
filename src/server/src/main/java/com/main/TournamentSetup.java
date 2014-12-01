@@ -44,7 +44,9 @@ public class TournamentSetup
     		try(Essentials essentials = new Essentials(new Database(Database.DatabaseType.PRODUCTION), null, null, null, null))
     		{
     			ArrayList<School> schools = School.getSchools(essentials);
+    			
     			SkillsCompetition skillsCompetition = new SkillsCompetition(
+    					null,
 						new TreeMap<School, Integer>(), 
 						new TreeMap<School, Duration>(),
 						new TreeMap<School, Duration>());
@@ -66,7 +68,7 @@ public class TournamentSetup
     				// Initialize to 99 minutes.
     				skillsCompetition.twoActuatorChanged.put(school, new Duration(99 * 60 * 1000));
     				skillsCompetition.twoTargetHits.put(school, new Duration(99 * 60 * 1000));
-    				
+
     				competition.kiosk.add(school);
     				competition.programming.add(school);
     				competition.robotConstruction.add(school);
@@ -79,7 +81,7 @@ public class TournamentSetup
     			essentials.database.dropCollection(SkillsCompetition.class);
     			essentials.database.dropCollection(Competition.class);
     			
-    			essentials.database.save(skillsCompetition);
+    			//essentials.database.save(skillsCompetition);
     			essentials.database.save(competition);
     		}
     	}
