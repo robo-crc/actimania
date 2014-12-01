@@ -2,7 +2,6 @@ package com.main;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -10,6 +9,8 @@ import org.joda.time.Duration;
 import com.backend.models.Competition;
 import com.backend.models.Game;
 import com.backend.models.School;
+import com.backend.models.SchoolDuration;
+import com.backend.models.SchoolInteger;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
 import com.backend.models.GameEvent.GameEvent;
@@ -47,9 +48,9 @@ public class TournamentSetup
     			
     			SkillsCompetition skillsCompetition = new SkillsCompetition(
     					null,
-						new TreeMap<School, Integer>(), 
-						new TreeMap<School, Duration>(),
-						new TreeMap<School, Duration>());
+						new ArrayList<SchoolInteger>(), 
+						new ArrayList<SchoolDuration>(),
+						new ArrayList<SchoolDuration>());
     			
     			Competition competition = new Competition(
     					null,
@@ -64,10 +65,10 @@ public class TournamentSetup
     			
     			for(School school : schools)
     			{
-    				skillsCompetition.pickBalls.put(school, 0);
+    				skillsCompetition.pickBalls.add(new SchoolInteger(school, 0));
     				// Initialize to 99 minutes.
-    				skillsCompetition.twoActuatorChanged.put(school, new Duration(99 * 60 * 1000));
-    				skillsCompetition.twoTargetHits.put(school, new Duration(99 * 60 * 1000));
+    				skillsCompetition.twoActuatorChanged.add(new SchoolDuration(school, new Duration(99 * 60 * 1000)));
+    				skillsCompetition.twoTargetHits.add(new SchoolDuration(school, new Duration(99 * 60 * 1000)));
 
     				competition.kiosk.add(school);
     				competition.programming.add(school);

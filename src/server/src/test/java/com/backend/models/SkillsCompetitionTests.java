@@ -1,6 +1,6 @@
 package com.backend.models;
 
-import java.util.TreeMap;
+import java.util.ArrayList;
 
 import org.apache.commons.lang.Validate;
 import org.bson.types.ObjectId;
@@ -38,32 +38,32 @@ public class SkillsCompetitionTests
 		School school3 = new School(new ObjectId("333333333333333333333333"), "3");
 		School school4 = new School(new ObjectId("444444444444444444444444"), "4");
 		
-		TreeMap<School, Integer> score = new TreeMap<School, Integer>();
-		score.put(school1, 8);
-		score.put(school2, 6);
-		score.put(school3, 5);
-		score.put(school4, 3);
+		ArrayList<SchoolInteger> score = new ArrayList<SchoolInteger>();
+		score.add(new SchoolInteger(school1, 8));
+		score.add(new SchoolInteger(school2, 6));
+		score.add(new SchoolInteger(school3, 5));
+		score.add(new SchoolInteger(school4, 3));
 		
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school1) == 4);
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school2) == 3);
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school3) == 2);
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school4) == 1);
 		
-		score.put(school2, 8);
+		score.set(1, new SchoolInteger(school2, 8));
 		
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school1) == 4);
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school2) == 4);
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school3) == 2);
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school4) == 1);
 		
-		score.put(school3, 8);
+		score.set(2, new SchoolInteger(school3, 8));
 		
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school1) == 4);
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school2) == 4);
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school3) == 4);
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school4) == 1);
 		
-		score.put(school4, 10);
+		score.set(3, new SchoolInteger(school4, 10));
 		
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school1) == 3);
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school2) == 3);
@@ -79,33 +79,34 @@ public class SkillsCompetitionTests
 		School school3 = new School(new ObjectId("333333333333333333333333"), "3");
 		School school4 = new School(new ObjectId("444444444444444444444444"), "4");
 		
-		TreeMap<School, Duration> score = new TreeMap<School, Duration>();
+		ArrayList<SchoolDuration> score = new ArrayList<SchoolDuration>();
 		
-		score.put(school1, new Duration(500));
-		score.put(school2, new Duration(600));
-		score.put(school3, new Duration(700));
-		score.put(school4, new Duration(800));
+		score.add(new SchoolDuration(school1, new Duration(500)));
+		score.add(new SchoolDuration(school2, new Duration(600)));
+		score.add(new SchoolDuration(school3, new Duration(700)));
+		score.add(new SchoolDuration(school4, new Duration(800)));
 		
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school1) == 4);
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school2) == 3);
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school3) == 2);
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school4) == 1);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school1) == 4);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school2) == 3);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school3) == 2);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school4) == 1);
 		
-		score.put(school2, new Duration(500));
+		score.set(1, new SchoolDuration(school2, new Duration(500)));
 		
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school1) == 4);
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school2) == 4);
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school3) == 2);
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school4) == 1);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school1) == 4);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school2) == 4);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school3) == 2);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school4) == 1);
 		
-		score.put(school4, new Duration(400));
+		score.set(3, new SchoolDuration(school4, new Duration(400)));
 		
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school1) == 3);
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school2) == 3);
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school3) == 1);
-		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school4) == 4);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school1) == 3);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school2) == 3);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school3) == 1);
+		Validate.isTrue(SkillsCompetition.getSkillPointsDuration(score, school4) == 4);
 	}
-	/*
+	
+	
 	@Test
 	public void getDatabaseTest()
 	{
@@ -114,25 +115,25 @@ public class SkillsCompetitionTests
 		School school3 = new School(new ObjectId("333333333333333333333333"), "3");
 		School school4 = new School(new ObjectId("444444444444444444444444"), "4");
 		
-		TreeMap<School, Duration> twoActuators = new TreeMap<School, Duration>();
+		ArrayList<SchoolDuration> twoActuators = new ArrayList<SchoolDuration>();
 		
-		twoActuators.put(school1, new Duration(500));
-		twoActuators.put(school2, new Duration(600));
-		twoActuators.put(school3, new Duration(700));
-		twoActuators.put(school4, new Duration(800));
+		twoActuators.add(new SchoolDuration(school1, new Duration(500)));
+		twoActuators.add(new SchoolDuration(school2, new Duration(600)));
+		twoActuators.add(new SchoolDuration(school3, new Duration(700)));
+		twoActuators.add(new SchoolDuration(school4, new Duration(800)));
 		
-		TreeMap<School, Duration> twoTargets = new TreeMap<School, Duration>();
+		ArrayList<SchoolDuration> twoTargets = new ArrayList<SchoolDuration>();
 		
-		twoTargets.put(school1, new Duration(4500));
-		twoTargets.put(school2, new Duration(3600));
-		twoTargets.put(school3, new Duration(2700));
-		twoTargets.put(school4, new Duration(1800));
+		twoTargets.add(new SchoolDuration(school1, new Duration(4500)));
+		twoTargets.add(new SchoolDuration(school2, new Duration(3600)));
+		twoTargets.add(new SchoolDuration(school3, new Duration(2700)));
+		twoTargets.add(new SchoolDuration(school4, new Duration(1800)));
 		
-		TreeMap<School, Integer> pickupBalls = new TreeMap<School, Integer>();
-		pickupBalls.put(school1, 8);
-		pickupBalls.put(school2, 6);
-		pickupBalls.put(school3, 5);
-		pickupBalls.put(school4, 3);
+		ArrayList<SchoolInteger> pickupBalls = new ArrayList<SchoolInteger>();
+		pickupBalls.add(new SchoolInteger(school1, 8));
+		pickupBalls.add(new SchoolInteger(school2, 6));
+		pickupBalls.add(new SchoolInteger(school3, 5));
+		pickupBalls.add(new SchoolInteger(school4, 3));
 		
 		SkillsCompetition competition = new SkillsCompetition(null, pickupBalls, twoTargets, twoActuators);
 		database.save(competition);
@@ -140,8 +141,8 @@ public class SkillsCompetitionTests
 		SkillsCompetition competition2 = SkillsCompetition.get(database);
 		Validate.isTrue(competition2.getSchoolScore(school1) == 9);
 		Validate.isTrue(competition2.getSchoolScore(school2) == 8);
-		Validate.isTrue(competition2.getSchoolScore(school2) == 7);
-		Validate.isTrue(competition2.getSchoolScore(school2) == 6);
+		Validate.isTrue(competition2.getSchoolScore(school3) == 7);
+		Validate.isTrue(competition2.getSchoolScore(school4) == 6);
 	}
-	*/
+	
 }

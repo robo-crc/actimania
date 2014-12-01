@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.framework.models.Essentials;
 import com.google.common.collect.Lists;
 
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
 public class School implements Comparable<School>
 {
 	public final ObjectId 			_id;

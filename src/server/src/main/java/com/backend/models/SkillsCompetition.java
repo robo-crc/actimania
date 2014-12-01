@@ -3,7 +3,6 @@ package com.backend.models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Map;
 import java.util.TreeMap;
 
 import org.bson.types.ObjectId;
@@ -17,15 +16,15 @@ public class SkillsCompetition
 {
 	public final ObjectId 					_id;
 	
-	public final TreeMap<School, Integer> 	pickBalls;
-	public final TreeMap<School, Duration> 	twoTargetHits;
-	public final TreeMap<School, Duration> 	twoActuatorChanged;
+	public final ArrayList<SchoolInteger> 	pickBalls;
+	public final ArrayList<SchoolDuration> 	twoTargetHits;
+	public final ArrayList<SchoolDuration> 	twoActuatorChanged;
 	
 	public SkillsCompetition(
 			@JsonProperty("_id") 				ObjectId 					_skillCompetitionId,
-			@JsonProperty("pickBalls") 			TreeMap<School, Integer> 	_pickBalls,
-			@JsonProperty("twoTargetHits") 		TreeMap<School, Duration> 	_twoTargetHits,
-			@JsonProperty("twoActuatorChanged") TreeMap<School, Duration> 	_twoActuatorChanged)
+			@JsonProperty("pickBalls") 			ArrayList<SchoolInteger> 	_pickBalls,
+			@JsonProperty("twoTargetHits") 		ArrayList<SchoolDuration> 	_twoTargetHits,
+			@JsonProperty("twoActuatorChanged") ArrayList<SchoolDuration> 	_twoActuatorChanged)
 	{
 		_id 				=_skillCompetitionId;
 		pickBalls 			= _pickBalls;
@@ -33,41 +32,47 @@ public class SkillsCompetition
 		twoActuatorChanged 	= _twoActuatorChanged;
 	}
 	
-	public static <T> int getSkillPoints(final TreeMap<School, T> schoolsScore, School school)
+	public static int getSkillPoints(final ArrayList<SchoolInteger> schoolsScore, School school)
 	{
-		ArrayList<School> schoolsRanking = new ArrayList<School>();
-		for(Map.Entry<School, T> schoolValue : schoolsScore.entrySet() )
-		{
-			schoolsRanking.add(schoolValue.getKey());
-		}
+		ArrayList<SchoolInteger> schoolsRanking = new ArrayList<SchoolInteger>(schoolsScore);
 		
-		final Class<?> entityType = schoolsScore.firstEntry().getValue().getClass();
-		
-		Collections.sort(schoolsRanking, new Comparator<School>() {
+		Collections.sort(schoolsRanking, new Comparator<SchoolInteger>() {
 	        @Override
-	        public int compare(School school1, School school2)
+	        public int compare(SchoolInteger school1, SchoolInteger school2)
 	        {
-	        	if(entityType == Integer.class)
-	        	{
-	        		return (Integer)schoolsScore.get(school2) - (Integer)schoolsScore.get(school1);
-	        	}
-	        	else if(entityType == Duration.class)
-	        	{
-	        		// Lowest time is better
-	        		return (int) (((Duration)schoolsScore.get(school1)).getMillis() - ((Duration)schoolsScore.get(school2)).getMillis());
-	        	}
-	        	else
-	        	{
-	        		return -1;
-	        	}
+	            return school2.integer - school1.integer;
 	        }
 	    });
 		
 		int position = schoolsRanking.indexOf(school);
-		T score = schoolsScore.get(school);
+		Integer score = schoolsRanking.get(schoolsRanking.indexOf(school)).integer;
 		
 		// In case of equality, we give the best points
-		while(position > 0 && score.equals(schoolsScore.get(schoolsRanking.get(position - 1))))
+		while(position > 0 && score.equals(schoolsRanking.get(position - 1).integer))
+		{
+			position--;
+		}
+		
+		return schoolsRanking.size() - position;
+	}
+	
+	public static int getSkillPointsDuration(final ArrayList<SchoolDuration> schoolsScore, School school)
+	{
+		ArrayList<SchoolDuration> schoolsRanking = new ArrayList<SchoolDuration>(schoolsScore);
+		
+		Collections.sort(schoolsRanking, new Comparator<SchoolDuration>() {
+	        @Override
+	        public int compare(SchoolDuration school1, SchoolDuration school2)
+	        {
+	            return (int) (school1.duration.getMillis() - school2.duration.getMillis());
+	        }
+	    });
+		
+		int position = schoolsRanking.indexOf(school);
+		Duration duration = schoolsRanking.get(schoolsRanking.indexOf(school)).duration;
+		
+		// In case of equality, we give the best points
+		while(position > 0 && duration.equals(schoolsRanking.get(position - 1).duration))
 		{
 			position--;
 		}
@@ -78,8 +83,8 @@ public class SkillsCompetition
 	public int getSchoolScore(School school)
 	{
 		int score = getSkillPoints(pickBalls, school);
-		score += getSkillPoints(twoTargetHits, school);
-		score += getSkillPoints(twoActuatorChanged, school);
+		score += getSkillPointsDuration(twoTargetHits, school);
+		score += getSkillPointsDuration(twoActuatorChanged, school);
 		return score;
 	}
 	
