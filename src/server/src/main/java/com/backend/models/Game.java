@@ -275,12 +275,12 @@ public class Game implements Comparable<Game>
 			score = gameState.yellowScore;
 		}
 		
-		for(SchoolPenalty penalty : gameState.penalties)
+		for(SchoolInteger penalty : gameState.penalties)
 		{
 			// Misconduct penalty is calculated globally
-			if(penalty.school.equals(school))
+			if(penalty.equals(school))
 			{
-				score -= penalty.pointsDeduction;
+				score -= penalty.integer;
 			}
 		}
 		

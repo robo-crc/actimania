@@ -32,7 +32,7 @@ public class GameState
 	public final int 						blueScore;
 	public final int 						yellowScore;
 	
-	public final ArrayList<SchoolPenalty>	penalties;
+	public final ArrayList<SchoolInteger>	penalties;
 	public final ArrayList<School>			misconductPenalties;
 	
 	public GameState(
@@ -41,7 +41,7 @@ public class GameState
 			@JsonProperty("lastGameEvent")			GameEvent					_lastGameEvent,
 			@JsonProperty("blueScore")				int 						_blueScore,
 			@JsonProperty("yellowScore")			int 						_yellowScore,
-			@JsonProperty("penalties")				ArrayList<SchoolPenalty>	_penalties,
+			@JsonProperty("penalties")				ArrayList<SchoolInteger>	_penalties,
 			@JsonProperty("misconductPenalties")	ArrayList<School>			_misconductPenalties
 			)
 	{
@@ -62,7 +62,7 @@ public class GameState
 		ActuatorStateEnum[][] localActuatorState = null;
 		int localBlueScore = 0;
 		int localYellowScore = 0;
-		ArrayList<SchoolPenalty> 	localPenalties = null;
+		ArrayList<SchoolInteger> 	localPenalties = null;
 		ArrayList<School> 	localMisconductPenalties = null;
 		
 		if(gameEvent.getGameEventEnum() == GameEventEnum.START_GAME)
@@ -78,7 +78,7 @@ public class GameState
 			localBlueScore = 0;
 			localYellowScore = 0;
 			
-			localPenalties = new ArrayList<SchoolPenalty>();
+			localPenalties = new ArrayList<SchoolInteger>();
 			localMisconductPenalties = new ArrayList<School>();
 		}
 		else
@@ -96,7 +96,7 @@ public class GameState
 			localBlueScore	 = previousState.blueScore;
 			localYellowScore = previousState.yellowScore;
 			
-			localPenalties 				= new ArrayList<SchoolPenalty>(previousState.penalties);
+			localPenalties 				= new ArrayList<SchoolInteger>(previousState.penalties);
 			localMisconductPenalties	= new ArrayList<School>(previousState.misconductPenalties);
 
 			if(gameEvent.getGameEventEnum() == GameEventEnum.TARGET_HIT)
@@ -132,7 +132,7 @@ public class GameState
 			else if(gameEvent.getGameEventEnum() == GameEventEnum.SCHOOL_PENALTY)
 			{
 				SchoolPenaltyEvent schoolPenaltyEvent = (SchoolPenaltyEvent) gameEvent;
-				localPenalties.add(new SchoolPenalty(schoolPenaltyEvent.school, schoolPenaltyEvent.pointsDeduction));
+				localPenalties.add(new SchoolInteger(schoolPenaltyEvent.school, schoolPenaltyEvent.pointsDeduction));
 			}
 			else if(gameEvent.getGameEventEnum() == GameEventEnum.TEAM_PENALTY)
 			{

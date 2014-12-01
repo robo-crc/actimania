@@ -1,4 +1,4 @@
-<%@page import="com.backend.models.SchoolPenalty"%>
+<%@page import="com.backend.models.SchoolInteger"%>
 <%@page import="com.backend.models.GameEvent.TargetHitEvent"%>
 <%@page import="com.backend.models.GameEvent.ActuatorStateChangedEvent"%>
 <%@page import="com.framework.helpers.Helpers"%>
@@ -220,9 +220,9 @@ if(state.penalties.size() > 0)
 %>
 <h2><%= strSchoolPenalties %></h2>
 <%
-	for(SchoolPenalty penalty : state.penalties)
+	for(SchoolInteger penalty : state.penalties)
 	{
-		out.print(penalty.school.name + " : " + penalty.pointsDeduction + "<br/>");
+		out.print(penalty.name + " : " + penalty.integer + "<br/>");
 	}
 }
 
