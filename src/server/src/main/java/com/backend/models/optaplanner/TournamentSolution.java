@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
@@ -99,13 +100,30 @@ public class TournamentSolution implements Solution<HardMediumSoftScore>
 		games = _games;
 	}
 	
+	public String getSchoolOutput(School school, int maxLength)
+	{
+		return StringUtils.rightPad(StringEscapeUtils.unescapeHtml(school.name), maxLength);
+	}
+	
+	public int getMaxLength()
+	{
+		int maxLength = 0;
+		for(School currentSchool : schools)
+		{
+			int length = StringEscapeUtils.unescapeHtml(currentSchool.name).length();
+			maxLength = length > maxLength ? length : maxLength;
+		}
+		
+		return maxLength + 1;
+	}
 	
 	public void outputTournamentSolution()
 	{
+		int maxLength = getMaxLength();
 		for(int row = 0; row < schools.size(); row++)
 		{
 			School currentSchool = schools.get(row);
-			System.out.print(currentSchool.name + "\t");
+			System.out.print(getSchoolOutput(currentSchool, maxLength));
 			int nbGames = 0;
 			for(int col = 0; col < games.size(); col++)
 			{
@@ -143,25 +161,30 @@ public class TournamentSolution implements Solution<HardMediumSoftScore>
 	
 	public void outputTableMatchtup(Map<School, Map<School, Integer>> schoolWithAgainst)
 	{
-		System.out.print("   ");
+		int maxLength = getMaxLength();
+		for(int i = 0; i < maxLength; i++)
+		{
+			System.out.print(" ");
+		}
+		
 		for(School schoolRow : schools)
 		{
-			System.out.print(StringUtils.rightPad(schoolRow.name, 3));
+			System.out.print(getSchoolOutput(schoolRow, maxLength));
 		}
 		System.out.println();
 		for(School schoolRow : schools)
 		{
-			System.out.print(StringUtils.rightPad(schoolRow.name, 3));
+			System.out.print(getSchoolOutput(schoolRow, maxLength));
 			for(School schoolCol : schools)
 			{
 				if(schoolRow == schoolCol)
 				{
-					System.out.print(StringUtils.rightPad("-", 3));
+					System.out.print(StringUtils.rightPad("-", maxLength));
 				}
 				else
 				{
 					String occurences = String.valueOf(schoolWithAgainst.get(schoolRow).get(schoolCol));
-					System.out.print(StringUtils.rightPad(occurences, 3));
+					System.out.print(StringUtils.rightPad(occurences, maxLength));
 				}
 			}
 			System.out.print("\n");

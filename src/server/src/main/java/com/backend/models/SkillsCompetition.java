@@ -8,17 +8,27 @@ import java.util.TreeMap;
 import org.bson.types.ObjectId;
 import org.joda.time.Duration;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.helpers.Database;
-import com.framework.models.Essentials;
 
 public class SkillsCompetition 
 {
 	public final ObjectId 					_id;
 	
-	public final ArrayList<SchoolInteger> 	pickBalls;
-	public final ArrayList<SchoolDuration> 	twoTargetHits;
-	public final ArrayList<SchoolDuration> 	twoActuatorChanged;
+	private final ArrayList<SchoolInteger> 	pickBalls;
+	private final ArrayList<SchoolDuration> twoTargetHits;
+	private final ArrayList<SchoolDuration> twoActuatorChanged;
+	
+	@JsonIgnore
+	private final TreeMap<School, Integer> pickBallsPosition;
+	@JsonIgnore
+	private final TreeMap<School, Integer> twoTargetHitsPosition;
+	@JsonIgnore
+	private final TreeMap<School, Integer> twoActuatorChangedPosition;
+	
+	@JsonIgnore
+	public final static double SKILL_WEIGTH = 0.1; // 10% per skill competition in the final note
 	
 	public SkillsCompetition(
 			@JsonProperty("_id") 				ObjectId 					_skillCompetitionId,
@@ -30,9 +40,24 @@ public class SkillsCompetition
 		pickBalls 			= _pickBalls;
 		twoTargetHits 		= _twoTargetHits;
 		twoActuatorChanged 	= _twoActuatorChanged;
+		
+		pickBallsPosition = new TreeMap<School, Integer>();
+		twoTargetHitsPosition = new TreeMap<School, Integer>();
+		twoActuatorChangedPosition = new TreeMap<School, Integer>();
+		
+		ArrayList<SchoolInteger> pickBallsRanking = getOrderedInteger(pickBalls);
+		ArrayList<SchoolDuration> twoTargetsRanking = getOrderedDuration(twoTargetHits);
+		ArrayList<SchoolDuration> twoActuatorsRanking = getOrderedDuration(twoActuatorChanged);
+		
+		for(School school : pickBalls)
+		{
+			pickBallsPosition.put(school, getPositionInteger(pickBallsRanking, school));
+			twoTargetHitsPosition.put(school, getPositionDuration(twoTargetsRanking, school));
+			twoActuatorChangedPosition.put(school, getPositionDuration(twoActuatorsRanking, school));
+		}
 	}
 	
-	public static int getSkillPoints(final ArrayList<SchoolInteger> schoolsScore, School school)
+	private static ArrayList<SchoolInteger> getOrderedInteger(final ArrayList<SchoolInteger> schoolsScore)
 	{
 		ArrayList<SchoolInteger> schoolsRanking = new ArrayList<SchoolInteger>(schoolsScore);
 		
@@ -44,6 +69,11 @@ public class SkillsCompetition
 	        }
 	    });
 		
+		return schoolsRanking;
+	}
+	
+	private static int getPositionInteger(final ArrayList<SchoolInteger> schoolsRanking, School school)
+	{
 		int position = schoolsRanking.indexOf(school);
 		Integer score = schoolsRanking.get(schoolsRanking.indexOf(school)).integer;
 		
@@ -53,10 +83,10 @@ public class SkillsCompetition
 			position--;
 		}
 		
-		return schoolsRanking.size() - position;
+		return position;
 	}
 	
-	public static int getSkillPointsDuration(final ArrayList<SchoolDuration> schoolsScore, School school)
+	private static ArrayList<SchoolDuration> getOrderedDuration(final ArrayList<SchoolDuration> schoolsScore)
 	{
 		ArrayList<SchoolDuration> schoolsRanking = new ArrayList<SchoolDuration>(schoolsScore);
 		
@@ -68,6 +98,11 @@ public class SkillsCompetition
 	        }
 	    });
 		
+		return schoolsRanking;
+	}
+	
+	private static int getPositionDuration(final ArrayList<SchoolDuration> schoolsRanking, School school)
+	{
 		int position = schoolsRanking.indexOf(school);
 		Duration duration = schoolsRanking.get(schoolsRanking.indexOf(school)).duration;
 		
@@ -77,37 +112,74 @@ public class SkillsCompetition
 			position--;
 		}
 		
-		return schoolsRanking.size() - position;
+		return position;
 	}
 	
-	public int getSchoolScore(School school)
+	public int getPickballsPosition(School school)
 	{
-		int score = getSkillPoints(pickBalls, school);
-		score += getSkillPointsDuration(twoTargetHits, school);
-		score += getSkillPointsDuration(twoActuatorChanged, school);
-		return score;
+		return pickBallsPosition.get(school);
 	}
 	
-	public ArrayList<School> getCompetitionRanking(Essentials essentials)
+	public int getTwoTargetHitsPosition(School school)
 	{
-		ArrayList<School> schoolsRanking = new ArrayList<School>(School.getSchools(essentials));
-
-		final TreeMap<School, Integer> schoolsScore = new TreeMap<School, Integer>();
-		
-		for(School school : schoolsRanking)
+		return twoTargetHitsPosition.get(school);
+	}
+	
+	public int getTwoActuatorChangedPosition(School school)
+	{
+		return twoActuatorChangedPosition.get(school);
+	}
+	
+	public ArrayList<SchoolInteger> getPickballsOrdered()
+	{
+		return getOrderedInteger(pickBalls);
+	}
+	
+	public ArrayList<SchoolDuration> getTwoTargetHitsOrdered()
+	{
+		return getOrderedDuration(twoTargetHits);
+	}
+	
+	public ArrayList<SchoolDuration> getTwoActuatorChangedOrdered()
+	{
+		return getOrderedDuration(twoActuatorChanged);
+	}
+	
+	public double getPickballsPoints(School school)
+	{
+		return (pickBallsPosition.size() - pickBallsPosition.get(school)) * SKILL_WEIGTH;
+	}
+	
+	public double getTwoTargetHitsPoints(School school)
+	{
+		return (twoTargetHitsPosition.size() - twoTargetHitsPosition.get(school)) * SKILL_WEIGTH;
+	}
+	
+	public double getTwoActuatorChangedPoints(School school)
+	{
+		return (twoActuatorChangedPosition.size() - twoActuatorChangedPosition.get(school)) * SKILL_WEIGTH;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends School> ArrayList<T> getOrdered(ArrayList<T> skillSchools)
+	{
+		if(skillSchools.get(0) instanceof SchoolInteger)
 		{
-			schoolsScore.put(school, getSchoolScore(school));
+			return (ArrayList<T>) getOrderedInteger((ArrayList<SchoolInteger>)skillSchools);
 		}
-		
-		Collections.sort(schoolsRanking, new Comparator<School>() {
-	        @Override
-	        public int compare(School school1, School school2)
-	        {
-	            return schoolsScore.get(school2) - schoolsScore.get(school1);
-	        }
-	    });
-		
-		return schoolsRanking;
+		else if(skillSchools.get(0) instanceof SchoolDuration)
+		{
+			return (ArrayList<T>) getOrderedDuration((ArrayList<SchoolDuration>)skillSchools);
+		}
+		return null;
+	}
+	
+	public double getSchoolScore(School school)
+	{
+		double score = getPickballsPoints(school);
+		score += getTwoTargetHitsPoints(school);
+		score += getTwoActuatorChangedPoints(school);
+		return score;
 	}
 	
 	public static SkillsCompetition get(Database database)

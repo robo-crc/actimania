@@ -75,7 +75,7 @@ public class Competition
 		
 		for(School school : schoolsRanking)
 		{
-			schoolsScore.put(school, getSchoolScore(tournament.getRanking(GameTypeEnum.PLAYOFF), school));
+			schoolsScore.put(school, getSchoolScore(tournament.getHeatRanking(GameTypeEnum.PLAYOFF), school));
 		}
 		
 		Collections.sort(schoolsRanking, new Comparator<School>() {

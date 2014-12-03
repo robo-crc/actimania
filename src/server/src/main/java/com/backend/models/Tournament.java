@@ -25,6 +25,9 @@ public class Tournament
 	public final ArrayList<School> 	schools;
 	public final ArrayList<Game> 	games;
 	
+	// Optimization to not recalculate multiple times a school score.
+	private final TreeMap<School, Integer> preliminarySchoolScore = new TreeMap<School, Integer>();
+	
 	public Tournament(
 			@JsonProperty("schools") 	ArrayList<School> 	_schools,
 			@JsonProperty("games") 		ArrayList<Game> 	_games
@@ -34,7 +37,7 @@ public class Tournament
 		games	= _games;
 	}
 	
-	public ArrayList<School> getRanking(final GameTypeEnum gameType)
+	public ArrayList<School> getHeatRanking(final GameTypeEnum gameType)
 	{
 		ArrayList<School> ranking = new ArrayList<School>(schools);
 		
@@ -56,8 +59,57 @@ public class Tournament
 		return ranking;
 	}
 	
+	public double getPreliminaryHeatScore(School school)
+	{
+		return (schools.size() - getHeatRanking(GameTypeEnum.PRELIMINARY).indexOf(school)) * 0.7;
+	}
+	
+	public double getCumulativeScore(School school, SkillsCompetition skillsCompetition)
+	{
+		return getPreliminaryHeatScore(school) + skillsCompetition.getSchoolScore(school);
+	}
+	
+	public ArrayList<School> getCumulativeRanking(SkillsCompetition skillsCompetition)
+	{
+		ArrayList<School> cumulativeSchools = new ArrayList<School>(schools);
+		
+		// Optimization : Let's just calculate the score once instead of each time we sort.
+		final TreeMap<School, Double> score = new TreeMap<School, Double>();
+		for( School school : schools )
+		{
+			score.put(school, getCumulativeScore(school, skillsCompetition));
+		}
+		
+		Collections.sort(cumulativeSchools, new Comparator<School>() {
+	        @Override
+	        public int compare(School school1, School school2)
+	        {
+	        	double diff = score.get(school2) - score.get(school1);
+	            if( diff > 0 )
+	            {
+	            	return 1;
+	            }
+	            else if( diff < 0 )
+	            {
+	            	return -1;
+	            }
+	            else
+	            {
+	            	return 0;
+	            }
+	        }
+	    });
+		
+		return cumulativeSchools;
+	}
+	
 	public int getTotalScore(final School school, GameTypeEnum gameType)
 	{
+		if(gameType == GameTypeEnum.PRELIMINARY && preliminarySchoolScore.containsKey(school))
+		{
+			return preliminarySchoolScore.get(school);
+		}
+		
 		ArrayList<Game> gamesForType = new ArrayList<Game>();
 		
 		for(Game game : getGamesPlayed(games, school, gameType))
@@ -109,6 +161,10 @@ public class Tournament
 			points += gamesForType.get(i).getScore(school);
 		}
 		
+		if(gameType == GameTypeEnum.PRELIMINARY)
+		{
+			preliminarySchoolScore.put(school, points);
+		}
 		return points;
 	}
 	

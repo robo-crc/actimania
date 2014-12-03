@@ -26,32 +26,28 @@ public class TournamentSetup
 {
 	public static void main(String[] args) 
 	{
-		setupCompetitions();
-		setupSchedule();
+		Scanner keyboard = new Scanner(System.in);
+		setupCompetitions(keyboard);
+		setupSchedule(keyboard);
+		keyboard.close();
 	}
 	
-	public static void setupCompetitions()
+	public static void setupCompetitions(Scanner keyboard)
 	{
 		System.out.println("Do you want to setup competitions and skill competitions?");
-    	Scanner keyboard = new Scanner(System.in);
+    	
     	String valueEntered = "";
     	while(!(valueEntered.toLowerCase().equals("y") || valueEntered.toLowerCase().equals("n")))
     	{
     		valueEntered = keyboard.next();
     	}
-    	keyboard.close();
+    	
     	if(valueEntered.toLowerCase().equals("y"))
     	{
     		try(Essentials essentials = new Essentials(new Database(Database.DatabaseType.PRODUCTION), null, null, null, null))
     		{
     			ArrayList<School> schools = School.getSchools(essentials);
-    			
-    			SkillsCompetition skillsCompetition = new SkillsCompetition(
-    					null,
-						new ArrayList<SchoolInteger>(), 
-						new ArrayList<SchoolDuration>(),
-						new ArrayList<SchoolDuration>());
-    			
+
     			Competition competition = new Competition(
     					null,
     					new ArrayList<School>(),
@@ -63,12 +59,16 @@ public class TournamentSetup
     					new ArrayList<School>(),
     					new ArrayList<School>());
     			
+    			ArrayList<SchoolInteger> pickBalls = new ArrayList<SchoolInteger>();
+    			ArrayList<SchoolDuration> twoActuatorChanged = new ArrayList<SchoolDuration>();
+    			ArrayList<SchoolDuration> twoTargetHits = new ArrayList<SchoolDuration>();
+    			
     			for(School school : schools)
     			{
-    				skillsCompetition.pickBalls.add(new SchoolInteger(school, 0));
+    				pickBalls.add(new SchoolInteger(school, 0));
     				// Initialize to 99 minutes.
-    				skillsCompetition.twoActuatorChanged.add(new SchoolDuration(school, new Duration(99 * 60 * 1000)));
-    				skillsCompetition.twoTargetHits.add(new SchoolDuration(school, new Duration(99 * 60 * 1000)));
+    				twoActuatorChanged.add(new SchoolDuration(school, new Duration(99 * 60 * 1000)));
+    				twoTargetHits.add(new SchoolDuration(school, new Duration(99 * 60 * 1000)));
 
     				competition.kiosk.add(school);
     				competition.programming.add(school);
@@ -82,13 +82,18 @@ public class TournamentSetup
     			essentials.database.dropCollection(SkillsCompetition.class);
     			essentials.database.dropCollection(Competition.class);
     			
-    			//essentials.database.save(skillsCompetition);
+    			SkillsCompetition skillsCompetition = new SkillsCompetition(
+    					null,
+						pickBalls, 
+						twoTargetHits,
+						twoActuatorChanged);
+    			essentials.database.save(skillsCompetition);
     			essentials.database.save(competition);
     		}
     	}
 	}
 	
-	public static void setupSchedule()
+	public static void setupSchedule(Scanner keyboard)
 	{
 		try(Essentials essentials = new Essentials(new Database(Database.DatabaseType.PRODUCTION), null, null, null, null))
 		{
@@ -114,13 +119,13 @@ public class TournamentSetup
 				if(solvedTournament != null)
 		        {
 		        	System.out.println("Do you want to save this schedule? (y/n)\nWARNING! This will erase all previously saved games.");
-		        	Scanner keyboard = new Scanner(System.in);
+		        	
 		        	String valueEntered = "";
 		        	while(!(valueEntered.toLowerCase().equals("y") || valueEntered.toLowerCase().equals("n")))
 		        	{
 		        		valueEntered = keyboard.next();
 		        	}
-		        	keyboard.close();
+		        	
 		        	if(valueEntered.toLowerCase().equals("y"))
 		        	{
 		        		essentials.database.dropCollection(Game.class);
