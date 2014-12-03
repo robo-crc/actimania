@@ -130,6 +130,21 @@ public class SkillsCompetition
 		return twoActuatorChangedPosition.get(school);
 	}
 	
+	public SchoolInteger getPickballs(School school)
+	{
+		return pickBalls.get(pickBalls.indexOf(school));
+	}
+	
+	public SchoolDuration getTwoTargetHits(School school)
+	{
+		return twoTargetHits.get(twoTargetHits.indexOf(school));
+	}
+	
+	public SchoolDuration getTwoActuatorChanged(School school)
+	{
+		return twoActuatorChanged.get(twoActuatorChanged.indexOf(school));
+	}
+	
 	public ArrayList<SchoolInteger> getPickballsOrdered()
 	{
 		return getOrderedInteger(pickBalls);

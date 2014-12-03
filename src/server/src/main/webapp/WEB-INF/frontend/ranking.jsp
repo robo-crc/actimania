@@ -24,11 +24,13 @@ Tournament tournament = (Tournament)request.getAttribute("tournament");
 SkillsCompetition skillsCompetition = (SkillsCompetition)request.getAttribute("skillsCompetition");
 
 PeriodFormatter formatter = new PeriodFormatterBuilder()
+.printZeroAlways()
 .appendMinutes()
 .appendSuffix(":")
+.minimumPrintedDigits(2)
 .appendSeconds()
 .appendSuffix(".")
-.appendMillis3Digit()
+.appendMillis()
 .toFormatter();
 
 Locale currentLocale = request.getLocale();
