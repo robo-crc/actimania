@@ -166,7 +166,7 @@
 		<directory>${target.directory}</directory>
 		<outputDirectory>${target.outputDirectory}</outputDirectory>
 		<testOutputDirectory>${target.testOutputDirectory}</testOutputDirectory>
-		<finalName>${artifactId}</finalName>
+		<finalName>${project.artifactId}</finalName>
 	</build>
 	<artifactId>actimania</artifactId>
 </project>

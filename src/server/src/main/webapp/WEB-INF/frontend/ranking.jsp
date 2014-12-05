@@ -1,3 +1,4 @@
+<%@page import="com.framework.helpers.Helpers"%>
 <%@page import="org.joda.time.format.PeriodFormatterBuilder"%>
 <%@page import="org.joda.time.format.PeriodFormatter"%>
 <%@page import="com.backend.models.SchoolDuration"%>
@@ -22,16 +23,6 @@ ArrayList<School> cumulativeRanking = (ArrayList<School>)request.getAttribute("c
 
 Tournament tournament = (Tournament)request.getAttribute("tournament");
 SkillsCompetition skillsCompetition = (SkillsCompetition)request.getAttribute("skillsCompetition");
-
-PeriodFormatter formatter = new PeriodFormatterBuilder()
-.printZeroAlways()
-.appendMinutes()
-.appendSuffix(":")
-.minimumPrintedDigits(2)
-.appendSeconds()
-.appendSuffix(".")
-.appendMillis()
-.toFormatter();
 
 Locale currentLocale = request.getLocale();
 
@@ -199,7 +190,7 @@ for( SchoolDuration school : twoTargetsSchools )
 	<tr>
 		<td><%= position + 1 %></td>
 		<td><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
-		<td><%= formatter.print(school.duration.toPeriod()) %></td>
+		<td><%= Helpers.stopwatchFormatter.print(school.duration.toPeriod()) %></td>
 	</tr>
 <%
 }
@@ -221,7 +212,7 @@ for( SchoolDuration school : twoActuatorChanged )
 	<tr>
 		<td><%= position + 1 %></td>
 		<td><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
-		<td><%= formatter.print(school.duration.toPeriod()) %></td>
+		<td><%= Helpers.stopwatchFormatter.print(school.duration.toPeriod()) %></td>
 	</tr>
 <%
 }

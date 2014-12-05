@@ -16,6 +16,8 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import com.framework.models.Essentials;
 import com.framework.models.User;
@@ -25,6 +27,15 @@ public class Helpers
 {
 	public static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
 	public static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(DATE_FORMAT).withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone("EST")));
+	public static final PeriodFormatter stopwatchFormatter = new PeriodFormatterBuilder()
+	.printZeroAlways()
+	.appendMinutes()
+	.appendSuffix(":")
+	.minimumPrintedDigits(2)
+	.appendSeconds()
+	.appendSuffix(".")
+	.appendMillis()
+	.toFormatter();
 	
 	public static <T> T getParameter(String parameter, Class<T> entityType, Essentials global)
 	{

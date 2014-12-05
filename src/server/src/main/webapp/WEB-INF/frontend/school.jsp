@@ -22,16 +22,6 @@ Integer score	= (Integer) request.getAttribute("score");
 SkillsCompetition skillsCompetition = (SkillsCompetition) request.getAttribute("skillsCompetition");
 int schoolCount = tournament.schools.size();
 
-PeriodFormatter formatter = new PeriodFormatterBuilder()
-.printZeroAlways()
-.appendMinutes()
-.appendSuffix(":")
-.minimumPrintedDigits(2)
-.appendSeconds()
-.appendSuffix(".")
-.appendMillis()
-.toFormatter();
-
 @SuppressWarnings("unchecked")
 ArrayList<Game> games = (ArrayList<Game>)request.getAttribute("games");
 
@@ -137,8 +127,8 @@ LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of(
 <tr><td></td><td><%= strRank + " ( / " + schoolCount + " )" %></td><td><%= strRankScore %></td><td><%= strScore %></td></tr>
 <tr><td><%= strTournament %></td>			<td><%= rank %></td>																			<td><%= String.format("%.1f", tournament.getPreliminaryHeatScore(school)) %></td>				<td><%= score %></td></tr>
 <tr><td><%= strPickupRace %></td>			<td><%= skillsCompetition.getPickballsPosition(school) + 1 %></td>								<td><%= String.format("%.1f", skillsCompetition.getPickballsPoints(school)) %></td>				<td><%= skillsCompetition.getPickballs(school).integer %></td></tr>
-<tr><td><%= strTwoTargetHits %></td>		<td><%= skillsCompetition.getTwoTargetHitsPosition(school) + 1 %></td>							<td><%= String.format("%.1f", skillsCompetition.getTwoTargetHitsPoints(school)) %></td>			<td><%= formatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td></tr>
-<tr><td><%= strTwoActuatorChanged %></td>	<td><%= skillsCompetition.getTwoActuatorChangedPosition(school) + 1 %></td>						<td><%= String.format("%.1f", skillsCompetition.getTwoActuatorChangedPoints(school)) %></td>	<td><%= formatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td></tr>
+<tr><td><%= strTwoTargetHits %></td>		<td><%= skillsCompetition.getTwoTargetHitsPosition(school) + 1 %></td>							<td><%= String.format("%.1f", skillsCompetition.getTwoTargetHitsPoints(school)) %></td>			<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td></tr>
+<tr><td><%= strTwoActuatorChanged %></td>	<td><%= skillsCompetition.getTwoActuatorChangedPosition(school) + 1 %></td>						<td><%= String.format("%.1f", skillsCompetition.getTwoActuatorChangedPoints(school)) %></td>	<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td></tr>
 <tr><td><b><%= strCumulative %></b></td>	<td><b><%= tournament.getCumulativeRanking(skillsCompetition).indexOf(school) + 1 %></b></td>	<td><b><%= String.format("%.1f", tournament.getCumulativeScore(school, skillsCompetition)) %></b></td>	<td>-</td></tr>
 </table>
 <br/>
