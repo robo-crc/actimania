@@ -221,10 +221,6 @@ $(function() {
 			<td><%= strProgramming %></td>
 			<td><%= strRobotConstruction %></td>
 			<td><%= strRobotDesign %></td>
-			<td><%= strSportsmanship %></td>
-			<td><%= strVideo %></td>
-			<td><%= strWebsiteDesign %></td>
-			<td><%= strWebsiteJournalism %></td>
 		</tr>
 		<tr>
 			<td>
@@ -255,6 +251,28 @@ $(function() {
 			<td>
 				<ul id="robotDesign" class="sortable">
 					<% outputListSchools(competition.robotDesign, out); %>
+				</ul>
+			</td>
+		</tr>
+	</table>
+	
+		<table>
+		<tr>
+			<td><%= strRank %></td>
+			<td><%= strSportsmanship %></td>
+			<td><%= strVideo %></td>
+			<td><%= strWebsiteDesign %></td>
+			<td><%= strWebsiteJournalism %></td>
+		</tr>
+		<tr>
+			<td>
+				<ul id="position" class="sortableUI">
+				<%
+				for(int i = 1; i <= schools.size(); i++)
+				{
+					out.write("<li>" + i + "</li>\n");
+				}
+				%>
 				</ul>
 			</td>
 			<td>
