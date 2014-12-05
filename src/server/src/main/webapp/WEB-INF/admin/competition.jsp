@@ -155,13 +155,14 @@ $(function() {
 	    		update: function (event, ui) 
 	    		{
 	    	        var data = $(this).sortable('serialize');
-	
+	    	        data += "&arrayId=" + this.id;
+	    	        console.log(data);
 	    	        // POST to server using $.post or $.ajax
 	    	        $.ajax(
 	    	        {
 	    	            data: data,
 	    	            type: 'POST',
-	    	            url: '/admin/competitionUpdate'
+	    	            url: 'competitionUpdate'
 	    	        });
 	    	    }});
     $( ".sortable" ).disableSelection();
@@ -209,7 +210,7 @@ $(function() {
 	{
 		for(School school : schools)
 		{
-			out.write("<li id=\"" + school._id.toString() + "\"class=\"ui-state-default\"><span class=\"ui-icon ui-icon-arrowthick-2-n-s\"></span>" + school.name + "</li>\n");
+			out.write("<li id=\"id_" + school._id.toString() + "\"class=\"ui-state-default\"><span class=\"ui-icon ui-icon-arrowthick-2-n-s\"></span>" + school.name + "</li>\n");
 		}
 	}
 	%>
