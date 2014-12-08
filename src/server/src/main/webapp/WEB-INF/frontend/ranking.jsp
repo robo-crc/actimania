@@ -103,11 +103,13 @@ LocalizedString strTime = new LocalizedString(ImmutableMap.of(
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="shortcut icon" href="images/favicon.ico" />
 <title><%= strRanking %></title>
+<link rel="stylesheet" type="text/css" href="css/template.css">
+<script src="jquery/sorttable.js"></script>
 </head>
 <body>
 
 <h1><%= strPreliminaryScore %></h1>
-<table>
+<table class="sortable">
 <tr>
 <td><%= strPosition %></td><td><%= strSchool %></td><td><%= strCompetition %></td><td><%= strScore %></td><td><%= strPickupRace %></td><td><%= strCount %></td><td><%= strTwoTargetHits %></td><td><%= strTime %></td><td><%= strTwoActuatorChanged %></td><td><%= strTime %></td>
 </tr>

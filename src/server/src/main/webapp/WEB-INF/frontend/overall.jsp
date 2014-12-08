@@ -95,12 +95,14 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><%= strOverall %></title>
 <link rel="shortcut icon" href="images/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="css/template.css">
+<script src="jquery/sorttable.js"></script>
 </head>
 
 <body>
 	<h1><%= strOverall %></h1>
 	
-	<table>
+	<table class="sortable">
 		<tr>
 			<td><%= strRank %></td>
 			<td><%= strSchool %></td>
