@@ -1,5 +1,6 @@
 package com.main;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.joda.time.DateTime;
@@ -40,16 +41,21 @@ public class FakeTournament
 		try(Essentials essentials = new Essentials(new Database(DatabaseType.PRODUCTION), null, null, null, null))
 		{
 			Tournament tournament = Tournament.getTournament(essentials);
-			/*
+			
+			ArrayList<SchoolInteger> pickBallsArray = new ArrayList<SchoolInteger>();
+			ArrayList<SchoolDuration> twoActuatorsArray = new ArrayList<SchoolDuration>();
+			ArrayList<SchoolDuration> twoTargetsArray = new ArrayList<SchoolDuration>();
+			
 			SkillsCompetition skills = SkillsCompetition.get(essentials.database);
 			for(School school : tournament.schools)
 			{
-				skills.pickBalls.set(skills.pickBalls.indexOf(school), new SchoolInteger(school, random.nextInt(20)));
-				skills.twoActuatorChanged.set(skills.twoActuatorChanged.indexOf(school), new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
-				skills.twoTargetHits.set(skills.twoTargetHits.indexOf(school), new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
+				pickBallsArray.add(new SchoolInteger(school, random.nextInt(20)));
+				twoActuatorsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
+				twoTargetsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
 			}
-			essentials.database.save(skills);
-			*/
+			SkillsCompetition competition = new SkillsCompetition(skills._id, pickBallsArray, twoTargetsArray, twoActuatorsArray);
+			essentials.database.save(competition);
+			
 			
 			for(int i = 0; i < tournament.games.size() / 2; i++)
 			{

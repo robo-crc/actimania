@@ -65,6 +65,11 @@ LocalizedString strSchedule = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Schedule", 
 		Locale.FRENCH, 	"Horaire"
 		), currentLocale);
+
+LocalizedString strCompetition = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Competition", 
+		Locale.FRENCH, 	"Compétition"
+		), currentLocale);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -150,6 +155,8 @@ LocalizedString strSchedule = new LocalizedString(ImmutableMap.of(
 	<a href="../schedule"><%= strSchedule %></a>
 	<br/>
 	<a href="schools"><%= strSchools %></a>
+	<br/>
+	<a href="competition"><%= strCompetition %></a>
 	<br/>
 	<a href="../logout"><%= strLogout %></a>
 </body>

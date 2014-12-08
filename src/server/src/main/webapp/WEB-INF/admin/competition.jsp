@@ -122,6 +122,11 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Website journalism", 
 		Locale.FRENCH, 	"Journalisme du site web"
 		), currentLocale);
+
+LocalizedString strSchools = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Schools", 
+		Locale.FRENCH, 	"Écoles"
+		), currentLocale);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -133,6 +138,7 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 <script src="../jquery/jquery.js"></script>
+<script src="../jquery/jquery.inputmask.min.js"></script>
 <script src="../jquery/jquery.numeric.min.js"></script>
 <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
@@ -143,11 +149,13 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
   .sortable li { width : 175px; }
   .sortableUI li span, .sortable li span { position: absolute; margin-left: -1.3em; }
 </style>
-  
+
 <script>
 $(document).ready(function(){
 	$( ".spinner" ).spinner();
 	$( ".spinner" ).numeric();
+	
+	$(".chrono").inputmask("9:99.99");
 });
 
 $(function() {
@@ -192,8 +200,8 @@ $(function() {
 			<tr>
 				<td><%= school.name %></td>
 				<td><input class="spinner" type="text" name="pickballs_<%= school._id %>" value="<%= skillsCompetition.getPickballs(school).integer %>" /></td>
-				<td><input type="text" name="twoTargets_<%= school._id %>" value="<%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %>" /></td>
-				<td><input type="text" name="twoActuators_<%= school._id %>" value="<%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %>" /></td>
+				<td><input type="text" class="chrono" name="twoTargets_<%= school._id %>" value="<%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %>" /></td>
+				<td><input type="text" class="chrono" name="twoActuators_<%= school._id %>" value="<%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %>" /></td>
 			</tr>
 			<%
 		}
@@ -299,9 +307,10 @@ $(function() {
 		</tr>
 	</table>
 	
-	
 	<br/>
 	<a href="../schedule"><%= strSchedule %></a>
+	<br/>
+	<a href="schools"><%= strSchools %></a>
 	<br/>
 	<a href="users"><%= strUsers %></a>
 	<br/>

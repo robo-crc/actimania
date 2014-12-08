@@ -181,6 +181,11 @@ LocalizedString strPoints = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Points"
 		), currentLocale);
 
+LocalizedString strCompetition = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Competition", 
+		Locale.FRENCH, 	"Compétition"
+		), currentLocale);
+
 LocalizedString strCommentEnglish = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Comment in english", 
 		Locale.FRENCH, 	"Commentaire en anglais"
@@ -484,6 +489,8 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 	<a href="schools"><%= strSchools %></a>
 	<br/>
 	<a href="users"><%= strUsers %></a>
+	<br/>
+	<a href="competition"><%= strCompetition %></a>
 	<br/>
 	<a href="../logout"><%= strLogout %></a>
 </body>
