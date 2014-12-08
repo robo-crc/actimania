@@ -113,9 +113,9 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 			<td><%= strVideo %></td>
 			<td><%= strWebsiteDesign %></td>
 			<td><%= strWebsiteJournalism %></td>
-			<td><b><%= strOverall %></b></td>
 		</tr>
 		<%
+		ArrayList<School> heatRanking = tournament.getHeatRanking(GameTypeEnum.PLAYOFF);
 		for(int i = 0; i < schoolsRanked.size(); i++)
 		{
 			School school = schoolsRanked.get(i);
@@ -123,16 +123,15 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 			<tr>
 				<td><%= String.valueOf(i + 1) %></td>
 				<td><%= school.name %></td>
-				<td><%= Competition.getAspectPoints(tournament.getHeatRanking(GameTypeEnum.PLAYOFF), school) * 2 %></td>
-				<td><%= Competition.getAspectPoints(competition.kiosk, school) %></td>
-				<td><%= Competition.getAspectPoints(competition.programming, school) %></td>
-				<td><%= Competition.getAspectPoints(competition.robotConstruction, school) %></td>
-				<td><%= Competition.getAspectPoints(competition.robotDesign, school) %></td>
-				<td><%= Competition.getAspectPoints(competition.sportsmanship, school) %></td>
-				<td><%= Competition.getAspectPoints(competition.video, school) %></td>
-				<td><%= Competition.getAspectPoints(competition.websiteDesign, school) %></td>
-				<td><%= Competition.getAspectPoints(competition.websiteJournalism, school) %></td>
-				<td><b><%= competition.getSchoolScore(tournament.getHeatRanking(GameTypeEnum.PLAYOFF), school) %></b></td>
+				<td><%= heatRanking.indexOf(school) + 1 %></td>
+				<td><%= competition.kiosk.indexOf(school) + 1 %></td>
+				<td><%= competition.programming.indexOf(school) + 1 %></td>
+				<td><%= competition.robotConstruction.indexOf(school) + 1 %></td>
+				<td><%= competition.robotDesign.indexOf(school) + 1 %></td>
+				<td><%= competition.sportsmanship.indexOf(school) + 1 %></td>
+				<td><%= competition.video.indexOf(school) + 1 %></td>
+				<td><%= competition.websiteDesign.indexOf(school) + 1 %></td>
+				<td><%= competition.websiteJournalism.indexOf(school) + 1 %></td>
 			</tr>
 		<%
 		}

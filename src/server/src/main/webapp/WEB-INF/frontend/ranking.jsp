@@ -56,9 +56,9 @@ LocalizedString strPreliminaryScore = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Pointage préliminaire"
 		), currentLocale);
 
-LocalizedString strCompetitionScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Competition Score", 
-		Locale.FRENCH, 	"Pointage de la compétition"
+LocalizedString strCompetition = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Competition", 
+		Locale.FRENCH, 	"Compétition"
 		), currentLocale);
 
 LocalizedString strCumulativeScore = new LocalizedString(ImmutableMap.of( 	
@@ -109,7 +109,7 @@ LocalizedString strTime = new LocalizedString(ImmutableMap.of(
 <h1><%= strPreliminaryScore %></h1>
 <table>
 <tr>
-<td><%= strPosition %></td><td><%= strSchool %></td><td><%= strCompetitionScore %></td><td><%= strPickupRace %></td><td><%= strTwoTargetHits %></td><td><%= strTwoActuatorChanged %></td><td><%= strCumulativeScore %></td>
+<td><%= strPosition %></td><td><%= strSchool %></td><td><%= strCompetition %></td><td><%= strScore %></td><td><%= strPickupRace %></td><td><%= strCount %></td><td><%= strTwoTargetHits %></td><td><%= strTime %></td><td><%= strTwoActuatorChanged %></td><td><%= strTime %></td>
 </tr>
 <%
 
@@ -120,104 +120,25 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 	<tr>
 		<td><%= position + 1 %></td>
 		<td><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
-		<td><%= String.format("%.1f", tournament.getPreliminaryHeatScore(school)) %></td>
-		<td><%= String.format("%.1f", skillsCompetition.getPickballsPoints(school)) %></td>
-		<td><%= String.format("%.1f", skillsCompetition.getTwoTargetHitsPoints(school)) %></td>
-		<td><%= String.format("%.1f", skillsCompetition.getTwoActuatorChangedPoints(school)) %></td>
-		<td><b><%= String.format("%.1f", tournament.getCumulativeScore(school, skillsCompetition)) %></b></td>
+		
+		<td><%= String.valueOf(heatRanking.indexOf(school) + 1) %></td>
+		<td><%= tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) %></td>
+		
+		<td><%= String.valueOf(skillsCompetition.getPickballsPosition(school) + 1)%></td>
+		<td><%= skillsCompetition.getPickballs(school).integer %></td>
+		
+		<td><%= String.valueOf(skillsCompetition.getTwoTargetHitsPosition(school) + 1)%></td>
+		<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td>
+		
+		<td><%= String.valueOf(skillsCompetition.getTwoActuatorChangedPosition(school) + 1) %></td>
+		<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td>
 	</tr>
 <%
 }
 %>
 </table>
 
-
-<h2><%= strCompetitionScore %></h2>
-<table>
-<tr>
-<td><%= strPosition %></td><td><%= strSchool %></td><td><%= strScore %></td>
-</tr>
-<%
-for( int position = 0; position < heatRanking.size(); position++ )
-{
-	School school = heatRanking.get(position);
-	int score = tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY);
-%>
-	<tr>
-		<td><%= position + 1 %></td>
-		<td><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
-		<td><%= score %></td>
-	</tr>
-<%
-}
-%>
-</table>
-
-<h2><%= strPickupRace %></h2>
-<table>
-<tr>
-<td><%= strPosition %></td><td><%= strSchool %></td><td><%= strCount %></td>
-</tr>
-<%
-ArrayList<SchoolInteger> pickupSchools = skillsCompetition.getPickballsOrdered();
-
-for( SchoolInteger school : pickupSchools )
-{
-	int position = skillsCompetition.getPickballsPosition(school);
-%>
-	<tr>
-		<td><%= position + 1 %></td>
-		<td><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
-		<td><%= school.integer %></td>
-	</tr>
-<%
-}
-%>
-</table>
-
-<h2><%= strTwoTargetHits %></h2>
-<table>
-<tr>
-<td><%= strPosition %></td><td><%= strSchool %></td><td><%= strTime %></td>
-</tr>
-<%
-ArrayList<SchoolDuration> twoTargetsSchools = skillsCompetition.getTwoTargetHitsOrdered();
-
-for( SchoolDuration school : twoTargetsSchools )
-{
-	int position = skillsCompetition.getTwoTargetHitsPosition(school);
-%>
-	<tr>
-		<td><%= position + 1 %></td>
-		<td><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
-		<td><%= Helpers.stopwatchFormatter.print(school.duration.toPeriod()) %></td>
-	</tr>
-<%
-}
-%>
-</table>
-
-<h2><%= strTwoActuatorChanged %></h2>
-<table>
-<tr>
-<td><%= strPosition %></td><td><%= strSchool %></td><td><%= strTime %></td>
-</tr>
-<%
-ArrayList<SchoolDuration> twoActuatorChanged = skillsCompetition.getTwoActuatorChangedOrdered();
-
-for( SchoolDuration school : twoActuatorChanged )
-{
-	int position = skillsCompetition.getTwoActuatorChangedPosition(school);
-%>
-	<tr>
-		<td><%= position + 1 %></td>
-		<td><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
-		<td><%= Helpers.stopwatchFormatter.print(school.duration.toPeriod()) %></td>
-	</tr>
-<%
-}
-%>
-</table>
+<br/>
 
 <a href="schedule"><%= strSchedule %></a><br/>
 <a href="live"><%= strLiveGame %></a>
