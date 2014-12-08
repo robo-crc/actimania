@@ -100,6 +100,7 @@ public class TournamentScoreCalculator implements EasyScoreCalculator<Tournament
 					if(previous2Game.getSchools().contains(school))
 					{
 						mediumScore -= 1;
+						softScore -= 1;
 					}
 					
 					if(previous3Game.getSchools().contains(school))

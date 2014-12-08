@@ -13,7 +13,7 @@ import com.backend.models.Tournament;
 import com.backend.models.enums.GameTypeEnum;
 import com.framework.models.Essentials;
 
-// Show the whole tournament ranking.
+// Show the preliminary tournament ranking.
 
 @WebServlet("/ranking")
 public class RankingController extends HttpServlet

@@ -127,6 +127,11 @@ LocalizedString strSchools = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Schools", 
 		Locale.FRENCH, 	"Écoles"
 		), currentLocale);
+
+LocalizedString strOverall = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Overall", 
+		Locale.FRENCH, 	"Classement final"
+		), currentLocale);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -307,6 +312,8 @@ $(function() {
 		</tr>
 	</table>
 	
+	<br/>
+	<a href="../overall"><%= strOverall %></a>
 	<br/>
 	<a href="../schedule"><%= strSchedule %></a>
 	<br/>
