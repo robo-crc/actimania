@@ -8,8 +8,8 @@
     <ProjectGuid>{C795ABB2-6882-4810-B9FB-86BD83209FD5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WindowsFormsApplication3</RootNamespace>
-    <AssemblyName>WindowsFormsApplication3</AssemblyName>
+    <RootNamespace>ArduinoToServer</RootNamespace>
+    <AssemblyName>ArduinoToServer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -19,7 +19,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\output\arduinotoserver\debug\</OutputPath>
+    <IntermediateOutputPath>..\..\..\tmp\arduinotoserver\debug\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -28,7 +29,8 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\output\arduinotoserver\release\</OutputPath>
+    <IntermediateOutputPath>..\..\..\tmp\arduinotoserver\release\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -80,7 +82,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="CRC.png" />
+    <Content Include="CRC.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

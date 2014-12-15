@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication3
+﻿namespace ArduinoToServer
 {
     partial class Form1
     {
@@ -422,9 +422,9 @@
             // pictureBox2
             // 
             this.pictureBox2.BackColor = System.Drawing.Color.Black;
-            this.pictureBox2.BackgroundImage = global::WindowsFormsApplication3.Properties.Resources.CRC;
+            this.pictureBox2.BackgroundImage = global::ArduinoToServer.Properties.Resources.CRC;
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox2.Image = global::WindowsFormsApplication3.Properties.Resources.CRC;
+            this.pictureBox2.Image = global::ArduinoToServer.Properties.Resources.CRC;
             this.pictureBox2.Location = new System.Drawing.Point(207, 261);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(86, 71);
@@ -435,9 +435,9 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Black;
-            this.pictureBox1.BackgroundImage = global::WindowsFormsApplication3.Properties.Resources.CRC;
+            this.pictureBox1.BackgroundImage = global::ArduinoToServer.Properties.Resources.CRC;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox1.Image = global::WindowsFormsApplication3.Properties.Resources.CRC;
+            this.pictureBox1.Image = global::ArduinoToServer.Properties.Resources.CRC;
             this.pictureBox1.Location = new System.Drawing.Point(467, 261);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(86, 71);

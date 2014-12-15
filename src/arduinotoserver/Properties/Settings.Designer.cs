@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WindowsFormsApplication3.Properties
+namespace ArduinoToServer.Properties
 {
 
 

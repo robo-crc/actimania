@@ -11,7 +11,7 @@ using System.Threading;
 
 
 
-namespace WindowsFormsApplication3
+namespace ArduinoToServer
 {
 
     public partial class Form1 : Form
