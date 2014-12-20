@@ -243,7 +243,8 @@ namespace ArduinoToServer
             }
         }
 
-        public static String SERVER_ADDRESS = "http://localhost:8080/actimania/arduino";
+        //public static String SERVER_ADDRESS = "http://localhost:8080/actimania/arduino";
+        public static String SERVER_ADDRESS = "http://192.227.134.178:8080/actimania/arduino";
         public static String EMAIL = "serverToArduino";
         public static String PASSWORD = "ThisIsATmpPassword";
 
