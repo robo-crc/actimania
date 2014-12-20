@@ -104,6 +104,11 @@ public class Helpers
 		return user._id;
 	}
 	
+	public static User getCurrentUser()
+	{
+		return (User)SecurityUtils.getSubject().getSession().getAttribute("user");
+	}
+	
 	public static Locale getCurrentLocale()
 	{
 		return Locale.ENGLISH;

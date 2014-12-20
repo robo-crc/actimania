@@ -13,11 +13,11 @@ Pour le programme de display
 * Streaming de la compétition aussi !
 * Streaming du pointage par-dessus les images du jeu (?)
 * Classement général automatique
+* Interface pour entrer et calculer les volets jugés à la compétition
+- Importation des classements des autres compétitions depuis le site web de la CRC (Rank pour Vidéo et Site web) --> Michael Sanford
+? Générer un "powerpoint" pour la cérémonie de remise de prix
 Remplissage automatique du canevas des playoffs à la lumière du classement
 Option d'impression de l'horaire des playoffs.
-- Importation des classements des autres compétitions depuis le site web de la CRC (Rank pour Vidéo et Site web) --> Michael Sanford
-* Interface pour entrer et calculer les volets jugés à la compétition
-? Générer un "powerpoint" pour la cérémonie de remise de prix
 Conquérir le monde
 
 Calcul du classement final

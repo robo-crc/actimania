@@ -187,6 +187,7 @@ public class Game implements Comparable<Game>
 					{
 						Game game = database.findOne(Game.class, gameId);
 						game.addGameEvent(endGameEvent);
+						GameRefreshController.setRefreshNeeded(true);
 						database.save(game);
 					}
 					finally

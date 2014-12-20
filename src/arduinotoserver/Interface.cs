@@ -8,13 +8,13 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.Threading;
-
-
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ArduinoToServer
 {
 
-    public partial class Form1 : Form
+    public partial class Interface : Form
     {
 
         public static System.IO.Ports.SerialPort port;
@@ -36,11 +36,13 @@ namespace ArduinoToServer
         string message;//Variable du contenu reçu depuis le Uno
 
 
-        public Form1()
+        public Interface()
         {
             InitializeComponent();
             hardWorker = new BackgroundWorker();
             sendBtn.Enabled = false;
+            cmbActuatorState.SelectedIndex = 0;
+            cmbArduinoNumber.SelectedIndex = 0;
         }
 
         private void sendBtn_Click(object sender, EventArgs e)//Fonction d'envoie par port série (non utilisé, éléments masqués dans le Form) 
@@ -162,6 +164,131 @@ namespace ArduinoToServer
             sendBtn.Enabled = true;
         }
 
+        enum SIDE
+        {
+            BLUE,
+            YELLOW
+        }
+
+        enum ACTUATOR_STATE
+        {
+            CLOSED,
+            BLUE,
+            YELLOW
+        }
+
+        enum TARGET
+        {
+            LOW,
+            MID,
+            HIGH
+        }
+
+        private static TARGET arduinoToTarget(String arduinoNumber)
+        {
+            switch (arduinoNumber)
+            {
+                case "1":
+                case "4":
+                    return TARGET.LOW;
+
+                case "3":
+                case "6":
+                    return TARGET.MID;
+
+                case "2":
+                case "5":
+                    return TARGET.HIGH;
+
+                default:
+                    throw new Exception("Unknown arduino number");
+            }
+        }
+
+        private static SIDE arduinoToSide(String arduinoNumber)
+        {
+            switch (arduinoNumber)
+            {
+                case "1":
+                case "2":
+                case "3":
+                    return SIDE.BLUE;
+
+                case "4":
+                case "5":
+                case "6":
+                    return SIDE.YELLOW;
+
+                default:
+                    throw new Exception("Unknown arduino number");
+            }
+        }
+
+        private static ACTUATOR_STATE arduinoToState(String state)
+        {
+            switch(state)
+            {
+                case "BH":
+                    return ACTUATOR_STATE.BLUE;
+
+                case "JH":
+                    return ACTUATOR_STATE.YELLOW;
+
+                case "JL":
+                case "BL":
+                    return ACTUATOR_STATE.CLOSED;
+
+                default:
+                    throw new Exception("Unknown arduino state");
+            }
+        }
+
+        public static String SERVER_ADDRESS = "http://localhost:8080/actimania/arduino";
+        public static String EMAIL = "serverToArduino";
+        public static String PASSWORD = "ThisIsATmpPassword";
+
+        private async void sendActuatorChangedToServer(String arduinoNumber, String strState)
+        {
+            SIDE side = arduinoToSide(arduinoNumber);
+            TARGET target = arduinoToTarget(arduinoNumber);
+            ACTUATOR_STATE state = arduinoToState(strState);
+
+            using (var client = new HttpClient())
+            {
+                var values = new List<KeyValuePair<string, string>>();
+                values.Add(new KeyValuePair<string, string>("gameEvent", "ACTUATOR_STATE_CHANGED"));
+                values.Add(new KeyValuePair<string, string>("email", EMAIL));
+                values.Add(new KeyValuePair<string, string>("password", PASSWORD));
+                values.Add(new KeyValuePair<string, string>("side", side.ToString()));
+                values.Add(new KeyValuePair<string, string>("target", target.ToString()));
+                values.Add(new KeyValuePair<string, string>("actuatorState", state.ToString()));
+
+                var content = new FormUrlEncodedContent(values);
+
+                await client.PostAsync(SERVER_ADDRESS, content);
+            }
+        }
+
+        private async void sendTargetHitToServer(String arduinoNumber)
+        {
+            using (var client = new HttpClient())
+            {
+                SIDE side = arduinoToSide(arduinoNumber);
+                TARGET target = arduinoToTarget(arduinoNumber);
+
+                var values = new List<KeyValuePair<string, string>>();
+                values.Add(new KeyValuePair<string, string>("gameEvent", "TARGET_HIT"));
+                values.Add(new KeyValuePair<string, string>("email", EMAIL));
+                values.Add(new KeyValuePair<string, string>("password", PASSWORD));
+                values.Add(new KeyValuePair<string, string>("side", side.ToString()));
+                values.Add(new KeyValuePair<string, string>("target", target.ToString()));
+
+                var content = new FormUrlEncodedContent(values);
+
+                await client.PostAsync(SERVER_ADDRESS, content);
+            }
+        }
+
         private void SetColor(string target , string color)//Fonction d'attribution de couleur aux cibles selon les message du Uno
         {
             if (target == "1")
@@ -178,8 +305,6 @@ namespace ArduinoToServer
                     Actuator1.BackColor = System.Drawing.Color.Yellow;
                     target1.BackColor = System.Drawing.Color.Yellow;
                     yellow_multi++;
-
-
                 }
                 else if (color == "JL\r" || color== "BL\r")
                 {
@@ -395,12 +520,13 @@ namespace ArduinoToServer
             if (value[0] == "C")
             {
                 setScore(value[1]);
+                sendTargetHitToServer(value[1]);
             }
             else
             {
                 SetColor(value[0], value[1]);
+                sendActuatorChangedToServer(value[0], value[1]);
             }
-            
         }
 
 
@@ -516,10 +642,16 @@ namespace ArduinoToServer
 
         }
 
+        private void btnTargetHit_Click(object sender, EventArgs e)
+        {
+            sendTargetHitToServer(cmbArduinoNumber.Text);
+        }
+
+        private void btnActuatorChanged_Click(object sender, EventArgs e)
+        {
+            sendActuatorChangedToServer(cmbArduinoNumber.Text, cmbActuatorState.Text);
+        }
     }
-
-
-
 }
 
 

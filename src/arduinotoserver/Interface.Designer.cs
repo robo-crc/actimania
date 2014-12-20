@@ -1,6 +1,6 @@
 ﻿namespace ArduinoToServer
 {
-    partial class Form1
+    partial class Interface
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Interface));
             this.btnConnect = new System.Windows.Forms.Button();
             this.sendBtn = new System.Windows.Forms.Button();
             this.comPort = new System.Windows.Forms.ComboBox();
@@ -87,6 +87,11 @@
             this.label18 = new System.Windows.Forms.Label();
             this.refreshCOM = new System.Windows.Forms.Button();
             this.btn_reset = new System.Windows.Forms.Button();
+            this.cmbArduinoNumber = new System.Windows.Forms.ComboBox();
+            this.cmbActuatorState = new System.Windows.Forms.ComboBox();
+            this.btnTargetHit = new System.Windows.Forms.Button();
+            this.btnActuatorChanged = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -698,11 +703,78 @@
             this.btn_reset.UseVisualStyleBackColor = true;
             this.btn_reset.Click += new System.EventHandler(this.button2_Click);
             // 
+            // cmbArduinoNumber
+            // 
+            this.cmbArduinoNumber.DisplayMember = "1";
+            this.cmbArduinoNumber.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbArduinoNumber.FormattingEnabled = true;
+            this.cmbArduinoNumber.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"});
+            this.cmbArduinoNumber.Location = new System.Drawing.Point(418, 58);
+            this.cmbArduinoNumber.Name = "cmbArduinoNumber";
+            this.cmbArduinoNumber.Size = new System.Drawing.Size(121, 21);
+            this.cmbArduinoNumber.TabIndex = 34;
+            // 
+            // cmbActuatorState
+            // 
+            this.cmbActuatorState.DisplayMember = "0";
+            this.cmbActuatorState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbActuatorState.FormattingEnabled = true;
+            this.cmbActuatorState.Items.AddRange(new object[] {
+            "BH",
+            "JH",
+            "BL",
+            "JL"});
+            this.cmbActuatorState.Location = new System.Drawing.Point(418, 94);
+            this.cmbActuatorState.Name = "cmbActuatorState";
+            this.cmbActuatorState.Size = new System.Drawing.Size(121, 21);
+            this.cmbActuatorState.TabIndex = 35;
+            this.cmbActuatorState.ValueMember = "0";
+            // 
+            // btnTargetHit
+            // 
+            this.btnTargetHit.Location = new System.Drawing.Point(556, 58);
+            this.btnTargetHit.Name = "btnTargetHit";
+            this.btnTargetHit.Size = new System.Drawing.Size(131, 23);
+            this.btnTargetHit.TabIndex = 36;
+            this.btnTargetHit.Text = "Target hit";
+            this.btnTargetHit.UseVisualStyleBackColor = true;
+            this.btnTargetHit.Click += new System.EventHandler(this.btnTargetHit_Click);
+            // 
+            // btnActuatorChanged
+            // 
+            this.btnActuatorChanged.Location = new System.Drawing.Point(556, 92);
+            this.btnActuatorChanged.Name = "btnActuatorChanged";
+            this.btnActuatorChanged.Size = new System.Drawing.Size(131, 23);
+            this.btnActuatorChanged.TabIndex = 37;
+            this.btnActuatorChanged.Text = "Actuator changed";
+            this.btnActuatorChanged.UseVisualStyleBackColor = true;
+            this.btnActuatorChanged.Click += new System.EventHandler(this.btnActuatorChanged_Click);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(417, 40);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(106, 13);
+            this.label19.TabIndex = 38;
+            this.label19.Text = "Send event to server";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1084, 496);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.btnActuatorChanged);
+            this.Controls.Add(this.btnTargetHit);
+            this.Controls.Add(this.cmbActuatorState);
+            this.Controls.Add(this.cmbArduinoNumber);
             this.Controls.Add(this.btn_reset);
             this.Controls.Add(this.refreshCOM);
             this.Controls.Add(this.label18);
@@ -809,6 +881,11 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button refreshCOM;
         private System.Windows.Forms.Button btn_reset;
+        private System.Windows.Forms.ComboBox cmbArduinoNumber;
+        private System.Windows.Forms.ComboBox cmbActuatorState;
+        private System.Windows.Forms.Button btnTargetHit;
+        private System.Windows.Forms.Button btnActuatorChanged;
+        private System.Windows.Forms.Label label19;
 
 
 
