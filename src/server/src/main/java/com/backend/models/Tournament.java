@@ -61,7 +61,14 @@ public class Tournament
 	
 	public double getPreliminaryHeatScore(School school)
 	{
-		return (schools.size() - getHeatRanking(GameTypeEnum.PRELIMINARY).indexOf(school)) * 0.7;
+		ArrayList<School> ranking = getHeatRanking(GameTypeEnum.PRELIMINARY);
+		double bestScore = getTotalScore(ranking.get(0), GameTypeEnum.PRELIMINARY);
+		double currentScore = getTotalScore(school, GameTypeEnum.PRELIMINARY);
+		
+		if(bestScore == 0)
+			return 0;
+		
+		return (currentScore / bestScore) * 0.7;
 	}
 	
 	public double getCumulativeScore(School school, SkillsCompetition skillsCompetition)

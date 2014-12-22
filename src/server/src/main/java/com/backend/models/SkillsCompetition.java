@@ -28,6 +28,13 @@ public class SkillsCompetition
 	private final TreeMap<School, Integer> twoActuatorChangedPosition;
 	
 	@JsonIgnore
+	private final SchoolInteger pickBallsBest;
+	@JsonIgnore
+	private final SchoolDuration twoTargetHitsBest;
+	@JsonIgnore
+	private final SchoolDuration twoActuatorChangedBest;
+	
+	@JsonIgnore
 	public final static double SKILL_WEIGTH = 0.1; // 10% per skill competition in the final note
 	
 	public SkillsCompetition(
@@ -48,6 +55,10 @@ public class SkillsCompetition
 		ArrayList<SchoolInteger> pickBallsRanking = getOrderedInteger(pickBalls);
 		ArrayList<SchoolDuration> twoTargetsRanking = getOrderedDuration(twoTargetHits);
 		ArrayList<SchoolDuration> twoActuatorsRanking = getOrderedDuration(twoActuatorChanged);
+		
+		pickBallsBest = pickBallsRanking.get(0);
+		twoTargetHitsBest = twoTargetsRanking.get(0);
+		twoActuatorChangedBest = twoActuatorsRanking.get(0);
 		
 		for(School school : pickBalls)
 		{
@@ -162,17 +173,17 @@ public class SkillsCompetition
 	
 	public double getPickballsPoints(School school)
 	{
-		return (pickBallsPosition.size() - pickBallsPosition.get(school)) * SKILL_WEIGTH;
+		return (getPickballs(school).integer.doubleValue() / pickBallsBest.integer.doubleValue()) * SKILL_WEIGTH;
 	}
 	
 	public double getTwoTargetHitsPoints(School school)
 	{
-		return (twoTargetHitsPosition.size() - twoTargetHitsPosition.get(school)) * SKILL_WEIGTH;
+		return ((double)twoTargetHitsBest.duration.getMillis() / (double)getTwoTargetHits(school).duration.getMillis()) * SKILL_WEIGTH;
 	}
 	
 	public double getTwoActuatorChangedPoints(School school)
 	{
-		return (twoActuatorChangedPosition.size() - twoActuatorChangedPosition.get(school)) * SKILL_WEIGTH;
+		return ((double)twoActuatorChangedBest.duration.getMillis() / (double)getTwoActuatorChanged(school).duration.getMillis()) * SKILL_WEIGTH;
 	}
 	
 	@SuppressWarnings("unchecked")
