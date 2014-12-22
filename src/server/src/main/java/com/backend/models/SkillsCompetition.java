@@ -173,17 +173,35 @@ public class SkillsCompetition
 	
 	public double getPickballsPoints(School school)
 	{
-		return (getPickballs(school).integer.doubleValue() / pickBallsBest.integer.doubleValue()) * SKILL_WEIGTH;
+		return getPointsInteger(pickBallsBest, getPickballs(school));
 	}
 	
 	public double getTwoTargetHitsPoints(School school)
 	{
-		return ((double)twoTargetHitsBest.duration.getMillis() / (double)getTwoTargetHits(school).duration.getMillis()) * SKILL_WEIGTH;
+		return getPointsDuration(twoTargetHitsBest, getTwoTargetHits(school));
 	}
 	
 	public double getTwoActuatorChangedPoints(School school)
 	{
-		return ((double)twoActuatorChangedBest.duration.getMillis() / (double)getTwoActuatorChanged(school).duration.getMillis()) * SKILL_WEIGTH;
+		return getPointsDuration(twoActuatorChangedBest, getTwoActuatorChanged(school));
+	}
+	
+	public static double getPointsInteger(SchoolInteger best, SchoolInteger current)
+	{
+		// Don't divide by 0
+		if(best.integer.intValue() == 0)
+			return 0;
+			
+		return (current.integer.doubleValue() / best.integer.doubleValue()) * SKILL_WEIGTH;
+	}
+	
+	public static double getPointsDuration(SchoolDuration best, SchoolDuration current)
+	{
+		// Don't divide by 0
+		if(current.duration.getMillis() == 0)
+			return 0;
+		
+		return ((double)best.duration.getMillis() / (double)current.duration.getMillis()) * SKILL_WEIGTH;
 	}
 	
 	@SuppressWarnings("unchecked")
