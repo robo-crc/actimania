@@ -94,9 +94,9 @@ public class Playoff
 				}
 			}
 			
-			if(nbOfGroupsWithExtraSchool < groupNb)
+			if(nbOfGroupsWithExtraSchool > groupNb)
 			{
-				schoolsInGroup.add(schoolsInRound.get((schoolsPerGroup / 2) + groupNb));
+				schoolsInGroup.add(schoolsInRound.get((schoolsCount / 2) + groupNb));
 			}
 			
 			playoffGroups.add(new PlayoffGroup(schoolsInGroup));

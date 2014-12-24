@@ -20,4 +20,18 @@ public class PlayoffRound
 		
 		return games;
 	}
+	
+	public String toString()
+	{
+		String string = "";
+		for(PlayoffGroup playoffGroup : playoffGroups)
+		{
+			for(School school : playoffGroup.schools)
+			{
+				string += school.name + " ";
+			}
+			string += "\n";
+		}
+		return string;
+	}
 }
