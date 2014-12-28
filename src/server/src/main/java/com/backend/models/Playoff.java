@@ -94,9 +94,11 @@ public class Playoff
 				}
 			}
 			
-			if(nbOfGroupsWithExtraSchool > groupNb)
+			// The last groups will get the extra school. Those groups contains the most average groups.
+			int invertGroupNb = groupsCount - groupNb -1;
+			if(nbOfGroupsWithExtraSchool > invertGroupNb)
 			{
-				schoolsInGroup.add(schoolsInRound.get((schoolsCount / 2) + groupNb));
+				schoolsInGroup.add(schoolsInRound.get((schoolsCount / 2) + invertGroupNb));
 			}
 			
 			playoffGroups.add(new PlayoffGroup(schoolsInGroup));
