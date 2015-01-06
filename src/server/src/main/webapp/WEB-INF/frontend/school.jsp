@@ -33,8 +33,8 @@ LocalizedString strTournament = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strCumulative = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Preliminary cumulative", 
-		Locale.FRENCH, 	"Cumulatif préliminaire"
+		Locale.ENGLISH, "Preliminary round position : ", 
+		Locale.FRENCH, 	"Position ronde préliminaire : "
 		), currentLocale);
 
 LocalizedString strRank = new LocalizedString(ImmutableMap.of( 	
@@ -123,14 +123,17 @@ LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of(
 <body>
 
 <h1><%= school.name %></h1>
+
 <table>
-<tr><td></td><td><%= strRank + " ( / " + schoolCount + " )" %></td><td><%= strScore %></td></tr>
-<tr><td><%= strTournament %></td>			<td><%= rank %></td>																			<td><%= score %></td></tr>
-<tr><td><%= strPickupRace %></td>			<td><%= skillsCompetition.getPickballsPosition(school) + 1 %></td>								<td><%= skillsCompetition.getPickballs(school).integer %></td></tr>
-<tr><td><%= strTwoTargetHits %></td>		<td><%= skillsCompetition.getTwoTargetHitsPosition(school) + 1 %></td>							<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td></tr>
-<tr><td><%= strTwoActuatorChanged %></td>	<td><%= skillsCompetition.getTwoActuatorChangedPosition(school) + 1 %></td>						<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td></tr>
-<tr><td><b><%= strCumulative %></b></td>	<td><b><%= tournament.getCumulativeRanking(skillsCompetition).indexOf(school) + 1 %></b></td>	<td>-</td></tr>
+<tr><td></td>								<td><%= strScore %></td></tr>
+<tr><td><%= strTournament %></td>			<td><%= score %></td></tr>
+<tr><td><%= strPickupRace %></td>			<td><%= skillsCompetition.getPickballs(school).integer %></td></tr>
+<tr><td><%= strTwoTargetHits %></td>		<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td></tr>
+<tr><td><%= strTwoActuatorChanged %></td>	<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td></tr>
 </table>
+<br/>
+<b><%= strCumulative %> <%= tournament.getCumulativeRanking(skillsCompetition).indexOf(school) + 1 %> / <%= schoolCount %></b>
+<br/>
 <br/>
 <table>
 <tr>

@@ -111,7 +111,7 @@ LocalizedString strTime = new LocalizedString(ImmutableMap.of(
 <h1><%= strPreliminaryScore %></h1>
 <table class="sortable">
 <tr>
-<td><%= strPosition %></td><td><%= strSchool %></td><td><%= strCompetition %></td><td><%= strScore %></td><td><%= strPickupRace %></td><td><%= strCount %></td><td><%= strTwoTargetHits %></td><td><%= strTime %></td><td><%= strTwoActuatorChanged %></td><td><%= strTime %></td>
+<td><%= strPosition %></td><td><%= strSchool %></td><td><%= strCompetition %></td><td><%= strPickupRace %></td><td><%= strTwoTargetHits %></td><td><%= strTwoActuatorChanged %></td>
 </tr>
 <%
 
@@ -123,16 +123,10 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 		<td><%= position + 1 %></td>
 		<td><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
 		
-		<td><%= String.valueOf(heatRanking.indexOf(school) + 1) %></td>
 		<td><%= tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) %></td>
 		
-		<td><%= String.valueOf(skillsCompetition.getPickballsPosition(school) + 1)%></td>
 		<td><%= skillsCompetition.getPickballs(school).integer %></td>
-		
-		<td><%= String.valueOf(skillsCompetition.getTwoTargetHitsPosition(school) + 1)%></td>
 		<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td>
-		
-		<td><%= String.valueOf(skillsCompetition.getTwoActuatorChangedPosition(school) + 1) %></td>
 		<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td>
 	</tr>
 <%
