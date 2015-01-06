@@ -5,9 +5,11 @@ import java.net.UnknownHostException;
 import org.apache.commons.lang.Validate;
 import org.bson.types.ObjectId;
 import org.jongo.Jongo;
+import org.jongo.Mapper;
 import org.jongo.MongoCollection;
 import org.jongo.marshall.jackson.JacksonMapper;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.mongodb.MongoClient;
@@ -60,7 +62,11 @@ public class Database
 		{
 			db.setWriteConcern(WriteConcern.SAFE);
 
-			jongo = new Jongo(db.getDB(databaseName), new JacksonMapper.Builder().registerModule(new JodaModule()).enable(MapperFeature.AUTO_DETECT_GETTERS).build());
+			Mapper objectMapper = new JacksonMapper.Builder()
+			.registerModule(new JodaModule()).enable(MapperFeature.AUTO_DETECT_GETTERS)
+			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+			.build();
+			jongo = new Jongo(db.getDB(databaseName), objectMapper);		
 		}
 	}
 
