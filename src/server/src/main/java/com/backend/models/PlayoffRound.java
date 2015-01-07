@@ -27,10 +27,12 @@ public class PlayoffRound
 	{
 		ArrayList<Game> games = new ArrayList<Game>();
 		
+		ArrayList<PlayoffGroup> orderedGroups = orderPlayoffGroups(playoffGroups);
+		
 		int currentGame = 0;
 		for(int currentPass = 0; currentPass < 5; currentPass++)
 		{
-			for(PlayoffGroup playoffGroup : playoffGroups)
+			for(PlayoffGroup playoffGroup : orderedGroups)
 			{
 				ArrayList<School> schools = playoffGroup.schools;
 				if(playoffGroup.schools.size() == 4)
@@ -91,7 +93,7 @@ public class PlayoffRound
 		return games;
 	}
 
-	public ArrayList<PlayoffGroup> orderPlayoffGroup(ArrayList<PlayoffGroup> playoffGroups)
+	public static ArrayList<PlayoffGroup> orderPlayoffGroups(ArrayList<PlayoffGroup> playoffGroups)
 	{
 		ArrayList<PlayoffGroup> retPlayoffGroups;
 		boolean isEven = true;
