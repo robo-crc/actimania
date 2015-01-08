@@ -12,21 +12,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PlayoffRound 
 {
-	public final ArrayList<PlayoffGroup> playoffGroups;
+	public final ArrayList<PlayoffGroup> 	playoffGroups;
+	public final GameTypeEnum				gameType;
 	
-	public PlayoffRound(@JsonProperty("playoffGroups") 	ArrayList<PlayoffGroup> _playoffGroups)
+	public PlayoffRound(@JsonProperty("playoffGroups") 	ArrayList<PlayoffGroup> _playoffGroups,
+						@JsonProperty("gameType") 		GameTypeEnum _gameType
+						)
 	{
-		playoffGroups = _playoffGroups;
+		playoffGroups 	= _playoffGroups;
+		gameType 		= _gameType;
 	}
 	
 	public static final Duration TIME_BETWEEN_GAMES = new Duration(5 * 60 * 1000);
 
 	// I've hard coded this function ... it could be made more generic, but for Actimania it will be good enough.
 	// Only works for games of 2v2
-	public ArrayList<Game> generateGames(DateTime startTime)
+	public ArrayList<Game> getGames(DateTime startTime)
 	{
 		ArrayList<Game> games = new ArrayList<Game>();
-		
 		ArrayList<PlayoffGroup> orderedGroups = orderPlayoffGroups(playoffGroups);
 		
 		int currentGame = 0;
@@ -44,13 +47,13 @@ public class PlayoffRound
 					switch(currentPass)
 					{
 					case 0:
-						games.add(createGame(startTime, currentGame, schools, 0, 1, /* vs */ 2, 3));
+						games.add(createGame(startTime, currentGame, gameType, schools, 0, 1, /* vs */ 2, 3));
 						break;
 					case 2: // Not 1 because if we need to interwind 4 teams and 5 teams, it gives breathing time.
-						games.add(createGame(startTime, currentGame, schools, 0, 2, /* vs */ 1, 3));
+						games.add(createGame(startTime, currentGame, gameType, schools, 0, 2, /* vs */ 1, 3));
 						break;
 					case 4:
-						games.add(createGame(startTime, currentGame, schools, 0, 3, /* vs */ 1, 2));
+						games.add(createGame(startTime, currentGame, gameType, schools, 0, 3, /* vs */ 1, 2));
 						break;
 					}
 				}
@@ -65,25 +68,25 @@ public class PlayoffRound
 					switch(currentPass)
 					{
 					case 0:
-						games.add(createGame(startTime, currentGame, schools, 0, 3, /* vs */ 1, 2));
+						games.add(createGame(startTime, currentGame, gameType, schools, 0, 3, /* vs */ 1, 2));
 						break;
 					case 1:
-						games.add(createGame(startTime, currentGame, schools, 0, 4, /* vs */ 1, 3));
+						games.add(createGame(startTime, currentGame, gameType, schools, 0, 4, /* vs */ 1, 3));
 						break;
 					case 2:
-						games.add(createGame(startTime, currentGame, schools, 0, 2, /* vs */ 3, 4));
+						games.add(createGame(startTime, currentGame, gameType, schools, 0, 2, /* vs */ 3, 4));
 						break;
 					case 3:
-						games.add(createGame(startTime, currentGame, schools, 1, 4, /* vs */ 2, 3));
+						games.add(createGame(startTime, currentGame, gameType, schools, 1, 4, /* vs */ 2, 3));
 						break;
 					case 4:
-						games.add(createGame(startTime, currentGame, schools, 0, 1, /* vs */ 2, 4));
+						games.add(createGame(startTime, currentGame, gameType, schools, 0, 1, /* vs */ 2, 4));
 						break;
 					}
 				}
 				else
 				{
-					// Not a valid situtation, we need to add it.
+					// Not a valid situation, if we hit that condition, we need to add it.
 					Validate.isTrue(false);
 				}
 				currentGame++;
@@ -160,7 +163,7 @@ public class PlayoffRound
 		return retPlayoffGroups;
 	}
 	
-	public static Game createGame(DateTime startTime, int currentGame, ArrayList<School> schools, int school0, int school1, int school2, int school3)
+	public static Game createGame(DateTime startTime, int currentGame, GameTypeEnum gameType, ArrayList<School> schools, int school0, int school1, int school2, int school3)
 	{
 		ArrayList<School> blueTeam = new ArrayList<School>();
 		blueTeam.add(schools.get(school0));
@@ -170,14 +173,11 @@ public class PlayoffRound
 		yellowTeam.add(schools.get(school2));
 		yellowTeam.add(schools.get(school3));
 		
-		return createGame(startTime, currentGame, blueTeam, yellowTeam);
-	}
-	
-	public static Game createGame(DateTime startTime, int currentGame, ArrayList<School> blueTeam, ArrayList<School> yellowTeam)
-	{
+		//return createGame(startTime, currentGame, blueTeam, yellowTeam);
 		Duration delta = new Duration(currentGame * Game.getGameLength().getMillis() + currentGame * TIME_BETWEEN_GAMES.getMillis());
 		
-		return new Game(null, currentGame, startTime.plus(delta), GameTypeEnum.PLAYOFF, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false);
+		return new Game(null, currentGame, startTime.plus(delta), gameType, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false);
+
 	}
 	
 	public String toString()

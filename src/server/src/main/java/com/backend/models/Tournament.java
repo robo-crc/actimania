@@ -45,7 +45,14 @@ public class Tournament
 		final TreeMap<School, Integer> score = new TreeMap<School, Integer>();
 		for(School school : ranking)
 		{
-			score.put(school, getTotalScore(school, gameType));
+			if(gameType != GameTypeEnum.PLAYOFF_DRAFT && getGamesPlayed(games, school, gameType).size() == 0 )
+			{
+				ranking.remove(school);
+			}
+			else
+			{
+				score.put(school, getTotalScore(school, gameType));
+			}
 		}
 
 		Collections.sort(ranking, new Comparator<School>() {
@@ -204,5 +211,33 @@ public class Tournament
 			}
 		}
 		return null;
+	}
+	
+	public ArrayList<School> getPlayoffRanking()
+	{
+		ArrayList<School> schoolsFinal 	= getHeatRanking(GameTypeEnum.PLAYOFF_FINAL);
+		ArrayList<School> schoolsDemi 	= getHeatRanking(GameTypeEnum.PLAYOFF_DEMI);
+		ArrayList<School> schoolsSemi 	= getHeatRanking(GameTypeEnum.PLAYOFF_SEMI);
+		ArrayList<School> schoolsDraft 	= getHeatRanking(GameTypeEnum.PLAYOFF_DRAFT);
+		
+		ArrayList<School> finalDemi = mergeSchoolList(schoolsFinal, schoolsDemi);
+		ArrayList<School> finalDemiSemi = mergeSchoolList(finalDemi, schoolsSemi);
+		return mergeSchoolList(finalDemiSemi, schoolsDraft);
+	}
+	
+	public static ArrayList<School> mergeSchoolList(ArrayList<School> keepAll, ArrayList<School> keepNot)
+	{
+		ArrayList<School> mergedList = new ArrayList<School>(keepNot);
+		for(School keepSchool : keepAll)
+		{
+			mergedList.remove(keepSchool);
+		}
+		
+		for(int i = keepAll.size() - 1; i >= 0; i--)
+		{
+			mergedList.add(0, keepAll.get(i));
+		}
+		
+		return mergedList;
 	}
 }

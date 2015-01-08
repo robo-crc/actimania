@@ -7,7 +7,6 @@ import java.util.TreeMap;
 
 import org.bson.types.ObjectId;
 
-import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.models.Essentials;
 
@@ -75,7 +74,7 @@ public class Competition
 		
 		for(School school : schoolsRanking)
 		{
-			schoolsScore.put(school, getSchoolScore(tournament.getHeatRanking(GameTypeEnum.PLAYOFF), school));
+			schoolsScore.put(school, getSchoolScore(tournament.getPlayoffRanking(), school));
 		}
 		
 		Collections.sort(schoolsRanking, new Comparator<School>() {
