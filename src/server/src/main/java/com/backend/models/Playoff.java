@@ -109,7 +109,7 @@ public class Playoff
 	}
 	
 	// I've hard coded this function ... it could be made more generic, but for Actimania it will be good enough.
-	public static PlayoffRound generatePlayoffRound(Tournament tournament, ArrayList<School> preliminaryRanking, PlayoffRound previousRound, GameTypeEnum gameType)
+	public PlayoffRound generatePlayoffRound(Tournament tournament, PlayoffRound previousRound, GameTypeEnum gameType)
 	{
 		ArrayList<PlayoffGroup> playoffGroups = new ArrayList<PlayoffGroup>();
 		
@@ -192,6 +192,8 @@ public class Playoff
 			schoolsInGroup1.add(schoolsPoolK.get(1));
 			schoolsInGroup1.add(schoolsPoolL.get(0));
 			schoolsInGroup1.add(schoolsPoolL.get(1));
+			
+			playoffGroups.add(new PlayoffGroup(schoolsInGroup1));
 		}
 		break;
 		

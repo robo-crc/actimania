@@ -35,6 +35,32 @@ public class FakeTournament
 		}
 	}
 	
+	public static void fillFakGameEvents(Game currentGame, Random random)
+	{
+		currentGame.addGameEvent(new StartGameEvent(DateTime.now()));
+		
+		int nbEvents = random.nextInt(30) + 20;
+		
+		for(int eventNo = 0; eventNo < nbEvents; eventNo++)
+		{
+			SideEnum side = SideEnum.values()[random.nextInt(SideEnum.values().length)];
+			TargetEnum target = TargetEnum.values()[random.nextInt(TargetEnum.values().length)];
+			
+			boolean isTargetHit = random.nextBoolean();
+			if(isTargetHit)
+			{
+				currentGame.addGameEvent(new TargetHitEvent(side, target, DateTime.now()));
+			}
+			else
+			{
+				ActuatorStateEnum actuator = ActuatorStateEnum.values()[random.nextInt(ActuatorStateEnum.values().length)];
+				currentGame.addGameEvent(new ActuatorStateChangedEvent(side, target, actuator, DateTime.now()));
+			}
+		}
+		
+		currentGame.addGameEvent(new EndGameEvent(DateTime.now()));
+	}
+	
 	public static void main(String[] args) 
 	{
 		Random random = new Random(0);
@@ -56,32 +82,11 @@ public class FakeTournament
 			SkillsCompetition competition = new SkillsCompetition(skills._id, pickBallsArray, twoTargetsArray, twoActuatorsArray);
 			essentials.database.save(competition);
 			
-			
 			for(int i = 0; i < tournament.games.size() / 2; i++)
 			{
 				Game currentGame = tournament.games.get(i).getInitialState();
-				currentGame.addGameEvent(new StartGameEvent(DateTime.now()));
 				
-				int nbEvents = random.nextInt(30) + 20;
-				
-				for(int eventNo = 0; eventNo < nbEvents; eventNo++)
-				{
-					SideEnum side = SideEnum.values()[random.nextInt(SideEnum.values().length)];
-					TargetEnum target = TargetEnum.values()[random.nextInt(TargetEnum.values().length)];
-					
-					boolean isTargetHit = random.nextBoolean();
-					if(isTargetHit)
-					{
-						currentGame.addGameEvent(new TargetHitEvent(side, target, DateTime.now()));
-					}
-					else
-					{
-						ActuatorStateEnum actuator = ActuatorStateEnum.values()[random.nextInt(ActuatorStateEnum.values().length)];
-						currentGame.addGameEvent(new ActuatorStateChangedEvent(side, target, actuator, DateTime.now()));
-					}
-				}
-				
-				currentGame.addGameEvent(new EndGameEvent(DateTime.now()));
+				fillFakGameEvents(currentGame, random);
 				
 				essentials.database.save(currentGame);
 			}

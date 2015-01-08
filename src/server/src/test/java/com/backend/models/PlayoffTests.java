@@ -1,11 +1,17 @@
 package com.backend.models;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.apache.commons.lang.Validate;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.junit.Test;
+
+import com.backend.models.GameEvent.GameEvent;
+import com.backend.models.enums.GameTypeEnum;
+import com.main.FakeTournament;
 
 public class PlayoffTests 
 {
@@ -379,5 +385,102 @@ public class PlayoffTests
 		Validate.isTrue(games.get(19).blueTeam.get(1).name.equals("27"));
 		Validate.isTrue(games.get(19).yellowTeam.get(0).name.equals("17"));
 		Validate.isTrue(games.get(19).yellowTeam.get(1).name.equals("21"));
+	}
+	
+	
+	@Test
+	// Test the expected flow.
+	public void testPlayoffSteps()
+	{
+		ArrayList<School> schools = new ArrayList<School>();
+		ArrayList<SchoolDuration> twoActuators = new ArrayList<SchoolDuration>();
+		ArrayList<SchoolDuration> twoTargets = new ArrayList<SchoolDuration>();
+		ArrayList<SchoolInteger> pickupBalls = new ArrayList<SchoolInteger>();
+		
+		Random random = new Random(0);
+		
+		for(int i = 1; i <= 31; i++)
+		{
+			String id = "";
+			for(int j = 0; j < 12; j++)
+			{
+				if(i < 10)
+				{
+					id += 0;
+				}
+				id += String.valueOf(i);
+			}
+			School school = new School(new ObjectId(id), String.valueOf(i));
+			schools.add(school);
+			twoActuators.add(new SchoolDuration(school, new Duration(random.nextInt(1000))));
+			twoTargets.add(new SchoolDuration(school, new Duration(random.nextInt(1000))));
+			pickupBalls.add(new SchoolInteger(school, random.nextInt(1000)));
+		}
+		
+		SkillsCompetition skillsCompetition = new SkillsCompetition(null, pickupBalls, twoTargets, twoActuators);
+		
+		ArrayList<Game> games = new ArrayList<Game>();
+		for(int i = 0; i < 64; i++)
+		{
+			ArrayList<School> blueTeam = new ArrayList<School>();
+			blueTeam.add(schools.get(random.nextInt(31)));
+			blueTeam.add(schools.get(random.nextInt(31)));
+			blueTeam.add(schools.get(random.nextInt(31)));
+			
+			ArrayList<School> yellowTeam = new ArrayList<School>();
+			blueTeam.add(schools.get(random.nextInt(31)));
+			blueTeam.add(schools.get(random.nextInt(31)));
+			blueTeam.add(schools.get(random.nextInt(31)));
+			
+			Game game = new Game(new ObjectId(), i, new DateTime(), GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false);
+			FakeTournament.fillFakGameEvents(game, random);
+			games.add(game);
+		}
+		
+		Tournament tournament = new Tournament(schools, games);
+		ArrayList<School> preliminaryRank = tournament.getCumulativeRanking(skillsCompetition);
+		ArrayList<School> excludedSchools = new ArrayList<School>();
+		excludedSchools.add(schools.get(2));
+		
+		
+		Playoff playoff = new Playoff(preliminaryRank, excludedSchools);
+		System.out.println("PRELIMINARY RANKING");
+		for(School school : playoff.preliminaryRanking)
+		{
+			System.out.println(school.name);
+		}
+		
+		PlayoffRound draftRound = processRound(playoff, tournament, null, random, GameTypeEnum.PLAYOFF_DRAFT);
+		PlayoffRound semiRound = processRound(playoff, tournament, draftRound, random, GameTypeEnum.PLAYOFF_SEMI);
+		PlayoffRound demiRound = processRound(playoff, tournament, semiRound, random, GameTypeEnum.PLAYOFF_DEMI);
+		PlayoffRound finalRound = processRound(playoff, tournament, demiRound, random, GameTypeEnum.PLAYOFF_FINAL);
+		
+		System.out.println("FINAL RANKING");
+		ArrayList<School> finalRanking = tournament.getPlayoffRanking();
+		for(School school : finalRanking)
+		{
+			System.out.println(school.name);
+		}
+	}
+	
+	private static PlayoffRound processRound(Playoff playoff, Tournament tournament, PlayoffRound previousRound, Random random, GameTypeEnum gameType)
+	{
+		PlayoffRound round = playoff.generatePlayoffRound(tournament, previousRound, gameType);
+		
+		ArrayList<Game> playoffGames = round.getGames(new DateTime());
+		tournament.games.addAll(playoffGames);
+		for(Game game : playoffGames)
+		{
+			FakeTournament.fillFakGameEvents(game, random);
+		}
+		
+		System.out.println(gameType.toString());
+		ArrayList<School> ranking = tournament.getHeatRanking(gameType);
+		for(School school : ranking)
+		{
+			System.out.println(school.name);
+		}
+		
+		return round;
 	}
 }

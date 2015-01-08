@@ -44,7 +44,7 @@ public class SkillsCompetitionTests
 		score.add(new SchoolInteger(school3, 5));
 		score.add(new SchoolInteger(school4, 3));
 		
-		SkillsCompetition skillsCompetition = new SkillsCompetition(null, score, new ArrayList<SchoolDuration>(), new ArrayList<SchoolDuration>());
+		//SkillsCompetition skillsCompetition = new SkillsCompetition(null, score, new ArrayList<SchoolDuration>(), new ArrayList<SchoolDuration>());
 		/*
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school1) == 4);
 		Validate.isTrue(SkillsCompetition.getSkillPoints(score, school2) == 3);

@@ -40,10 +40,11 @@ public class Tournament
 	public ArrayList<School> getHeatRanking(final GameTypeEnum gameType)
 	{
 		ArrayList<School> ranking = new ArrayList<School>(schools);
-		
+		ArrayList<School> rankingCopy = new ArrayList<School>(schools);
+
 		// Optimization : Let's just calculate the score once instead of each time we sort.
 		final TreeMap<School, Integer> score = new TreeMap<School, Integer>();
-		for(School school : ranking)
+		for(School school : rankingCopy)
 		{
 			if(gameType != GameTypeEnum.PLAYOFF_DRAFT && getGamesPlayed(games, school, gameType).size() == 0 )
 			{
