@@ -440,8 +440,8 @@ public class PlayoffTests
 		Tournament tournament = new Tournament(schools, games);
 		ArrayList<School> preliminaryRank = tournament.getCumulativeRanking(skillsCompetition);
 		ArrayList<School> excludedSchools = new ArrayList<School>();
-		excludedSchools.add(schools.get(2));
-		
+		School excludedSchool = schools.get(2);
+		excludedSchools.add(excludedSchool);
 		
 		Playoff playoff = new Playoff(preliminaryRank, excludedSchools);
 		System.out.println("PRELIMINARY RANKING");
@@ -460,6 +460,55 @@ public class PlayoffTests
 		for(School school : finalRanking)
 		{
 			System.out.println(school.name);
+			// Make sure no duplicates happens.
+			Validate.isTrue(finalRanking.indexOf(school) == finalRanking.lastIndexOf(school));
+		}
+		
+		ArrayList<School> finalSchools = finalRound.getSchools();
+		ArrayList<School> demiSchools = demiRound.getSchools();
+		ArrayList<School> semiSchools = semiRound.getSchools();
+		ArrayList<School> draftSchools = draftRound.getSchools();
+
+		Validate.isTrue(finalSchools.size() == 4);
+		Validate.isTrue(demiSchools.size() == 10);
+		Validate.isTrue(semiSchools.size() == 16);
+		Validate.isTrue(draftSchools.size() == 24);
+		Validate.isTrue(draftSchools.contains(excludedSchool) == false);
+		Validate.isTrue(finalRanking.indexOf(excludedSchool) == 30);
+		
+		for(School school : finalSchools)
+		{
+			// Make sure the school was in previous round.
+			Validate.isTrue(demiSchools.contains(school));
+			// Make sure this school is unique.
+			Validate.isTrue(finalSchools.indexOf(school) == finalSchools.lastIndexOf(school));
+		}
+
+		
+		for(School school : demiSchools)
+		{
+			boolean freePass = school.equals(preliminaryRank.get(0));
+			freePass |= school.equals(preliminaryRank.get(1));
+			Validate.isTrue(semiSchools.contains(school) || freePass);
+			
+			Validate.isTrue(demiSchools.indexOf(school) == demiSchools.lastIndexOf(school));
+		}
+		
+		for(School school : semiSchools)
+		{
+			boolean freePass = school.equals(preliminaryRank.get(2));
+			freePass |= school.equals(preliminaryRank.get(3));
+			freePass |= school.equals(preliminaryRank.get(4));
+			freePass |= school.equals(preliminaryRank.get(5));
+			
+			Validate.isTrue(draftSchools.contains(school) || freePass);
+			
+			Validate.isTrue(semiSchools.indexOf(school) == semiSchools.lastIndexOf(school));
+		}
+		
+		for(School school : draftSchools)
+		{
+			Validate.isTrue(draftSchools.indexOf(school) == draftSchools.lastIndexOf(school));
 		}
 	}
 	

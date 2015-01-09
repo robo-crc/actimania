@@ -193,4 +193,16 @@ public class PlayoffRound
 		}
 		return string;
 	}
+	
+	public ArrayList<School> getSchools()
+	{
+		ArrayList<School> schools = new ArrayList<School>();
+		
+		for(PlayoffGroup playoffGroup : playoffGroups)
+		{
+			schools.addAll(playoffGroup.schools);
+		}
+		
+		return schools;
+	}
 }
