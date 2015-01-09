@@ -72,6 +72,31 @@ LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Live game", 
 		Locale.FRENCH, 	"Partie en cours"
 		), currentLocale);
+
+LocalizedString strPreliminaryGames = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Preliminary", 
+		Locale.FRENCH, 	"Parties préliminaires"
+		), currentLocale);
+
+LocalizedString strPlayoffDraft = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Draft", 
+		Locale.FRENCH, 	"Repêchage"
+		), currentLocale);
+
+LocalizedString strPlayoffSemi = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Semi-final", 
+		Locale.FRENCH, 	"Semi finale"
+		), currentLocale);
+
+LocalizedString strPlayoffDemi = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Demi-final", 
+		Locale.FRENCH, 	"Demi finale"
+		), currentLocale);
+
+LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Final", 
+		Locale.FRENCH, 	"Finale"
+		), currentLocale);
 %>
 
 <!DOCTYPE html>
@@ -83,12 +108,43 @@ LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of(
 </head>
 <body>
 
+<% 
+for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
+{
+	GameTypeEnum gameType = GameTypeEnum.values()[i];
+	ArrayList<Game> heatGames = tournament.getHeatGames(gameType);
+	if(heatGames.size() == 0)
+	{
+		continue;
+	}
+	
+	LocalizedString h2Str = null;
+	switch(gameType)
+	{
+	case PRELIMINARY:
+		h2Str = strPreliminaryGames;
+		break;
+	case PLAYOFF_DRAFT:
+		h2Str = strPlayoffDraft;
+		break;
+	case PLAYOFF_DEMI:
+		h2Str = strPlayoffDemi;
+		break;
+	case PLAYOFF_SEMI:
+		h2Str = strPlayoffSemi;
+		break;
+	case PLAYOFF_FINAL:
+		h2Str = strPlayoffFinal;
+		break;
+	}
+%>
+<h2><%= h2Str %></h2>
 <table>
 <tr>
 <td><%= strGameNumber %></td><td><%= strGameTime %></td><td><%= strBlueTeam %></td><td><%= strBlueScore %></td><td><%= strYellowTeam %></td><td><%= strYellowScore %></td>
 </tr>
 <%
-for( Game game : tournament.games )
+for( Game game : heatGames )
 {
 	ArrayList<GameState> gameStates = game.getGameStates();
 	String blueScore = "";
@@ -132,6 +188,9 @@ for( School school : game.yellowTeam )
 %>
 </table>
 
+<%
+} // End of for GameTypeEnum
+%>
 <a href="ranking"><%= strRanking %></a><br/>
 <a href="live"><%= strLiveGame %></a>
 </body>

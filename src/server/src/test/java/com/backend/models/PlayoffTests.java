@@ -444,22 +444,23 @@ public class PlayoffTests
 		excludedSchools.add(excludedSchool);
 		
 		Playoff playoff = new Playoff(preliminaryRank, excludedSchools);
+		/*
 		System.out.println("PRELIMINARY RANKING");
 		for(School school : playoff.preliminaryRanking)
 		{
 			System.out.println(school.name);
 		}
-		
+		*/
 		PlayoffRound draftRound = processRound(playoff, tournament, null, random, GameTypeEnum.PLAYOFF_DRAFT);
 		PlayoffRound semiRound = processRound(playoff, tournament, draftRound, random, GameTypeEnum.PLAYOFF_SEMI);
 		PlayoffRound demiRound = processRound(playoff, tournament, semiRound, random, GameTypeEnum.PLAYOFF_DEMI);
 		PlayoffRound finalRound = processRound(playoff, tournament, demiRound, random, GameTypeEnum.PLAYOFF_FINAL);
 		
-		System.out.println("FINAL RANKING");
+		//System.out.println("FINAL RANKING");
 		ArrayList<School> finalRanking = tournament.getPlayoffRanking();
 		for(School school : finalRanking)
 		{
-			System.out.println(school.name);
+			//System.out.println(school.name);
 			// Make sure no duplicates happens.
 			Validate.isTrue(finalRanking.indexOf(school) == finalRanking.lastIndexOf(school));
 		}
@@ -522,13 +523,14 @@ public class PlayoffTests
 		{
 			FakeTournament.fillFakGameEvents(game, random);
 		}
-		
+		/*
 		System.out.println(gameType.toString());
 		ArrayList<School> ranking = tournament.getHeatRanking(gameType);
 		for(School school : ranking)
 		{
 			System.out.println(school.name);
 		}
+		*/
 		
 		return round;
 	}

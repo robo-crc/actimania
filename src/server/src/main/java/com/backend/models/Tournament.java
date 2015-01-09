@@ -37,6 +37,20 @@ public class Tournament
 		games	= _games;
 	}
 	
+	public ArrayList<Game> getHeatGames(final GameTypeEnum gameType)
+	{
+		ArrayList<Game> retGames = new ArrayList<Game>();
+		for(Game game : games)
+		{
+			if(game.gameType == gameType)
+			{
+				retGames.add(game);
+			}
+		}
+		
+		return retGames;
+	}
+	
 	public ArrayList<School> getHeatRanking(final GameTypeEnum gameType)
 	{
 		ArrayList<School> ranking = new ArrayList<School>(schools);
