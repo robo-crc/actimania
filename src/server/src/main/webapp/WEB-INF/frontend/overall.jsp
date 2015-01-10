@@ -117,7 +117,7 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 			<td><%= strWebsiteJournalism %></td>
 		</tr>
 		<%
-		ArrayList<School> heatRanking = tournament.getHeatRanking(GameTypeEnum.PLAYOFF);
+		ArrayList<School> heatRanking = tournament.getPlayoffRanking();
 		for(int i = 0; i < schoolsRanked.size(); i++)
 		{
 			School school = schoolsRanked.get(i);
