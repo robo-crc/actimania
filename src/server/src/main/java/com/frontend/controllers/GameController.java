@@ -55,7 +55,12 @@ public class GameController extends HttpServlet
 				{
 					essentials.request.setAttribute("liveRefresh", Boolean.TRUE);
 				}
-			} 
+				else
+				{
+					Tournament tournament = Tournament.getTournament(essentials);
+					game = tournament.games.get(tournament.games.size() - 1);
+				}
+			}
 			else 
 			{
 				ObjectId gameId = Helpers.getParameter("gameId", ObjectId.class, essentials);
