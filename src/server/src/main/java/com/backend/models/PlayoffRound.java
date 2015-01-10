@@ -27,12 +27,12 @@ public class PlayoffRound
 
 	// I've hard coded this function ... it could be made more generic, but for Actimania it will be good enough.
 	// Only works for games of 2v2
-	public ArrayList<Game> getGames(DateTime startTime)
+	public ArrayList<Game> getGames(DateTime startTime, int startGame)
 	{
 		ArrayList<Game> games = new ArrayList<Game>();
 		ArrayList<PlayoffGroup> orderedGroups = orderPlayoffGroups(playoffGroups);
 		
-		int currentGame = 0;
+		int currentGame = startGame;
 		for(int currentPass = 0; currentPass < 5; currentPass++)
 		{
 			for(PlayoffGroup playoffGroup : orderedGroups)
@@ -89,7 +89,7 @@ public class PlayoffRound
 					// Not a valid situation, if we hit that condition, we need to add it.
 					Validate.isTrue(false);
 				}
-				currentGame++;
+				currentGame = startGame + games.size();
 			}
 		}
 		

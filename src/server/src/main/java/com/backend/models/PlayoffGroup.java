@@ -1,10 +1,13 @@
 package com.backend.models;
 
 import java.util.ArrayList;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PlayoffGroup 
 {
+	@JsonIgnore
 	public static final int KEEP_SCHOOLS = 2;
 	public final ArrayList<School> schools;
 	

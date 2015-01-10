@@ -7,6 +7,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import com.backend.models.Game;
+import com.backend.models.Playoff;
+import com.backend.models.PlayoffRound;
 import com.backend.models.School;
 import com.backend.models.SchoolDuration;
 import com.backend.models.SchoolInteger;
@@ -17,6 +19,7 @@ import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.GameEvent.TargetHitEvent;
 import com.backend.models.enums.ActuatorStateEnum;
+import com.backend.models.enums.GameTypeEnum;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TargetEnum;
 import com.framework.helpers.Database;
@@ -79,10 +82,20 @@ public class FakeTournament
 				twoActuatorsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
 				twoTargetsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
 			}
-			SkillsCompetition competition = new SkillsCompetition(skills._id, pickBallsArray, twoTargetsArray, twoActuatorsArray);
-			essentials.database.save(competition);
+			SkillsCompetition skillsCompetition = new SkillsCompetition(skills._id, pickBallsArray, twoTargetsArray, twoActuatorsArray);
+			essentials.database.save(skillsCompetition);
 			
-			for(int i = 0; i < tournament.games.size() / 2; i++)
+			ArrayList<Game> games = tournament.getHeatGames(GameTypeEnum.PLAYOFF_DRAFT);
+			games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_SEMI));
+			games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_DEMI));
+			games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_FINAL));
+			essentials.database.dropCollection(PlayoffRound.class);
+			for(Game game : games)
+			{
+				essentials.database.remove(Game.class, game._id);
+			}
+			
+			for(int i = 0; i < tournament.games.size(); i++)
 			{
 				Game currentGame = tournament.games.get(i).getInitialState();
 				
@@ -90,6 +103,38 @@ public class FakeTournament
 				
 				essentials.database.save(currentGame);
 			}
+			
+			ArrayList<School> preliminaryRank = tournament.getCumulativeRanking(skillsCompetition);
+			ArrayList<School> excludedSchools = new ArrayList<School>();
+			
+			Playoff playoff = new Playoff(preliminaryRank, excludedSchools);
+			
+			PlayoffRound draftRound = processRound(essentials.database, playoff, tournament, null, random, GameTypeEnum.PLAYOFF_DRAFT);
+			essentials.database.save(draftRound);
+			PlayoffRound semiRound = processRound(essentials.database, playoff, tournament, draftRound, random, GameTypeEnum.PLAYOFF_SEMI);
+			essentials.database.save(semiRound);
+			PlayoffRound demiRound = processRound(essentials.database, playoff, tournament, semiRound, random, GameTypeEnum.PLAYOFF_DEMI);
+			essentials.database.save(demiRound);
+			PlayoffRound finalRound = processRound(essentials.database, playoff, tournament, demiRound, random, GameTypeEnum.PLAYOFF_FINAL);
+			essentials.database.save(finalRound);
 		}
+	}
+
+	public static PlayoffRound processRound(Database database, Playoff playoff, Tournament tournament, PlayoffRound previousRound, Random random, GameTypeEnum gameType)
+	{
+		PlayoffRound round = playoff.generatePlayoffRound(tournament, previousRound, gameType);
+		
+		ArrayList<Game> playoffGames = round.getGames(new DateTime(), tournament.games.size() + 1);
+		tournament.games.addAll(playoffGames);
+		for(Game game : playoffGames)
+		{
+			FakeTournament.fillFakGameEvents(game, random);
+			if(database != null)
+			{
+				database.save(game);
+			}
+		}
+		
+		return round;
 	}
 }

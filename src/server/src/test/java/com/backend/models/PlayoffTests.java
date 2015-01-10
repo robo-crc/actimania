@@ -175,7 +175,7 @@ public class PlayoffTests
 		
 		PlayoffRound playoffRound = Playoff.generateDraftRound(schools);
 		DateTime dateTime = new DateTime(2015,1,1,0,0);
-		ArrayList<Game> games = playoffRound.getGames(dateTime);
+		ArrayList<Game> games = playoffRound.getGames(dateTime, 0);
 		Validate.isTrue(games.size() == 18);
 
 		/*
@@ -283,7 +283,7 @@ public class PlayoffTests
 		
 		playoffRound 	= Playoff.generateDraftRound(schools);
 		dateTime 		= new DateTime(2015,1,1,0,0);
-		games 			= playoffRound.getGames(dateTime);
+		games 			= playoffRound.getGames(dateTime, 0);
 		Validate.isTrue(games.size() == 20);
 		
 		Validate.isTrue(games.get(0).blueTeam.get(0).name.equals("7"));
@@ -451,10 +451,10 @@ public class PlayoffTests
 			System.out.println(school.name);
 		}
 		*/
-		PlayoffRound draftRound = processRound(playoff, tournament, null, random, GameTypeEnum.PLAYOFF_DRAFT);
-		PlayoffRound semiRound = processRound(playoff, tournament, draftRound, random, GameTypeEnum.PLAYOFF_SEMI);
-		PlayoffRound demiRound = processRound(playoff, tournament, semiRound, random, GameTypeEnum.PLAYOFF_DEMI);
-		PlayoffRound finalRound = processRound(playoff, tournament, demiRound, random, GameTypeEnum.PLAYOFF_FINAL);
+		PlayoffRound draftRound = FakeTournament.processRound(null, playoff, tournament, null, random, GameTypeEnum.PLAYOFF_DRAFT);
+		PlayoffRound semiRound = FakeTournament.processRound(null, playoff, tournament, draftRound, random, GameTypeEnum.PLAYOFF_SEMI);
+		PlayoffRound demiRound = FakeTournament.processRound(null, playoff, tournament, semiRound, random, GameTypeEnum.PLAYOFF_DEMI);
+		PlayoffRound finalRound = FakeTournament.processRound(null, playoff, tournament, demiRound, random, GameTypeEnum.PLAYOFF_FINAL);
 		
 		//System.out.println("FINAL RANKING");
 		ArrayList<School> finalRanking = tournament.getPlayoffRanking();
@@ -511,27 +511,5 @@ public class PlayoffTests
 		{
 			Validate.isTrue(draftSchools.indexOf(school) == draftSchools.lastIndexOf(school));
 		}
-	}
-	
-	private static PlayoffRound processRound(Playoff playoff, Tournament tournament, PlayoffRound previousRound, Random random, GameTypeEnum gameType)
-	{
-		PlayoffRound round = playoff.generatePlayoffRound(tournament, previousRound, gameType);
-		
-		ArrayList<Game> playoffGames = round.getGames(new DateTime());
-		tournament.games.addAll(playoffGames);
-		for(Game game : playoffGames)
-		{
-			FakeTournament.fillFakGameEvents(game, random);
-		}
-		/*
-		System.out.println(gameType.toString());
-		ArrayList<School> ranking = tournament.getHeatRanking(gameType);
-		for(School school : ranking)
-		{
-			System.out.println(school.name);
-		}
-		*/
-		
-		return round;
 	}
 }
