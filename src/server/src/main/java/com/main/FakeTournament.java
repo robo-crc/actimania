@@ -69,41 +69,47 @@ public class FakeTournament
 		Random random = new Random(0);
 		try(Essentials essentials = new Essentials(new Database(DatabaseType.PRODUCTION), null, null, null, null))
 		{
+			{
+				Tournament tournament = Tournament.getTournament(essentials);
+				
+				ArrayList<SchoolInteger> pickBallsArray = new ArrayList<SchoolInteger>();
+				ArrayList<SchoolDuration> twoActuatorsArray = new ArrayList<SchoolDuration>();
+				ArrayList<SchoolDuration> twoTargetsArray = new ArrayList<SchoolDuration>();
+				
+				SkillsCompetition skills = SkillsCompetition.get(essentials.database);
+				for(School school : tournament.schools)
+				{
+					pickBallsArray.add(new SchoolInteger(school, random.nextInt(20)));
+					twoActuatorsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
+					twoTargetsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
+				}
+				SkillsCompetition skillsCompetition = new SkillsCompetition(skills._id, pickBallsArray, twoTargetsArray, twoActuatorsArray);
+				essentials.database.save(skillsCompetition);
+				
+				ArrayList<Game> games = tournament.getHeatGames(GameTypeEnum.PLAYOFF_DRAFT);
+				games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_SEMI));
+				games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_DEMI));
+				games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_FINAL));
+				essentials.database.dropCollection(PlayoffRound.class);
+				for(Game game : games)
+				{
+					essentials.database.remove(Game.class, game._id);
+				}
+				
+				for(int i = 0; i < tournament.games.size(); i++)
+				{
+					Game currentGame = tournament.games.get(i).getInitialState();
+					
+					fillFakGameEvents(currentGame, random);
+					
+					essentials.database.save(currentGame);
+				}
+			}
+			
+			// Make sure to get the tournament again to reset the states. 
+			// There's caching in the tournament which would be problematic if we use the same tournament as previously.
 			Tournament tournament = Tournament.getTournament(essentials);
-			
-			ArrayList<SchoolInteger> pickBallsArray = new ArrayList<SchoolInteger>();
-			ArrayList<SchoolDuration> twoActuatorsArray = new ArrayList<SchoolDuration>();
-			ArrayList<SchoolDuration> twoTargetsArray = new ArrayList<SchoolDuration>();
-			
-			SkillsCompetition skills = SkillsCompetition.get(essentials.database);
-			for(School school : tournament.schools)
-			{
-				pickBallsArray.add(new SchoolInteger(school, random.nextInt(20)));
-				twoActuatorsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
-				twoTargetsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
-			}
-			SkillsCompetition skillsCompetition = new SkillsCompetition(skills._id, pickBallsArray, twoTargetsArray, twoActuatorsArray);
-			essentials.database.save(skillsCompetition);
-			
-			ArrayList<Game> games = tournament.getHeatGames(GameTypeEnum.PLAYOFF_DRAFT);
-			games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_SEMI));
-			games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_DEMI));
-			games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_FINAL));
-			essentials.database.dropCollection(PlayoffRound.class);
-			for(Game game : games)
-			{
-				essentials.database.remove(Game.class, game._id);
-			}
-			
-			for(int i = 0; i < tournament.games.size(); i++)
-			{
-				Game currentGame = tournament.games.get(i).getInitialState();
-				
-				fillFakGameEvents(currentGame, random);
-				
-				essentials.database.save(currentGame);
-			}
-			
+			SkillsCompetition skillsCompetition = SkillsCompetition.get(essentials.database);
 			ArrayList<School> preliminaryRank = tournament.getCumulativeRanking(skillsCompetition);
 			ArrayList<School> excludedSchools = new ArrayList<School>();
 			
