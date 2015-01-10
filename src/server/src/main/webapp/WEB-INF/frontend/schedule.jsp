@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.optaplanner.TournamentScoreCalculator"%>
 <%@page import="com.framework.helpers.Helpers"%>
 <%@page import="com.backend.models.GameState"%>
 <%@page import="com.backend.models.Game"%>
@@ -144,8 +145,22 @@ for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
 <td><%= strGameNumber %></td><td><%= strGameTime %></td><td><%= strBlueTeam %></td><td><%= strBlueScore %></td><td><%= strYellowTeam %></td><td><%= strYellowScore %></td>
 </tr>
 <%
+int gameCount = 0;
+int block = 1;
 for( Game game : heatGames )
 {
+	if(gameCount != 0 && gameType == GameTypeEnum.PRELIMINARY && TournamentScoreCalculator.isStartOfBlock(gameCount, heatGames.size()))
+	{
+		%>
+		</table>
+		<br/>
+		<br/>
+		<table>
+		<tr>
+		<td><%= strGameNumber %></td><td><%= strGameTime %></td><td><%= strBlueTeam %></td><td><%= strBlueScore %></td><td><%= strYellowTeam %></td><td><%= strYellowScore %></td>
+		</tr>
+		<%
+	}
 	ArrayList<GameState> gameStates = game.getGameStates();
 	String blueScore = "";
 	String yellowScore = "";
@@ -184,6 +199,7 @@ for( School school : game.yellowTeam )
 	<td><%= yellowScore %></td>
 </tr>
 <%
+gameCount++;
 }
 %>
 </table>

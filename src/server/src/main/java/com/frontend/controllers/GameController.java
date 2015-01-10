@@ -51,14 +51,15 @@ public class GameController extends HttpServlet
 					game = Tournament.getNextGame(tournament.games);
 				}
 				
-				if( game != null )
-				{
-					essentials.request.setAttribute("liveRefresh", Boolean.TRUE);
-				}
-				else
+				if(game == null)
 				{
 					Tournament tournament = Tournament.getTournament(essentials);
 					game = tournament.games.get(tournament.games.size() - 1);
+				}
+				
+				if( game != null )
+				{
+					essentials.request.setAttribute("liveRefresh", Boolean.TRUE);
 				}
 			}
 			else 
