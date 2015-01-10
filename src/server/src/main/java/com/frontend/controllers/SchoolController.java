@@ -1,7 +1,6 @@
 package com.frontend.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.bson.types.ObjectId;
 
-import com.backend.models.Game;
 import com.backend.models.School;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
@@ -36,13 +34,10 @@ public class SchoolController extends HttpServlet
 			
 			Tournament tournament = Tournament.getTournament(essentials);
 			
-			ArrayList<Game> schoolGames = Tournament.getGamesPlayed(tournament.games, school, GameTypeEnum.PRELIMINARY);
-			
 			essentials.request.setAttribute("tournament", tournament);
 			essentials.request.setAttribute("school", school);
 			essentials.request.setAttribute("rank", tournament.getHeatRanking(GameTypeEnum.PRELIMINARY).indexOf(school) + 1);
 			essentials.request.setAttribute("score", tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY));
-			essentials.request.setAttribute("games", schoolGames);
 			essentials.request.setAttribute("skillsCompetition", SkillsCompetition.get(essentials.database));
 			essentials.request.getRequestDispatcher("/WEB-INF/frontend/school.jsp").forward(essentials.request, essentials.response);
 		}

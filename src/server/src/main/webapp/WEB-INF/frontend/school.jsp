@@ -22,9 +22,6 @@ Integer score	= (Integer) request.getAttribute("score");
 SkillsCompetition skillsCompetition = (SkillsCompetition) request.getAttribute("skillsCompetition");
 int schoolCount = tournament.schools.size();
 
-@SuppressWarnings("unchecked")
-ArrayList<Game> games = (ArrayList<Game>)request.getAttribute("games");
-
 Locale currentLocale = request.getLocale();
 
 LocalizedString strTournament = new LocalizedString(ImmutableMap.of( 	
@@ -111,6 +108,31 @@ LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Live game", 
 		Locale.FRENCH, 	"Partie en cours"
 		), currentLocale);
+
+LocalizedString strPreliminaryGames = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Preliminary", 
+		Locale.FRENCH, 	"Parties préliminaires"
+		), currentLocale);
+
+LocalizedString strPlayoffDraft = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Draft", 
+		Locale.FRENCH, 	"Repêchage"
+		), currentLocale);
+
+LocalizedString strPlayoffSemi = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Semi-final", 
+		Locale.FRENCH, 	"Semi finale"
+		), currentLocale);
+
+LocalizedString strPlayoffDemi = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Demi-final", 
+		Locale.FRENCH, 	"Demi finale"
+		), currentLocale);
+
+LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Final", 
+		Locale.FRENCH, 	"Finale"
+		), currentLocale);
 %>
 
 <!DOCTYPE html>
@@ -135,11 +157,44 @@ LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of(
 <b><%= strCumulative %> <%= tournament.getCumulativeRanking(skillsCompetition).indexOf(school) + 1 %> / <%= schoolCount %></b>
 <br/>
 <br/>
+
+<% 
+for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
+{
+	GameTypeEnum gameType = GameTypeEnum.values()[i];
+	ArrayList<Game> games = Tournament.getGamesPlayed(tournament.games, school, gameType);
+	if(games.size() == 0)
+	{
+		continue;
+	}
+	
+	LocalizedString h2Str = null;
+	switch(gameType)
+	{
+	case PRELIMINARY:
+		h2Str = strPreliminaryGames;
+		break;
+	case PLAYOFF_DRAFT:
+		h2Str = strPlayoffDraft;
+		break;
+	case PLAYOFF_DEMI:
+		h2Str = strPlayoffDemi;
+		break;
+	case PLAYOFF_SEMI:
+		h2Str = strPlayoffSemi;
+		break;
+	case PLAYOFF_FINAL:
+		h2Str = strPlayoffFinal;
+		break;
+	}
+%>
+<h2><%= h2Str %></h2>
 <table>
 <tr>
 <td><%= strGameNumber %></td><td><%= strGameTime %></td><td><%= strSchoolScore %></td><td><%= strBlueScore %></td><td><%= strYellowScore %></td>
 </tr>
 <%
+
 for( Game game : games )
 {
 	ArrayList<GameState> gameStates = game.getGameStates();
@@ -164,6 +219,9 @@ for( Game game : games )
 }
 %>
 </table>
+<%
+} // End of for GameTypeEnum
+%>
 <br/>
 <a href="schedule"><%= strSchedule %></a><br/>
 <a href="ranking"><%= strRanking %></a><br/>
