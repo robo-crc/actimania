@@ -10,11 +10,14 @@ public class PlayoffGroup
 	@JsonIgnore
 	public static final int KEEP_SCHOOLS = 2;
 	public final ArrayList<School> schools;
+	public final int groupNo;
 	
 	public PlayoffGroup(
-			@JsonProperty("schools") 	ArrayList<School> _schools)
+			@JsonProperty("schools") 	ArrayList<School> 	_schools,
+			@JsonProperty("groupNo") 	int					_groupNo)
 	{
 		schools = _schools;
+		groupNo = _groupNo;
 	}
 	
 	public ArrayList<School> getSchoolsForNextRound(ArrayList<School> rankedSchools)

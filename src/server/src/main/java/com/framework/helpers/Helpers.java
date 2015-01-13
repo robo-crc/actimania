@@ -66,7 +66,16 @@ public class Helpers
 			}
 			else
 			{
-				return (T)safeParam;
+				T applicationSpecific = ApplicationSpecific.getParameter(safeParam, entityType);
+				
+				if(applicationSpecific != null)
+				{
+					return applicationSpecific;
+				}
+				else
+				{
+					return (T)safeParam;
+				}
 			}
 		}
 		catch(Exception e)

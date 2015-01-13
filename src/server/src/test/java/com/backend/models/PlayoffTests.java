@@ -7,15 +7,18 @@ import org.apache.commons.lang.Validate;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameTypeEnum;
+import com.framework.helpers.Database;
+import com.framework.helpers.Database.DatabaseType;
 import com.main.FakeTournament;
 
 public class PlayoffTests 
 {
-	/*
 	private static Database database;
 	
 	@BeforeClass
@@ -31,7 +34,6 @@ public class PlayoffTests
 		database.dropDatabase();
 		database.close();
 	}
-	*/
 	
 	@Test
 	public void testGetRounds()
@@ -511,5 +513,10 @@ public class PlayoffTests
 		{
 			Validate.isTrue(draftSchools.indexOf(school) == draftSchools.lastIndexOf(school));
 		}
+	}
+	
+	void testDatabase()
+	{
+		
 	}
 }

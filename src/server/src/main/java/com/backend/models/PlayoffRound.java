@@ -3,22 +3,28 @@ package com.backend.models;
 import java.util.ArrayList;
 
 import org.apache.commons.lang.Validate;
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.framework.helpers.Database;
 
 public class PlayoffRound 
 {
+	public final ObjectId					_id;
 	public final ArrayList<PlayoffGroup> 	playoffGroups;
 	public final GameTypeEnum				gameType;
 	
-	public PlayoffRound(@JsonProperty("playoffGroups") 	ArrayList<PlayoffGroup> _playoffGroups,
-						@JsonProperty("gameType") 		GameTypeEnum _gameType
+	
+	public PlayoffRound(@JsonProperty("_id")			ObjectId 				playoffRoundId,
+						@JsonProperty("playoffGroups") 	ArrayList<PlayoffGroup> _playoffGroups,
+						@JsonProperty("gameType") 		GameTypeEnum 			_gameType
 						)
 	{
+		_id				= playoffRoundId;
 		playoffGroups 	= _playoffGroups;
 		gameType 		= _gameType;
 	}
@@ -204,5 +210,10 @@ public class PlayoffRound
 		}
 		
 		return schools;
+	}
+	
+	public static PlayoffRound get(Database database, GameTypeEnum gameType)
+	{
+		return database.findOne(PlayoffRound.class, "{ gameType : # }", gameType.toString());
 	}
 }

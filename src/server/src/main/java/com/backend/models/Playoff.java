@@ -6,24 +6,32 @@ import org.apache.commons.lang.Validate;
 
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Playoff 
 {
-	final ArrayList<School> preliminaryRanking;
+	@JsonIgnore
+	private final ArrayList<School> preliminaryRankingFinal;
 	@JsonIgnore
 	public static final int SCHOOLS_PER_TEAM = 2;
 	
 	public static final int POSITIONS_SKIP_ROUND_ONE = 6;
 	public static final int POSITIONS_SKIP_ROUND_TWO = 2;
 	
+	public final ArrayList<School> preliminaryRanking;
+	public final ArrayList<School> excludedSchools;
+	
 	public Playoff(
-			ArrayList<School> _preliminaryRanking,
-			ArrayList<School> _excludedSchools)
+			@JsonProperty("preliminaryRanking") ArrayList<School> _preliminaryRanking,
+			@JsonProperty("excludedSchools") 	ArrayList<School> _excludedSchools)
 	{
 		preliminaryRanking = _preliminaryRanking;
+		excludedSchools = _excludedSchools;
+		
+		preliminaryRankingFinal = new ArrayList<School>(_preliminaryRanking);
 		for(School excludedSchool : _excludedSchools)
 		{
-			preliminaryRanking.remove(excludedSchool);
+			preliminaryRankingFinal.remove(excludedSchool);
 		}
 	}
 	
@@ -102,10 +110,10 @@ public class Playoff
 				schoolsInGroup.add(schoolsInRound.get((schoolsCount / 2) + invertGroupNb));
 			}
 			
-			playoffGroups.add(new PlayoffGroup(schoolsInGroup));
+			playoffGroups.add(new PlayoffGroup(schoolsInGroup,groupNb));
 		}
 		
-		return new PlayoffRound(playoffGroups, GameTypeEnum.PLAYOFF_DRAFT);
+		return new PlayoffRound(null, playoffGroups, GameTypeEnum.PLAYOFF_DRAFT);
 	}
 	
 	// I've hard coded this function ... it could be made more generic, but for Actimania it will be good enough.
@@ -117,6 +125,12 @@ public class Playoff
 		ArrayList<School> schoolsInGroup2 = new ArrayList<School>();
 		ArrayList<School> schoolsInGroup3 = new ArrayList<School>();
 		ArrayList<School> schoolsInGroup4 = new ArrayList<School>();
+		
+		int groupNo = 0;
+		if(previousRound != null)
+		{
+			groupNo = previousRound.playoffGroups.get(previousRound.playoffGroups.size() - 1).groupNo + 1;
+		}
 		
 		switch (gameType)
 		{
@@ -152,10 +166,10 @@ public class Playoff
 			schoolsInGroup4.add(schoolsPoolE.get(1));
 			schoolsInGroup4.add(schoolsPoolD.get(1));
 			
-			playoffGroups.add(new PlayoffGroup(schoolsInGroup1));
-			playoffGroups.add(new PlayoffGroup(schoolsInGroup2));
-			playoffGroups.add(new PlayoffGroup(schoolsInGroup3));
-			playoffGroups.add(new PlayoffGroup(schoolsInGroup4));
+			playoffGroups.add(new PlayoffGroup(schoolsInGroup1, groupNo++));
+			playoffGroups.add(new PlayoffGroup(schoolsInGroup2, groupNo++));
+			playoffGroups.add(new PlayoffGroup(schoolsInGroup3, groupNo++));
+			playoffGroups.add(new PlayoffGroup(schoolsInGroup4, groupNo++));
 		}
 			break;
 		case PLAYOFF_DEMI:
@@ -178,8 +192,8 @@ public class Playoff
 			schoolsInGroup2.add(schoolsPoolI.get(0));
 			schoolsInGroup2.add(schoolsPoolJ.get(1));
 			
-			playoffGroups.add(new PlayoffGroup(schoolsInGroup1));
-			playoffGroups.add(new PlayoffGroup(schoolsInGroup2));
+			playoffGroups.add(new PlayoffGroup(schoolsInGroup1, groupNo++));
+			playoffGroups.add(new PlayoffGroup(schoolsInGroup2, groupNo++));
 			break;
 		}
 		case PLAYOFF_FINAL:
@@ -193,7 +207,7 @@ public class Playoff
 			schoolsInGroup1.add(schoolsPoolL.get(0));
 			schoolsInGroup1.add(schoolsPoolL.get(1));
 			
-			playoffGroups.add(new PlayoffGroup(schoolsInGroup1));
+			playoffGroups.add(new PlayoffGroup(schoolsInGroup1, groupNo++));
 		}
 		break;
 		
@@ -201,6 +215,6 @@ public class Playoff
 			break;
 		}
 
-		return new PlayoffRound(playoffGroups, gameType);
+		return new PlayoffRound(null, playoffGroups, gameType);
 	}
 }

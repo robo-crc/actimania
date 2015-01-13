@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import javax.servlet.ServletException;
 
+import com.backend.models.enums.GameTypeEnum;
 import com.framework.models.Essentials;
 import com.framework.models.User;
 import com.google.common.collect.ImmutableSet;
@@ -36,6 +37,17 @@ public class ApplicationSpecific
 	public static String getDefaultRole()
 	{
 		return AuthorizationRole.admin.name();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T getParameter(String safeParam, Class<T> entityType)
+	{
+		if(entityType == GameTypeEnum.class)
+		{
+			return (T) GameTypeEnum.valueOf(safeParam);
+		}
+		
+		return null;
 	}
 	
 	public static Set<String> getPermissions(Set<String> roles)
