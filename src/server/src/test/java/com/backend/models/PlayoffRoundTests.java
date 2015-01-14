@@ -39,11 +39,11 @@ public class PlayoffRoundTests
 			schools.add(new School(new ObjectId(), String.valueOf(i)));
 		}
 		
-		PlayoffRound playoffRound = Playoff.generateDraftRound(schools);
+		PlayoffRound playoffRound = Playoff.generateRepechageRound(schools);
 		
 		database.save(playoffRound);
 		
-		PlayoffRound fromDatabase = PlayoffRound.get(database, GameTypeEnum.PLAYOFF_DRAFT);
+		PlayoffRound fromDatabase = PlayoffRound.get(database, GameTypeEnum.PLAYOFF_REPECHAGE);
 		
 		Validate.isTrue(fromDatabase.playoffGroups.size() == 6);
 	}

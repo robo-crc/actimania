@@ -114,14 +114,14 @@ LocalizedString strPreliminaryGames = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Parties préliminaires"
 		), currentLocale);
 
-LocalizedString strPlayoffDraft = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Draft", 
+LocalizedString strPlayoffRepechage = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Repechage", 
 		Locale.FRENCH, 	"Repêchage"
 		), currentLocale);
 
-LocalizedString strPlayoffSemi = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Semi-final", 
-		Locale.FRENCH, 	"Semi finale"
+LocalizedString strPlayoffQuarter = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Quarter final", 
+		Locale.FRENCH, 	"Quart de finale"
 		), currentLocale);
 
 LocalizedString strPlayoffDemi = new LocalizedString(ImmutableMap.of( 	
@@ -167,8 +167,8 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <br/>
 <br/>
 
-<% 
-for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
+<%
+	for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
 {
 	GameTypeEnum gameType = GameTypeEnum.values()[i];
 	ArrayList<Game> games = Tournament.getGamesPlayed(tournament.games, school, gameType);
@@ -183,17 +183,20 @@ for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
 	case PRELIMINARY:
 		h2Str = strPreliminaryGames;
 		break;
-	case PLAYOFF_DRAFT:
-		h2Str = strPlayoffDraft;
+	case PLAYOFF_REPECHAGE:
+		h2Str = strPlayoffRepechage;
+		break;
+	case PLAYOFF_QUARTER:
+		h2Str = strPlayoffQuarter;
 		break;
 	case PLAYOFF_DEMI:
 		h2Str = strPlayoffDemi;
 		break;
-	case PLAYOFF_SEMI:
-		h2Str = strPlayoffSemi;
-		break;
 	case PLAYOFF_FINAL:
 		h2Str = strPlayoffFinal;
+		break;
+	default:
+		h2Str = null;
 		break;
 	}
 %>

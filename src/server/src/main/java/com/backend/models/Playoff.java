@@ -3,36 +3,30 @@ package com.backend.models;
 import java.util.ArrayList;
 
 import org.apache.commons.lang.Validate;
+import org.bson.types.ObjectId;
 
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.framework.helpers.Database;
 
 public class Playoff 
 {
-	@JsonIgnore
-	private final ArrayList<School> preliminaryRankingFinal;
 	@JsonIgnore
 	public static final int SCHOOLS_PER_TEAM = 2;
 	
 	public static final int POSITIONS_SKIP_ROUND_ONE = 6;
 	public static final int POSITIONS_SKIP_ROUND_TWO = 2;
 	
-	public final ArrayList<School> preliminaryRanking;
+	public final ObjectId _id;
 	public final ArrayList<School> excludedSchools;
 	
 	public Playoff(
-			@JsonProperty("preliminaryRanking") ArrayList<School> _preliminaryRanking,
+			@JsonProperty("_id") 				ObjectId playoffId,
 			@JsonProperty("excludedSchools") 	ArrayList<School> _excludedSchools)
 	{
-		preliminaryRanking = _preliminaryRanking;
+		_id = playoffId;
 		excludedSchools = _excludedSchools;
-		
-		preliminaryRankingFinal = new ArrayList<School>(_preliminaryRanking);
-		for(School excludedSchool : _excludedSchools)
-		{
-			preliminaryRankingFinal.remove(excludedSchool);
-		}
 	}
 	
 	public static int getRoundsCount(int nbOfTeams)
@@ -47,7 +41,7 @@ public class Playoff
 		return roundsCount;
 	}
 	
-	public static PlayoffRound generateDraftRound(ArrayList<School> preliminaryRanking)
+	public static PlayoffRound generateRepechageRound(ArrayList<School> preliminaryRanking)
 	{
 		ArrayList<School> schoolsInRound = new ArrayList<School>();
 		int roundCount = getRoundsCount(preliminaryRanking.size());
@@ -113,11 +107,11 @@ public class Playoff
 			playoffGroups.add(new PlayoffGroup(schoolsInGroup,groupNb));
 		}
 		
-		return new PlayoffRound(null, playoffGroups, GameTypeEnum.PLAYOFF_DRAFT);
+		return new PlayoffRound(null, playoffGroups, GameTypeEnum.PLAYOFF_REPECHAGE);
 	}
 	
 	// I've hard coded this function ... it could be made more generic, but for Actimania it will be good enough.
-	public PlayoffRound generatePlayoffRound(Tournament tournament, PlayoffRound previousRound, GameTypeEnum gameType)
+	public PlayoffRound generatePlayoffRound(Database database, Tournament tournament, PlayoffRound previousRound, GameTypeEnum gameType)
 	{
 		ArrayList<PlayoffGroup> playoffGroups = new ArrayList<PlayoffGroup>();
 		
@@ -132,19 +126,22 @@ public class Playoff
 			groupNo = previousRound.playoffGroups.get(previousRound.playoffGroups.size() - 1).groupNo + 1;
 		}
 		
+		SkillsCompetition skillsCompetition = SkillsCompetition.get(database);
+		ArrayList<School> preliminaryRanking = getRemainingSchools(tournament.getCumulativeRanking(skillsCompetition));
+		
 		switch (gameType)
 		{
-		case PLAYOFF_DRAFT:
-			return generateDraftRound(preliminaryRanking);
-		case PLAYOFF_SEMI:
+		case PLAYOFF_REPECHAGE:
+			return generateRepechageRound(preliminaryRanking);
+		case PLAYOFF_QUARTER:
 		{
-			ArrayList<School> draftResults = tournament.getHeatRanking(GameTypeEnum.PLAYOFF_DRAFT);
-			ArrayList<School> schoolsPoolA = previousRound.playoffGroups.get(0).getSchoolsForNextRound(draftResults);
-			ArrayList<School> schoolsPoolB = previousRound.playoffGroups.get(1).getSchoolsForNextRound(draftResults);
-			ArrayList<School> schoolsPoolC = previousRound.playoffGroups.get(2).getSchoolsForNextRound(draftResults);
-			ArrayList<School> schoolsPoolD = previousRound.playoffGroups.get(3).getSchoolsForNextRound(draftResults);
-			ArrayList<School> schoolsPoolE = previousRound.playoffGroups.get(4).getSchoolsForNextRound(draftResults);
-			ArrayList<School> schoolsPoolF = previousRound.playoffGroups.get(5).getSchoolsForNextRound(draftResults);
+			ArrayList<School> repechageResults = tournament.getHeatRanking(GameTypeEnum.PLAYOFF_REPECHAGE);
+			ArrayList<School> schoolsPoolA = previousRound.playoffGroups.get(0).getSchoolsForNextRound(repechageResults);
+			ArrayList<School> schoolsPoolB = previousRound.playoffGroups.get(1).getSchoolsForNextRound(repechageResults);
+			ArrayList<School> schoolsPoolC = previousRound.playoffGroups.get(2).getSchoolsForNextRound(repechageResults);
+			ArrayList<School> schoolsPoolD = previousRound.playoffGroups.get(3).getSchoolsForNextRound(repechageResults);
+			ArrayList<School> schoolsPoolE = previousRound.playoffGroups.get(4).getSchoolsForNextRound(repechageResults);
+			ArrayList<School> schoolsPoolF = previousRound.playoffGroups.get(5).getSchoolsForNextRound(repechageResults);
 			
 			schoolsInGroup1.add(preliminaryRanking.get(2));
 			schoolsInGroup1.add(schoolsPoolD.get(0));
@@ -174,7 +171,7 @@ public class Playoff
 			break;
 		case PLAYOFF_DEMI:
 		{
-			ArrayList<School> semiResults = tournament.getHeatRanking(GameTypeEnum.PLAYOFF_SEMI);
+			ArrayList<School> semiResults = tournament.getHeatRanking(GameTypeEnum.PLAYOFF_QUARTER);
 			ArrayList<School> schoolsPoolG = previousRound.playoffGroups.get(0).getSchoolsForNextRound(semiResults);
 			ArrayList<School> schoolsPoolH = previousRound.playoffGroups.get(1).getSchoolsForNextRound(semiResults);
 			ArrayList<School> schoolsPoolI = previousRound.playoffGroups.get(2).getSchoolsForNextRound(semiResults);
@@ -216,5 +213,23 @@ public class Playoff
 		}
 
 		return new PlayoffRound(null, playoffGroups, gameType);
+	}
+	
+	public static Playoff get(Database database)
+	{
+		Playoff playoff = database.findOne(Playoff.class, "{ }");
+		if(playoff == null)
+		{
+			playoff = new Playoff(null, new ArrayList<School>());
+			database.save(playoff);
+		}
+		return playoff;
+	}
+	
+	public ArrayList<School> getRemainingSchools(ArrayList<School> allSchools)
+	{
+		ArrayList<School> ret = new ArrayList<School>(allSchools);
+		ret.removeAll(excludedSchools);		
+		return ret;
 	}
 }

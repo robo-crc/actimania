@@ -41,7 +41,7 @@ public class GameEventTests
 		ArrayList<GameEvent> gameEvents = new ArrayList<GameEvent>();
 		TargetHitEvent targetHit = new TargetHitEvent(SideEnum.YELLOW, TargetEnum.MID, DateTime.now());
 		gameEvents.add(targetHit);
-		Game game = new Game(null, 0, DateTime.now(), GameTypeEnum.PLAYOFF_DRAFT, new ArrayList<School>(), new ArrayList<School>(), gameEvents, false);
+		Game game = new Game(null, 0, DateTime.now(), GameTypeEnum.PLAYOFF_REPECHAGE, new ArrayList<School>(), new ArrayList<School>(), gameEvents, false);
 		database.save(game);
 		
 		Game gameRetrieved = database.findOne(Game.class, game._id);

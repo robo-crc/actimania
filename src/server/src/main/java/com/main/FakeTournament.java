@@ -86,8 +86,8 @@ public class FakeTournament
 				SkillsCompetition skillsCompetition = new SkillsCompetition(skills._id, pickBallsArray, twoTargetsArray, twoActuatorsArray);
 				essentials.database.save(skillsCompetition);
 				
-				ArrayList<Game> games = tournament.getHeatGames(GameTypeEnum.PLAYOFF_DRAFT);
-				games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_SEMI));
+				ArrayList<Game> games = tournament.getHeatGames(GameTypeEnum.PLAYOFF_REPECHAGE);
+				games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_QUARTER));
 				games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_DEMI));
 				games.addAll(tournament.getHeatGames(GameTypeEnum.PLAYOFF_FINAL));
 				essentials.database.dropCollection(PlayoffRound.class);
@@ -109,17 +109,15 @@ public class FakeTournament
 			// Make sure to get the tournament again to reset the states. 
 			// There's caching in the tournament which would be problematic if we use the same tournament as previously.
 			Tournament tournament = Tournament.getTournament(essentials);
-			SkillsCompetition skillsCompetition = SkillsCompetition.get(essentials.database);
-			ArrayList<School> preliminaryRank = tournament.getCumulativeRanking(skillsCompetition);
 			ArrayList<School> excludedSchools = new ArrayList<School>();
 			
-			Playoff playoff = new Playoff(preliminaryRank, excludedSchools);
+			Playoff playoff = new Playoff(null, excludedSchools);
 			
-			PlayoffRound draftRound = processRound(essentials.database, playoff, tournament, null, random, GameTypeEnum.PLAYOFF_DRAFT);
-			essentials.database.save(draftRound);
-			PlayoffRound semiRound = processRound(essentials.database, playoff, tournament, draftRound, random, GameTypeEnum.PLAYOFF_SEMI);
-			essentials.database.save(semiRound);
-			PlayoffRound demiRound = processRound(essentials.database, playoff, tournament, semiRound, random, GameTypeEnum.PLAYOFF_DEMI);
+			PlayoffRound repechageRound = processRound(essentials.database, playoff, tournament, null, random, GameTypeEnum.PLAYOFF_REPECHAGE);
+			essentials.database.save(repechageRound);
+			PlayoffRound quarterRound = processRound(essentials.database, playoff, tournament, repechageRound, random, GameTypeEnum.PLAYOFF_QUARTER);
+			essentials.database.save(quarterRound);
+			PlayoffRound demiRound = processRound(essentials.database, playoff, tournament, quarterRound, random, GameTypeEnum.PLAYOFF_DEMI);
 			essentials.database.save(demiRound);
 			PlayoffRound finalRound = processRound(essentials.database, playoff, tournament, demiRound, random, GameTypeEnum.PLAYOFF_FINAL);
 			essentials.database.save(finalRound);
@@ -128,7 +126,7 @@ public class FakeTournament
 
 	public static PlayoffRound processRound(Database database, Playoff playoff, Tournament tournament, PlayoffRound previousRound, Random random, GameTypeEnum gameType)
 	{
-		PlayoffRound round = playoff.generatePlayoffRound(tournament, previousRound, gameType);
+		PlayoffRound round = playoff.generatePlayoffRound(database, tournament, previousRound, gameType);
 		
 		ArrayList<Game> playoffGames = round.getGames(new DateTime(), tournament.games.size() + 1);
 		tournament.games.addAll(playoffGames);

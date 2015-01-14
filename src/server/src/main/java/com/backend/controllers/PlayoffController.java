@@ -45,7 +45,7 @@ public class PlayoffController extends HttpServlet
 			String 	action 		= Helpers.getParameter("action", String.class, essentials);
 			Tournament tournament = Tournament.getTournament(essentials);
 			
-			Playoff playoff = essentials.database.findOne(Playoff.class, "{ }");
+			Playoff playoff = Playoff.get(essentials.database);
 			
 			if(action.equals("deleteCurrentRound"))
 			{
@@ -57,6 +57,9 @@ public class PlayoffController extends HttpServlet
 				{
 					essentials.database.remove(Game.class, game._id);
 				}
+				
+				essentials.response.sendRedirect("schedule");
+				return;
 			}
 			else if(action.equals("generateNextRound"))
 			{
@@ -64,22 +67,22 @@ public class PlayoffController extends HttpServlet
 				GameTypeEnum currentGameType = Helpers.getParameter("currentRound", GameTypeEnum.class, essentials);
 				PlayoffRound currentRound = PlayoffRound.get(essentials.database, currentGameType);
 				
-				PlayoffRound playoffRound = playoff.generatePlayoffRound(tournament, currentRound, nextGameType);
+				PlayoffRound playoffRound = playoff.generatePlayoffRound(essentials.database, tournament, currentRound, nextGameType);
 				
 				DateTime startTime = null;
 				switch(nextGameType)
 				{
-				case PLAYOFF_DRAFT:
-					startTime = new DateTime(2014, 2, 14, 9, 0);
+				case PLAYOFF_REPECHAGE:
+					startTime = new DateTime(2014, 2, 14, 8, 30);
 					break;
-				case PLAYOFF_SEMI:
-					startTime = new DateTime(2014, 2, 14, 12, 30);
+				case PLAYOFF_QUARTER:
+					startTime = new DateTime(2014, 2, 14, 12, 20);
 					break;
 				case PLAYOFF_DEMI:
-					startTime = new DateTime(2014, 2, 14, 14, 50);
+					startTime = new DateTime(2014, 2, 14, 14, 40);
 					break;
 				case PLAYOFF_FINAL:
-					startTime = new DateTime(2014, 2, 14, 16, 40);
+					startTime = new DateTime(2014, 2, 14, 16, 30);
 					break;
 				default:
 					break;
@@ -89,7 +92,11 @@ public class PlayoffController extends HttpServlet
 				tournament.games.addAll(playoffGames);
 				
 				essentials.database.save(playoffRound);
-				essentials.database.save(tournament);
+				essentials.database.save(tournament.games);
+				
+				// Show the newly generated schedule
+				essentials.response.sendRedirect("schedule");
+				return;
 			}
 			else if(action.equals("addExcludedSchool"))
 			{
@@ -116,25 +123,25 @@ public class PlayoffController extends HttpServlet
 	{
 		Tournament tournament = Tournament.getTournament(essentials);
 		
-		GameTypeEnum currentRound = null;
-		GameTypeEnum nextRound = null;
+		GameTypeEnum currentRound = GameTypeEnum.NONE;
+		GameTypeEnum nextRound = GameTypeEnum.NONE;
 		Boolean isCurrentRoundStarted = false;
 		
-		if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_DRAFT).size() == 0)
+		if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_REPECHAGE).size() == 0)
 		{
-			currentRound = null;
-			nextRound = GameTypeEnum.PLAYOFF_DRAFT;
+			currentRound = GameTypeEnum.NONE;
+			nextRound = GameTypeEnum.PLAYOFF_REPECHAGE;
 		}
-		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_SEMI).size() == 0)
+		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_QUARTER).size() == 0)
 		{
-			currentRound = GameTypeEnum.PLAYOFF_DRAFT;
-			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_DRAFT).get(0).getGameStates().size() == 0;
-			nextRound = GameTypeEnum.PLAYOFF_SEMI;
+			currentRound = GameTypeEnum.PLAYOFF_REPECHAGE;
+			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_REPECHAGE).get(0).getGameStates().size() == 0;
+			nextRound = GameTypeEnum.PLAYOFF_QUARTER;
 		}
 		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_DEMI).size() == 0)
 		{
-			currentRound = GameTypeEnum.PLAYOFF_SEMI;
-			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_SEMI).get(0).getGameStates().size() == 0;
+			currentRound = GameTypeEnum.PLAYOFF_QUARTER;
+			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_QUARTER).get(0).getGameStates().size() == 0;
 			nextRound = GameTypeEnum.PLAYOFF_DEMI;
 		}
 		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_FINAL).size() == 0)
@@ -147,12 +154,18 @@ public class PlayoffController extends HttpServlet
 		{
 			currentRound = GameTypeEnum.PLAYOFF_FINAL;
 			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_FINAL).get(0).getGameStates().size() == 0;
-			nextRound = null;
+			nextRound = GameTypeEnum.NONE;
 		}
 		
-		essentials.request.setAttribute("currentRound", currentRound);
+		Playoff playoff = Playoff.get(essentials.database);
+		
+		essentials.request.setAttribute("excludedSchools", playoff.excludedSchools);
+		essentials.request.setAttribute("currentRound", currentRound );
 		essentials.request.setAttribute("isCurrentRoundStarted", isCurrentRoundStarted);
-		essentials.request.setAttribute("nextRound", nextRound);
+		essentials.request.setAttribute("nextRound", nextRound );
 		essentials.request.setAttribute("tournament", tournament);
+		essentials.request.setAttribute("playoff", playoff);
+		
+		essentials.request.getRequestDispatcher("/WEB-INF/admin/playoff.jsp").forward(essentials.request, essentials.response);
 	}
 }

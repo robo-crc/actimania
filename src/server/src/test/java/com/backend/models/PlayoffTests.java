@@ -55,7 +55,7 @@ public class PlayoffTests
 			schools.add(new School(new ObjectId(), String.valueOf(i)));
 		}
 		
-		PlayoffRound playoffRound = Playoff.generateDraftRound(schools);
+		PlayoffRound playoffRound = Playoff.generateRepechageRound(schools);
 		/*
 		Expected
 		7	13	24	30
@@ -97,7 +97,7 @@ public class PlayoffTests
 		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(3).name.equals("25"));
 
 		schools.add(new School(new ObjectId(), "31"));
-		playoffRound = Playoff.generateDraftRound(schools);
+		playoffRound = Playoff.generateRepechageRound(schools);
 		
 		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(0).name.equals("7"));
 		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(1).name.equals("13"));
@@ -131,7 +131,7 @@ public class PlayoffTests
 		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(4).name.equals("19"));
 		
 		schools.add(new School(new ObjectId(), "32"));
-		playoffRound = Playoff.generateDraftRound(schools);
+		playoffRound = Playoff.generateRepechageRound(schools);
 		
 		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(0).name.equals("7"));
 		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(1).name.equals("13"));
@@ -175,7 +175,7 @@ public class PlayoffTests
 			schools.add(new School(new ObjectId(), String.valueOf(i)));
 		}
 		
-		PlayoffRound playoffRound = Playoff.generateDraftRound(schools);
+		PlayoffRound playoffRound = Playoff.generateRepechageRound(schools);
 		DateTime dateTime = new DateTime(2015,1,1,0,0);
 		ArrayList<Game> games = playoffRound.getGames(dateTime, 0);
 		Validate.isTrue(games.size() == 18);
@@ -283,7 +283,7 @@ public class PlayoffTests
 		
 		schools.add(new School(new ObjectId(), "31"));
 		
-		playoffRound 	= Playoff.generateDraftRound(schools);
+		playoffRound 	= Playoff.generateRepechageRound(schools);
 		dateTime 		= new DateTime(2015,1,1,0,0);
 		games 			= playoffRound.getGames(dateTime, 0);
 		Validate.isTrue(games.size() == 20);
@@ -445,7 +445,7 @@ public class PlayoffTests
 		School excludedSchool = schools.get(2);
 		excludedSchools.add(excludedSchool);
 		
-		Playoff playoff = new Playoff(preliminaryRank, excludedSchools);
+		Playoff playoff = new Playoff(null, excludedSchools);
 		/*
 		System.out.println("PRELIMINARY RANKING");
 		for(School school : playoff.preliminaryRanking)
@@ -453,9 +453,9 @@ public class PlayoffTests
 			System.out.println(school.name);
 		}
 		*/
-		PlayoffRound draftRound = FakeTournament.processRound(null, playoff, tournament, null, random, GameTypeEnum.PLAYOFF_DRAFT);
-		PlayoffRound semiRound = FakeTournament.processRound(null, playoff, tournament, draftRound, random, GameTypeEnum.PLAYOFF_SEMI);
-		PlayoffRound demiRound = FakeTournament.processRound(null, playoff, tournament, semiRound, random, GameTypeEnum.PLAYOFF_DEMI);
+		PlayoffRound repechageRound = FakeTournament.processRound(null, playoff, tournament, null, random, GameTypeEnum.PLAYOFF_REPECHAGE);
+		PlayoffRound quarterRound = FakeTournament.processRound(null, playoff, tournament, repechageRound, random, GameTypeEnum.PLAYOFF_QUARTER);
+		PlayoffRound demiRound = FakeTournament.processRound(null, playoff, tournament, quarterRound, random, GameTypeEnum.PLAYOFF_DEMI);
 		PlayoffRound finalRound = FakeTournament.processRound(null, playoff, tournament, demiRound, random, GameTypeEnum.PLAYOFF_FINAL);
 		
 		//System.out.println("FINAL RANKING");
@@ -469,8 +469,8 @@ public class PlayoffTests
 		
 		ArrayList<School> finalSchools = finalRound.getSchools();
 		ArrayList<School> demiSchools = demiRound.getSchools();
-		ArrayList<School> semiSchools = semiRound.getSchools();
-		ArrayList<School> draftSchools = draftRound.getSchools();
+		ArrayList<School> semiSchools = quarterRound.getSchools();
+		ArrayList<School> draftSchools = repechageRound.getSchools();
 
 		Validate.isTrue(finalSchools.size() == 4);
 		Validate.isTrue(demiSchools.size() == 10);

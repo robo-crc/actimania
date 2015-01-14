@@ -67,8 +67,8 @@ public class TournamentSetup
     			{
     				pickBalls.add(new SchoolInteger(school, 0));
     				// Initialize to 99 minutes.
-    				twoActuatorChanged.add(new SchoolDuration(school, new Duration(99 * 60 * 1000)));
-    				twoTargetHits.add(new SchoolDuration(school, new Duration(99 * 60 * 1000)));
+    				twoActuatorChanged.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
+    				twoTargetHits.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
 
     				competition.kiosk.add(school);
     				competition.programming.add(school);

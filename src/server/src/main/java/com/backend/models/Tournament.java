@@ -60,7 +60,7 @@ public class Tournament
 		final TreeMap<School, Integer> score = new TreeMap<School, Integer>();
 		for(School school : rankingCopy)
 		{
-			if(gameType != GameTypeEnum.PLAYOFF_DRAFT && getGamesPlayed(games, school, gameType).size() == 0 )
+			if(gameType != GameTypeEnum.PRELIMINARY && getGamesPlayed(games, school, gameType).size() == 0 )
 			{
 				ranking.remove(school);
 			}
@@ -230,14 +230,14 @@ public class Tournament
 	
 	public ArrayList<School> getPlayoffRanking()
 	{
-		ArrayList<School> schoolsFinal 	= getHeatRanking(GameTypeEnum.PLAYOFF_FINAL);
-		ArrayList<School> schoolsDemi 	= getHeatRanking(GameTypeEnum.PLAYOFF_DEMI);
-		ArrayList<School> schoolsSemi 	= getHeatRanking(GameTypeEnum.PLAYOFF_SEMI);
-		ArrayList<School> schoolsDraft 	= getHeatRanking(GameTypeEnum.PLAYOFF_DRAFT);
+		ArrayList<School> schoolsFinal 		= getHeatRanking(GameTypeEnum.PLAYOFF_FINAL);
+		ArrayList<School> schoolsDemi 		= getHeatRanking(GameTypeEnum.PLAYOFF_DEMI);
+		ArrayList<School> schoolsQuarter 	= getHeatRanking(GameTypeEnum.PLAYOFF_QUARTER);
+		ArrayList<School> schoolsRepechage 	= getHeatRanking(GameTypeEnum.PLAYOFF_REPECHAGE);
 		
 		ArrayList<School> finalDemi = mergeSchoolList(schoolsFinal, schoolsDemi);
-		ArrayList<School> finalDemiSemi = mergeSchoolList(finalDemi, schoolsSemi);
-		return mergeSchoolList(finalDemiSemi, schoolsDraft);
+		ArrayList<School> finalDemiSemi = mergeSchoolList(finalDemi, schoolsQuarter);
+		return mergeSchoolList(finalDemiSemi, schoolsRepechage);
 	}
 	
 	public static ArrayList<School> mergeSchoolList(ArrayList<School> keepAll, ArrayList<School> keepNot)
