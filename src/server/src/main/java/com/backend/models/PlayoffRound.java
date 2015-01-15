@@ -53,13 +53,13 @@ public class PlayoffRound
 					switch(currentPass)
 					{
 					case 0:
-						games.add(createGame(startTime, currentGame, gameType, schools, 0, 1, /* vs */ 2, 3));
+						games.add(createGame(startTime, currentGame, startGame, gameType, schools, 0, 1, /* vs */ 2, 3));
 						break;
 					case 2: // Not 1 because if we need to interwind 4 teams and 5 teams, it gives breathing time.
-						games.add(createGame(startTime, currentGame, gameType, schools, 0, 2, /* vs */ 1, 3));
+						games.add(createGame(startTime, currentGame, startGame, gameType, schools, 0, 2, /* vs */ 1, 3));
 						break;
 					case 4:
-						games.add(createGame(startTime, currentGame, gameType, schools, 0, 3, /* vs */ 1, 2));
+						games.add(createGame(startTime, currentGame, startGame, gameType, schools, 0, 3, /* vs */ 1, 2));
 						break;
 					}
 				}
@@ -74,19 +74,19 @@ public class PlayoffRound
 					switch(currentPass)
 					{
 					case 0:
-						games.add(createGame(startTime, currentGame, gameType, schools, 0, 3, /* vs */ 1, 2));
+						games.add(createGame(startTime, currentGame, startGame, gameType, schools, 0, 3, /* vs */ 1, 2));
 						break;
 					case 1:
-						games.add(createGame(startTime, currentGame, gameType, schools, 0, 4, /* vs */ 1, 3));
+						games.add(createGame(startTime, currentGame, startGame, gameType, schools, 0, 4, /* vs */ 1, 3));
 						break;
 					case 2:
-						games.add(createGame(startTime, currentGame, gameType, schools, 0, 2, /* vs */ 3, 4));
+						games.add(createGame(startTime, currentGame, startGame, gameType, schools, 0, 2, /* vs */ 3, 4));
 						break;
 					case 3:
-						games.add(createGame(startTime, currentGame, gameType, schools, 1, 4, /* vs */ 2, 3));
+						games.add(createGame(startTime, currentGame, startGame, gameType, schools, 1, 4, /* vs */ 2, 3));
 						break;
 					case 4:
-						games.add(createGame(startTime, currentGame, gameType, schools, 0, 1, /* vs */ 2, 4));
+						games.add(createGame(startTime, currentGame, startGame, gameType, schools, 0, 1, /* vs */ 2, 4));
 						break;
 					}
 				}
@@ -169,7 +169,7 @@ public class PlayoffRound
 		return retPlayoffGroups;
 	}
 	
-	public static Game createGame(DateTime startTime, int currentGame, GameTypeEnum gameType, ArrayList<School> schools, int school0, int school1, int school2, int school3)
+	public static Game createGame(DateTime startTime, int currentGame, int roundStartGame, GameTypeEnum gameType, ArrayList<School> schools, int school0, int school1, int school2, int school3)
 	{
 		ArrayList<School> blueTeam = new ArrayList<School>();
 		blueTeam.add(schools.get(school0));
@@ -179,11 +179,10 @@ public class PlayoffRound
 		yellowTeam.add(schools.get(school2));
 		yellowTeam.add(schools.get(school3));
 		
-		//return createGame(startTime, currentGame, blueTeam, yellowTeam);
-		Duration delta = new Duration(currentGame * Game.getGameLength().getMillis() + currentGame * TIME_BETWEEN_GAMES.getMillis());
+		int currentGameInRound = currentGame - roundStartGame;
+		Duration delta = new Duration(currentGameInRound * Game.getGameLength().getMillis() + currentGameInRound * TIME_BETWEEN_GAMES.getMillis());
 		
 		return new Game(null, currentGame, startTime.plus(delta), gameType, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false);
-
 	}
 	
 	public String toString()

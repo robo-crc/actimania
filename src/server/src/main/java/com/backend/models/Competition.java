@@ -47,6 +47,10 @@ public class Competition
 	
 	public static int getAspectPoints(ArrayList<School> aspect, School school)
 	{
+		if(aspect.indexOf(school) == -1)
+		{
+			return 0;
+		}
 		return aspect.size() - aspect.indexOf(school);
 	}
 	

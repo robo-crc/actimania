@@ -31,7 +31,7 @@ public class RankingController extends HttpServlet
 			
 			essentials.request.setAttribute("tournament", tournament);
 			essentials.request.setAttribute("heatRanking", tournament.getHeatRanking(GameTypeEnum.PRELIMINARY));
-			essentials.request.setAttribute("cumulativeRanking", tournament.getCumulativeRanking(skillsCompetition));
+			essentials.request.setAttribute("cumulativeRanking", tournament.getPreliminaryRanking(skillsCompetition));
 			essentials.request.setAttribute("skillsCompetition", skillsCompetition);
 			
 			essentials.request.getRequestDispatcher("/WEB-INF/frontend/ranking.jsp").forward(essentials.request, essentials.response);

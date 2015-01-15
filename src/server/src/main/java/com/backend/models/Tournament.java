@@ -93,12 +93,12 @@ public class Tournament
 		return (currentScore / bestScore) * 0.7;
 	}
 	
-	public double getCumulativeScore(School school, SkillsCompetition skillsCompetition)
+	public double getPreliminaryScore(School school, SkillsCompetition skillsCompetition)
 	{
 		return getPreliminaryHeatScore(school) + skillsCompetition.getSchoolScore(school);
 	}
 	
-	public ArrayList<School> getCumulativeRanking(SkillsCompetition skillsCompetition)
+	public ArrayList<School> getPreliminaryRanking(SkillsCompetition skillsCompetition)
 	{
 		ArrayList<School> cumulativeSchools = new ArrayList<School>(schools);
 		
@@ -106,7 +106,7 @@ public class Tournament
 		final TreeMap<School, Double> score = new TreeMap<School, Double>();
 		for( School school : schools )
 		{
-			score.put(school, getCumulativeScore(school, skillsCompetition));
+			score.put(school, getPreliminaryScore(school, skillsCompetition));
 		}
 		
 		Collections.sort(cumulativeSchools, new Comparator<School>() {

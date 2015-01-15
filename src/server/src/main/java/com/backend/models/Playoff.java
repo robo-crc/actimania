@@ -127,7 +127,7 @@ public class Playoff
 		}
 		
 		SkillsCompetition skillsCompetition = SkillsCompetition.get(database);
-		ArrayList<School> preliminaryRanking = getRemainingSchools(tournament.getCumulativeRanking(skillsCompetition));
+		ArrayList<School> preliminaryRanking = getRemainingSchools(tournament.getPreliminaryRanking(skillsCompetition));
 		
 		switch (gameType)
 		{

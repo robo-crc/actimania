@@ -163,7 +163,7 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <tr><td><%= strTwoActuatorChanged %></td>	<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td></tr>
 </table>
 <br/>
-<b><%= strCumulative %> <%= tournament.getCumulativeRanking(skillsCompetition).indexOf(school) + 1 %> / <%= schoolCount %></b>
+<b><%= strCumulative %> <%=tournament.getPreliminaryRanking(skillsCompetition).indexOf(school) + 1%> / <%= schoolCount %></b>
 <br/>
 <br/>
 

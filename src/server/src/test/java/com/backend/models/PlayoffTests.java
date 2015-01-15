@@ -440,7 +440,7 @@ public class PlayoffTests
 		}
 		
 		Tournament tournament = new Tournament(schools, games);
-		ArrayList<School> preliminaryRank = tournament.getCumulativeRanking(skillsCompetition);
+		ArrayList<School> preliminaryRank = tournament.getPreliminaryRanking(skillsCompetition);
 		ArrayList<School> excludedSchools = new ArrayList<School>();
 		School excludedSchool = schools.get(2);
 		excludedSchools.add(excludedSchool);

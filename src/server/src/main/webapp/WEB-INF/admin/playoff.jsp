@@ -21,8 +21,8 @@ Boolean isCurrentRoundStarted = (Boolean) request.getAttribute("isCurrentRoundSt
 Locale currentLocale = request.getLocale();
 
 LocalizedString strPlayoff = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "School name : ", 
-		Locale.FRENCH, 	"Nom de l'école : "
+		Locale.ENGLISH, "Playoff admin", 
+		Locale.FRENCH, 	"Administration des éliminatoires"
 		), currentLocale);
 
 LocalizedString strOverall = new LocalizedString(ImmutableMap.of( 	
@@ -120,14 +120,6 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 </head>
 <body>
 	<h1><%= strPlayoff %></h1>
-
-	<h2><%= strExcludedSchools %></h2>
-	<%
-	for(School school : excludedSchools)
-	{
-		out.println(school);
-	}
-	%>
 	
 	<form method="post">
 		<input type="hidden" name="action" value="addExcludedSchool" />
@@ -148,7 +140,16 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 	
 	<% if(playoff.excludedSchools.size() > 0)
 	{
+	%>
+		<h2><%= strExcludedSchools %></h2>
+		<%
+		for(School school : excludedSchools)
+		{
+			out.println(school.name);
+			out.print("<br/>");
+		}
 		%>
+		
 	<form method="post">
 		<input type="hidden" name="action" value="removeExcludedSchool" />
 		<h2><%= strRemoveExcludedSchool %></h2>
@@ -179,7 +180,7 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 	<br/>
 	<br/>
 	<form method="post" <% if( isCurrentRoundStarted ) { %> onsubmit="return confirm('<%= strDeleteConfirm %>');"<% } %>>
-		<input type="hidden" name="action" value="generateNextRound" />
+		<input type="hidden" name="action" value="deleteCurrentRound" />
 		<input type="hidden" name="nextRound" value="<%= nextRound %>" />
 		<input type="hidden" name="currentRound" value="<%= currentRound %>" />
 		<input type="submit" value="<%= strDeleteCurrentRound %>" />

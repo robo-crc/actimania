@@ -40,8 +40,6 @@ public class PlayoffController extends HttpServlet
 	{
 		try(Essentials essentials = Essentials.createEssentials(request,  response))
 		{
-			showPage(essentials);
-			
 			String 	action 		= Helpers.getParameter("action", String.class, essentials);
 			Tournament tournament = Tournament.getTournament(essentials);
 			
@@ -58,7 +56,7 @@ public class PlayoffController extends HttpServlet
 					essentials.database.remove(Game.class, game._id);
 				}
 				
-				essentials.response.sendRedirect("schedule");
+				essentials.response.sendRedirect("../schedule");
 				return;
 			}
 			else if(action.equals("generateNextRound"))
@@ -73,34 +71,36 @@ public class PlayoffController extends HttpServlet
 				switch(nextGameType)
 				{
 				case PLAYOFF_REPECHAGE:
-					startTime = new DateTime(2014, 2, 14, 8, 30);
+					startTime = new DateTime(2015, 2, 14, 8, 30);
 					break;
 				case PLAYOFF_QUARTER:
-					startTime = new DateTime(2014, 2, 14, 12, 20);
+					startTime = new DateTime(2015, 2, 14, 12, 20);
 					break;
 				case PLAYOFF_DEMI:
-					startTime = new DateTime(2014, 2, 14, 14, 40);
+					startTime = new DateTime(2015, 2, 14, 14, 40);
 					break;
 				case PLAYOFF_FINAL:
-					startTime = new DateTime(2014, 2, 14, 16, 30);
+					startTime = new DateTime(2015, 2, 14, 16, 30);
 					break;
 				default:
 					break;
 				}
 				
 				ArrayList<Game> playoffGames = playoffRound.getGames(startTime, tournament.games.size() + 1);
-				tournament.games.addAll(playoffGames);
-				
 				essentials.database.save(playoffRound);
-				essentials.database.save(tournament.games);
+				
+				for(Game game : playoffGames)
+				{
+					essentials.database.save(game);
+				}
 				
 				// Show the newly generated schedule
-				essentials.response.sendRedirect("schedule");
+				essentials.response.sendRedirect("../schedule");
 				return;
 			}
 			else if(action.equals("addExcludedSchool"))
 			{
-				ObjectId schoolId = Helpers.getParameter("schoolId", ObjectId.class, essentials);
+				ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
 
 				School schoolToAdd = essentials.database.findOne(School.class, schoolId);
 				playoff.excludedSchools.add(schoolToAdd);
@@ -109,13 +109,14 @@ public class PlayoffController extends HttpServlet
 			}
 			else if(action.equals("removeExcludedSchool"))
 			{
-				ObjectId schoolId = Helpers.getParameter("schoolId", ObjectId.class, essentials);
+				ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
 				
 				School schoolToRemove = essentials.database.findOne(School.class, schoolId);
 				playoff.excludedSchools.remove(schoolToRemove);
 				
 				essentials.database.save(playoff);
 			}
+			showPage(essentials);
 		}
 	}
 	
