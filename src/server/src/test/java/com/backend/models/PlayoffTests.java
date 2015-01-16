@@ -434,7 +434,7 @@ public class PlayoffTests
 			blueTeam.add(schools.get(random.nextInt(31)));
 			blueTeam.add(schools.get(random.nextInt(31)));
 			
-			Game game = new Game(new ObjectId(), i, new DateTime(), GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false);
+			Game game = new Game(new ObjectId(), i, "", new DateTime(), GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false);
 			FakeTournament.fillFakGameEvents(game, random);
 			games.add(game);
 		}

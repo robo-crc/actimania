@@ -26,6 +26,7 @@ public class Game implements Comparable<Game>
 {
 	public final ObjectId 					_id;
 	public final int						gameNumber;
+	public final String						playoffGroup;
 	public final DateTime					scheduledTime;
 	public final GameTypeEnum				gameType;
 	public final ArrayList<School> 			blueTeam;
@@ -38,6 +39,7 @@ public class Game implements Comparable<Game>
 	public Game(
 			@JsonProperty("_id")					ObjectId 					_gameId,
 			@JsonProperty("gameNumber")				int 						_gameNumber,
+			@JsonProperty("playoffGroup")			String 						_playoffGroup,
 			@JsonProperty("scheduledTime")			DateTime					_scheduledTime,
 			@JsonProperty("gameType")				GameTypeEnum				_gameType,
 			@JsonProperty("blueTeam")				ArrayList<School> 			_blueTeam,
@@ -48,6 +50,7 @@ public class Game implements Comparable<Game>
 	{
 		_id 				= _gameId;
 		gameNumber			= _gameNumber;
+		playoffGroup		= _playoffGroup;
 		scheduledTime		= _scheduledTime;
 		gameType			= _gameType;
 		yellowTeam 			= _yellowTeam;
@@ -347,12 +350,12 @@ public class Game implements Comparable<Game>
 	
 	private static Game setLiveGame(Game game, boolean isLive)
 	{
-		return new Game(game._id, game.gameNumber, game.scheduledTime, game.gameType, game.blueTeam, game.yellowTeam, game.gameEvents, isLive);
+		return new Game(game._id, game.gameNumber, game.playoffGroup, game.scheduledTime, game.gameType, game.blueTeam, game.yellowTeam, game.gameEvents, isLive);
 	}
 	
 	public Game getInitialState()
 	{
-		return new Game(_id, gameNumber, scheduledTime, gameType, blueTeam, yellowTeam, new ArrayList<GameEvent>(), isLive);
+		return new Game(_id, gameNumber, playoffGroup, scheduledTime, gameType, blueTeam, yellowTeam, new ArrayList<GameEvent>(), isLive);
 	}
 	
 	public static Duration getGameLength()

@@ -58,7 +58,7 @@ public class GameTests
 		gameEvents.add(new ActuatorStateChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.BLUE, DateTime.now()));
 		gameEvents.add(new TargetHitEvent(SideEnum.BLUE, TargetEnum.LOW, DateTime.now()));
 		gameEvents.add(new EndGameEvent(DateTime.now()));
-		return new Game(null, 1, DateTime.now(), GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, gameEvents, false);
+		return new Game(null, 1, "", DateTime.now(), GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, gameEvents, false);
 	}
 	
 	@Test
@@ -75,7 +75,7 @@ public class GameTests
 	@Test
 	public void testGameEvent()
 	{
-		Game game = new Game(null, 0, DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), new ArrayList<School>(), new ArrayList<GameEvent>(), false);
+		Game game = new Game(null, 0, "", DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), new ArrayList<School>(), new ArrayList<GameEvent>(), false);
 		game.addGameEvent(new StartGameEvent(DateTime.now()));
 		
 		Validate.isTrue(game.getGameEvents().size() == 1);
@@ -93,7 +93,7 @@ public class GameTests
 		Validate.isTrue(game.getGameEvents().get(1).getGameEventEnum() == GameEventEnum.TARGET_HIT);
 		Validate.isTrue(game.getGameEvents().get(2).getGameEventEnum() == GameEventEnum.END_GAME);
 		
-		Game game2 = new Game(null, 0, DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), new ArrayList<School>(), new ArrayList<GameEvent>(), false);
+		Game game2 = new Game(null, 0, "", DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), new ArrayList<School>(), new ArrayList<GameEvent>(), false);
 	
 		game2.addGameEvent(new TargetHitEvent(SideEnum.BLUE, TargetEnum.MID, DateTime.now()));
 		Validate.isTrue(game2.getGameEvents().size() == 0);
@@ -105,7 +105,7 @@ public class GameTests
 	@Test
 	public void testEndGameEvent()
 	{
-		Game game = new Game(null, 0, DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), new ArrayList<School>(), new ArrayList<GameEvent>(), false);
+		Game game = new Game(null, 0, "", DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), new ArrayList<School>(), new ArrayList<GameEvent>(), false);
 		game.addGameEvent(new StartGameEvent(DateTime.now()));
 		
 		Validate.isTrue(!game.containsEndGameEvent());

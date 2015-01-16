@@ -142,6 +142,7 @@ public class TournamentSetup
 		        			Duration delta = new Duration(currentGameInBlock * Game.getGameLength().getMillis() + currentGameInBlock * TIME_BETWEEN_GAMES.getMillis()); 
 		        			Game game = new Game(null, 
 		        					currentGame + 1,
+		        					"",
 		        					RoundStartHour[blockNumber].plus(delta),
 		        					GameTypeEnum.PRELIMINARY, 
 		        					games.get(currentGame).getBlueTeam(), 

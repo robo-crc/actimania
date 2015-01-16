@@ -191,7 +191,7 @@ if(showHeader)
 		for(School school : game.yellowTeam)
 		{
 	%>
-		<a href="school?schoolId=<%=school._id%>"><%=school.name%></a><br/>
+		<a target="_blank" href="school?schoolId=<%=school._id%>"><%=school.name%></a><br/>
 		<%
 			}
 		%>
