@@ -35,6 +35,7 @@ public class GameController extends HttpServlet
 			}
 
 			essentials.request.setAttribute("liveRefresh", Boolean.FALSE);
+			essentials.request.setAttribute("showHeader", Boolean.TRUE);
 			Game liveGame = Game.getLiveGame(essentials.database);
 
 			Game game = null;
@@ -60,6 +61,7 @@ public class GameController extends HttpServlet
 				if( game != null )
 				{
 					essentials.request.setAttribute("liveRefresh", Boolean.TRUE);
+					essentials.request.setAttribute("showHeader", Boolean.FALSE);
 				}
 			}
 			else 

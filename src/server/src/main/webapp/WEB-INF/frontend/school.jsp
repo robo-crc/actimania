@@ -34,16 +34,6 @@ LocalizedString strCumulative = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Position ronde préliminaire : "
 		), currentLocale);
 
-LocalizedString strRank = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Rank", 
-		Locale.FRENCH, 	"Position"
-		), currentLocale);
-
-LocalizedString strRankScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Cumulative value", 
-		Locale.FRENCH, 	"Valeure globale"
-		), currentLocale);
-
 LocalizedString strScore = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Score", 
 		Locale.FRENCH, 	"Pointage"
@@ -69,16 +59,6 @@ LocalizedString strSchool = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"École"
 		), currentLocale);
 
-LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schedule", 
-		Locale.FRENCH, 	"Horaire"
-		), currentLocale);
-
-LocalizedString strRanking = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Ranking", 
-		Locale.FRENCH, 	"Classement"
-		), currentLocale);
-
 LocalizedString strGameNumber = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Game #", 
 		Locale.FRENCH, 	"# Partie"
@@ -102,11 +82,6 @@ LocalizedString strBlueScore = new LocalizedString(ImmutableMap.of(
 LocalizedString strYellowScore = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Yellow score", 
 		Locale.FRENCH, 	"Pointage équipe jaune"
-		), currentLocale);
-
-LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Live game", 
-		Locale.FRENCH, 	"Partie en cours"
 		), currentLocale);
 
 LocalizedString strPreliminaryGames = new LocalizedString(ImmutableMap.of( 	
@@ -152,6 +127,7 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 </script>
 </head>
 <body>
+<%@include file="header.jsp" %>
 
 <h1><%= school.name %></h1>
 
@@ -234,9 +210,5 @@ for( Game game : games )
 <%
 } // End of for GameTypeEnum
 %>
-<br/>
-<a href="schedule"><%= strSchedule %></a><br/>
-<a href="ranking"><%= strRanking %></a><br/>
-<a href="live"><%= strLiveGame %></a>
 </body>
 </html>

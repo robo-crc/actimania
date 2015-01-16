@@ -36,36 +36,6 @@ LocalizedString strSchoolName = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "School name : ", 
 		Locale.FRENCH, 	"Nom de l'école : "
 		), currentLocale);
-
-LocalizedString strLogout = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Logout", 
-		Locale.FRENCH, 	"Déconnexion"
-		), currentLocale);
-
-LocalizedString strSchools = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schools", 
-		Locale.FRENCH, 	"Écoles"
-		), currentLocale);
-
-LocalizedString strUsers = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Users", 
-		Locale.FRENCH, 	"Utilisateurs"
-		), currentLocale);
-
-LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schedule", 
-		Locale.FRENCH, 	"Horaire"
-		), currentLocale);
-
-LocalizedString strCompetition = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Competition", 
-		Locale.FRENCH, 	"Compétition"
-		), currentLocale);
-
-LocalizedString strOverall = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Overall", 
-		Locale.FRENCH, 	"Classement final"
-		), currentLocale);
 %>
 
 <!DOCTYPE html>
@@ -76,6 +46,7 @@ LocalizedString strOverall = new LocalizedString(ImmutableMap.of(
 <link rel="shortcut icon" href="images/favicon.ico" />
 </head>
 <body>
+<%@include file="header.jsp" %>
 	<%
 	for(LocalizedString error : errorList)
 	{
@@ -114,15 +85,5 @@ LocalizedString strOverall = new LocalizedString(ImmutableMap.of(
 	<% 
 	}
 	%>
-	<br/>
-	<a href="../overall"><%= strOverall %></a>
-	<br/>
-	<a href="../schedule"><%= strSchedule %></a>
-	<br/>
-	<a href="competition"><%= strCompetition %></a>
-	<br/>
-	<a href="users"><%= strUsers %></a>
-	<br/>
-	<a href="../logout"><%= strLogout %></a>
 </body>
 </html>

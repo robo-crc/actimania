@@ -25,22 +25,13 @@ Game game = (Game) request.getAttribute("game");
 boolean isLoggedIn = ((Boolean) request.getAttribute("isLoggedIn")).booleanValue();
 boolean isLive = ((Boolean) request.getAttribute("isLive")).booleanValue();
 boolean liveRefresh = ((Boolean) request.getAttribute("liveRefresh")).booleanValue();
+boolean showHeader = ((Boolean) request.getAttribute("showHeader")).booleanValue();
 
 Locale currentLocale = request.getLocale();
 
 LocalizedString strGame = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Game", 
 		Locale.FRENCH, 	"Partie"
-		), currentLocale);
-
-LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schedule", 
-		Locale.FRENCH, 	"Horaire"
-		), currentLocale);
-
-LocalizedString strRanking = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Ranking", 
-		Locale.FRENCH, 	"Classement"
 		), currentLocale);
 
 LocalizedString strSchoolPenalties = new LocalizedString(ImmutableMap.of( 	
@@ -167,6 +158,14 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
     </script>
 </head>
 <body>
+<% 
+if(showHeader)
+{
+%>
+<%@include file="header.jsp" %>
+<%
+}
+%>
 
 <h1><%=strGame + " " + String.valueOf(game.gameNumber)%><% if(isLive) out.write(strLiveHeader.get(currentLocale)); %></h1>
 <div class="scheduledTime"><%=Helpers.dateTimeFormatter.print(game.scheduledTime)%></div>
@@ -178,7 +177,7 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 		for(School school : game.blueTeam)
 		{
 	%>
-		<a href="school?schoolId=<%=school._id%>"><%=school.name%></a><br/>
+		<a target="_blank" href="school?schoolId=<%=school._id%>"><%=school.name%></a><br/>
 		<%
 			}
 		%>
@@ -279,13 +278,15 @@ if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
 	</ul>
 </div>
 
-<% if( isLoggedIn )
-	{%>
-	<a href="admin/game?gameId=<%= game._id %>"><%= strGameAdministration %></a><br/>
-	<%
-	}
-	%>
-<a href="schedule"><%= strSchedule %></a><br/>
-<a href="ranking"><%= strRanking %></a>
+ 
+<%
+if( isLoggedIn )
+{
+%>
+<a href="admin/game?gameId=<%= game._id %>"><%= strGameAdministration %></a><br/>
+<%
+}
+%>
+<script type="text/javascript" src="jquery/iframeresizer/js/iframeResizer.contentWindow.min.js"></script>
 </body>
 </html>

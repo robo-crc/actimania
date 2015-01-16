@@ -28,34 +28,19 @@ LocalizedString strSchoolName = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Nom de l'école : "
 		), currentLocale);
 
-LocalizedString strLogout = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Logout", 
-		Locale.FRENCH, 	"Déconnexion"
-		), currentLocale);
-
 LocalizedString strSave = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Save", 
 		Locale.FRENCH, 	"Sauvegarder"
 		), currentLocale);
 
-LocalizedString strUsers = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Users", 
-		Locale.FRENCH, 	"Utilisateurs"
-		), currentLocale);
-
-LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schedule", 
-		Locale.FRENCH, 	"Horaire"
-		), currentLocale);
-
-LocalizedString strCompetition = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Competition", 
-		Locale.FRENCH, 	"Compétition"
-		), currentLocale);
-
 LocalizedString strSchool = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "School", 
 		Locale.FRENCH, 	"École"
+		), currentLocale);
+
+LocalizedString strCompetitionTitle = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Competition", 
+		Locale.FRENCH, 	"Compétition"
 		), currentLocale);
 
 LocalizedString strSkillsCompetition = new LocalizedString(ImmutableMap.of( 	
@@ -122,23 +107,13 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Website journalism", 
 		Locale.FRENCH, 	"Journalisme du site web"
 		), currentLocale);
-
-LocalizedString strSchools = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schools", 
-		Locale.FRENCH, 	"Écoles"
-		), currentLocale);
-
-LocalizedString strOverall = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Overall", 
-		Locale.FRENCH, 	"Classement final"
-		), currentLocale);
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title><%= strCompetition %></title>
+<title><%= strCompetitionTitle %></title>
 <link rel="shortcut icon" href="images/favicon.ico" />
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
@@ -183,6 +158,7 @@ $(function() {
 </script>
 </head>
 <body>
+<%@include file="header.jsp" %>
 	<%
 	for(LocalizedString error : errorList)
 	{
@@ -311,16 +287,5 @@ $(function() {
 			</td>
 		</tr>
 	</table>
-	
-	<br/>
-	<a href="../overall"><%= strOverall %></a>
-	<br/>
-	<a href="../schedule"><%= strSchedule %></a>
-	<br/>
-	<a href="schools"><%= strSchools %></a>
-	<br/>
-	<a href="users"><%= strUsers %></a>
-	<br/>
-	<a href="../logout"><%= strLogout %></a>
 </body>
 </html>

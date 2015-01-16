@@ -20,19 +20,9 @@ Boolean isCurrentRoundStarted = (Boolean) request.getAttribute("isCurrentRoundSt
 
 Locale currentLocale = request.getLocale();
 
-LocalizedString strPlayoff = new LocalizedString(ImmutableMap.of( 	
+LocalizedString strPlayoffTitle = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Playoff admin", 
 		Locale.FRENCH, 	"Administration des éliminatoires"
-		), currentLocale);
-
-LocalizedString strOverall = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Overall", 
-		Locale.FRENCH, 	"Classement final"
-		), currentLocale);
-
-LocalizedString strLogout = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Logout", 
-		Locale.FRENCH, 	"Déconnexion"
 		), currentLocale);
 
 LocalizedString strSave = new LocalizedString(ImmutableMap.of( 	
@@ -40,24 +30,9 @@ LocalizedString strSave = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Sauvegarder"
 		), currentLocale);
 
-LocalizedString strUsers = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Users", 
-		Locale.FRENCH, 	"Utilisateurs"
-		), currentLocale);
-
-LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schedule", 
-		Locale.FRENCH, 	"Horaire"
-		), currentLocale);
-
 LocalizedString strSchool = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "School", 
 		Locale.FRENCH, 	"École"
-		), currentLocale);
-
-LocalizedString strSchools = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schools", 
-		Locale.FRENCH, 	"Écoles"
 		), currentLocale);
 
 LocalizedString strExcludedSchools = new LocalizedString(ImmutableMap.of( 	
@@ -115,10 +90,11 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title><%= strPlayoff %></title>
+<title><%= strPlayoffTitle %></title>
 <link rel="shortcut icon" href="images/favicon.ico" />
 </head>
 <body>
+	<%@include file="header.jsp" %>
 	<h1><%= strPlayoff %></h1>
 	
 	<form method="post">
@@ -185,15 +161,4 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 		<input type="hidden" name="currentRound" value="<%= currentRound %>" />
 		<input type="submit" value="<%= strDeleteCurrentRound %>" />
 	</form>
-	
-	<br/>
-	<a href="../overall"><%= strOverall %></a>
-	<br/>
-	<a href="../schedule"><%= strSchedule %></a>
-	<br/>
-	<a href="schools"><%= strSchools %></a>
-	<br/>
-	<a href="users"><%= strUsers %></a>
-	<br/>
-	<a href="../logout"><%= strLogout %></a>
 </body>

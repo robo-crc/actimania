@@ -12,15 +12,9 @@
 Locale currentLocale = request.getLocale();
 
 LocalizedString strLive = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Live", 
-		Locale.FRENCH, 	"En cours"
+		Locale.ENGLISH, "Live game", 
+		Locale.FRENCH, 	"Partie en cours"
 		), currentLocale);
-
-LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schedule", 
-		Locale.FRENCH, 	"Horaire"
-		), currentLocale);
-
 %>
 
 <!DOCTYPE html>
@@ -39,9 +33,16 @@ LocalizedString strSchedule = new LocalizedString(ImmutableMap.of(
   ga('create', 'UA-58398665-1', 'auto');
   ga('send', 'pageview');
 </script>
+<script src="jquery/jquery.js"></script>
+<script src="jquery/iframeresizer/js/iframeResizer.min.js"></script>
+<script>
+	$(function() {
+	  	  $('.gameFrame').iFrameResize({});
+	});
+</script>
 </head>
 <body>
-
+<%@include file="header.jsp" %>
 <iframe src="http://www.twitch.tv/liquidtlo/embed" class="twitchStream" frameborder="0" scrolling="no" height="378" width="620"></iframe>
 <iframe src="game" class="gameFrame" scrolling="no" frameborder="0" height="1500px" width="100%"></iframe>
 

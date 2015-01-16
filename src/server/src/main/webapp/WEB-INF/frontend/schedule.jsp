@@ -29,14 +29,9 @@ LocalizedString strScore = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Pointage"
 		), currentLocale);
 
-LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
+LocalizedString strScheduleTitle = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Schedule", 
 		Locale.FRENCH, 	"Horaire"
-		), currentLocale);
-
-LocalizedString strRanking = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Ranking", 
-		Locale.FRENCH, 	"Classement"
 		), currentLocale);
 
 LocalizedString strGameNumber = new LocalizedString(ImmutableMap.of( 	
@@ -67,11 +62,6 @@ LocalizedString strBlueScore = new LocalizedString(ImmutableMap.of(
 LocalizedString strYellowScore = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Yellow score", 
 		Locale.FRENCH, 	"Pointage équipe jaune"
-		), currentLocale);
-
-LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Live game", 
-		Locale.FRENCH, 	"Partie en cours"
 		), currentLocale);
 
 LocalizedString strPreliminaryGames = new LocalizedString(ImmutableMap.of( 	
@@ -105,7 +95,7 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="shortcut icon" href="images/favicon.ico" />
-<title><%= strSchedule %></title>
+<title><%= strScheduleTitle %></title>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -117,7 +107,7 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 </script>
 </head>
 <body>
-
+<%@include file="header.jsp" %>
 <%
 	for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
 {
@@ -219,7 +209,5 @@ gameCount++;
 <%
 } // End of for GameTypeEnum
 %>
-<a href="ranking"><%= strRanking %></a><br/>
-<a href="live"><%= strLiveGame %></a>
 </body>
 </html>

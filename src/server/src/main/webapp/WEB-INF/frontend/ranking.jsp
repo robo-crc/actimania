@@ -26,14 +26,9 @@ SkillsCompetition skillsCompetition = (SkillsCompetition)request.getAttribute("s
 
 Locale currentLocale = request.getLocale();
 
-LocalizedString strRanking = new LocalizedString(ImmutableMap.of( 	
+LocalizedString strRankingTitle = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Ranking", 
 		Locale.FRENCH, 	"Classement"
-		), currentLocale);
-
-LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schedule", 
-		Locale.FRENCH, 	"Horaire"
 		), currentLocale);
 
 LocalizedString strPosition = new LocalizedString(ImmutableMap.of( 	
@@ -81,11 +76,6 @@ LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Changer deux actuateurs"
 		), currentLocale);
 
-LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Live game", 
-		Locale.FRENCH, 	"Partie en cours"
-		), currentLocale);
-
 LocalizedString strCount = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Count", 
 		Locale.FRENCH, 	"Quantité"
@@ -102,7 +92,7 @@ LocalizedString strTime = new LocalizedString(ImmutableMap.of(
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="shortcut icon" href="images/favicon.ico" />
-<title><%= strRanking %></title>
+<title><%= strRankingTitle %></title>
 <link rel="stylesheet" type="text/css" href="css/template.css">
 <script src="jquery/sorttable.js"></script>
 <script>
@@ -116,7 +106,7 @@ LocalizedString strTime = new LocalizedString(ImmutableMap.of(
 </script>
 </head>
 <body>
-
+<%@include file="header.jsp" %>
 <h1><%= strPreliminaryScore %></h1>
 <table class="sortable">
 <tr>
@@ -142,11 +132,5 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 }
 %>
 </table>
-
-<br/>
-
-<a href="schedule"><%= strSchedule %></a><br/>
-<a href="live"><%= strLiveGame %></a>
-
 </body>
 </html>

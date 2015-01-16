@@ -41,11 +41,6 @@ LocalizedString strDelete = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Supprimer"
 		), currentLocale);
 
-LocalizedString strLogout = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Logout", 
-		Locale.FRENCH, 	"Déconnexion"
-		), currentLocale);
-
 LocalizedString strGameAdmin = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Game administration", 
 		Locale.FRENCH, 	"Administration des parties"
@@ -111,16 +106,6 @@ LocalizedString strTeam = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Équipe"
 		), currentLocale);
 
-LocalizedString strSchools = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schools", 
-		Locale.FRENCH, 	"Écoles"
-		), currentLocale);
-
-LocalizedString strUsers = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Users", 
-		Locale.FRENCH, 	"Utilisateurs"
-		), currentLocale);
-
 LocalizedString strGameEvents = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Game events", 
 		Locale.FRENCH, 	"Événements de la partie"
@@ -166,11 +151,6 @@ LocalizedString strGamePage = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Page de la partie publique"
 		), currentLocale);
 
-LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schedule", 
-		Locale.FRENCH, 	"Horaire"
-		), currentLocale);
-
 LocalizedString strPointModifier = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Point Modifier", 
 		Locale.FRENCH, 	"Modifcation de points"
@@ -179,11 +159,6 @@ LocalizedString strPointModifier = new LocalizedString(ImmutableMap.of(
 LocalizedString strPoints = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Points", 
 		Locale.FRENCH, 	"Points"
-		), currentLocale);
-
-LocalizedString strCompetition = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Competition", 
-		Locale.FRENCH, 	"Compétition"
 		), currentLocale);
 
 LocalizedString strCommentEnglish = new LocalizedString(ImmutableMap.of( 	
@@ -196,10 +171,6 @@ LocalizedString strCommentFrench = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Commentaire en français"
 		), currentLocale);
 
-LocalizedString strOverall = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Overall", 
-		Locale.FRENCH, 	"Classement final"
-		), currentLocale);
 %>
 
 <!DOCTYPE html>
@@ -225,6 +196,8 @@ $(document).ready(function(){
 
 </head>
 <body>
+<%@include file="header.jsp" %>
+<br/>
 <%!
 public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out) throws IOException
 {
@@ -290,6 +263,7 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 		<%
 	}
 	%>
+	<a href="../game?gameId=<%= game._id %>"><%= strGamePage %></a>
 	
 	<%
 	if(game.containsStartGameEvent())
@@ -486,19 +460,5 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 		}
 		%>
 	</table>
-	<br/>
-	<a href="../game?gameId=<%= game._id %>"><%= strGamePage %></a>
-	<br/>
-	<a href="../overall"><%= strOverall %></a>
-	<br/>
-	<a href="../schedule"><%= strSchedule %></a>
-	<br/>
-	<a href="schools"><%= strSchools %></a>
-	<br/>
-	<a href="users"><%= strUsers %></a>
-	<br/>
-	<a href="competition"><%= strCompetition %></a>
-	<br/>
-	<a href="../logout"><%= strLogout %></a>
 </body>
 </html>

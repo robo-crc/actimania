@@ -109,6 +109,7 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 </head>
 
 <body>
+<%@include file="header.jsp" %>
 	<h1><%= strOverall %></h1>
 	
 	<table class="sortable">
