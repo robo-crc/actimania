@@ -1,0 +1,51 @@
+.grayColor
+{
+	color: rgb(64,64,65);
+}
+
+.grayBackgroundColor
+{
+	background-color: rgb(64,64,65);
+}
+
+.yellowBackgroundColor
+{
+	background-color: rgb(255,221,0)
+}
+
+.blueBackgroundColor
+{
+	background-color: rgb(0,113,187)
+}
+
+/* header */
+.header
+{
+	text-align: center;
+}
+
+.headerRubban
+{
+	padding-top:	10px;
+	padding-bottom: 10px;
+}
+
+.headerLogo
+{
+	padding-top: 20px;
+}
+
+.headerLink
+{
+    color: white;
+	
+    text-decoration: none;
+    font-size: 1.5em;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.headerLink:hover
+{
+	text-decoration: underline;
+}

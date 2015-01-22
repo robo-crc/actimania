@@ -4,28 +4,28 @@
 
 <%
 LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Live game", 
-		Locale.FRENCH, 	"Partie en cours"
+		Locale.ENGLISH, "LIVE GAME", 
+		Locale.FRENCH, 	"PARTIE EN COURS"
 		), request.getLocale());
 
 LocalizedString strRanking = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Ranking", 
-		Locale.FRENCH, 	"Classement"
+		Locale.ENGLISH, "RANKING", 
+		Locale.FRENCH, 	"CLASSEMENT"
 		), request.getLocale());
 
 LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schedule", 
-		Locale.FRENCH, 	"Horaire"
+		Locale.ENGLISH, "SCHEDULE", 
+		Locale.FRENCH, 	"HORAIRE"
 		), request.getLocale());
 
 LocalizedString strFacebook = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Facebook", 
-		Locale.FRENCH, 	"Facebook"
+		Locale.ENGLISH, "FACEBOOK", 
+		Locale.FRENCH, 	"FACEBOOK"
 		), request.getLocale());
 
 LocalizedString strInstagram = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Instagram", 
-		Locale.FRENCH, 	"Instagram"
+		Locale.ENGLISH, "INSTAGRAM", 
+		Locale.FRENCH, 	"INSTAGRAM"
 		), request.getLocale());
 
 LocalizedString strCRC = new LocalizedString(ImmutableMap.of( 	
@@ -35,9 +35,17 @@ LocalizedString strCRC = new LocalizedString(ImmutableMap.of(
 
 %>
 
-<a href="live"><%= strLiveGame %></a><br/>
-<a href="schedule"><%= strSchedule %></a><br/>
-<a href="ranking"><%= strRanking %></a><br/>
-<a href="https://www.facebook.com/roboCRC"><%= strFacebook %></a><br/>
-<a href="http://www.instagram.com/robocrc"><%= strInstagram %></a><br/>
-<a href="http://www.robo-crc.ca/"><%= strCRC %></a><br/>
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
+
+<div class="header">
+	<img class="headerLogo" src="images/crc.jpg" />
+
+	<div class="headerRubban grayBackgroundColor">
+		<a class="headerLink" href="live"><%= strLiveGame %></a>
+		<a class="headerLink" href="schedule"><%= strSchedule %></a>
+		<a class="headerLink" href="ranking"><%= strRanking %></a>
+		<a class="headerLink" href="https://www.facebook.com/roboCRC"><%= strFacebook %></a>
+		<a class="headerLink" href="http://www.instagram.com/robocrc"><%= strInstagram %></a>
+		<a class="headerLink" href="http://www.robo-crc.ca/"><%= strCRC %></a>
+	</div>
+</div>
