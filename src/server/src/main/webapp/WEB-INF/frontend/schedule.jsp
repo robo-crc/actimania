@@ -25,8 +25,13 @@ LocalizedString strSchool = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Score", 
-		Locale.FRENCH, 	"Pointage"
+		Locale.ENGLISH, "SCORE", 
+		Locale.FRENCH, 	"POINTAGE"
+		), currentLocale);
+
+LocalizedString strPoints = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Points", 
+		Locale.FRENCH, 	"Points"
 		), currentLocale);
 
 LocalizedString strScheduleTitle = new LocalizedString(ImmutableMap.of( 	
@@ -34,34 +39,34 @@ LocalizedString strScheduleTitle = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Horaire"
 		), currentLocale);
 
-LocalizedString strGameNumber = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Game #", 
-		Locale.FRENCH, 	"# Partie"
+LocalizedString strGameNumberGroupTime = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "GAME #,<br/>GAME TIME,<br/>GROUP", 
+		Locale.FRENCH, 	"# PARTIE,<br/>DATE ET HEURE,<br/>GROUPE"
 		), currentLocale);
 
-LocalizedString strGameTime = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Game time", 
-		Locale.FRENCH, 	"Heure de la partie"
+LocalizedString strGameNumberTime = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "GAME #,<br/>GAME TIME", 
+		Locale.FRENCH, 	"# PARTIE,<br/>DATE ET HEURE"
+		), currentLocale);
+
+LocalizedString strGame = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Game", 
+		Locale.FRENCH, 	"Partie"
 		), currentLocale);
 
 LocalizedString strBlueTeam = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Blue team", 
-		Locale.FRENCH, 	"Équipe bleue"
+		Locale.ENGLISH, "BLUE TEAM", 
+		Locale.FRENCH, 	"ÉQUIPE BLEUE"
+		), currentLocale);
+
+LocalizedString strEmpty = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "", 
+		Locale.FRENCH, 	""
 		), currentLocale);
 
 LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Yellow team", 
-		Locale.FRENCH, 	"Équipe jaune"
-		), currentLocale);
-
-LocalizedString strBlueScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Blue score", 
-		Locale.FRENCH, 	"Pointage équipe bleue"
-		), currentLocale);
-
-LocalizedString strYellowScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Yellow score", 
-		Locale.FRENCH, 	"Pointage équipe jaune"
+		Locale.ENGLISH, "YELLOW TEAM", 
+		Locale.FRENCH, 	"ÉQUIPE JAUNE"
 		), currentLocale);
 
 LocalizedString strPreliminaryGames = new LocalizedString(ImmutableMap.of( 	
@@ -146,16 +151,15 @@ for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
 		break;
 	}
 %>
-<h2><%= h2Str %></h2>
+<h2 class="scheduleRound"><%= h2Str %></h2>
 <table>
 <tr>
-<td><%= strGameNumber %></td>
-<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<td>" + strGroup + "</td>" ); } %>
-<td><%= strGameTime %></td>
-<td><%= strBlueTeam %></td>
-<td><%= strBlueScore %></td>
-<td><%= strYellowTeam %></td>
-<td><%= strYellowScore %></td>
+<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberGroupTime + "</th>" ); } %>
+<% if(gameType == GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberTime + "</th>" ); } %>
+<th><%= strBlueTeam %></th>
+<th><%= strScore %></th>
+<th><%= strYellowTeam %></th>
+<th><%= strScore %></th>
 </tr>
 <%
 int gameCount = 0;
@@ -170,25 +174,34 @@ for( Game game : heatGames )
 		<br/>
 		<table>
 		<tr>
-		<td><%= strGameNumber %></td><td><%= strGameTime %></td><td><%= strBlueTeam %></td><td><%= strBlueScore %></td><td><%= strYellowTeam %></td><td><%= strYellowScore %></td>
-		</tr>
+			<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberGroupTime + "</th>" ); } %>
+			<% if(gameType == GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberTime + "</th>" ); } %>
+			<th><%= strBlueTeam %></th>
+			<th><%= strScore %></th>
+			<th><%= strYellowTeam %></th>
+			<th><%= strScore %></th>
+			</tr>
 		<%
 	}
 	ArrayList<GameState> gameStates = game.getGameStates();
 	String blueScore = "";
 	String yellowScore = "";
+	LocalizedString pointsStr = strEmpty;
 	
 	if(gameStates.size() > 0)
 	{
 		GameState gameState = gameStates.get(gameStates.size() - 1);
 		blueScore = String.valueOf(gameState.blueScore);
 		yellowScore = String.valueOf(gameState.yellowScore);
+		pointsStr = strPoints;
 	}
 %>
-<tr class="<%= game.isLive ? "isLive" : "" %>">
-	<td><a href="<%= gamePrefix %>game?gameId=<%= game._id %>"><%= game.gameNumber %></a></td>
-	<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<td>" + game.playoffGroup + "</td>" ); } %>
-	<td><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></td>
+	<tr class="<%= game.isLive ? "isLive" : "" %>">
+	<td class="center"><a class="scheduleGame" href="<%= gamePrefix %>game?gameId=<%= game._id %>"><%= strGame + " " + game.gameNumber %></a><br/>
+	<%= Helpers.dateTimeFormatter.print(game.scheduledTime) %>
+	<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<br/>" + strGroup + " " + game.playoffGroup ); } %>
+	</td>
+	
 	<td>
 <%
 for( School school : game.blueTeam )
@@ -199,8 +212,8 @@ for( School school : game.blueTeam )
 }
 %>
 	</td>
-	<td><%= blueScore %></td>
-		<td>
+	<td class="center"><div class="schedulePoints"><%= blueScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
+	<td>
 <%
 for( School school : game.yellowTeam )
 {
@@ -210,13 +223,14 @@ for( School school : game.yellowTeam )
 }
 %>
 	</td>
-	<td><%= yellowScore %></td>
+	<td class="center"><div class="schedulePoints"><%= yellowScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
 </tr>
 <%
 gameCount++;
 }
 %>
 </table>
+<div class="clear"></div>
 
 <%
 } // End of for GameTypeEnum

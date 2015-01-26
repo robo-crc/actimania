@@ -1,3 +1,8 @@
+.clear
+{
+	clear: both;
+}
+
 .grayColor
 {
 	color: rgb(64,64,65);
@@ -16,6 +21,11 @@
 .blueBackgroundColor
 {
 	background-color: rgb(0,113,187)
+}
+
+.center
+{
+	text-align: center;
 }
 
 /* header */
@@ -48,4 +58,61 @@
 .headerLink:hover
 {
 	text-decoration: underline;
+}
+
+table
+{
+	border-spacing: 7px;
+}
+
+td
+{
+	background-color: rgb(231,231,231);
+	color: rgb(64,64,65);
+}
+
+td a
+{
+	color: rgb(64,64,65);
+    text-decoration: none;
+}
+
+td a:hover
+{
+	text-decoration: underline;
+}
+
+th
+{
+	color: white;
+	background-color: rgb(64,64,65);
+	text-align: center;
+}
+
+/* Schedule */
+.scheduleGame
+{
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+.scheduleRound
+{
+	float:left;
+	transform:rotate(-90deg);
+	display: block;
+	width: 40px;
+	text-align: center;
+	width: 40px;
+}
+
+.schedulePointsStr
+{
+	font-size: 1.5em;
+}
+
+.schedulePoints
+{
+	font-size: 2em;
+	font-weight: bold;
 }

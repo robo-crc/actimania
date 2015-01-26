@@ -53,4 +53,9 @@ public class School implements Comparable<School>
 	{
 		return Lists.newArrayList(essentials.database.find(School.class, "{ }"));
 	}
+	
+	public String getCompactName()
+	{
+		return name.replaceAll(" ", "").replaceAll("\\.", "").toLowerCase();
+	}
 }

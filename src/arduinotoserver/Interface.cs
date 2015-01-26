@@ -243,8 +243,8 @@ namespace ArduinoToServer
             }
         }
 
-        //public static String SERVER_ADDRESS = "http://localhost:8080/actimania/arduino";
-        public static String SERVER_ADDRESS = "http://192.227.134.178:8080/actimania/arduino";
+        public static String SERVER_ADDRESS = "http://localhost:8080/actimania/arduino";
+        //public static String SERVER_ADDRESS = "http://192.227.134.178:8080/actimania/arduino";
         public static String EMAIL = "serverToArduino";
         public static String PASSWORD = "ThisIsATmpPassword";
 
@@ -294,25 +294,25 @@ namespace ArduinoToServer
         {
             if (target == "1")
             {
-                if (color == "BH\r")
+                if (color == "BH")
                 {
                     Actuator1.BackColor = System.Drawing.Color.Blue;
                     target1.BackColor = System.Drawing.Color.Blue;
                     blue_multi_mod("+");
                 }
 
-                else if (color == "JH\r")
+                else if (color == "JH")
                 {
                     Actuator1.BackColor = System.Drawing.Color.Yellow;
                     target1.BackColor = System.Drawing.Color.Yellow;
                     yellow_multi++;
                 }
-                else if (color == "JL\r" || color== "BL\r")
+                else if (color == "JL" || color== "BL")
                 {
                     Actuator1.BackColor = System.Drawing.Color.Gray;
                     target1.BackColor = System.Drawing.Color.Gray;
-                    if (color == "BL\r") blue_multi_mod("-");
-                    if (color == "JL\r") yellow_multi--;
+                    if (color == "BL") blue_multi_mod("-");
+                    if (color == "JL") yellow_multi--;
                 }
 
             }
@@ -320,7 +320,7 @@ namespace ArduinoToServer
             if (target == "2")
             {
 
-                if (color == "BH\r")
+                if (color == "BH")
                 {
                     Actuator2.BackColor = System.Drawing.Color.Blue;
                     target2.BackColor = System.Drawing.Color.Blue;
@@ -328,18 +328,18 @@ namespace ArduinoToServer
 
                 }
 
-                else if (color == "JH\r")
+                else if (color == "JH")
                 {
                     Actuator2.BackColor = System.Drawing.Color.Yellow;
                     target2.BackColor = System.Drawing.Color.Yellow;
                     yellow_multi++;
                 }
-                else if (color == "JL\r" || color == "BL\r")
+                else if (color == "JL" || color == "BL")
                 {
                     Actuator2.BackColor = System.Drawing.Color.Gray;
                     target2.BackColor = System.Drawing.Color.Gray;
-                    if (color == "BL\r") blue_multi_mod("-");
-                    if (color == "JL\r") yellow_multi--;
+                    if (color == "BL") blue_multi_mod("-");
+                    if (color == "JL") yellow_multi--;
 
                 }
             }
@@ -347,7 +347,7 @@ namespace ArduinoToServer
             if (target == "3")
             {
 
-                if (color == "BH\r")
+                if (color == "BH")
                 {
                     Actuator3.BackColor = System.Drawing.Color.Blue;
                     target3.BackColor = System.Drawing.Color.Blue;
@@ -355,19 +355,19 @@ namespace ArduinoToServer
 
                 }
 
-                else if (color == "JH\r")
+                else if (color == "JH")
                 {
                     Actuator3.BackColor = System.Drawing.Color.Yellow;
                     target3.BackColor = System.Drawing.Color.Yellow;
                     yellow_multi++;
 
                 }
-                else if (color == "JL\r" || color == "BL\r")
+                else if (color == "JL" || color == "BL")
                 {
                     Actuator3.BackColor = System.Drawing.Color.Gray;
                     target3.BackColor = System.Drawing.Color.Gray;
-                    if (color == "BL\r") blue_multi_mod("-");
-                    if (color == "JL\r") yellow_multi--;
+                    if (color == "BL") blue_multi_mod("-");
+                    if (color == "JL") yellow_multi--;
 
                 }
             }
@@ -375,7 +375,7 @@ namespace ArduinoToServer
             if (target == "4")
             {
 
-                if (color == "BH\r")
+                if (color == "BH")
                 {
                     Actuator4.BackColor = System.Drawing.Color.Blue;
                     target4.BackColor = System.Drawing.Color.Blue;
@@ -383,19 +383,19 @@ namespace ArduinoToServer
 
                 }
 
-                else if (color == "JH\r")
+                else if (color == "JH")
                 {
                     Actuator4.BackColor = System.Drawing.Color.Yellow;
                     target4.BackColor = System.Drawing.Color.Yellow;
                     yellow_multi++;
 
                 }
-                else if (color == "JL\r" || color == "BL\r")
+                else if (color == "JL" || color == "BL")
                 {
                     Actuator4.BackColor = System.Drawing.Color.Gray;
                     target4.BackColor = System.Drawing.Color.Gray;
-                    if (color == "BL\r") blue_multi--;
-                    if (color == "JL\r") yellow_multi--;
+                    if (color == "BL") blue_multi--;
+                    if (color == "JL") yellow_multi--;
 
                 }
             }
@@ -403,7 +403,7 @@ namespace ArduinoToServer
             if (target == "5")
             {
 
-                if (color == "BH\r")
+                if (color == "BH")
                 {
                     Actuator5.BackColor = System.Drawing.Color.Blue;
                     target5.BackColor = System.Drawing.Color.Blue;
@@ -411,19 +411,19 @@ namespace ArduinoToServer
 
                 }
 
-                else if (color == "JH\r")
+                else if (color == "JH")
                 {
                     Actuator5.BackColor = System.Drawing.Color.Yellow;
                     target5.BackColor = System.Drawing.Color.Yellow;
                     yellow_multi++;
 
                 }
-                else if (color == "JL\r" || color == "BL\r")
+                else if (color == "JL" || color == "BL")
                 {
                     Actuator5.BackColor = System.Drawing.Color.Gray;
                     target5.BackColor = System.Drawing.Color.Gray;
-                    if (color == "BL\r") blue_multi--;
-                    if (color == "JL\r") yellow_multi--;
+                    if (color == "BL") blue_multi--;
+                    if (color == "JL") yellow_multi--;
 
                 }
             }
@@ -431,7 +431,7 @@ namespace ArduinoToServer
             if (target == "6")
             {
 
-                if (color == "BH\r")
+                if (color == "BH")
                 {
                     Actuator6.BackColor = System.Drawing.Color.Blue;
                     target6.BackColor = System.Drawing.Color.Blue;
@@ -439,19 +439,19 @@ namespace ArduinoToServer
 
                 }
 
-                else if (color == "JH\r")
+                else if (color == "JH")
                 {
                     Actuator6.BackColor = System.Drawing.Color.Yellow;
                     target6.BackColor = System.Drawing.Color.Yellow;
                     yellow_multi++;
 
                 }
-                else if (color == "JL\r" || color == "BL\r")
+                else if (color == "JL" || color == "BL")
                 {
                     Actuator6.BackColor = System.Drawing.Color.Gray;
                     target6.BackColor = System.Drawing.Color.Gray;
-                    if (color == "BL\r") blue_multi--;
-                    if (color == "JL\r") yellow_multi--;
+                    if (color == "BL") blue_multi--;
+                    if (color == "JL") yellow_multi--;
 
 
                 }
@@ -474,37 +474,37 @@ namespace ArduinoToServer
 
         private void setScore(string C) //Fonction qui update le score selon la détection d'une cible
         {
-            if (C == "1\r")
+            if (C == "1")
             {
                 if (target1.BackColor == System.Drawing.Color.Blue) blue_score = blue_score + (10*blue_multi);
                 if (target1.BackColor == System.Drawing.Color.Yellow) yellow_score = yellow_score + (10 * yellow_multi);
                 UpdateScore();
             }
-            if (C == "2\r")
+            if (C == "2")
             {
                 if (target2.BackColor == System.Drawing.Color.Blue) blue_score = blue_score + (20 * blue_multi);
                 if (target2.BackColor == System.Drawing.Color.Yellow) yellow_score = yellow_score + (20 * yellow_multi);
                 UpdateScore();
             }
-            if (C == "3\r")
+            if (C == "3")
             {
                 if (target3.BackColor == System.Drawing.Color.Blue) blue_score = blue_score + (40 * blue_multi);
                 if (target3.BackColor == System.Drawing.Color.Yellow) yellow_score = yellow_score + (40 * yellow_multi);
                 UpdateScore();
             }
-            if (C == "4\r")
+            if (C == "4")
             {
                 if (target4.BackColor == System.Drawing.Color.Blue) blue_score = blue_score + (10 * blue_multi);
                 if (target4.BackColor == System.Drawing.Color.Yellow) yellow_score = yellow_score + (10 * yellow_multi);
                 UpdateScore();
             }
-            if (C == "5\r")
+            if (C == "5")
             {
                 if (target5.BackColor == System.Drawing.Color.Blue) blue_score = blue_score + (20 * blue_multi);
                 if (target5.BackColor == System.Drawing.Color.Yellow) yellow_score = yellow_score + (20 * yellow_multi);
                 UpdateScore();
             }
-            if (C == "6\r")
+            if (C == "6")
             {
                 if (target6.BackColor == System.Drawing.Color.Blue) blue_score = blue_score + (40 * blue_multi);
                 if (target6.BackColor == System.Drawing.Color.Yellow) yellow_score = yellow_score + (40 * yellow_multi);
@@ -516,7 +516,7 @@ namespace ArduinoToServer
         private void ChangeTargetColor(object sender, EventArgs e)// Fonction lancée par défaut lors de la réception d'un message venant du Uno
                                                                     //Sert à: updater les couleurs de cibles, ou de détecter quand qqun a marqué 
         {
-            value = message.Split('.');
+            value = message.Replace("\r", "").Split('.');
 
             if (value[0] == "C")
             {

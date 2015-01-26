@@ -43,7 +43,7 @@ LocalizedString strLive = new LocalizedString(ImmutableMap.of(
 </head>
 <body>
 <%@include file="header.jsp" %>
-<iframe src="http://www.twitch.tv/liquidtlo/embed" class="twitchStream" frameborder="0" scrolling="no" height="378" width="620"></iframe>
+<iframe src="http://www.twitch.tv/crc_robotics/embed" class="twitchStream" frameborder="0" scrolling="no" height="378" width="620"></iframe>
 <iframe src="game" class="gameFrame" scrolling="no" frameborder="0" height="1500px" width="100%"></iframe>
 
 </body>
