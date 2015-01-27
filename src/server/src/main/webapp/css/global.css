@@ -1,3 +1,9 @@
+html, body
+{
+	height: 100%;
+	font-family: 'Open Sans', sans-serif;
+}
+
 .clear
 {
 	clear: both;
@@ -69,6 +75,7 @@ td
 {
 	background-color: rgb(231,231,231);
 	color: rgb(64,64,65);
+	vertical-align: middle;
 }
 
 td a
@@ -96,18 +103,20 @@ th
 	font-weight: bold;
 }
 
+.scheduleRound, .scheduleRoundTd
+{
+	width: 50px;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	background-color: rgb(60,60,59);
+	color: white;
+	font-size: 22px;
+}
+
 .scheduleRound
 {
 	transform:rotate(-90deg);
-
-	text-align: center;
-	font-weight: bold;
-	font-size: 1em;
-	height: 100%;
-}
-
-.scheduleRoundTd
-{
 }
 
 .schedulePointsStr
@@ -124,4 +133,22 @@ th
 .scheduleNone
 {
 	background-color: white;
+}
+
+.scheduleColor
+{
+	width: 10px;
+	float: left;
+	height: 100%;
+	overflow: auto;
+}
+
+.scheduleSchool
+{
+	float: left;
+	position: relative;
+	vertical-align: middle;
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }

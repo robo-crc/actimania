@@ -70,8 +70,8 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strPreliminaryGames = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Preliminary", 
-		Locale.FRENCH, 	"Parties préliminaires"
+		Locale.ENGLISH, "PRELIMINARY GAMES", 
+		Locale.FRENCH, 	"PARTIES PRÉLIMINAIRES"
 		), currentLocale);
 
 LocalizedString strGroup = new LocalizedString(ImmutableMap.of( 	
@@ -80,23 +80,23 @@ LocalizedString strGroup = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strPlayoffRepechage = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Repechage", 
-		Locale.FRENCH, 	"Repêchage"
+		Locale.ENGLISH, "REPECHAGE", 
+		Locale.FRENCH, 	"REPÊCHAGE"
 		), currentLocale);
 
 LocalizedString strPlayoffQuarter = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Quarter final", 
-		Locale.FRENCH, 	"Quart de finale"
+		Locale.ENGLISH, "QUARTER FINAL", 
+		Locale.FRENCH, 	"QUART DE FINALE"
 		), currentLocale);
 
 LocalizedString strPlayoffDemi = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Demi-final", 
-		Locale.FRENCH, 	"Demi finale"
+		Locale.ENGLISH, "DEMI FINAL", 
+		Locale.FRENCH, 	"DEMI FINALE"
 		), currentLocale);
 
 LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Final", 
-		Locale.FRENCH, 	"Finale"
+		Locale.ENGLISH, "FINAL", 
+		Locale.FRENCH, 	"FINALE"
 		), currentLocale);
 %>
 
@@ -105,12 +105,6 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <head>
 <%@include file="head.jsp" %>
 <title><%= strScheduleTitle %></title>
-<script>
-$(function() {
-	var newWidth = '100px';
-	$('.roundDiv').css('width', newWidth);
-});
-</script>
 </head>
 <body>
 <%@include file="header.jsp" %>
@@ -217,25 +211,47 @@ for( Game game : heatGames )
 	</td>
 	
 	<td>
+	<div class="blueBackgroundColor scheduleColor"></div><div class="scheduleSchool">
 <%
+boolean isFirst = true;
 for( School school : game.blueTeam )
 {
+	if(!isFirst)
+	{
+		out.print("<br/>");
+	}
+	else
+	{
+		isFirst = false;
+	}
 	%>
-	<a href="school?schoolId=<%= school._id %>"><%= school.name %></a><br/>
+	<a href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 	<%
 }
 %>
+	</div>
 	</td>
 	<td class="center"><div class="schedulePoints"><%= blueScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
 	<td>
+	<div class="yellowBackgroundColor scheduleColor"></div><div class="scheduleSchool">
 <%
+isFirst = true;
 for( School school : game.yellowTeam )
 {
+	if(!isFirst)
+	{
+		out.print("<br/>");
+	}
+	else
+	{
+		isFirst = false;
+	}
 	%>
-	<a href="school?schoolId=<%= school._id %>"><%= school.name %></a><br/>
+	<a href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 	<%
 }
 %>
+	</div>
 	</td>
 	<td class="center"><div class="schedulePoints"><%= yellowScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
 </tr>
