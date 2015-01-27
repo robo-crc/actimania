@@ -98,12 +98,12 @@ th
 
 .scheduleRound
 {
-	float:left;
+	/*
 	transform:rotate(-90deg);
-	display: block;
+	
 	width: 40px;
 	text-align: center;
-	width: 40px;
+	*/	
 }
 
 .schedulePointsStr
@@ -115,4 +115,9 @@ th
 {
 	font-size: 2em;
 	font-weight: bold;
+}
+
+.scheduleNone
+{
+	background-color: white;
 }

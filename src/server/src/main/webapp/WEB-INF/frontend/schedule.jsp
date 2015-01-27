@@ -128,32 +128,32 @@ for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
 		continue;
 	}
 	
-	LocalizedString h2Str = null;
+	LocalizedString roundType = null;
 	switch(gameType)
 	{
 	case PRELIMINARY:
-		h2Str = strPreliminaryGames;
+		roundType = strPreliminaryGames;
 		break;
 	case PLAYOFF_REPECHAGE:
-		h2Str = strPlayoffRepechage;
+		roundType = strPlayoffRepechage;
 		break;
 	case PLAYOFF_QUARTER:
-		h2Str = strPlayoffQuarter;
+		roundType = strPlayoffQuarter;
 		break;
 	case PLAYOFF_DEMI:
-		h2Str = strPlayoffDemi;
+		roundType = strPlayoffDemi;
 		break;
 	case PLAYOFF_FINAL:
-		h2Str = strPlayoffFinal;
+		roundType = strPlayoffFinal;
 		break;
 	default:
-		h2Str = null;
+		roundType = null;
 		break;
 	}
 %>
-<h2 class="scheduleRound"><%= h2Str %></h2>
 <table>
 <tr>
+<th class="scheduleNone"></th>
 <% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberGroupTime + "</th>" ); } %>
 <% if(gameType == GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberTime + "</th>" ); } %>
 <th><%= strBlueTeam %></th>
@@ -166,7 +166,8 @@ int gameCount = 0;
 int block = 1;
 for( Game game : heatGames )
 {
-	if(gameCount != 0 && gameType == GameTypeEnum.PRELIMINARY && TournamentScoreCalculator.isStartOfBlock(gameCount, heatGames.size()))
+	boolean isStartOfBlock = gameType == GameTypeEnum.PRELIMINARY && TournamentScoreCalculator.isStartOfBlock(gameCount, heatGames.size());
+	if(gameCount != 0 && isStartOfBlock)
 	{
 		%>
 		</table>
@@ -174,15 +175,17 @@ for( Game game : heatGames )
 		<br/>
 		<table>
 		<tr>
+			<th class="scheduleNone"></th>
 			<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberGroupTime + "</th>" ); } %>
 			<% if(gameType == GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberTime + "</th>" ); } %>
 			<th><%= strBlueTeam %></th>
 			<th><%= strScore %></th>
 			<th><%= strYellowTeam %></th>
 			<th><%= strScore %></th>
-			</tr>
+		</tr>
 		<%
 	}
+	
 	ArrayList<GameState> gameStates = game.getGameStates();
 	String blueScore = "";
 	String yellowScore = "";
@@ -197,6 +200,12 @@ for( Game game : heatGames )
 	}
 %>
 	<tr class="<%= game.isLive ? "isLive" : "" %>">
+	<%
+	if(isStartOfBlock)
+	{
+		out.print("<td class=\"scheduleRound\" rowspan=\"" + 17 + "\">" + roundType + "</td>");
+	}
+	 %>
 	<td class="center"><a class="scheduleGame" href="<%= gamePrefix %>game?gameId=<%= game._id %>"><%= strGame + " " + game.gameNumber %></a><br/>
 	<%= Helpers.dateTimeFormatter.print(game.scheduledTime) %>
 	<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<br/>" + strGroup + " " + game.playoffGroup ); } %>
