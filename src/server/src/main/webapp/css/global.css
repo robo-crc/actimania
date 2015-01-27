@@ -98,12 +98,16 @@ th
 
 .scheduleRound
 {
-	/*
 	transform:rotate(-90deg);
-	
-	width: 40px;
+
 	text-align: center;
-	*/	
+	font-weight: bold;
+	font-size: 1em;
+	height: 100%;
+}
+
+.scheduleRoundTd
+{
 }
 
 .schedulePointsStr

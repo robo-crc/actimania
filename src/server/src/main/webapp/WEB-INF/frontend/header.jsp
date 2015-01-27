@@ -35,8 +35,6 @@ LocalizedString strCRC = new LocalizedString(ImmutableMap.of(
 
 %>
 
-<link rel="stylesheet" type="text/css" href="css/global.css"/>
-
 <div class="header">
 	<img class="headerLogo" src="images/crc.jpg" />
 

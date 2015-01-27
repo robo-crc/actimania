@@ -103,17 +103,13 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="shortcut icon" href="images/favicon.ico" />
+<%@include file="head.jsp" %>
 <title><%= strScheduleTitle %></title>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-58398665-1', 'auto');
-  ga('send', 'pageview');
+$(function() {
+	var newWidth = '100px';
+	$('.roundDiv').css('width', newWidth);
+});
 </script>
 </head>
 <body>
@@ -162,13 +158,15 @@ for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
 <th><%= strScore %></th>
 </tr>
 <%
+ArrayList<Integer> gamesPerBlockCount = TournamentScoreCalculator.getGamesPerBlockCount(heatGames.size());
 int gameCount = 0;
-int block = 1;
+int block = 0;
 for( Game game : heatGames )
 {
 	boolean isStartOfBlock = gameType == GameTypeEnum.PRELIMINARY && TournamentScoreCalculator.isStartOfBlock(gameCount, heatGames.size());
 	if(gameCount != 0 && isStartOfBlock)
 	{
+		block++;
 		%>
 		</table>
 		<br/>
@@ -201,9 +199,16 @@ for( Game game : heatGames )
 %>
 	<tr class="<%= game.isLive ? "isLive" : "" %>">
 	<%
-	if(isStartOfBlock)
+	if((gameType != GameTypeEnum.PRELIMINARY && gameCount == 0) || isStartOfBlock)
 	{
-		out.print("<td class=\"scheduleRound\" rowspan=\"" + 17 + "\">" + roundType + "</td>");
+		String roundTypeDisplay = roundType.get(currentLocale);
+		int nbGames = heatGames.size();
+		if(gameType == GameTypeEnum.PRELIMINARY)
+		{
+			nbGames = gamesPerBlockCount.get(block);
+			roundTypeDisplay += " " + String.valueOf(block + 1);
+		}
+		out.print("<td class=\"scheduleRoundTd roundDiv\" rowspan=\"" + nbGames + "\"><div class=\"scheduleRound\">" + roundTypeDisplay + "</div></td>");
 	}
 	 %>
 	<td class="center"><a class="scheduleGame" href="<%= gamePrefix %>game?gameId=<%= game._id %>"><%= strGame + " " + game.gameNumber %></a><br/>
