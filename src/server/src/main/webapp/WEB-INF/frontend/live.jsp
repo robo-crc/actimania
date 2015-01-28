@@ -29,6 +29,12 @@ LocalizedString strLive = new LocalizedString(ImmutableMap.of(
 	  	  $('.gameFrame').iFrameResize({});
 	});
 </script>
+<style>
+.headerLive
+{
+	font-weight: bold;
+}
+</style>
 </head>
 <body>
 <%@include file="header.jsp" %>

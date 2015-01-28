@@ -37,11 +37,13 @@ LocalizedString strCRC = new LocalizedString(ImmutableMap.of(
 
 <div class="header">
 	<img class="headerLogo" src="images/crc.jpg" />
+	<img class="headerInstagram" src="images/instagram.svg" />
+	<img class="headerFacebook" src="images/facebook.svg" />
 
 	<div class="headerRubban grayBackgroundColor">
-		<a class="headerLink" href="live"><%= strLiveGame %></a>
-		<a class="headerLink" href="schedule"><%= strSchedule %></a>
-		<a class="headerLink" href="ranking"><%= strRanking %></a>
+		<a class="headerLink headerLive" href="live"><%= strLiveGame %></a>
+		<a class="headerLink headerSchedule" href="schedule"><%= strSchedule %></a>
+		<a class="headerLink headerRanking" href="ranking"><%= strRanking %></a>
 		<a class="headerLink" href="https://www.facebook.com/roboCRC"><%= strFacebook %></a>
 		<a class="headerLink" href="http://www.instagram.com/robocrc"><%= strInstagram %></a>
 		<a class="headerLink" href="http://www.robo-crc.ca/"><%= strCRC %></a>

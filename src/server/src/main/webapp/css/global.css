@@ -1,7 +1,7 @@
-html, body
+.pageBackground
 {
 	height: 100%;
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Open Sans';
 }
 
 .clear
@@ -11,12 +11,12 @@ html, body
 
 .grayColor
 {
-	color: rgb(64,64,65);
+	color: rgb(60,60,59);
 }
 
 .grayBackgroundColor
 {
-	background-color: rgb(64,64,65);
+	background-color: rgb(60,60,59);
 }
 
 .yellowBackgroundColor
@@ -34,6 +34,16 @@ html, body
 	text-align: center;
 }
 
+.bar
+{
+	width: 1190px;
+	height: 2px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 80px;
+}
+
 /* header */
 .header
 {
@@ -49,6 +59,22 @@ html, body
 .headerLogo
 {
 	padding-top: 20px;
+	height: 185px;
+	margin-bottom: 20px;
+}
+
+.headerFacebook
+{
+    vertical-align: top;
+	
+    float: right;
+}
+
+.headerInstagram
+{
+    vertical-align: top;
+	
+    float: right;
 }
 
 .headerLink
@@ -56,9 +82,10 @@ html, body
     color: white;
 	
     text-decoration: none;
-    font-size: 1.5em;
+    font-size: 27px;
     margin-left: 10px;
     margin-right: 10px;
+    font-weight: lighter;
 }
 
 .headerLink:hover
@@ -69,6 +96,9 @@ html, body
 table
 {
 	border-spacing: 7px;
+	margin-left: auto;      margin-right: auto;
+	overflow: auto;
+	padding-bottom: 35px;
 }
 
 td
@@ -133,6 +163,30 @@ th
 .scheduleNone
 {
 	background-color: white;
+}
+
+.scheduleHeader
+{
+	text-align: center;
+	font-size: 52px;
+}
+
+.scheduleGameNumber
+{
+	width: 210px;
+	min-width: 210px;
+}
+
+.scheduleTeam
+{
+	width: 340px;
+	min-width:340px;
+}
+
+.scheduleScore
+{
+	width: 70px;
+	min-width:70px;
 }
 
 .scheduleColor

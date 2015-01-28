@@ -94,6 +94,12 @@ LocalizedString strTime = new LocalizedString(ImmutableMap.of(
 <title><%= strRankingTitle %></title>
 <link rel="stylesheet" type="text/css" href="css/template.css">
 <script src="jquery/sorttable.js"></script>
+<style>
+.headerRanking
+{
+	font-weight: bold;
+}
+</style>
 </head>
 <body>
 <%@include file="header.jsp" %>

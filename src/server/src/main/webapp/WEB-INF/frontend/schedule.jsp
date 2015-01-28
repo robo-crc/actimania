@@ -105,9 +105,19 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <head>
 <%@include file="head.jsp" %>
 <title><%= strScheduleTitle %></title>
+<style>
+.headerSchedule
+{
+	font-weight: bold;
+}
+</style>
 </head>
 <body>
 <%@include file="header.jsp" %>
+
+<h1 class="scheduleHeader grayColor"><%= strSchedule %></h1>
+<div class="bar grayBackgroundColor"></div>
+
 <%
 for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
 {
@@ -144,12 +154,21 @@ for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
 <table>
 <tr>
 <th class="scheduleNone"></th>
-<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberGroupTime + "</th>" ); } %>
-<% if(gameType == GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberTime + "</th>" ); } %>
-<th><%= strBlueTeam %></th>
-<th><%= strScore %></th>
-<th><%= strYellowTeam %></th>
-<th><%= strScore %></th>
+<th class="scheduleGameNumber">
+<% if(gameType == GameTypeEnum.PRELIMINARY) 
+{ 
+	out.print( strGameNumberTime );	 
+}
+else
+{
+	out.print( strGameNumberGroupTime );
+}
+%>
+</th>
+<th class="scheduleTeam"><%= strBlueTeam %></th>
+<th class="scheduleScore"><%= strScore %></th>
+<th class="scheduleTeam"><%= strYellowTeam %></th>
+<th class="scheduleScore"><%= strScore %></th>
 </tr>
 <%
 ArrayList<Integer> gamesPerBlockCount = TournamentScoreCalculator.getGamesPerBlockCount(heatGames.size());
@@ -163,17 +182,24 @@ for( Game game : heatGames )
 		block++;
 		%>
 		</table>
-		<br/>
-		<br/>
 		<table>
 		<tr>
 			<th class="scheduleNone"></th>
-			<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberGroupTime + "</th>" ); } %>
-			<% if(gameType == GameTypeEnum.PRELIMINARY) { out.print( "<th>" + strGameNumberTime + "</th>" ); } %>
-			<th><%= strBlueTeam %></th>
-			<th><%= strScore %></th>
-			<th><%= strYellowTeam %></th>
-			<th><%= strScore %></th>
+			<th class="scheduleGameNumber">
+			<% if(gameType == GameTypeEnum.PRELIMINARY) 
+			{ 
+				out.print( strGameNumberTime );	 
+			}
+			else
+			{
+				out.print( strGameNumberGroupTime );
+			}
+			%>
+			</th>
+			<th class="scheduleTeam"><%= strBlueTeam %></th>
+			<th class="scheduleScore"><%= strScore %></th>
+			<th class="scheduleTeam"><%= strYellowTeam %></th>
+			<th class="scheduleScore"><%= strScore %></th>
 		</tr>
 		<%
 	}
@@ -205,12 +231,12 @@ for( Game game : heatGames )
 		out.print("<td class=\"scheduleRoundTd roundDiv\" rowspan=\"" + nbGames + "\"><div class=\"scheduleRound\">" + roundTypeDisplay + "</div></td>");
 	}
 	 %>
-	<td class="center"><a class="scheduleGame" href="<%= gamePrefix %>game?gameId=<%= game._id %>"><%= strGame + " " + game.gameNumber %></a><br/>
+	<td class="center scheduleGameNumber"><a class="scheduleGame" href="<%= gamePrefix %>game?gameId=<%= game._id %>"><%= strGame + " " + game.gameNumber %></a><br/>
 	<%= Helpers.dateTimeFormatter.print(game.scheduledTime) %>
 	<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<br/>" + strGroup + " " + game.playoffGroup ); } %>
 	</td>
 	
-	<td>
+	<td class="scheduleTeam">
 	<div class="blueBackgroundColor scheduleColor"></div><div class="scheduleSchool">
 <%
 boolean isFirst = true;
@@ -231,8 +257,8 @@ for( School school : game.blueTeam )
 %>
 	</div>
 	</td>
-	<td class="center"><div class="schedulePoints"><%= blueScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
-	<td>
+	<td class="center scheduleScore"><div class="schedulePoints"><%= blueScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
+	<td class="scheduleTeam">
 	<div class="yellowBackgroundColor scheduleColor"></div><div class="scheduleSchool">
 <%
 isFirst = true;
@@ -253,7 +279,7 @@ for( School school : game.yellowTeam )
 %>
 	</div>
 	</td>
-	<td class="center"><div class="schedulePoints"><%= yellowScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
+	<td class="center scheduleScore"><div class="schedulePoints"><%= yellowScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
 </tr>
 <%
 gameCount++;
