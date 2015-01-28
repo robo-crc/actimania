@@ -32,20 +32,24 @@ LocalizedString strCRC = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "CRC", 
 		Locale.FRENCH, 	"CRC"
 		), request.getLocale());
-
 %>
 
 <div class="header">
 	<img class="headerLogo" src="images/crc.jpg" />
-	<img class="headerInstagram" src="images/instagram.svg" />
-	<img class="headerFacebook" src="images/facebook.svg" />
-
+	
+	<a class="headerInstagram" href="http://www.instagram.com/robocrc">
+		<img src="images/instagram.svg" />
+	</a>
+	<a class="headerFacebook" href="https://www.facebook.com/roboCRC">
+		<img src="images/facebook.svg" />
+	</a>
+	
 	<div class="headerRubban grayBackgroundColor">
-		<a class="headerLink headerLive" href="live"><%= strLiveGame %></a>
-		<a class="headerLink headerSchedule" href="schedule"><%= strSchedule %></a>
-		<a class="headerLink headerRanking" href="ranking"><%= strRanking %></a>
-		<a class="headerLink" href="https://www.facebook.com/roboCRC"><%= strFacebook %></a>
-		<a class="headerLink" href="http://www.instagram.com/robocrc"><%= strInstagram %></a>
-		<a class="headerLink" href="http://www.robo-crc.ca/"><%= strCRC %></a>
+		<a class="headerLive" href="live"><%= strLiveGame %></a>
+		<a class="headerSchedule" href="schedule"><%= strSchedule %></a>
+		<a class="headerRanking" href="ranking"><%= strRanking %></a>
+		<a href="https://www.facebook.com/roboCRC"><%= strFacebook %></a>
+		<a href="http://www.instagram.com/robocrc"><%= strInstagram %></a>
+		<a href="http://www.robo-crc.ca/"><%= strCRC %></a>
 	</div>
 </div>

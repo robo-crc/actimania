@@ -211,5 +211,6 @@ for( Game game : games )
 <%
 } // End of for GameTypeEnum
 %>
+<%@include file="footer.jsp" %>
 </body>
 </html>

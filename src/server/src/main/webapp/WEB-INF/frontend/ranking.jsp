@@ -128,5 +128,6 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 }
 %>
 </table>
+<%@include file="footer.jsp" %>
 </body>
 </html>

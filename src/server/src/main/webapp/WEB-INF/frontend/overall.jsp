@@ -139,5 +139,6 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 		}
 		%>
 	</table>
+<%@include file="footer.jsp" %>
 </body>
 </html>

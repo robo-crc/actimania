@@ -276,6 +276,14 @@ if( isLoggedIn )
 <%
 }
 %>
+<% 
+if(showHeader)
+{
+%>
+<%@include file="footer.jsp" %>
+<%
+}
+%>
 <script type="text/javascript" src="jquery/iframeresizer/js/iframeResizer.contentWindow.min.js"></script>
 </body>
 </html>
