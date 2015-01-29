@@ -23,68 +23,63 @@ ArrayList<School> schoolsRanked 	= (ArrayList<School>) request.getAttribute("sch
 Locale currentLocale = request.getLocale();
 
 LocalizedString strOverall = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Actimania final results", 
-		Locale.FRENCH, 	"Résultats finaux d'Actimania"
-		), currentLocale);
-
-LocalizedString strSchoolName = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "School name : ", 
-		Locale.FRENCH, 	"Nom de l'école : "
+		Locale.ENGLISH, "ACTIMANIA FINAL RESULTS", 
+		Locale.FRENCH, 	"RÉSULTATS FINAUX D'ACTIMANIA"
 		), currentLocale);
 
 LocalizedString strSchool = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "School", 
-		Locale.FRENCH, 	"École"
+		Locale.ENGLISH, "SCHOOL", 
+		Locale.FRENCH, 	"ÉCOLE"
 		), currentLocale);
 
 LocalizedString strRank = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Rank", 
-		Locale.FRENCH, 	"Position"
+		Locale.ENGLISH, "RANK", 
+		Locale.FRENCH, 	"POSITION"
 		), currentLocale);
 
 LocalizedString strPlayoff = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Playoff", 
-		Locale.FRENCH, 	"Éliminatoires"
+		Locale.ENGLISH, "PLAYOFF", 
+		Locale.FRENCH, 	"ÉLIMINATOIRES"
 		), currentLocale);
 
 LocalizedString strKiosk = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Kiosk", 
-		Locale.FRENCH, 	"Kiosque"
+		Locale.ENGLISH, "KIOSK", 
+		Locale.FRENCH, 	"KIOSQUE"
 		), currentLocale);
 
 LocalizedString strProgramming = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Programming", 
-		Locale.FRENCH, 	"Programmation"
+		Locale.ENGLISH, "PROGRAMMING", 
+		Locale.FRENCH, 	"PROGRAMMATION"
 		), currentLocale);
 
 LocalizedString strRobotConstruction = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Robot construction", 
-		Locale.FRENCH, 	"Construction du robot"
+		Locale.ENGLISH, "ROBOT<br/>CONSTRUCTION", 
+		Locale.FRENCH, 	"CONSTRUCTION<br/>DU ROBOT"
 		), currentLocale);
 
 LocalizedString strRobotDesign = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Robot design", 
-		Locale.FRENCH, 	"Design du robot"
+		Locale.ENGLISH, "ROBOT<br/>DESIGN", 
+		Locale.FRENCH, 	"DESIGN DU<br/>ROBOT"
 		), currentLocale);
 
 LocalizedString strSportsmanship = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Sportsmanship", 
-		Locale.FRENCH, 	"Esprit sportif"
+		Locale.ENGLISH, "SPORTSMANSHIP", 
+		Locale.FRENCH, 	"ESPRIT SPORTIF"
 		), currentLocale);
 
 LocalizedString strVideo = new LocalizedString(ImmutableMap.of( 
-		Locale.ENGLISH, "Video", 
-		Locale.FRENCH, 	"Vidéo"
+		Locale.ENGLISH, "VIDEO", 
+		Locale.FRENCH, 	"VIDÉO"
 		), currentLocale);
 
 LocalizedString strWebsiteDesign = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Website Design", 
-		Locale.FRENCH, 	"Conception du site web"
+		Locale.ENGLISH, "WEBSITE<br/>DESIGN", 
+		Locale.FRENCH, 	"CONCEPTION DU<br/>SITE WEB"
 		), currentLocale);
 
 LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Website journalism", 
-		Locale.FRENCH, 	"Journalisme du site web"
+		Locale.ENGLISH, "WEBSITE<br/>JOURNALISM", 
+		Locale.FRENCH, 	"JOURNALISME DU<br/>SITE WEB"
 		), currentLocale);
 %>
 
@@ -99,22 +94,25 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 
 <body>
 <%@include file="header.jsp" %>
-	<h1><%= strOverall %></h1>
+	<h1 class="grayColor"><%= strOverall %></h1>
+	<div class="bar grayBackgroundColor"></div>
 	
-	<table class="sortable">
+	<table class="sortable rank">
 		<tr>
-			<td><%= strRank %></td>
-			<td><%= strSchool %></td>
-			<td><%= strPlayoff %></td>
-			<td><%= strKiosk %></td>
-			<td><%= strProgramming %></td>
-			<td><%= strRobotConstruction %></td>
-			<td><%= strRobotDesign %></td>
-			<td><%= strSportsmanship %></td>
-			<td><%= strVideo %></td>
-			<td><%= strWebsiteDesign %></td>
-			<td><%= strWebsiteJournalism %></td>
+			<th><%= strRank %></th>
+			<th><%= strSchool %></th>
+			<th><%= strPlayoff %></th>
+			<th><%= strKiosk %></th>
+			<th><%= strProgramming %></th>
+			<th><%= strRobotConstruction %></th>
+			<th><%= strRobotDesign %></th>
+			<th><%= strSportsmanship %></th>
+			<th><%= strVideo %></th>
+			<th><%= strWebsiteDesign %></th>
+			<th><%= strWebsiteJournalism %></th>
 		</tr>
+		<tr class="whiteBackgroundColor"/>
+		
 		<%
 		ArrayList<School> heatRanking = tournament.getPlayoffRanking();
 		for(int i = 0; i < schoolsRanked.size(); i++)
@@ -122,17 +120,17 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 			School school = schoolsRanked.get(i);
 		%>
 			<tr>
-				<td><%= String.valueOf(i + 1) %></td>
-				<td><%= school.name %></td>
-				<td><%= heatRanking.indexOf(school) + 1 %></td>
-				<td><%= competition.kiosk.indexOf(school) + 1 %></td>
-				<td><%= competition.programming.indexOf(school) + 1 %></td>
-				<td><%= competition.robotConstruction.indexOf(school) + 1 %></td>
-				<td><%= competition.robotDesign.indexOf(school) + 1 %></td>
-				<td><%= competition.sportsmanship.indexOf(school) + 1 %></td>
-				<td><%= competition.video.indexOf(school) + 1 %></td>
-				<td><%= competition.websiteDesign.indexOf(school) + 1 %></td>
-				<td><%= competition.websiteJournalism.indexOf(school) + 1 %></td>
+				<td class="rankAlignLeft"><%= String.valueOf(i + 1) %></td>
+				<td class="rankAlignLeft"><%= school.name %></td>
+				<td class="center"><%= heatRanking.indexOf(school) + 1 %></td>
+				<td class="center"><%= competition.kiosk.indexOf(school) + 1 %></td>
+				<td class="center"><%= competition.programming.indexOf(school) + 1 %></td>
+				<td class="center"><%= competition.robotConstruction.indexOf(school) + 1 %></td>
+				<td class="center"><%= competition.robotDesign.indexOf(school) + 1 %></td>
+				<td class="center"><%= competition.sportsmanship.indexOf(school) + 1 %></td>
+				<td class="center"><%= competition.video.indexOf(school) + 1 %></td>
+				<td class="center"><%= competition.websiteDesign.indexOf(school) + 1 %></td>
+				<td class="center"><%= competition.websiteJournalism.indexOf(school) + 1 %></td>
 			</tr>
 		<%
 		}

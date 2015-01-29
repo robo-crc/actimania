@@ -106,14 +106,14 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <style>
 .headerSchedule
 {
-	font-weight: bold;
+	font-weight: bold !important;
 }
 </style>
 </head>
 <body>
 <%@include file="header.jsp" %>
 
-<h1 class="scheduleHeader grayColor"><%= strSchedule %></h1>
+<h1 class="grayColor"><%= strSchedule %></h1>
 <div class="bar grayBackgroundColor"></div>
 
 <%
@@ -151,7 +151,7 @@ for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
 %>
 <table>
 <tr>
-<th class="scheduleNone"></th>
+<th class="whiteBackgroundColor"></th>
 <th class="scheduleGameNumber">
 <% if(gameType == GameTypeEnum.PRELIMINARY) 
 { 
@@ -182,7 +182,7 @@ for( Game game : heatGames )
 		</table>
 		<table>
 		<tr>
-			<th class="scheduleNone"></th>
+			<th class="backgroundWhite"></th>
 			<th class="scheduleGameNumber">
 			<% if(gameType == GameTypeEnum.PRELIMINARY) 
 			{ 

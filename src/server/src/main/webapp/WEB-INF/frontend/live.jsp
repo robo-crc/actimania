@@ -30,7 +30,7 @@ LocalizedString strLive = new LocalizedString(ImmutableMap.of(
 <style>
 .headerLive
 {
-	font-weight: bold;
+	font-weight: bold !important;
 }
 </style>
 </head>

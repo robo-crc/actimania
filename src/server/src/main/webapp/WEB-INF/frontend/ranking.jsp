@@ -44,29 +44,24 @@ LocalizedString strScore = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"POINTAGE"
 		), currentLocale);
 
-LocalizedString strPreliminaryScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "PRELIMINARY SCORE", 
-		Locale.FRENCH, 	"POINTAGE PRÉLIMINAIRE"
-		), currentLocale);
-
 LocalizedString strCompetition = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "COMPETITION", 
 		Locale.FRENCH, 	"COMPÉTITION"
 		), currentLocale);
 
 LocalizedString strPickupRace = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "PICK-UP RACE", 
-		Locale.FRENCH, 	"RAMASSAGE DE VITESSE"
+		Locale.ENGLISH, "PICK-UP<br/>RACE", 
+		Locale.FRENCH, 	"RAMASSAGE<br/>DE VITESSE"
 		), currentLocale);
 
 LocalizedString strTwoTargetHits = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "TWO TARGET HITS", 
-		Locale.FRENCH, 	"TOUCHER DEUX CIBLES"
+		Locale.ENGLISH, "TWO TARGETS<br/>HIT", 
+		Locale.FRENCH, 	"TOUCHER<br/>DEUX CIBLES"
 		), currentLocale);
 
 LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "TWO ACTUATOR CHANGED", 
-		Locale.FRENCH, 	"CHANGER DEUX ACTUATEURS"
+		Locale.ENGLISH, "TWO ACTUATOR<br/>CHANGED", 
+		Locale.FRENCH, 	"CHANGER DEUX<br/>ACTUATEURS"
 		), currentLocale);
 %>
 
@@ -80,18 +75,19 @@ LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of(
 <style>
 .headerRanking
 {
-	font-weight: bold;
+	font-weight: bold !important;
 }
 </style>
 </head>
 <body>
 <%@include file="header.jsp" %>
-<h1 class="scheduleHeader grayColor"><%= strRanking %></h1>
+<h1 class="grayColor"><%= strRanking %></h1>
 <div class="bar grayBackgroundColor"></div>
-<table class="sortable">
+<table class="sortable rank">
 <tr>
 <th><%= strPosition %></th><th><%= strSchool %></th><th><%= strCompetition %></th><th><%= strPickupRace %></th><th><%= strTwoTargetHits %></th><th><%= strTwoActuatorChanged %></th>
 </tr>
+<tr class="whiteBackgroundColor"/>
 <%
 
 for( int position = 0; position < cumulativeRanking.size(); position++ )
@@ -99,14 +95,14 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 	School school = cumulativeRanking.get(position);
 %>
 	<tr>
-		<td><%= position + 1 %></td>
-		<td><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
+		<td class="rankAlignLeft"><%= position + 1 %></td>
+		<td class="rankAlignLeft"><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
 		
-		<td><%= tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) %></td>
+		<td class="center"><%= tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) %></td>
 		
-		<td><%= skillsCompetition.getPickballs(school).integer %></td>
-		<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td>
-		<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td>
+		<td class="center"><%= skillsCompetition.getPickballs(school).integer %></td>
+		<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td>
+		<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td>
 	</tr>
 <%
 }
