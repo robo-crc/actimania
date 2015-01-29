@@ -30,58 +30,43 @@ LocalizedString strRankingTitle = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strPosition = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Position", 
-		Locale.FRENCH, 	"Position"
+		Locale.ENGLISH, "POSITION", 
+		Locale.FRENCH, 	"POSITION"
 		), currentLocale);
 
 LocalizedString strSchool = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "School", 
-		Locale.FRENCH, 	"École"
+		Locale.ENGLISH, "SCHOOL", 
+		Locale.FRENCH, 	"ÉCOLE"
 		), currentLocale);
 
 LocalizedString strScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Score", 
-		Locale.FRENCH, 	"Pointage"
+		Locale.ENGLISH, "SCORE", 
+		Locale.FRENCH, 	"POINTAGE"
 		), currentLocale);
 
 LocalizedString strPreliminaryScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Preliminary Score", 
-		Locale.FRENCH, 	"Pointage préliminaire"
+		Locale.ENGLISH, "PRELIMINARY SCORE", 
+		Locale.FRENCH, 	"POINTAGE PRÉLIMINAIRE"
 		), currentLocale);
 
 LocalizedString strCompetition = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Competition", 
-		Locale.FRENCH, 	"Compétition"
-		), currentLocale);
-
-LocalizedString strCumulativeScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Cumulative Score", 
-		Locale.FRENCH, 	"Pointage cumulatif"
+		Locale.ENGLISH, "COMPETITION", 
+		Locale.FRENCH, 	"COMPÉTITION"
 		), currentLocale);
 
 LocalizedString strPickupRace = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Pick-up race", 
-		Locale.FRENCH, 	"Ramassage de vitesse"
+		Locale.ENGLISH, "PICK-UP RACE", 
+		Locale.FRENCH, 	"RAMASSAGE DE VITESSE"
 		), currentLocale);
 
 LocalizedString strTwoTargetHits = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Two target hits", 
-		Locale.FRENCH, 	"Toucher deux cibles"
+		Locale.ENGLISH, "TWO TARGET HITS", 
+		Locale.FRENCH, 	"TOUCHER DEUX CIBLES"
 		), currentLocale);
 
 LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Two actuator changed", 
-		Locale.FRENCH, 	"Changer deux actuateurs"
-		), currentLocale);
-
-LocalizedString strCount = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Count", 
-		Locale.FRENCH, 	"Quantité"
-		), currentLocale);
-
-LocalizedString strTime = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Time", 
-		Locale.FRENCH, 	"Temps"
+		Locale.ENGLISH, "TWO ACTUATOR CHANGED", 
+		Locale.FRENCH, 	"CHANGER DEUX ACTUATEURS"
 		), currentLocale);
 %>
 
@@ -101,10 +86,11 @@ LocalizedString strTime = new LocalizedString(ImmutableMap.of(
 </head>
 <body>
 <%@include file="header.jsp" %>
-<h1><%= strPreliminaryScore %></h1>
+<h1 class="scheduleHeader grayColor"><%= strRanking %></h1>
+<div class="bar grayBackgroundColor"></div>
 <table class="sortable">
 <tr>
-<td><%= strPosition %></td><td><%= strSchool %></td><td><%= strCompetition %></td><td><%= strPickupRace %></td><td><%= strTwoTargetHits %></td><td><%= strTwoActuatorChanged %></td>
+<th><%= strPosition %></th><th><%= strSchool %></th><th><%= strCompetition %></th><th><%= strPickupRace %></th><th><%= strTwoTargetHits %></th><th><%= strTwoActuatorChanged %></th>
 </tr>
 <%
 

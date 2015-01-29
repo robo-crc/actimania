@@ -89,6 +89,7 @@ th
 	text-align: center;
 	margin-right: auto;
 	margin-left: auto;
+	position: relative;
 }
 
 .headerRubban
@@ -122,10 +123,10 @@ th
 
 .headerFacebook
 {
-    vertical-align: top;
 	
-    margin-right: 30px;
     position: absolute;
+    right: 70px;
+    top: 10px;
 }
 
 .headerInstagram
@@ -133,7 +134,8 @@ th
 	
     position: absolute;
     
-    padding-left: 150px;
+    right: 0px;
+    top: 10px;
 }
 
 /* footer */
