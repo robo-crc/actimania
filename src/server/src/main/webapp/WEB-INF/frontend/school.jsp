@@ -11,9 +11,6 @@
 <%@page import="java.util.Locale"%>
 <%@page import="com.backend.models.School"%>
 <%@page import="java.util.ArrayList"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-
 <%
 Tournament tournament = (Tournament) request.getAttribute("tournament");
 School school	= (School) request.getAttribute("school");

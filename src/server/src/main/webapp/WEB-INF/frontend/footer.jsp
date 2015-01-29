@@ -49,11 +49,11 @@ LocalizedString strCRCFooter = new LocalizedString(ImmutableMap.of(
 		<a href="http://www.robo-crc.ca/"><%= strCRCFooter %></a><br/>
 	</div>
 	<div class="footerFred">
-		<a href="http://www.linkedin.com/fredericjoanis">
+		<a href="https://ca.linkedin.com/pub/fr%C3%A9d%C3%A9ric-joanis/3/b06/764">
 			<img class="footerLinkedin" src="images/linkedinWhite.svg" />
 		</a>
-		<a href="http://www.github.com/fredericjoanis/actimania">
-			<img class="footerGithub" src="images/facebookWhite.svg" />
+		<a href="https://github.com/fredericjoanis/actimania">
+			<img class="footerGithub" src="images/githubWhite.png" />
 		</a>
 		<br/>
 		<a href="http://www.github.com/fredericjoanis/actimania"><%= strFred %></a>
