@@ -237,19 +237,15 @@ for( Game game : heatGames )
 	<td class="scheduleTeam">
 	<div class="blueBackgroundColor scheduleColor"></div><div class="scheduleSchool">
 <%
-boolean isFirst = true;
 for( School school : game.blueTeam )
 {
-	if(!isFirst)
-	{
-		out.print("<br/>");
-	}
-	else
-	{
-		isFirst = false;
-	}
 	%>
-	<a href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+	<div class="scheduleSchoolDiv clear">
+		<div class="scheduleSchoolInner">
+			<img class="scheduleSchoolLogo" src="images/schools/32x32/<%= school.getCompactName() %>.png" />
+		</div>
+		<a class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+	</div>
 	<%
 }
 %>
@@ -259,19 +255,15 @@ for( School school : game.blueTeam )
 	<td class="scheduleTeam">
 	<div class="yellowBackgroundColor scheduleColor"></div><div class="scheduleSchool">
 <%
-isFirst = true;
 for( School school : game.yellowTeam )
 {
-	if(!isFirst)
-	{
-		out.print("<br/>");
-	}
-	else
-	{
-		isFirst = false;
-	}
 	%>
-	<a href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+	<div class="scheduleSchoolDiv clear">
+		<div class="scheduleSchoolInner">
+			<img class="scheduleSchoolLogo" src="images/schools/32x32/<%= school.getCompactName() %>.png" />
+		</div>
+		<a class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+	</div>
 	<%
 }
 %>

@@ -2,6 +2,7 @@ package com.backend.models;
 
 import java.util.ArrayList;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -56,6 +57,12 @@ public class School implements Comparable<School>
 	
 	public String getCompactName()
 	{
-		return name.replaceAll(" ", "").replaceAll("\\.", "").toLowerCase();
+		String apostropheRemoval = name.replaceAll("&#146;", "");
+		return StringEscapeUtils.unescapeHtml(apostropheRemoval)
+				.toLowerCase()
+				.replaceAll(" ", "_")
+				.replaceAll("'", "")
+				.replaceAll("è", "e")
+				.replaceAll("é", "e");
 	}
 }
