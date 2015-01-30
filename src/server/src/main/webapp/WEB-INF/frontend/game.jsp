@@ -67,7 +67,7 @@ LocalizedString strLiveHeader = new LocalizedString(ImmutableMap.of(
 public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
 {
 	ActuatorStateEnum actuatorColor = state.actuatorsStates[side.ordinal()][target.ordinal()];
-	out.write("\t<img src=\"images/side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".png\"" );
+	out.write("\t<img src=\"images/playfield/side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".svg\"" );
 	
 	out.write(" class=\"fieldImage");
 	out.write("\"/>\n");
@@ -246,7 +246,7 @@ if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
 			<br/>
 			<h3 class="gameEvent"><%= state.lastGameEvent.getLocalizedString(currentLocale) %></h3>
 			<div class="playfield">
-				<img src="images/playfield.png" class="playfieldBackground fieldImage" />
+				<img src="images/playfield/playfield.svg" class="playfieldBackground fieldImage" />
 				<%
 				// Targets
 				outputTargetActuator(state, SideEnum.BLUE, TargetEnum.LOW, out);

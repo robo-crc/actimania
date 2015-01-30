@@ -12,7 +12,7 @@
 .targetValue
 {
 	position: absolute;
-	font-size: 3em;
+	font-size: 1.5em;
 	z-index: 2;
 }
 
@@ -24,53 +24,65 @@
 
 .sideBLUEtargetLOW
 {
-	left: 18%;
-	top: 64%;
+	left: 15.5%;
+	top: 60.5%;
+	text-align: center;
+	width: 37px;
 }
 
 .sideBLUEtargetMID
 {
-	left: 18%;
-	top: 20%;
+	left: 14.7%;
+	top: 21%;
+	width: 37px;
+	text-align: center;
 }
 
 .sideBLUEtargetHIGH
 {
-	left: 8%;
-	top: 43%;
+	left: 6.8%;
+	top: 36%;
+	width: 37px;
+	text-align: center;
 }
 
 .sideYELLOWtargetLOW
 {
-	left: 78%;
-	top: 23%;
+	left: 81.5%;
+	top: 18.3%;
+	width: 30px;
+	text-align: center;
 }
 
 .sideYELLOWtargetMID
 {
-	left: 78%;
-	top: 64%;
+	left: 81.6%;
+	top: 59%;
+	width: 37px;
+	text-align: center;
 }
 
 .sideYELLOWtargetHIGH
 {
-	left: 88%;
-	top: 44%;
+	left: 89.7%;
+	top: 35.5%;
+	width: 37px;
+	text-align: center;
 }
 
 .actuatorCLOSED
 {
-	color: green;
+	color: white;
 }
 
 .actuatorYELLOW
 {
-	color: yellow;
+	color: rgb(60,60,59);
 }
 
 .actuatorBLUE
 {
-	color: blue;
+	color: white;
 }
 
 .playfieldBackground
