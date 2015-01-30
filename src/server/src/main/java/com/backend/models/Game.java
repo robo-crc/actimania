@@ -137,6 +137,7 @@ public class Game implements Comparable<Game>
 					if(GameState.areAllActuatorSameColor(gameStates.get(gameStates.size() - 1).actuatorsStates))
 					{
 						gameEvents.add(new EndGameEvent(DateTime.now()));
+						createEndLiveCallback(_id, DatabaseType.PRODUCTION);
 					}
 				}
 			}
