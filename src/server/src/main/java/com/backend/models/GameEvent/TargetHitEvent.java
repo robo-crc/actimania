@@ -59,10 +59,10 @@ public class TargetHitEvent implements GameEvent
 		switch(side)
 		{
 		case YELLOW:
-			frenchTarget = "jaune";
+			frenchSide = "jaune";
 			break;
 		case BLUE:
-			frenchTarget = "bleue";
+			frenchSide = "bleue";
 			break;
 		}
 
