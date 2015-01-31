@@ -22,19 +22,59 @@ int schoolCount = tournament.schools.size();
 Locale currentLocale = request.getLocale();
 
 LocalizedString strTournament = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Tournament", 
-		Locale.FRENCH, 	"Tournoi"
+		Locale.ENGLISH, "Preliminary games",
+		Locale.FRENCH, 	"Parties préliminaires"
 		), currentLocale);
 
 LocalizedString strCumulative = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Preliminary round position : ", 
-		Locale.FRENCH, 	"Position ronde préliminaire : "
+		Locale.ENGLISH, "Preliminary round position", 
+		Locale.FRENCH, 	"Position ronde préliminaire"
+		), currentLocale);
+
+LocalizedString strGameNumberGroupTime = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "GAME #,<br/>GAME TIME,<br/>GROUP", 
+		Locale.FRENCH, 	"# PARTIE,<br/>DATE ET HEURE,<br/>GROUPE"
+		), currentLocale);
+
+LocalizedString strGameNumberTime = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "GAME #,<br/>GAME TIME", 
+		Locale.FRENCH, 	"# PARTIE,<br/>DATE ET HEURE"
 		), currentLocale);
 
 LocalizedString strScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Score", 
-		Locale.FRENCH, 	"Pointage"
+		Locale.ENGLISH, "SCORE", 
+		Locale.FRENCH, 	"POINTAGE"
 		), currentLocale);
+
+LocalizedString strBlueScore = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "BLUE TEAM<br/>SCORE", 
+		Locale.FRENCH, 	"POINTAGE DE<br/>L'ÉQUIPE BLEUE"
+		), currentLocale);
+
+LocalizedString strYellowScore = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "YELLOW TEAM<br/>SCORE", 
+		Locale.FRENCH, 	"POINTAGE DE<br/>L'ÉQUIPE JAUNE"
+		), currentLocale);
+
+LocalizedString strGame = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Game", 
+		Locale.FRENCH, 	"Partie"
+		), currentLocale);
+
+LocalizedString strPoints = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Points", 
+		Locale.FRENCH, 	"Points"
+		), currentLocale);
+
+LocalizedString strGroup = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Group", 
+		Locale.FRENCH, 	"Groupe"
+		), currentLocale);
+
+LocalizedString strSchoolScore = new LocalizedString(ImmutableMap.of(     
+        Locale.ENGLISH, "SCHOOL SCORE", 
+        Locale.FRENCH,  "POINTAGE DE L'ÉCOLE"
+        ), currentLocale);
 
 LocalizedString strPickupRace = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Pick-up race", 
@@ -56,59 +96,34 @@ LocalizedString strSchool = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"École"
 		), currentLocale);
 
-LocalizedString strGameNumber = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Game #", 
-		Locale.FRENCH, 	"# Partie"
-		), currentLocale);
-
-LocalizedString strGameTime = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Game date/time", 
-		Locale.FRENCH, 	"Date/Heure de la partie"
-		), currentLocale);
-
-LocalizedString strSchoolScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "School score", 
-		Locale.FRENCH, 	"Pointage de l'école"
-		), currentLocale);
-
-LocalizedString strGroup = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Group", 
-		Locale.FRENCH, 	"Groupe"
-		), currentLocale);
-
-LocalizedString strBlueScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Blue score", 
-		Locale.FRENCH, 	"Pointage équipe bleue"
-		), currentLocale);
-
-LocalizedString strYellowScore = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Yellow score", 
-		Locale.FRENCH, 	"Pointage équipe jaune"
+LocalizedString strEmpty = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "", 
+		Locale.FRENCH, 	""
 		), currentLocale);
 
 LocalizedString strPreliminaryGames = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Preliminary", 
-		Locale.FRENCH, 	"Parties préliminaires"
+		Locale.ENGLISH, "PRELIMINARY GAMES", 
+		Locale.FRENCH, 	"PARTIES PRÉLIMINAIRES"
 		), currentLocale);
 
 LocalizedString strPlayoffRepechage = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Repechage", 
-		Locale.FRENCH, 	"Repêchage"
+		Locale.ENGLISH, "REPECHAGE", 
+		Locale.FRENCH, 	"REPÊCHAGE"
 		), currentLocale);
 
 LocalizedString strPlayoffQuarter = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Quarter final", 
-		Locale.FRENCH, 	"Quart de finale"
+		Locale.ENGLISH, "QUARTER FINAL", 
+		Locale.FRENCH, 	"QUART DE FINALE"
 		), currentLocale);
 
 LocalizedString strPlayoffDemi = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Demi-final", 
-		Locale.FRENCH, 	"Demi finale"
+		Locale.ENGLISH, "DEMI FINAL", 
+		Locale.FRENCH, 	"DEMI FINALE"
 		), currentLocale);
 
 LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Final", 
-		Locale.FRENCH, 	"Finale"
+		Locale.ENGLISH, "FINAL", 
+		Locale.FRENCH, 	"FINALE"
 		), currentLocale);
 %>
 
@@ -116,22 +131,30 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <html>
 <head>
 <%@include file="head.jsp" %>
-<title><%= strSchool %></title>
+<title><%= school.name %></title>
 </head>
 <body>
 <%@include file="header.jsp" %>
 
-<h1><%= school.name %></h1>
+<div class="schoolLogo">
+	<ul class="schoolLogoChild">
+		<li><img src="images/schools/64x64/<%= school.getCompactName() %>.png" /></li>
+		<li><h1 class="grayColor schoolH1"><%= school.name %></h1></li>
+	</ul>
+</div>
 
-<table>
-<tr><td></td>								<td><%= strScore %></td></tr>
-<tr><td><%= strTournament %></td>			<td><%= score %></td></tr>
-<tr><td><%= strPickupRace %></td>			<td><%= skillsCompetition.getPickballs(school).integer %></td></tr>
-<tr><td><%= strTwoTargetHits %></td>		<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td></tr>
-<tr><td><%= strTwoActuatorChanged %></td>	<td><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td></tr>
+<div class="schoolBar bar grayBackgroundColor"></div>
+
+<table class="schoolTable schoolCompetition">
+<tr><th class="whiteBackgroundColor"></th>	<th class="center"><%= strScore %></th></tr>
+<tr><td><%= strTournament %></td>			<td class="center"><%= score %></td></tr>
+<tr><td><%= strPickupRace %></td>			<td class="center"><%= skillsCompetition.getPickballs(school).integer %></td></tr>
+<tr><td><%= strTwoTargetHits %></td>		<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td></tr>
+<tr><td><%= strTwoActuatorChanged %></td>	<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td></tr>
+<tr><td><b><%= strCumulative %></b></td> 	<td class="center"><b><%=tournament.getPreliminaryRanking(skillsCompetition).indexOf(school) + 1%> / <%= schoolCount %></b></td></tr>
 </table>
 <br/>
-<b><%= strCumulative %> <%=tournament.getPreliminaryRanking(skillsCompetition).indexOf(school) + 1%> / <%= schoolCount %></b>
+
 <br/>
 <br/>
 
@@ -145,66 +168,97 @@ for(int i = GameTypeEnum.values().length - 1; i >= 0; i--)
 		continue;
 	}
 	
-	LocalizedString h2Str = null;
+	LocalizedString roundType = null;
 	switch(gameType)
 	{
 	case PRELIMINARY:
-		h2Str = strPreliminaryGames;
+		roundType = strPreliminaryGames;
 		break;
 	case PLAYOFF_REPECHAGE:
-		h2Str = strPlayoffRepechage;
+		roundType = strPlayoffRepechage;
 		break;
 	case PLAYOFF_QUARTER:
-		h2Str = strPlayoffQuarter;
+		roundType = strPlayoffQuarter;
 		break;
 	case PLAYOFF_DEMI:
-		h2Str = strPlayoffDemi;
+		roundType = strPlayoffDemi;
 		break;
 	case PLAYOFF_FINAL:
-		h2Str = strPlayoffFinal;
+		roundType = strPlayoffFinal;
 		break;
 	default:
-		h2Str = null;
+		roundType = null;
 		break;
 	}
 %>
-<h2><%= h2Str %></h2>
-<table>
+<table class="schoolTable">
 <tr>
-<td><%= strGameNumber %></td>
-<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<td>" + strGroup + "</td>" ); } %>
-<td><%= strGameTime %></td>
-<td><%= strSchoolScore %></td>
-<td><%= strBlueScore %></td>
-<td><%= strYellowScore %></td>
+<th class="whiteBackgroundColor"></th>
+<th class="scheduleGameNumber">
+<% if(gameType == GameTypeEnum.PRELIMINARY) 
+{ 
+	out.print( strGameNumberTime );	 
+}
+else
+{
+	out.print( strGameNumberGroupTime );
+}
+%>
+</th>
+<th class="scheduleScore"><%= strSchoolScore %></th>
+<th class="scheduleScore"><%= strBlueScore %></th>
+<th class="scheduleScore"><%= strYellowScore %></th>
 </tr>
 <%
-
+boolean isFirstGame = true;
 for( Game game : games )
 {
 	ArrayList<GameState> gameStates = game.getGameStates();
 	String blueScore = "";
 	String yellowScore = "";
+	String schoolScore = "";
+	LocalizedString pointsStr = strEmpty;
 	
 	if(gameStates.size() > 0)
 	{
 		GameState gameState = gameStates.get(gameStates.size() - 1);
 		blueScore = String.valueOf(gameState.blueScore);
 		yellowScore = String.valueOf(gameState.yellowScore);
+		schoolScore = String.valueOf(game.getScore(school));
+		pointsStr = strPoints;
 	}
-%>
-<tr>
-	<td><a href="game?gameId=<%= game._id %>"><%= game.gameNumber %></a></td>
-	<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<td>" + game.playoffGroup + "</td>" ); } %>
-	<td><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></td>
-	<td><%= game.getScore(school) %></td>
-	<td><%= blueScore %></td>
-	<td><%= yellowScore %></td>
+	
+	%>
+	<tr class="<%= game.isLive ? "isLive" : "" %>">
+	
+	<%
+	if(isFirstGame)
+	{
+		isFirstGame = false;
+		String roundTypeDisplay = roundType.get(currentLocale);
+		int nbGames = games.size();
+		out.print("<td class=\"scheduleRoundTd roundDiv\" rowspan=\"" + nbGames + "\"><div class=\"scheduleRound\">" + roundTypeDisplay + "</div></td>");
+	}
+	%>
+
+	<td class="center scheduleGameNumber"><a class="scheduleGame" href="game?gameId=<%= game._id %>"><%= strGame + " " + game.gameNumber %></a><br/>
+	<%= Helpers.dateTimeFormatter.print(game.scheduledTime) %>
+	<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<br/>" + strGroup + " " + game.playoffGroup ); } %>
+	</td>
+	
+	<td class="center schoolScore">
+		<div class="<% if( game.blueTeam.contains(school) ) { out.write("blueBackgroundColor"); } else { out.write("yellowBackgroundColor"); }   %> scheduleColor"></div>
+		<div class="schedulePoints"><%= schoolScore %></div><div class="schedulePointsStr"><%= pointsStr %></div>
+	</td>
+	<td class="center schoolScore"><div class="blueBackgroundColor scheduleColor"></div><div class="schedulePoints"><%= blueScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
+	<td class="center schoolScore"><div class="yellowBackgroundColor scheduleColor"></div><div class="schedulePoints"><%= yellowScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
 </tr>
 <%
 }
 %>
 </table>
+<div class="clear"></div>
+
 <%
 } // End of for GameTypeEnum
 %>

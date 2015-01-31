@@ -182,7 +182,7 @@ for( Game game : heatGames )
 		</table>
 		<table>
 		<tr>
-			<th class="backgroundWhite"></th>
+			<th class="whiteBackgroundColor"></th>
 			<th class="scheduleGameNumber">
 			<% if(gameType == GameTypeEnum.PRELIMINARY) 
 			{ 
@@ -242,7 +242,7 @@ for( School school : game.blueTeam )
 	%>
 	<div class="scheduleSchoolDiv clear">
 		<div class="scheduleSchoolInner">
-			<img class="scheduleSchoolLogo" src="images/schools/32x32/<%= school.getCompactName() %>.png" />
+			<img src="images/schools/32x32/<%= school.getCompactName() %>.png" />
 		</div>
 		<a class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 	</div>

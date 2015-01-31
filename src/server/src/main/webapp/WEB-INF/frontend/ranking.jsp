@@ -96,8 +96,14 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 %>
 	<tr>
 		<td class="rankAlignLeft"><%= position + 1 %></td>
-		<td class="rankAlignLeft"><a href="school?schoolId=<%= school._id %>"><%= school.name %></a></td>
-		
+		<td class="rankAlignLeft">
+			<div class="scheduleSchoolDiv clear">
+				<div class="scheduleSchoolInner">
+					<img class="scheduleSchoolLogo" src="images/schools/32x32/<%= school.getCompactName() %>.png" />
+				</div>
+				<a class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+			</div>
+		</td>
 		<td class="center"><%= tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) %></td>
 		
 		<td class="center"><%= skillsCompetition.getPickballs(school).integer %></td>

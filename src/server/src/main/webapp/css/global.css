@@ -3,6 +3,8 @@ html
 	width: 1190px;
 	margin-left: auto;
 	margin-right: auto;	
+	font-weight: lighter;
+	font-family: 'Open Sans', sans-serif;
 }
 
 h1
@@ -42,6 +44,20 @@ th
 	color: white;
 	background-color: rgb(60,60,59);
 	text-align: center;
+}
+
+ul 
+{
+  list-style-type: none;
+  margin:0;
+  padding:10px 0;
+}
+
+ul li 
+{
+  float: left;
+  list-style-type: none;
+  margin: 0 6px;
 }
 
 .pageBackground
@@ -223,10 +239,6 @@ th
 	font-size: 1.5em;
 }
 
-.scheduleSchoolLogo
-{
-}
-
 .scheduleSchoolDiv
 {
     vertical-align: middle;
@@ -241,6 +253,7 @@ th
 	
     position: absolute;
     padding-left: 10px;
+    font-size: 14px;
 }
 
 .scheduleSchoolInner
@@ -323,4 +336,53 @@ th
 	padding-left: 7px;
 	padding-right: 7px;
 	padding-right: 20px;
+}
+
+/* School */
+.schoolScore
+{
+	width: 140px;
+}
+
+.schoolTable
+{
+    margin: 0;
+}
+
+.schoolCompetition
+{
+	width: 450px;
+}
+
+.schoolH1
+{    
+}
+
+.schoolLogo
+{
+    height: 145px;
+	    
+    float: right;
+    position: relative;
+    left: -50%;
+}
+
+.schoolLogo img
+{
+    margin-top: 40px;
+    
+    margin-right: 20px;
+}
+
+.schoolLogoChild
+{
+    position: relative;
+	
+    left: 50%;
+}
+
+.schoolBar
+{
+    margin-top: 145px;
+	
 }

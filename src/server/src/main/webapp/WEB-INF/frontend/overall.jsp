@@ -121,7 +121,14 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 		%>
 			<tr>
 				<td class="rankAlignLeft"><%= String.valueOf(i + 1) %></td>
-				<td class="rankAlignLeft"><%= school.name %></td>
+				<td class="rankAlignLeft">
+					<div class="scheduleSchoolDiv clear">
+						<div class="scheduleSchoolInner">
+							<img class="scheduleSchoolLogo" src="images/schools/32x32/<%= school.getCompactName() %>.png" />
+						</div>
+						<a class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+					</div>
+				</td>
 				<td class="center"><%= heatRanking.indexOf(school) + 1 %></td>
 				<td class="center"><%= competition.kiosk.indexOf(school) + 1 %></td>
 				<td class="center"><%= competition.programming.indexOf(school) + 1 %></td>
