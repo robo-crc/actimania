@@ -25,8 +25,13 @@ SkillsCompetition skillsCompetition = (SkillsCompetition)request.getAttribute("s
 Locale currentLocale = request.getLocale();
 
 LocalizedString strRankingTitle = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Ranking", 
-		Locale.FRENCH, 	"Classement"
+		Locale.ENGLISH, "Preliminary heats ranking", 
+		Locale.FRENCH, 	"Classement de la ronde préliminaire"
+		), currentLocale);
+
+LocalizedString strRankingLong = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "PRELIMINARY HEATS RANKING", 
+		Locale.FRENCH, 	"CLASSEMENT DE LA RONDE PRÉLIMINAIRE"
 		), currentLocale);
 
 LocalizedString strPosition = new LocalizedString(ImmutableMap.of( 	
@@ -81,7 +86,7 @@ LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of(
 </head>
 <body>
 <%@include file="header.jsp" %>
-<h1 class="grayColor"><%= strRanking %></h1>
+<h1 class="grayColor"><%= strRankingLong %></h1>
 <div class="bar grayBackgroundColor"></div>
 <table class="sortable rank">
 <tr>

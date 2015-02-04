@@ -14,8 +14,8 @@ LocalizedString strLiveGameFooter = new LocalizedString(ImmutableMap.of(
 		), request.getLocale());
 
 LocalizedString strRankingFooter = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Ranking", 
-		Locale.FRENCH, 	"Classement"
+		Locale.ENGLISH, "Preliminary heats ranking", 
+		Locale.FRENCH, 	"Classement de la ronde préliminaire"
 		), request.getLocale());
 
 LocalizedString strScheduleFooter = new LocalizedString(ImmutableMap.of( 	

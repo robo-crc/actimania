@@ -248,10 +248,19 @@ for( Game game : games )
 	
 	<td class="center schoolScore">
 		<div class="<% if( game.blueTeam.contains(school) ) { out.write("blueBackgroundColor"); } else { out.write("yellowBackgroundColor"); }   %> scheduleColor"></div>
-		<div class="schedulePoints"><%= schoolScore %></div><div class="schedulePointsStr"><%= pointsStr %></div>
+		<div class="schedulePoints"><%= schoolScore %></div>
+		<div class="schedulePointsStr"><%= pointsStr %></div>
 	</td>
-	<td class="center schoolScore"><div class="blueBackgroundColor scheduleColor"></div><div class="schedulePoints"><%= blueScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
-	<td class="center schoolScore"><div class="yellowBackgroundColor scheduleColor"></div><div class="schedulePoints"><%= yellowScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
+	<td class="center schoolScore">
+		<div class="blueBackgroundColor scheduleColor"></div>
+		<div class="schedulePoints"><%= blueScore %></div>
+		<div class="schedulePointsStr"><%= pointsStr %></div>
+	</td>
+	<td class="center schoolScore">
+		<div class="yellowBackgroundColor scheduleColor"></div>
+		<div class="schedulePoints"><%= yellowScore %></div>
+		<div class="schedulePointsStr"><%= pointsStr %></div>
+	</td>
 </tr>
 <%
 }

@@ -61,6 +61,18 @@ LocalizedString strLiveHeader = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, " - Live!", 
 		Locale.FRENCH, 	" - En cours!"
 		), currentLocale);
+
+
+LocalizedString strPoints = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Points", 
+		Locale.FRENCH, 	"Points"
+		), currentLocale);
+
+String strH1 = strGame.get(currentLocale) + " " + String.valueOf(game.gameNumber);
+if(isLive)
+{
+	out.write(strLiveHeader.get(currentLocale));
+}
 %>
 
 <%!
@@ -90,7 +102,7 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 <html>
 <head>
 <%@include file="head.jsp" %>
-<title><%=strGame%></title>
+<title><%= strH1 %></title>
 <link rel="stylesheet" type="text/css" href="css/game.css"/>
 <link rel="stylesheet" type="text/css" href="css/bjqs.css"/>
 <link rel="stylesheet" type="text/css" href="css/jquery.countdown.css"/>
@@ -101,13 +113,13 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
     <script>
     $(function() {
     	$('#game-slideshow').bjqs({
-    		width : 1000,
+    		width : 1190,
     		height : 900,
             responsive : false,
             showcontrols : false,
             automatic : false,
             randomstart : false,
-            centermarkers : false,
+            centermarkers : true,
             startAt : <%= game.getGameEvents().size() %>
         });
     
@@ -154,36 +166,9 @@ if(showHeader)
 }
 %>
 
-<h1><%=strGame + " " + String.valueOf(game.gameNumber)%><% if(isLive) out.write(strLiveHeader.get(currentLocale)); %></h1>
-<div class="scheduledTime"><%=Helpers.dateTimeFormatter.print(game.scheduledTime)%></div>
-
-<div class="team">
-	<h2><%=strBlueTeam%></h2>
-	<div class="teamName">
-	<%
-		for(School school : game.blueTeam)
-		{
-	%>
-		<a target="_blank" href="school?schoolId=<%=school._id%>"><%=school.name%></a><br/>
-		<%
-			}
-		%>
-	</div>
-</div>
-
-<div class="team">
-	<h2><%=strYellowTeam%></h2>
-	<div class="teamName">
-	<%
-		for(School school : game.yellowTeam)
-		{
-	%>
-		<a target="_blank" href="school?schoolId=<%=school._id%>"><%=school.name%></a><br/>
-		<%
-			}
-		%>
-	</div>
-</div>
+<h1 class="grayColor gameH1"><%= strH1 %></h1>
+<h2 class="grayColor gameH2"><%=Helpers.dateTimeFormatter.print(game.scheduledTime)%></h2>
+<div class="bar grayBackgroundColor"></div>
 
 <div class="clear"></div>
 
@@ -198,17 +183,73 @@ if(showHeader)
 			
 		%>
 		<li>
-			<div class="timer
-			<% 
-			if(hasCountdown && i == gameStates.size() - 1) 
-			{ 
-				out.write("countdown"); 
-			}%>">
-				<%= timeInGame.getMinuteOfHour() + ":" + (timeInGame.getSecondOfMinute() < 10 ? "0" : "") + timeInGame.getSecondOfMinute() %>
+			<div class="grayBackgroundColor center gameTimerOuter">
+				<div class="timer whiteColor gameTimer
+				<% 
+				if(hasCountdown && i == gameStates.size() - 1) 
+				{ 
+					out.write("countdown"); 
+				}%>">
+					<%= timeInGame.getMinuteOfHour() + ":" + (timeInGame.getSecondOfMinute() < 10 ? "0" : "") + timeInGame.getSecondOfMinute() %>
+				</div>
+				<div class="gameEvent whiteColor"><%= state.lastGameEvent.getLocalizedString(currentLocale) %></div>
 			</div>
-			<div class="blueScore"><%= state.blueScore %></div>
-			<div class="yellowScore"><%= state.yellowScore %></div>
-			<br/>
+			
+			<div class="team blueTeam grayBackgroundColor">
+				<div class="blueBackgroundColor gameBar"></div>
+				<table class="wrapper">
+					<tr>
+					<td class="teamName">
+					<%
+						for(School school : game.blueTeam)
+						{
+					%>
+						<div class="scheduleSchoolDiv clear">
+							<div class="scheduleSchoolInner">
+								<img src="images/schools/32x32/<%= school.getCompactName() %>.png" />
+							</div>
+							<a target="_blank" class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+						</div>
+						<%
+							}
+						%>
+					</td>
+					<td class="whiteDiv"></td>
+					<td class="gameScore whiteColor">
+						<div class="schedulePoints"><%= state.blueScore %></div>
+						<div class="schedulePointsStr"><%= strPoints %></div>
+					</td>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="team grayBackgroundColor">
+				<div class="yellowBackgroundColor gameBar"></div>
+				<table class="wrapper">
+					<tr>
+						<td class="teamName">
+						<%
+							for(School school : game.yellowTeam)
+							{
+						%>
+							<div class="scheduleSchoolDiv clear">
+								<div class="scheduleSchoolInner">
+									<img src="images/schools/32x32/<%= school.getCompactName() %>.png" />
+								</div>
+								<a target="_blank" class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+							</div>
+							<%
+								}
+							%>
+						</td>
+						<td class="whiteDiv"></td>
+						<td class="gameScore whiteColor">
+							<div class="schedulePoints"><%= state.yellowScore %></div>
+							<div class="schedulePointsStr"><%= strPoints %></div>
+						</td>
+					</tr>
+				</table>
+			</div>
 <%
 if(state.penalties.size() > 0)
 {
@@ -243,8 +284,7 @@ if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
 <%
 }
 %>
-			<br/>
-			<h3 class="gameEvent"><%= state.lastGameEvent.getLocalizedString(currentLocale) %></h3>
+
 			<div class="playfield">
 				<img src="images/playfield/playfield.svg" class="playfieldBackground fieldImage" />
 				<%
@@ -264,12 +304,15 @@ if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
 	%>
 	</ul>
 </div>
+<div class="clear"></div>
 
  
 <%
 if( isLoggedIn )
 {
 %>
+<br/>
+<br/>
 <a href="admin/game?gameId=<%= game._id %>"><%= strGameAdministration %></a><br/>
 <%
 }
