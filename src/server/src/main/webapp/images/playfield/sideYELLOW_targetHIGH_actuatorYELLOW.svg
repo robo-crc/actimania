@@ -14,7 +14,7 @@
    id="svg13069"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="sideYELLOW_targetHIGH_actuatorBLUE.svg">
+   sodipodi:docname="sideYELLOW_targetHIGH_actuatorYELLOW.svg">
   <defs
      id="defs13071">
     <clipPath
@@ -88,7 +88,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.76"
-     inkscape:cx="545.65456"
+     inkscape:cx="765.81113"
      inkscape:cy="298.36957"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -106,7 +106,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -116,13 +116,13 @@
      id="layer1"
      transform="translate(0,-452.36218)">
     <path
-       style="fill:none;stroke:#e1dd00;stroke-width:4.93919802000000010;stroke-miterlimit:10;stroke-opacity:1"
+       style="fill:none;stroke:#ffdd00;stroke-width:4.93919802000000010;stroke-miterlimit:10;stroke-opacity:1"
        inkscape:connector-curvature="0"
        id="path4343"
        d="m 1092.5704,716.22306 c -15.6653,113.17427 -42.5741,371.78484 -729.55564,326.37864"
        stroke-miterlimit="10" />
     <path
-       style="fill:#e1dd00;fill-opacity:1"
+       style="fill:#ffdd00;fill-opacity:1"
        inkscape:connector-curvature="0"
        id="path4365"
        d="m 1115.2343,693.36757 c 0,14.72991 -11.9426,26.67153 -26.6696,26.67153 -14.7309,0 -26.6735,-11.94162 -26.6735,-26.67153 0,-14.72991 11.9426,-26.67153 26.6735,-26.67153 14.726,0 26.6696,11.94162 26.6696,26.67153 z" />

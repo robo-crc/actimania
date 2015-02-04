@@ -56,6 +56,6 @@ LocalizedString strCRCFooter = new LocalizedString(ImmutableMap.of(
 			<img class="footerGithub" src="images/githubWhite.png" />
 		</a>
 		<br/>
-		<a href="http://www.github.com/fredericjoanis/actimania"><%= strFred %></a>
+		<a href="https://ca.linkedin.com/pub/fr%C3%A9d%C3%A9ric-joanis/3/b06/764"><%= strFred %></a>
 	</div>
 </div>

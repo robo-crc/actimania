@@ -14,7 +14,7 @@
    id="svg13069"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="sideBLUE_targetMID_actuatorBLUE.svg">
+   sodipodi:docname="sideBLUE_targetMID_actuatorYELLOW.svg">
   <defs
      id="defs13071">
     <clipPath
@@ -88,7 +88,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.76"
-     inkscape:cx="381.09153"
+     inkscape:cx="175.82837"
      inkscape:cy="298.36957"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -106,7 +106,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -116,13 +116,13 @@
      id="layer1"
      transform="translate(0,-452.36218)">
     <path
-       style="fill:none;stroke:#e1dd00;stroke-width:4.93919802000000010;stroke-miterlimit:10;stroke-opacity:1"
+       style="fill:none;stroke:#ffdd00;stroke-width:4.93919802000000010;stroke-miterlimit:10;stroke-opacity:1"
        inkscape:connector-curvature="0"
        id="path4337"
        d="M 221.45607,602.57912 C 437.85392,617.36563 686.71735,764.5456 790.47913,977.24359"
        stroke-miterlimit="10" />
     <circle
-       style="fill:#e1dd00;fill-opacity:1"
+       style="fill:#ffdd00;fill-opacity:1"
        sodipodi:ry="26.858999"
        sodipodi:rx="26.858999"
        sodipodi:cy="1388.627"
