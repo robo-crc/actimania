@@ -52,6 +52,11 @@ LocalizedString strYellowTeam = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Équipe jaune"
 		), currentLocale);
 
+LocalizedString strGameNotStarted = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Game has not been played yet", 
+		Locale.FRENCH, 	"Cette parte n'a pas encore été jouée"
+		), currentLocale);
+
 LocalizedString strGameAdministration = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Game administration", 
 		Locale.FRENCH, 	"Administration de la partie"
@@ -112,18 +117,7 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 	
     <script>
     $(function() {
-    	$('#game-slideshow').bjqs({
-    		width : 1190,
-    		height : 900,
-            responsive : false,
-            showcontrols : false,
-            automatic : false,
-            randomstart : false,
-            centermarkers : true,
-            startAt : <%= game.getGameEvents().size() %>
-        });
-    
-	    <%
+    <%   
 	    boolean hasCountdown = false;
 	    ArrayList<GameState> gameStates = game.getGameStates();
 	    
@@ -134,6 +128,22 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 			out.write("var liftoffTime = new Date(" + (game.getGameEvents().get(0).getTime().plus(Game.getGameLength())).getMillis() + ");\n" );
 			out.write("$('.countdown').countdown({until: liftoffTime, compact: true, layout: '{mn}{sep}{snn}', description: ''})");
 		}
+		
+	    if( gameStates.size() > 0 )
+	    {
+	    %>
+	    	$('#game-slideshow').bjqs({
+	    		width : 1190,
+	    		height : 900,
+	            responsive : false,
+	            showcontrols : false,
+	            automatic : false,
+	            randomstart : false,
+	            centermarkers : true,
+	            startAt : <%= game.getGameEvents().size() %>
+	        });
+	    <%
+	    }
 	    %>
     });
     
@@ -167,10 +177,19 @@ if(showHeader)
 %>
 
 <h1 class="grayColor gameH1"><%= strH1 %></h1>
-<h2 class="grayColor gameH2"><%=Helpers.dateTimeFormatter.print(game.scheduledTime)%></h2>
+<h2 class="grayColor gameH2"><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></h2>
 <div class="bar grayBackgroundColor"></div>
 
 <div class="clear"></div>
+
+<%
+if( gameStates.size() == 0)
+{
+	%>
+	<h2 class="grayColor gameH2"><%= strGameNotStarted %></h2>
+	<%
+}
+%>
 
 <div id="game-slideshow">
 	<ul class="bjqs">
@@ -204,8 +223,8 @@ if(showHeader)
 						for(School school : game.blueTeam)
 						{
 					%>
-						<div class="scheduleSchoolDiv clear">
-							<div class="scheduleSchoolInner">
+						<div class="gameSchoolDiv clear">
+							<div class="gameSchoolInner">
 								<img src="images/schools/32x32/<%= school.getCompactName() %>.png" />
 							</div>
 							<a target="_blank" class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
@@ -232,8 +251,8 @@ if(showHeader)
 							for(School school : game.yellowTeam)
 							{
 						%>
-							<div class="scheduleSchoolDiv clear">
-								<div class="scheduleSchoolInner">
+							<div class="gameSchoolDiv clear">
+								<div class="gameSchoolInner">
 									<img src="images/schools/32x32/<%= school.getCompactName() %>.png" />
 								</div>
 								<a target="_blank" class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>

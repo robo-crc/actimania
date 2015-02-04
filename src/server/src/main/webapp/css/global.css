@@ -258,7 +258,6 @@ table.wrapper
 	
     width: 310px;
     height: 32px;
-    padding-bottom: 10px;
 }
 
 .scheduleSchoolText
@@ -272,12 +271,9 @@ table.wrapper
 
 .scheduleSchoolInner
 {
-    width: 32px;
-	
+	width: 32px;
     float: left;
     text-align: center;
-    padding-left: 30px;
-    padding-right: 10px;
 }
 
 .schedulePoints
@@ -417,4 +413,23 @@ table.wrapper
     margin-top: 0px;
 	
     font-weight: normal;
+}
+
+
+.gameSchoolInner
+{
+    width: 32px;
+    float: left;
+    text-align: center;
+    padding-left: 30px;
+    padding-right: 10px;
+}
+
+.gameSchoolDiv
+{
+    vertical-align: middle;
+	
+    width: 310px;
+    height: 32px;
+    padding-bottom: 10px;
 }
