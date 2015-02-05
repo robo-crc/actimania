@@ -7,9 +7,12 @@ html, body
 {
     display: block;   
     margin: auto;
+    margin-top: 80px;
+    float: right;
+    margin-right: 80px;
 }
 
 .gameFrame
 {
-    height: 1500px;
+    margin-top: 45px;
 }

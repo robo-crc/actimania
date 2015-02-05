@@ -66,7 +66,7 @@ LocalizedString strPoints = new LocalizedString(ImmutableMap.of(
 String strH1 = strGame.get(currentLocale) + " " + String.valueOf(game.gameNumber);
 if(isLive)
 {
-	out.write(strLiveHeader.get(currentLocale));
+	strH1 += strLiveHeader.get(currentLocale);
 }
 %>
 
@@ -162,14 +162,13 @@ if(showHeader)
 {
 %>
 <%@include file="header.jsp" %>
+<h1 class="grayColor gameH1"><%= strH1 %></h1>
+<h2 class="grayColor gameH2"><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></h2>
 <%
 }
 %>
 
-<h1 class="grayColor gameH1"><%= strH1 %></h1>
-<h2 class="grayColor gameH2"><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></h2>
 <div class="bar grayBackgroundColor"></div>
-
 <div class="clear"></div>
 
 <%

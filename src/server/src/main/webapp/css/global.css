@@ -447,3 +447,41 @@ table.wrapper
 {
 	text-decoration: line-through !important;
 }
+
+.gameNumberPage
+{
+	width: 300px;
+}
+
+.gameNumberH1
+{
+	
+    margin-bottom: 0px;
+}
+
+.gameNumberLiveStr
+{
+    margin-top: 30px;
+    margin-bottom: 0px;
+}
+
+.gameNumberBar
+{
+	margin-bottom: 0px;
+}
+
+/* Live */
+.liveOuter
+{
+    position: relative;
+    height: 100%;
+}
+
+.liveGameNumber
+{
+    margin-top: 135px;
+	
+    height: 250px;
+    width: 300px;
+    margin-left: 50px;
+}
