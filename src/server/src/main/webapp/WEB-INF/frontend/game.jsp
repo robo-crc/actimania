@@ -32,16 +32,6 @@ LocalizedString strGame = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Partie"
 		), currentLocale);
 
-LocalizedString strSchoolPenalties = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "School penalties", 
-		Locale.FRENCH, 	"Pénalitées d'école"
-		), currentLocale);
-
-LocalizedString strMisconductPenalties = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Misconduct penalties", 
-		Locale.FRENCH, 	"Pénalité pour conduite anti-sportive"
-		), currentLocale);
-
 LocalizedString strBlueTeam = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Blue Team", 
 		Locale.FRENCH, 	"Équipe bleue"
@@ -134,7 +124,7 @@ public void outputTargetActuator(GameState state, SideEnum side, TargetEnum targ
 	    %>
 	    	$('#game-slideshow').bjqs({
 	    		width : 1190,
-	    		height : 900,
+	    		height : 920,
 	            responsive : false,
 	            showcontrols : false,
 	            automatic : false,
@@ -220,6 +210,7 @@ if( gameStates.size() == 0)
 					<tr>
 					<td class="teamName">
 					<%
+						boolean hasPenalty = false;
 						for(School school : game.blueTeam)
 						{
 					%>
@@ -227,7 +218,10 @@ if( gameStates.size() == 0)
 							<div class="gameSchoolInner">
 								<img src="images/schools/32x32/<%= school.getCompactName() %>.png" />
 							</div>
-							<a target="_blank" class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+							<a target="_blank" class="scheduleSchoolText <% if(state.misconductPenalties.contains(school)) { out.write("gameMisconduct"); } %>" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+							<%
+							hasPenalty |= state.misconductPenalties.contains(school) || state.penalties.contains(school);
+							%>
 						</div>
 						<%
 							}
@@ -235,8 +229,24 @@ if( gameStates.size() == 0)
 					</td>
 					<td class="whiteDiv"></td>
 					<td class="gameScore whiteColor">
+						<%
+						if(!hasPenalty)
+						{
+						%>
 						<div class="schedulePoints"><%= state.blueScore %></div>
 						<div class="schedulePointsStr"><%= strPoints %></div>
+						<%
+						}
+						else
+						{
+							for(School school : game.blueTeam)
+							{
+								%>
+								<div class="schedulePoints"><%= game.getScore(school, state) %></div>
+								<%
+							}
+						}
+						%>
 					</td>
 					</tr>
 				</table>
@@ -248,6 +258,7 @@ if( gameStates.size() == 0)
 					<tr>
 						<td class="teamName">
 						<%
+							hasPenalty = false;
 							for(School school : game.yellowTeam)
 							{
 						%>
@@ -255,44 +266,37 @@ if( gameStates.size() == 0)
 								<div class="gameSchoolInner">
 									<img src="images/schools/32x32/<%= school.getCompactName() %>.png" />
 								</div>
-								<a target="_blank" class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+								<a target="_blank" class="scheduleSchoolText <% if(state.misconductPenalties.contains(school)) { out.write("gameMisconduct"); } %>" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 							</div>
 							<%
-								}
+								hasPenalty |= state.misconductPenalties.contains(school) || state.penalties.contains(school);
+							}
 							%>
 						</td>
 						<td class="whiteDiv"></td>
 						<td class="gameScore whiteColor">
+							<%
+								if(!hasPenalty)
+								{
+								%>
 							<div class="schedulePoints"><%= state.yellowScore %></div>
 							<div class="schedulePointsStr"><%= strPoints %></div>
+								<%
+								}
+								else
+								{
+									for(School school : game.yellowTeam)
+									{
+										%>
+										<div class="schedulePoints"><%= game.getScore(school, state) %></div>
+										<%
+									}
+								}
+								%>
 						</td>
 					</tr>
 				</table>
 			</div>
-<%
-if(state.penalties.size() > 0)
-{
-%>
-<h2><%= strSchoolPenalties %></h2>
-<%
-	for(SchoolInteger penalty : state.penalties)
-	{
-		out.print(penalty.name + " : " + penalty.integer + "<br/>");
-	}
-}
-
-if(state.misconductPenalties.size() > 0)
-{
-%>
-<h2><%= strMisconductPenalties %></h2>
-<%
-	for(School school : state.misconductPenalties)
-	{
-		out.print(school.name + "<br/>");
-	}
-}
-%>
-	
 <%
 if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
 {

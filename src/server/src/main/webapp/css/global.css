@@ -231,20 +231,29 @@ table.wrapper
 
 .scheduleRound, .scheduleRoundTd
 {
-	width: 50px;
 	text-align: center;
 	white-space: nowrap;
 	vertical-align: middle;
+}
+
+.scheduleRoundTd
+{
+	max-width: 50px;
 	background-color: rgb(60,60,59);
-	color: white;
-	font-size: 22px;
+	position: relative;
+	width: 50px;
 }
 
 .scheduleRound
 {
 	transform:rotate(-90deg);
 	-ms-transform: rotate(-90deg); /* IE 9 */
-    -webkit-transform: rotate(-90deg); /* Safari, Opera */
+    
+	-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */
+	color: white;
+	font-size: 22px;
+	position: absolute;
+	margin-left: 22px;
 }
 
 .schedulePointsStr
@@ -432,4 +441,9 @@ table.wrapper
     width: 310px;
     height: 32px;
     padding-bottom: 10px;
+}
+
+.gameMisconduct
+{
+	text-decoration: line-through !important;
 }

@@ -65,7 +65,7 @@ LocalizedString strTwoTargetHits = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "TWO ACTUATOR<br/>CHANGED", 
+		Locale.ENGLISH, "TWO SWITCHES<br/>CHANGED", 
 		Locale.FRENCH, 	"CHANGER DEUX<br/>ACTUATEURS"
 		), currentLocale);
 %>

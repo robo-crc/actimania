@@ -112,12 +112,12 @@ LocalizedString strGameEvents = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strActuatorState = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Actuator state", 
+		Locale.ENGLISH, "Switch state", 
 		Locale.FRENCH, 	"État de l'actuateur"
 		), currentLocale);
 
 LocalizedString strActuatorStateChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Actuator state change", 
+		Locale.ENGLISH, "Switch state change", 
 		Locale.FRENCH, 	"Changement de l'état de l'actuateur"
 		), currentLocale);
 

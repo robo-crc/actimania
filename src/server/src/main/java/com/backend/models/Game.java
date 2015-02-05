@@ -245,8 +245,7 @@ public class Game implements Comparable<Game>
 		return false;
 	}
 	
-	// Score does not take into account misconduct penalties since they are global penalties.
-	public int getScore(School school)
+	public int getScore(School school, GameState gameState)
 	{
 		boolean isBlueTeam 		= blueTeam.contains(school);
 		boolean isYellowTeam 	= yellowTeam.contains(school);
@@ -257,12 +256,15 @@ public class Game implements Comparable<Game>
 			return 0;
 		}
 		
-		// This might be a performance bottleneck ...
-		ArrayList<GameState> gameStates = getGameStates();
-		if(gameStates.size() == 0)
-			return 0;
-		
-		GameState gameState = gameStates.get(gameStates.size() - 1);
+		if(gameState == null)
+		{
+			// This might be a performance bottleneck ...
+			ArrayList<GameState> gameStates = getGameStates();
+			if(gameStates.size() == 0)
+				return 0;
+			
+			gameState = gameStates.get(gameStates.size() - 1);
+		}
 		
 		// A 0 score is given if we give a misconduct penalty.
 		if(gameState.misconductPenalties.contains(school))
@@ -290,6 +292,12 @@ public class Game implements Comparable<Game>
 		}
 		
 		return score;
+	}
+	
+	// Score does not take into account misconduct penalties since they are global penalties.
+	public int getScore(School school)
+	{
+		return getScore(school, null);
 	}
 	
 	@Override
