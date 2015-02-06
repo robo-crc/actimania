@@ -470,6 +470,11 @@ table.wrapper
 	margin-bottom: 0px;
 }
 
+.gameScoreBlue
+{
+	margin-right: 2px !important;
+}
+
 /* Live */
 .liveOuter
 {
