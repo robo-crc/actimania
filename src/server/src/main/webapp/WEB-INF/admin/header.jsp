@@ -4,47 +4,44 @@
 <%
 
 LocalizedString strOverall = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Overall", 
-		Locale.FRENCH, 	"Classement final"
+		Locale.ENGLISH, "OVERALL", 
+		Locale.FRENCH, 	"CLASSEMENT"
 		), request.getLocale());
 
-
 LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schedule", 
-		Locale.FRENCH, 	"Horaire"
+		Locale.ENGLISH, "SCHEDULE", 
+		Locale.FRENCH, 	"HORAIRE"
 		), request.getLocale());
 
 
 LocalizedString strSchools = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schools", 
-		Locale.FRENCH, 	"Écoles"
+		Locale.ENGLISH, "SCHOOLS", 
+		Locale.FRENCH, 	"ÉCOLES"
 		), request.getLocale());
-
 
 LocalizedString strUsers = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Users", 
-		Locale.FRENCH, 	"Utilisateurs"
+		Locale.ENGLISH, "USERS", 
+		Locale.FRENCH, 	"UTILISATEURS"
 		), request.getLocale());
 
-
 LocalizedString strCompetition = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Competition", 
-		Locale.FRENCH, 	"Compétition"
+		Locale.ENGLISH, "COMPETITION", 
+		Locale.FRENCH, 	"COMPÉTITION"
 		), request.getLocale());
 
 LocalizedString strPlayoff = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Playoff", 
-		Locale.FRENCH, 	"Éliminatoire"
+		Locale.ENGLISH, "PLAYOFF", 
+		Locale.FRENCH, 	"ÉLIMINATOIRE"
 		), request.getLocale());
 
 LocalizedString strLogout = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Logout", 
-		Locale.FRENCH, 	"Déconnexion"
+		Locale.ENGLISH, "LOGOUT", 
+		Locale.FRENCH, 	"DÉCONNEXION"
 		), request.getLocale());
 
 LocalizedString sdrAdmin = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Administration", 
-		Locale.FRENCH, 	"Administration"
+		Locale.ENGLISH, "ADMINISTRATION", 
+		Locale.FRENCH, 	"ADMINISTRATION"
 		), request.getLocale());
 %>
 
@@ -54,10 +51,11 @@ LocalizedString sdrAdmin = new LocalizedString(ImmutableMap.of(
 	<h1 class="headerAdmin"><%= sdrAdmin %></h1>
 	
 	<div class="headerRubban grayBackgroundColor">
-		<a href="../overall"><%= strOverall %></a>
 		<a href="competition"><%= strCompetition %></a>
-		<a href="playoff"><%= strPlayoff %></a>
 		<a href="../schedule"><%= strSchedule %></a>
+		<a href="../overall"><%= strOverall %></a>
+		<a href="playoff"><%= strPlayoff %></a>
+		<!-- <a href="schools"><%= strSchools %></a>  -->
 		<a href="users"><%= strUsers %></a>
 		<a href="../logout"><%= strLogout %></a>
 	</div>

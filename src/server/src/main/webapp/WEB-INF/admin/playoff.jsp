@@ -16,7 +16,7 @@ ArrayList<School> excludedSchools = (ArrayList<School>) request.getAttribute("ex
 GameTypeEnum currentRound = (GameTypeEnum) request.getAttribute("currentRound");
 GameTypeEnum nextRound = (GameTypeEnum) request.getAttribute("nextRound");
 
-Boolean isCurrentRoundStarted = (Boolean) request.getAttribute("isCurrentRoundStarted");
+boolean isCurrentRoundStarted = ((Boolean) request.getAttribute("isCurrentRoundStarted")).booleanValue();
 
 Locale currentLocale = request.getLocale();
 
@@ -71,7 +71,7 @@ LocalizedString strDeleteCurrentRound = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strDeleteConfirm = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "This action will delete the current round and there's already at least a match played. Are you sure you want to do this?", 
+		Locale.ENGLISH, "This action will delete the current round and there is already at least a match played. Are you sure you want to do this?", 
 		Locale.FRENCH, 	"Cette action entrainera la suppresion de la ronde en cours. Au moins un match a déjà été joué! Êtes-vous sûr de vouloir supprimer la ronde actuelle?"
 		), currentLocale);
 

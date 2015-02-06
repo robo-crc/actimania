@@ -142,19 +142,19 @@ public class PlayoffController extends HttpServlet
 		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_DEMI).size() == 0)
 		{
 			currentRound = GameTypeEnum.PLAYOFF_QUARTER;
-			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_QUARTER).get(0).getGameStates().size() == 0;
+			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_QUARTER).get(0).getGameStates().size() > 0;
 			nextRound = GameTypeEnum.PLAYOFF_DEMI;
 		}
 		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_FINAL).size() == 0)
 		{
 			currentRound = GameTypeEnum.PLAYOFF_DEMI;
-			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_DEMI).get(0).getGameStates().size() == 0;
+			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_DEMI).get(0).getGameStates().size() > 0;
 			nextRound = GameTypeEnum.PLAYOFF_FINAL;
 		}
 		else
 		{
 			currentRound = GameTypeEnum.PLAYOFF_FINAL;
-			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_FINAL).get(0).getGameStates().size() == 0;
+			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_FINAL).get(0).getGameStates().size() > 0;
 			nextRound = GameTypeEnum.NONE;
 		}
 		
