@@ -6,7 +6,6 @@
 <%@page import="com.framework.helpers.LocalizedString"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <% 
 @SuppressWarnings("unchecked")
@@ -41,9 +40,8 @@ LocalizedString strSchoolName = new LocalizedString(ImmutableMap.of(
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><%= strAddSchool %></title>
-<link rel="shortcut icon" href="images/favicon.ico" />
+<%@include file="head.jsp" %>
 </head>
 <body>
 <%@include file="header.jsp" %>

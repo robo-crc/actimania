@@ -41,11 +41,24 @@ LocalizedString strLogout = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Logout", 
 		Locale.FRENCH, 	"Déconnexion"
 		), request.getLocale());
+
+LocalizedString sdrAdmin = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Administration", 
+		Locale.FRENCH, 	"Administration"
+		), request.getLocale());
 %>
 
-<a href="../overall"><%= strOverall %></a><br/>
-<a href="competition"><%= strCompetition %></a><br/>
-<a href="playoff"><%= strPlayoff %></a><br/>
-<a href="../schedule"><%= strSchedule %></a><br/>
-<a href="users"><%= strUsers %></a><br/>
-<a href="../logout"><%= strLogout %></a>
+<div class="header">
+	<img class="headerLogo" src="../images/crc.jpg" />
+	
+	<h1 class="headerAdmin"><%= sdrAdmin %></h1>
+	
+	<div class="headerRubban grayBackgroundColor">
+		<a href="../overall"><%= strOverall %></a>
+		<a href="competition"><%= strCompetition %></a>
+		<a href="playoff"><%= strPlayoff %></a>
+		<a href="../schedule"><%= strSchedule %></a>
+		<a href="users"><%= strUsers %></a>
+		<a href="../logout"><%= strLogout %></a>
+	</div>
+</div>

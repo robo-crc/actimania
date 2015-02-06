@@ -16,7 +16,6 @@
 <%@page import="com.framework.helpers.LocalizedString"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <% 
 @SuppressWarnings("unchecked")
@@ -39,11 +38,6 @@ LocalizedString strEdit = new LocalizedString(ImmutableMap.of(
 LocalizedString strDelete = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Delete", 
 		Locale.FRENCH, 	"Supprimer"
-		), currentLocale);
-
-LocalizedString strGameAdmin = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Game administration", 
-		Locale.FRENCH, 	"Administration des parties"
 		), currentLocale);
 
 LocalizedString strStartGame = new LocalizedString(ImmutableMap.of( 	
@@ -171,33 +165,49 @@ LocalizedString strCommentFrench = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Commentaire en français"
 		), currentLocale);
 
+
+LocalizedString strGameAdmin = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Admin of game", 
+		Locale.FRENCH, 	"Administration de la partie"
+		), currentLocale);
+
+String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameNumber);
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="shortcut icon" href="images/favicon.ico" />
-<title><%= strGameAdmin %></title>
-<link rel="icon" type="image/png" href="favicon.png">
-
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-<script src="../jquery/jquery.js"></script>
-<script src="../jquery/jquery.numeric.min.js"></script>
-<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<title><%= strH1 %></title>
+<%@include file="head.jsp" %>
 
 <script>
-$(document).ready(function(){
-	$( ".spinner" ).spinner();
-	$( ".spinner" ).numeric();
+$(function() {
+    function refreshPage() 
+    {
+        var source = new EventSource('/actimania/gameRefresh');
+
+        source.onmessage = function(event) 
+        {
+        	// Refresh page, make sure it's a get request.
+            window.location = window.location.href;
+        };
+    }
+    window.addEventListener("load", refreshPage);
 });
 
+$(document).ready(function(){
+	$( ".spinner" ).numeric();
+	$( ".spinner" ).spinner();
+});
 </script>
 
 </head>
 <body>
 <%@include file="header.jsp" %>
-<br/>
+
+<h1 class="grayColor"><%= strH1 %></h1>
+<div class="bar grayBackgroundColor"></div>
+
 <%!
 public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out) throws IOException
 {
@@ -427,7 +437,7 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 	<h1><%= strGameEvents %></h1>
 	
 	<table>
-		<tr><td>#</td><td><%= strTimeInGame %></td><td><%= strBlueScore %></td><td><%= strYellowScore %></td><td><%= strEvent %></td><td><%= strAction %></td></tr>
+		<tr><th>#</th><th><%= strTimeInGame %></th><th><%= strBlueScore %></th><th><%= strYellowScore %></th><th><%= strEvent %></th><th><%= strAction %></th></tr>
 	<%
 		int i = 0;
 		for(GameState state : game.getGameStates())

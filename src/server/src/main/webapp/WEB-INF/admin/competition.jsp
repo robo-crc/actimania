@@ -10,7 +10,6 @@
 <%@page import="com.framework.helpers.LocalizedString"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <% 
 @SuppressWarnings("unchecked")
@@ -112,15 +111,8 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><%= strCompetitionTitle %></title>
-<link rel="shortcut icon" href="images/favicon.ico" />
-
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-<script src="../jquery/jquery.js"></script>
-<script src="../jquery/jquery.inputmask.min.js"></script>
-<script src="../jquery/jquery.numeric.min.js"></script>
-<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<%@include file="head.jsp" %>
 
 <style>
   .sortableUI, .sortable { list-style-type: none; margin: 0; padding: 0; }
@@ -167,12 +159,15 @@ $(function() {
 		<%
 	}
 	%>
-	<h1><%= strSkillsCompetition %></h1>
+
+	<h1 class="grayColor"><%= strSkillsCompetition %></h1>
+	<div class="bar grayBackgroundColor"></div>
+
 	<form method="post">
 		<input type="hidden" name="action" value="skillsCompetition" />
 		
 		<table>
-		<tr><td><%= strSchool %></td><td><%= strPickupRace %></td><td><%= strTwoTargetHits %></td><td><%= strTwoActuatorChanged %></td></tr>
+		<tr><th><%= strSchool %></th><th><%= strPickupRace %></th><th><%= strTwoTargetHits %></th><th><%= strTwoActuatorChanged %></th></tr>
 		
 		<%
 		for(School school : schools)
@@ -189,7 +184,9 @@ $(function() {
 		%>
 		</table>
 		
-		<input type="submit" value="<%= strSave %>" />
+		<div class="center">
+			<input type="submit" value="<%= strSave %>" />
+		</div>
 	</form>
 	
 	<h1><%= strCompetition %></h1>
@@ -206,11 +203,11 @@ $(function() {
 	
 	<table>
 		<tr>
-			<td><%= strRank %></td>
-			<td><%= strKiosk %></td>
-			<td><%= strProgramming %></td>
-			<td><%= strRobotConstruction %></td>
-			<td><%= strRobotDesign %></td>
+			<th><%= strRank %></th>
+			<th><%= strKiosk %></th>
+			<th><%= strProgramming %></th>
+			<th><%= strRobotConstruction %></th>
+			<th><%= strRobotDesign %></th>
 		</tr>
 		<tr>
 			<td>
@@ -248,11 +245,11 @@ $(function() {
 	
 		<table>
 		<tr>
-			<td><%= strRank %></td>
-			<td><%= strSportsmanship %></td>
-			<td><%= strVideo %></td>
-			<td><%= strWebsiteDesign %></td>
-			<td><%= strWebsiteJournalism %></td>
+			<th><%= strRank %></th>
+			<th><%= strSportsmanship %></th>
+			<th><%= strVideo %></th>
+			<th><%= strWebsiteDesign %></th>
+			<th><%= strWebsiteJournalism %></th>
 		</tr>
 		<tr>
 			<td>

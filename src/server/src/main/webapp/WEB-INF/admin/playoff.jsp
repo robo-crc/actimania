@@ -89,13 +89,14 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><%= strPlayoffTitle %></title>
-<link rel="shortcut icon" href="images/favicon.ico" />
+<%@include file="head.jsp" %>
 </head>
 <body>
 	<%@include file="header.jsp" %>
-	<h1><%= strPlayoff %></h1>
+
+	<h1 class="grayColor"><%= strPlayoff %></h1>
+	<div class="bar grayBackgroundColor"></div>
 	
 	<form method="post">
 		<input type="hidden" name="action" value="addExcludedSchool" />
