@@ -114,14 +114,6 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 <title><%= strCompetitionTitle %></title>
 <%@include file="head.jsp" %>
 
-<style>
-  .sortableUI, .sortable { list-style-type: none; margin: 0; padding: 0; }
-  .sortableUI li, .sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; height: 40px; }
-  .sortableUI li { margin-bottom: 5px; margin-top: 4px; }
-  .sortable li { width : 175px; }
-  .sortableUI li span, .sortable li span { position: absolute; margin-left: -1.3em; }
-</style>
-
 <script>
 $(document).ready(function(){
 	$( ".spinner" ).spinner();
@@ -215,7 +207,7 @@ $(function() {
 				<%
 				for(int i = 1; i <= schools.size(); i++)
 				{
-					out.write("<li>" + i + "</li>\n");
+					out.write("<li class=\"positionLi\">" + i + "</li>\n");
 				}
 				%>
 				</ul>
@@ -257,7 +249,7 @@ $(function() {
 				<%
 				for(int i = 1; i <= schools.size(); i++)
 				{
-					out.write("<li>" + i + "</li>\n");
+					out.write("<li class=\"positionLi\">" + i + "</li>\n");
 				}
 				%>
 				</ul>
