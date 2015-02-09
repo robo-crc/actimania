@@ -18,6 +18,7 @@ import org.bson.types.ObjectId;
 import org.joda.time.Duration;
 
 import com.backend.models.Competition;
+import com.backend.models.LiveRefresh;
 import com.backend.models.School;
 import com.backend.models.SchoolDuration;
 import com.backend.models.SchoolInteger;
@@ -81,6 +82,12 @@ public class CompetitionController extends HttpServlet
 				SkillsCompetition competition = new SkillsCompetition(skillsCompetition._id, pickBallsArray, twoTargetsArray, twoActuatorsArray);
 				essentials.database.save(competition);
 			}
+			else if(action.equals("toggleLiveRefresh"))
+			{
+				LiveRefresh liveRefresh = LiveRefresh.get(essentials);
+				LiveRefresh toggledLiveRefresh = new LiveRefresh(liveRefresh._id, !liveRefresh.isLiveRefreshOn);
+				essentials.database.save(toggledLiveRefresh);
+			}
 			
 			showPage(essentials);
 		}
@@ -103,6 +110,7 @@ public class CompetitionController extends HttpServlet
 		
 		essentials.request.setAttribute("competition", Competition.get(essentials));
 		essentials.request.setAttribute("skillsCompetition", SkillsCompetition.get(essentials.database));
+		essentials.request.setAttribute("isLivreRefreshOn", LiveRefresh.get(essentials).isLiveRefreshOn);
 		essentials.request.setAttribute("schools", schools);
 		essentials.request.setAttribute("errorList", essentials.errorList);
 		essentials.request.getRequestDispatcher("/WEB-INF/admin/competition.jsp").forward(essentials.request, essentials.response);

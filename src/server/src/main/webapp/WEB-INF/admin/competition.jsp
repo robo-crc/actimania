@@ -19,6 +19,7 @@ ArrayList<LocalizedString> errorList = (ArrayList<LocalizedString>) request.getA
 ArrayList<School> schools = (ArrayList<School>) request.getAttribute("schools");
 Competition competition = (Competition) request.getAttribute("competition");
 SkillsCompetition skillsCompetition = (SkillsCompetition) request.getAttribute("skillsCompetition");
+boolean isLivreRefreshOn = ((Boolean) request.getAttribute("isLivreRefreshOn"));
 
 Locale currentLocale = request.getLocale();
 
@@ -106,6 +107,16 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Website journalism", 
 		Locale.FRENCH, 	"Journalisme du site web"
 		), currentLocale);
+
+LocalizedString strLiveRefreshOn = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Turn on live refresh", 
+		Locale.FRENCH, 	"Activer le rafraichissement des pages automatiques"
+		), currentLocale);
+
+LocalizedString strLiveRefreshOff = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Turn off live refresh", 
+		Locale.FRENCH, 	"Désactiver le rafraichissement des pages automatiques"
+		), currentLocale);
 %>
 
 <!DOCTYPE html>
@@ -155,6 +166,22 @@ $(function() {
 	<h1 class="grayColor"><%= strSkillsCompetition %></h1>
 	<div class="bar grayBackgroundColor"></div>
 
+	<div class="center">
+		<form method="post">
+			<input type="hidden" name="action" value="toggleLiveRefresh" />
+			
+			<% 
+			LocalizedString strToggle = strLiveRefreshOn;
+			if(isLivreRefreshOn) 
+			{
+				strToggle = strLiveRefreshOff;
+			}
+			%>
+			<input type="submit" value="<%= strToggle %>" />
+		</form>
+	</div>
+	<br/><br/><br/>
+		
 	<form method="post">
 		<input type="hidden" name="action" value="skillsCompetition" />
 		

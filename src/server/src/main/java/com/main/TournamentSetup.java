@@ -8,6 +8,7 @@ import org.joda.time.Duration;
 
 import com.backend.models.Competition;
 import com.backend.models.Game;
+import com.backend.models.LiveRefresh;
 import com.backend.models.School;
 import com.backend.models.SchoolDuration;
 import com.backend.models.SchoolInteger;
@@ -81,12 +82,17 @@ public class TournamentSetup
     			}
     			essentials.database.dropCollection(SkillsCompetition.class);
     			essentials.database.dropCollection(Competition.class);
+    			essentials.database.dropCollection(LiveRefresh.class);
     			
     			SkillsCompetition skillsCompetition = new SkillsCompetition(
     					null,
 						pickBalls, 
 						twoTargetHits,
 						twoActuatorChanged);
+    			
+    			LiveRefresh liveRefresh = new LiveRefresh(null, true);
+    			
+    			essentials.database.save(liveRefresh);
     			essentials.database.save(skillsCompetition);
     			essentials.database.save(competition);
     		}
