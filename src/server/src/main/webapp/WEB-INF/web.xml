@@ -5,6 +5,17 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
     version="3.0">
     
+    <servlet id="jsp">
+		<servlet-name>Actimania</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<init-param>
+	        <param-name>logVerbosityLevel</param-name>
+	        <param-value>WARNING</param-value>
+	    </init-param>
+	    <load-on-startup>1</load-on-startup>
+	    <async-supported>true</async-supported>
+	</servlet>
+    
    	<listener>
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
     </listener>
@@ -12,6 +23,7 @@
     <filter>
         <filter-name>ShiroFilter</filter-name>
         <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
+        <async-supported>true</async-supported>
     </filter>
 
     <filter-mapping>
@@ -22,8 +34,10 @@
         <dispatcher>INCLUDE</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
+	
     
     <welcome-file-list>
         <welcome-file>schedule.jsp</welcome-file>
     </welcome-file-list>
+
 </web-app>

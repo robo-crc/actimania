@@ -1,0 +1,30 @@
+<!-- =========================================================== -->
+<!-- Set handler Collection Structure                            --> 
+<!-- =========================================================== -->
+<Set name="handler">
+  <New id="Handlers" class="org.eclipse.jetty.server.handler.HandlerCollection">
+    <Set name="handlers">
+     <Array type="org.eclipse.jetty.server.Handler">
+       <!-- Built-in Jetty AccessLog log -->
+       <Item>
+         <New id="AccessLog" class="org.eclipse.jetty.server.handler.RequestLogHandler"/>
+       </Item>
+     </Array>
+    </Set>
+  </New>
+</Set>
+
+<!-- Built-in Jetty AccessLog log -->
+<Ref id="AccessLog">
+  <Set name="requestLog">
+    <New id="RequestLogImpl" class="org.eclipse.jetty.server.NCSARequestLog">
+      <Set name="filename"><SystemProperty name="jetty.logs" default="./logs"/>/access.yyyy_mm_dd.log</Set>
+      <Set name="filenameDateFormat">yyyyMMdd</Set>
+      <Set name="retainDays">7</Set>
+      <Set name="append">true</Set>
+      <Set name="extended">false</Set>
+      <Set name="logLatency">true</Set>
+      <Set name="LogTimeZone">GMT</Set>
+    </New>
+  </Set>
+</Ref>

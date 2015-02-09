@@ -80,7 +80,7 @@ public class GameRefreshController extends HttpServlet
 				}
 			}
 		};
-		service = Executors.newScheduledThreadPool(10);
+		service = Executors.newScheduledThreadPool(1);
 		service.scheduleAtFixedRate(notifier, 1, 1, TimeUnit.SECONDS);
 	}
 
