@@ -335,7 +335,7 @@ if( isLoggedIn )
 %>
 <br/>
 <br/>
-<a href="admin/game?gameId=<%= game._id %>"><%= strGameAdministration %></a><br/>
+<a target="_blank" href="admin/game?gameId=<%= game._id %>"><%= strGameAdministration %></a><br/>
 <%
 }
 %>
