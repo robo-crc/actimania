@@ -17,8 +17,8 @@ public class JudgeScoreCalculator implements EasyScoreCalculator<TournamentSolut
 		int mediumScore = 0;
 		int softScore 	= 0;
 		
-		// 15 judges
-		// 33 schools 
+		// 31 judges
+		// 31 schools 
 		
 		ArrayList<ArrayList<School>> judgeSchools = new ArrayList<ArrayList<School>>();
 		

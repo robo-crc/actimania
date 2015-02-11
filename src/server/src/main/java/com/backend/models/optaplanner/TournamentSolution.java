@@ -193,16 +193,20 @@ public class TournamentSolution implements Solution<HardMediumSoftScore>
 	
 	public void outputJudgmentSolution()
 	{
-		System.out.print("   ");
-		for(School school : schools)
+		for(int i = 0; i < 3; i++)
 		{
-			System.out.print(StringUtils.rightPad(school.name, 3));
+			System.out.print(" ");
+		}
+		
+		for(int i = 0; i < schools.size(); i++)
+		{
+			System.out.print(StringUtils.rightPad(String.valueOf(i + 1), 3));
 		}
 		
 		System.out.println();
 		for( int i = 0; i < judgements.size(); i++ )
 		{
-			System.out.print(StringUtils.rightPad(String.valueOf(i), 3));
+			System.out.print(StringUtils.rightPad(String.valueOf(i + 1), 3));
 			for(School school : schools)
 			{
 				if(judgements.get(i).contains(school))
@@ -221,12 +225,12 @@ public class TournamentSolution implements Solution<HardMediumSoftScore>
 		System.out.print("   ");
 		for(int judgeCount = 0; judgeCount < judgements.size(); judgeCount++)
 		{
-			System.out.print(StringUtils.rightPad(String.valueOf(judgeCount), 3));
+			System.out.print(StringUtils.rightPad(String.valueOf(judgeCount + 1), 3));
 		}		
 		System.out.print("\n");
 		for(int judge1 = 0; judge1 < judgements.size(); judge1++)
 		{
-			System.out.print(StringUtils.rightPad(String.valueOf(judge1), 3));
+			System.out.print(StringUtils.rightPad(String.valueOf(judge1 + 1), 3));
 			for(int judge2 = 0; judge2 < judgements.size(); judge2++)
 			{
 				if(judge1 != judge2)
