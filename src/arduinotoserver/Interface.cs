@@ -10,13 +10,13 @@ using System.IO.Ports;
 using System.Threading;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace ArduinoToServer
 {
 
     public partial class Interface : Form
     {
-
         public static System.IO.Ports.SerialPort port;
 
         delegate void SetTextCallback(string text);
@@ -101,7 +101,7 @@ namespace ArduinoToServer
             {
                 port.Close();
             }
-            catch (NullReferenceException)
+            catch (IOException)
             {
             }
         }
@@ -539,7 +539,7 @@ namespace ArduinoToServer
             else
             {
                 SetColor(value[0], value[1]);
-                sendActuatorChangedToServer(value[0], value[1]);
+                sendActuatorChangedToServer(value[1], value[0]);
             }
         }
 
