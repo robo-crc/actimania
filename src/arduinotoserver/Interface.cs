@@ -248,7 +248,7 @@ namespace ArduinoToServer
         public static String EMAIL = "serverToArduino";
         public static String PASSWORD = "ThisIsATmpPassword";
 
-        private async void sendActuatorChangedToServer(String arduinoNumber, String strState)
+        private void sendActuatorChangedToServer(String arduinoNumber, String strState)
         {
             SIDE side = arduinoToSide(arduinoNumber);
             TARGET target = arduinoToTarget(arduinoNumber);
@@ -265,12 +265,18 @@ namespace ArduinoToServer
                 values.Add(new KeyValuePair<string, string>("actuatorState", state.ToString()));
 
                 var content = new FormUrlEncodedContent(values);
-
-                await client.PostAsync(SERVER_ADDRESS, content);
+                try
+                {
+                    var response = client.PostAsync(SERVER_ADDRESS, content).Result;
+                }
+                catch(Exception e)
+                {
+                    Console.Write(e.Message);
+                }
             }
         }
 
-        private async void sendTargetHitToServer(String arduinoNumber)
+        private void sendTargetHitToServer(String arduinoNumber)
         {
             using (var client = new HttpClient())
             {
@@ -286,7 +292,14 @@ namespace ArduinoToServer
 
                 var content = new FormUrlEncodedContent(values);
 
-                await client.PostAsync(SERVER_ADDRESS, content);
+                try
+                {
+                    var response = client.PostAsync(SERVER_ADDRESS, content).Result;
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                }
             }
         }
 

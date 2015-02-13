@@ -147,11 +147,18 @@ public class Game implements Comparable<Game>
 		return added;
 	}
 	
+	
+	static ScheduledExecutorService liveScheduledExecutorService = null;
+
 	public static void createEndLiveCallback(final ObjectId gameId, final Database.DatabaseType databaseType)
 	{
-		ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+		if(liveScheduledExecutorService != null)
+		{
+			liveScheduledExecutorService.shutdownNow();
+		}
+		liveScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
-		scheduledExecutorService.schedule(
+		liveScheduledExecutorService.schedule(
 			new Callable<Boolean>() 
 			{
 				public Boolean call() throws Exception 
@@ -173,14 +180,20 @@ public class Game implements Comparable<Game>
 			END_LIVE_DELAY.getStandardSeconds(),
 		    TimeUnit.SECONDS);
 
-		scheduledExecutorService.shutdown();
+		liveScheduledExecutorService.shutdown();
 	}
-
+	
+	static ScheduledExecutorService endScheduledExecutorService = null;
+	
 	public static void createEndGameCallback(final ObjectId gameId)
 	{
-		ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+		if(endScheduledExecutorService != null)
+		{
+			endScheduledExecutorService.shutdownNow();
+		}
+		endScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
-		scheduledExecutorService.schedule(
+		endScheduledExecutorService.schedule(
 			new Callable<GameEvent>() 
 			{
 				public GameEvent call() throws Exception 
@@ -204,7 +217,7 @@ public class Game implements Comparable<Game>
 		    getGameLength().getStandardSeconds(),
 		    TimeUnit.SECONDS);
 
-		scheduledExecutorService.shutdown();
+		endScheduledExecutorService.shutdown();
 	}
 	
 	public void removeGameEvent(int pos)
