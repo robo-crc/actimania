@@ -11,6 +11,7 @@ using System.Threading;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections.Concurrent;
 
 namespace ArduinoToServer
 {
@@ -33,8 +34,7 @@ namespace ArduinoToServer
         int blue_score = 0;//Variable du score bleu
         int yellow_score = 0;//Variable du score jaune
 
-        string message;//Variable du contenu reçu depuis le Uno
-
+        ConcurrentQueue<string> messages = new ConcurrentQueue<string>();
 
         public Interface()
         {
@@ -63,10 +63,10 @@ namespace ArduinoToServer
             }
             else
             {
-                //this.receiveText.Text += "Text: ";
+                messages.Enqueue(text);
+                // Double message to be sure. Anyway, it will only Dequeue once.
                 this.receiveText.Text = "";
-                this.receiveText.Text += text;
-                //this.receiveText.Text += Environment.NewLine;
+                this.receiveText.Text = text;
             }
         }
 
@@ -78,7 +78,7 @@ namespace ArduinoToServer
                 {
                     if (port.BytesToRead > 0)
                     {
-                        message = port.ReadLine();
+                        String message = port.ReadLine();
                         this.SetText(message);
                     }
                 }
@@ -529,17 +529,26 @@ namespace ArduinoToServer
         private void ChangeTargetColor(object sender, EventArgs e)// Fonction lancée par défaut lors de la réception d'un message venant du Uno
                                                                     //Sert à: updater les couleurs de cibles, ou de détecter quand qqun a marqué 
         {
-            value = message.Replace("\r", "").Split('.');
-
-            if (value[0] == "C")
+            if(messages.IsEmpty)
             {
-                setScore(value[1]);
-                sendTargetHitToServer(value[1]);
+                return;
             }
-            else
+
+            String message = "";
+            while (messages.TryDequeue(out message))
             {
-                SetColor(value[0], value[1]);
-                sendActuatorChangedToServer(value[1], value[0]);
+                value = message.Replace("\r", "").Split('.');
+
+                if (value[0] == "C")
+                {
+                    setScore(value[1]);
+                    sendTargetHitToServer(value[1]);
+                }
+                else
+                {
+                    SetColor(value[0], value[1]);
+                    sendActuatorChangedToServer(value[1], value[0]);
+                }
             }
         }
 
