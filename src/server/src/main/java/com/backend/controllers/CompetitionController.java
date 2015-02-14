@@ -88,12 +88,58 @@ public class CompetitionController extends HttpServlet
 				LiveRefresh toggledLiveRefresh = new LiveRefresh(liveRefresh._id, !liveRefresh.isLiveRefreshOn);
 				essentials.database.save(toggledLiveRefresh);
 			}
+			else if(action.equals("overallCompetition"))
+			{
+				Competition competition = Competition.get(essentials.database);
+				ArrayList<SchoolInteger> kioskArray 			= new ArrayList<SchoolInteger>();
+				ArrayList<SchoolInteger> programmingArray 		= new ArrayList<SchoolInteger>();
+				ArrayList<SchoolInteger> robotConstructionArray = new ArrayList<SchoolInteger>();
+				ArrayList<SchoolInteger> robotDesignArray		= new ArrayList<SchoolInteger>();
+				ArrayList<SchoolInteger> sportsmanshipArray 	= new ArrayList<SchoolInteger>();
+				ArrayList<SchoolInteger> videoArray 			= new ArrayList<SchoolInteger>();
+				ArrayList<SchoolInteger> websiteDesignArray 	= new ArrayList<SchoolInteger>();
+				ArrayList<SchoolInteger> websiteJournalismArray = new ArrayList<SchoolInteger>();
+				
+				for(String parameter : Collections.list(request.getParameterNames()) )
+				{
+					final String kiosk 				= "kiosk_";
+					final String programming 		= "programming_";
+					final String robotConstruction 	= "robotConstruction_";
+					final String robotDesign 		= "robotDesign_";
+					final String sportsmanship 		= "sportsmanship_";
+					final String video 				= "video_";
+					final String websiteDesign 		= "websiteDesign_";
+					final String websiteJournalism 	= "websiteJournalism_";
+					
+					process(essentials, parameter, kiosk, 				kioskArray);
+					process(essentials, parameter, programming, 		programmingArray);
+					process(essentials, parameter, robotConstruction, 	robotConstructionArray);
+					process(essentials, parameter, robotDesign, 		robotDesignArray);
+					process(essentials, parameter, sportsmanship, 		sportsmanshipArray);
+					process(essentials, parameter, video, 				videoArray);
+					process(essentials, parameter, websiteDesign, 		websiteDesignArray);
+					process(essentials, parameter, websiteJournalism, 	websiteJournalismArray);
+				}
+				
+				Competition competitionUpdate = new Competition(competition._id, kioskArray, programmingArray, robotConstructionArray, robotDesignArray, sportsmanshipArray, videoArray, websiteDesignArray, websiteJournalismArray);
+				essentials.database.save(competitionUpdate);
+			}
 			
 			showPage(essentials);
 		}
 	}
 	
-	private void showPage(Essentials essentials) throws ServletException, IOException
+	private static void process(Essentials essentials, final String parameter, final String strConstant, ArrayList<SchoolInteger> schoolInteger)
+	{
+		if(parameter.startsWith(strConstant))
+		{
+			ObjectId id = new ObjectId(parameter.substring(strConstant.length()));
+			Integer value = Helpers.getParameter(parameter, Integer.class, essentials);
+			schoolInteger.add(new SchoolInteger(essentials.database.findOne(School.class, id), value));
+		}
+	}
+	
+	public static void showPage(Essentials essentials) throws ServletException, IOException
 	{
 		ArrayList<School> schools = School.getSchools(essentials);
 
@@ -108,7 +154,7 @@ public class CompetitionController extends HttpServlet
 	        }
 	    });
 		
-		essentials.request.setAttribute("competition", Competition.get(essentials));
+		essentials.request.setAttribute("competition", Competition.get(essentials.database));
 		essentials.request.setAttribute("skillsCompetition", SkillsCompetition.get(essentials.database));
 		essentials.request.setAttribute("isLivreRefreshOn", LiveRefresh.get(essentials).isLiveRefreshOn);
 		essentials.request.setAttribute("schools", schools);

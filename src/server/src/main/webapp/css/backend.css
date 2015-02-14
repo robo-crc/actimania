@@ -36,3 +36,14 @@ h2
 }
   .sortable li { width : 175px; }
   .sortableUI li span, .sortable li span { position: absolute; margin-left: -1.3em; }
+  
+.competition
+{
+	width: 65px;
+	text-align: center;
+}
+
+.competitionTable
+{
+	text-align: center;
+}

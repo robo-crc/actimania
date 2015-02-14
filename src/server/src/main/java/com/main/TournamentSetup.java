@@ -51,14 +51,14 @@ public class TournamentSetup
 
     			Competition competition = new Competition(
     					null,
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>());
+    					new ArrayList<SchoolInteger>(),
+    					new ArrayList<SchoolInteger>(),
+    					new ArrayList<SchoolInteger>(),
+    					new ArrayList<SchoolInteger>(),
+    					new ArrayList<SchoolInteger>(),
+    					new ArrayList<SchoolInteger>(),
+    					new ArrayList<SchoolInteger>(),
+    					new ArrayList<SchoolInteger>());
     			
     			ArrayList<SchoolInteger> pickBalls = new ArrayList<SchoolInteger>();
     			ArrayList<SchoolDuration> twoActuatorChanged = new ArrayList<SchoolDuration>();
@@ -71,14 +71,14 @@ public class TournamentSetup
     				twoActuatorChanged.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
     				twoTargetHits.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
 
-    				competition.kiosk.add(school);
-    				competition.programming.add(school);
-    				competition.robotConstruction.add(school);
-    				competition.robotDesign.add(school);
-    				competition.sportsmanship.add(school);
-    				competition.video.add(school);
-    				competition.websiteDesign.add(school);
-    				competition.websiteJournalism.add(school);
+    				competition.kiosk.add(new SchoolInteger(school, 0));
+    				competition.programming.add(new SchoolInteger(school, 0));
+    				competition.robotConstruction.add(new SchoolInteger(school, 0));
+    				competition.robotDesign.add(new SchoolInteger(school, 0));
+    				competition.sportsmanship.add(new SchoolInteger(school, 0));
+    				competition.video.add(new SchoolInteger(school, 0));
+    				competition.websiteDesign.add(new SchoolInteger(school, 0));
+    				competition.websiteJournalism.add(new SchoolInteger(school, 0));
     			}
     			essentials.database.dropCollection(SkillsCompetition.class);
     			essentials.database.dropCollection(Competition.class);
@@ -94,6 +94,8 @@ public class TournamentSetup
     			
     			essentials.database.save(liveRefresh);
     			essentials.database.save(skillsCompetition);
+    			essentials.database.save(competition);
+    			
     			essentials.database.save(competition);
     		}
     	}

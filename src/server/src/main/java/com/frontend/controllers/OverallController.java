@@ -23,7 +23,7 @@ public class OverallController extends HttpServlet
 		try(Essentials essentials = Essentials.createEssentials(request,  response))
 		{
 			Tournament tournament = Tournament.getTournament(essentials);
-			Competition competition = Competition.get(essentials);
+			Competition competition = Competition.get(essentials.database);
 			essentials.request.setAttribute("tournament", tournament);
 			essentials.request.setAttribute("competition", competition);
 			essentials.request.setAttribute("schoolsRanked", competition.getCompetitionRanking(essentials));

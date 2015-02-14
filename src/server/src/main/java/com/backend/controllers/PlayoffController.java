@@ -71,16 +71,16 @@ public class PlayoffController extends HttpServlet
 				switch(nextGameType)
 				{
 				case PLAYOFF_REPECHAGE:
-					startTime = new DateTime(2015, 2, 14, 8, 30);
+					startTime = new DateTime(2015, 2, 14, 9, 0);
 					break;
 				case PLAYOFF_QUARTER:
-					startTime = new DateTime(2015, 2, 14, 12, 20);
+					startTime = new DateTime(2015, 2, 14, 12, 30);
 					break;
 				case PLAYOFF_DEMI:
-					startTime = new DateTime(2015, 2, 14, 14, 40);
+					startTime = new DateTime(2015, 2, 14, 14, 50);
 					break;
 				case PLAYOFF_FINAL:
-					startTime = new DateTime(2015, 2, 14, 16, 30);
+					startTime = new DateTime(2015, 2, 14, 16, 40);
 					break;
 				default:
 					break;

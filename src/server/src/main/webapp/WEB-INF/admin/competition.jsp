@@ -132,24 +132,6 @@ $(document).ready(function(){
 	
 	$(".chrono").inputmask("9:99.99");
 });
-
-$(function() {
-    $( ".sortable" ).sortable({
-	    		update: function (event, ui) 
-	    		{
-	    	        var data = $(this).sortable('serialize');
-	    	        data += "&arrayId=" + this.id;
-	    	        console.log(data);
-	    	        // POST to server using $.post or $.ajax
-	    	        $.ajax(
-	    	        {
-	    	            data: data,
-	    	            type: 'POST',
-	    	            url: 'competitionUpdate'
-	    	        });
-	    	    }});
-    $( ".sortable" ).disableSelection();
-  });
 </script>
 </head>
 <body>
@@ -209,99 +191,42 @@ $(function() {
 	</form>
 	
 	<h1><%= strCompetition %></h1>
-	
-	<%!
-	public void outputListSchools(ArrayList<School> schools, JspWriter out) throws IOException
-	{
-		for(School school : schools)
-		{
-			out.write("<li id=\"id_" + school._id.toString() + "\"class=\"ui-state-default\"><span class=\"ui-icon ui-icon-arrowthick-2-n-s\"></span>" + school.name + "</li>\n");
-		}
-	}
-	%>
-	
-	<table>
-		<tr>
-			<th><%= strRank %></th>
-			<th><%= strKiosk %></th>
-			<th><%= strProgramming %></th>
-			<th><%= strRobotConstruction %></th>
-			<th><%= strRobotDesign %></th>
-		</tr>
-		<tr>
-			<td>
-				<ul id="position" class="sortableUI">
-				<%
-				for(int i = 1; i <= schools.size(); i++)
-				{
-					out.write("<li class=\"positionLi\">" + i + "</li>\n");
-				}
-				%>
-				</ul>
-			</td>
-			<td>
-				<ul id="kiosk" class="sortable">
-					<% outputListSchools(competition.kiosk, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="programming" class="sortable">
-					<% outputListSchools(competition.programming, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="robotConstruction" class="sortable">
-					<% outputListSchools(competition.robotConstruction, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="robotDesign" class="sortable">
-					<% outputListSchools(competition.robotDesign, out); %>
-				</ul>
-			</td>
-		</tr>
-	</table>
-	
-		<table>
-		<tr>
-			<th><%= strRank %></th>
-			<th><%= strSportsmanship %></th>
-			<th><%= strVideo %></th>
-			<th><%= strWebsiteDesign %></th>
-			<th><%= strWebsiteJournalism %></th>
-		</tr>
-		<tr>
-			<td>
-				<ul id="position" class="sortableUI">
-				<%
-				for(int i = 1; i <= schools.size(); i++)
-				{
-					out.write("<li class=\"positionLi\">" + i + "</li>\n");
-				}
-				%>
-				</ul>
-			</td>
-			<td>
-				<ul id="sportsmanship" class="sortable">
-					<% outputListSchools(competition.sportsmanship, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="video" class="sortable">
-					<% outputListSchools(competition.video, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="websiteDesign" class="sortable">
-					<% outputListSchools(competition.websiteDesign, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="websiteJournalism" class="sortable">
-					<% outputListSchools(competition.websiteJournalism, out); %>
-				</ul>
-			</td>
-		</tr>
-	</table>
+		
+	<form method="post">
+		<input type="hidden" name="action" value="overallCompetition" />
+		<table class="competitionTable">
+			<tr>
+				<th><%= strRank %></th>
+				<th><%= strKiosk %></th>
+				<th><%= strProgramming %></th>
+				<th><%= strRobotConstruction %></th>
+				<th><%= strRobotDesign %></th>
+				<th><%= strSportsmanship %></th>
+				<th><%= strVideo %></th>
+				<th><%= strWebsiteDesign %></th>
+				<th><%= strWebsiteJournalism %></th>
+			</tr>
+			<% for(School school : schools)
+			{ 
+			%>
+			<tr>
+				<td><%= school.name %></td>
+				<td><input class="spinner competition" type="text" name="kiosk_<%= school._id %>" 				value="<%= Competition.getSchoolInteger(competition.kiosk, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="programming_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.programming, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="robotConstruction_<%= school._id %>" 	value="<%= Competition.getSchoolInteger(competition.robotConstruction, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="robotDesign_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.robotDesign, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="sportsmanship_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.sportsmanship, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="video_<%= school._id %>" 				value="<%= Competition.getSchoolInteger(competition.video, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="websiteDesign_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.websiteDesign, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="websiteJournalism_<%= school._id %>" 	value="<%= Competition.getSchoolInteger(competition.websiteJournalism, school) %>" /></td>
+			</tr>
+			<%
+			}
+			%>
+		</table>
+		<div class="center">
+			<input type="submit" value="<%= strSave %>" />
+		</div>
+	</form>
 </body>
 </html>

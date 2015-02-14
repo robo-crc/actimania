@@ -130,14 +130,14 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 					</div>
 				</td>
 				<td class="center"><%= heatRanking.indexOf(school) + 1 %></td>
-				<td class="center"><%= competition.kiosk.indexOf(school) + 1 %></td>
-				<td class="center"><%= competition.programming.indexOf(school) + 1 %></td>
-				<td class="center"><%= competition.robotConstruction.indexOf(school) + 1 %></td>
-				<td class="center"><%= competition.robotDesign.indexOf(school) + 1 %></td>
-				<td class="center"><%= competition.sportsmanship.indexOf(school) + 1 %></td>
-				<td class="center"><%= competition.video.indexOf(school) + 1 %></td>
-				<td class="center"><%= competition.websiteDesign.indexOf(school) + 1 %></td>
-				<td class="center"><%= competition.websiteJournalism.indexOf(school) + 1 %></td>
+				<td class="center"><%= Competition.getSchoolInteger(competition.kiosk, school) %></td>
+				<td class="center"><%= Competition.getSchoolInteger(competition.programming, school) %></td>
+				<td class="center"><%= Competition.getSchoolInteger(competition.robotConstruction, school) %></td>
+				<td class="center"><%= Competition.getSchoolInteger(competition.robotDesign, school) %></td>
+				<td class="center"><%= Competition.getSchoolInteger(competition.sportsmanship, school) %></td>
+				<td class="center"><%= Competition.getSchoolInteger(competition.video, school) %></td>
+				<td class="center"><%= Competition.getSchoolInteger(competition.websiteDesign, school) %></td>
+				<td class="center"><%= Competition.getSchoolInteger(competition.websiteJournalism, school) %></td>
 			</tr>
 		<%
 		}
