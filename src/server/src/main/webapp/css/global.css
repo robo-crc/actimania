@@ -424,6 +424,11 @@ table.wrapper
     font-weight: normal;
 }
 
+.gameH2NotStarted
+{
+    font-weight: normal;
+    margin-top: 80px;
+}
 
 .gameSchoolInner
 {

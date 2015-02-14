@@ -191,6 +191,11 @@ public class Game implements Comparable<Game>
 		{
 			endScheduledExecutorService.shutdownNow();
 		}
+		if(liveScheduledExecutorService != null)
+		{
+			liveScheduledExecutorService.shutdownNow();
+			liveScheduledExecutorService = null;
+		}
 		endScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
 		endScheduledExecutorService.schedule(

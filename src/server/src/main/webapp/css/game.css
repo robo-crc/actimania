@@ -185,6 +185,12 @@
 	font-size: 33px;
 }
 
+.gameBarNotStarted
+{
+	width: 580px;
+    height: 16px;
+}
+
 .gameBar
 {
     width: 586px;
@@ -224,6 +230,16 @@
 .wrapper
 {
 	width: 586px;
+	padding-bottom: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	border-spacing: 0px;
+}
+
+.wrapperNotStarted
+{
+	width: 580px;
 	padding-bottom: 0px;
 	margin-top: 0px;
 	margin-bottom: 0px;
