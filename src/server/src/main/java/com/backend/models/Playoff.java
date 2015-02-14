@@ -171,11 +171,11 @@ public class Playoff
 			break;
 		case PLAYOFF_DEMI:
 		{
-			ArrayList<School> semiResults = tournament.getHeatRanking(GameTypeEnum.PLAYOFF_QUARTER);
-			ArrayList<School> schoolsPoolG = previousRound.playoffGroups.get(0).getSchoolsForNextRound(semiResults);
-			ArrayList<School> schoolsPoolH = previousRound.playoffGroups.get(1).getSchoolsForNextRound(semiResults);
-			ArrayList<School> schoolsPoolI = previousRound.playoffGroups.get(2).getSchoolsForNextRound(semiResults);
-			ArrayList<School> schoolsPoolJ = previousRound.playoffGroups.get(3).getSchoolsForNextRound(semiResults);
+			ArrayList<School> quarterResults = tournament.getHeatRanking(GameTypeEnum.PLAYOFF_QUARTER);
+			ArrayList<School> schoolsPoolG = previousRound.playoffGroups.get(0).getSchoolsForNextRound(quarterResults);
+			ArrayList<School> schoolsPoolH = previousRound.playoffGroups.get(1).getSchoolsForNextRound(quarterResults);
+			ArrayList<School> schoolsPoolI = previousRound.playoffGroups.get(2).getSchoolsForNextRound(quarterResults);
+			ArrayList<School> schoolsPoolJ = previousRound.playoffGroups.get(3).getSchoolsForNextRound(quarterResults);
 			
 			schoolsInGroup1.add(preliminaryRanking.get(0));
 			schoolsInGroup1.add(schoolsPoolG.get(0));
@@ -195,9 +195,9 @@ public class Playoff
 		}
 		case PLAYOFF_FINAL:
 		{
-			ArrayList<School> semiResults = tournament.getHeatRanking(GameTypeEnum.PLAYOFF_DEMI);
-			ArrayList<School> schoolsPoolK = previousRound.playoffGroups.get(0).getSchoolsForNextRound(semiResults);
-			ArrayList<School> schoolsPoolL = previousRound.playoffGroups.get(1).getSchoolsForNextRound(semiResults);
+			ArrayList<School> demiResults = tournament.getHeatRanking(GameTypeEnum.PLAYOFF_DEMI);
+			ArrayList<School> schoolsPoolK = previousRound.playoffGroups.get(0).getSchoolsForNextRound(demiResults);
+			ArrayList<School> schoolsPoolL = previousRound.playoffGroups.get(1).getSchoolsForNextRound(demiResults);
 			
 			schoolsInGroup1.add(schoolsPoolK.get(0));
 			schoolsInGroup1.add(schoolsPoolK.get(1));

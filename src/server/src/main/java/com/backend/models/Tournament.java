@@ -184,8 +184,14 @@ public class Tournament
 	        }
 	    });
 		
+		int skipGames = 0;
+		if(gameType == GameTypeEnum.PRELIMINARY)
+		{
+			skipGames = PRELIMINARY_GAMES_SKIPPED_IN_SCORE;
+		}
+		
 		int points = 0;
-		for(int i = 0; i < gamesForType.size() - PRELIMINARY_GAMES_SKIPPED_IN_SCORE; i++)
+		for(int i = 0; i < gamesForType.size() - skipGames; i++)
 		{
 			points += gamesForType.get(i).getScore(school);
 		}
@@ -194,6 +200,7 @@ public class Tournament
 		{
 			preliminarySchoolScore.put(school, points);
 		}
+		
 		return points;
 	}
 	
