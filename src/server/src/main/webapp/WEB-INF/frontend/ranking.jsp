@@ -14,9 +14,6 @@
 
 <%
 @SuppressWarnings("unchecked")
-ArrayList<School> heatRanking = (ArrayList<School>)request.getAttribute("heatRanking");
-
-@SuppressWarnings("unchecked")
 ArrayList<School> cumulativeRanking = (ArrayList<School>)request.getAttribute("cumulativeRanking");
 
 Tournament tournament = (Tournament)request.getAttribute("tournament");
@@ -90,7 +87,13 @@ LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of(
 <div class="bar grayBackgroundColor"></div>
 <table class="sortable rank">
 <tr>
-<th><%= strPosition %></th><th><%= strSchool %></th><th><%= strCompetition %></th><th><%= strPickupRace %></th><th><%= strTwoTargetHits %></th><th><%= strTwoActuatorChanged %></th>
+	<th><%= strPosition %></th>
+	<th><%= strSchool %></th>
+	<th><%= strScore %></th>
+	<th><%= strCompetition %></th>
+	<th><%= strPickupRace %></th>
+	<th><%= strTwoTargetHits %></th>
+	<th><%= strTwoActuatorChanged %></th>
 </tr>
 <tr class="whiteBackgroundColor"/>
 <%
@@ -109,6 +112,7 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 				<a class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 			</div>
 		</td>
+		<td class="center"><%= String.format("%.2f", tournament.getPreliminaryScore(school, skillsCompetition) * 100) %> %</td>
 		<td class="center"><%= tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) %></td>
 		
 		<td class="center"><%= skillsCompetition.getPickballs(school).integer %></td>

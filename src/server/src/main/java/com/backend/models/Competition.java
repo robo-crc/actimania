@@ -52,7 +52,7 @@ public class Competition
 		{
 			return 0;
 		}
-		return aspect.size() - aspect.indexOf(school);
+		return aspect.size() - aspect.indexOf(school) + 1;
 	}
 	
 	public static int getSchoolInteger(ArrayList<SchoolInteger> schoolIntegerList, School school)

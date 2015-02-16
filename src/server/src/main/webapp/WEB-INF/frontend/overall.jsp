@@ -37,6 +37,11 @@ LocalizedString strRank = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"POSITION"
 		), currentLocale);
 
+LocalizedString strScore = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "SCORE", 
+		Locale.FRENCH, 	"SCORE"
+		), currentLocale);
+
 LocalizedString strPlayoff = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "PLAYOFF", 
 		Locale.FRENCH, 	"ÉLIMINATOIRES"
@@ -101,6 +106,7 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 		<tr>
 			<th><%= strRank %></th>
 			<th><%= strSchool %></th>
+			<th><%= strScore %></th>
 			<th><%= strPlayoff %></th>
 			<th><%= strKiosk %></th>
 			<th><%= strProgramming %></th>
@@ -129,6 +135,7 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 						<a class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 					</div>
 				</td>
+				<td class="center"><%= competition.getSchoolScore(heatRanking, school) %></td>
 				<td class="center"><%= heatRanking.indexOf(school) + 1 %></td>
 				<td class="center"><%= Competition.getSchoolInteger(competition.kiosk, school) %></td>
 				<td class="center"><%= Competition.getSchoolInteger(competition.programming, school) %></td>
