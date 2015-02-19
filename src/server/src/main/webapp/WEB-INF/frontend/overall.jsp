@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.SchoolInteger"%>
 <%@page import="com.backend.models.enums.GameTypeEnum"%>
 <%@page import="com.backend.models.Tournament"%>
 <%@page import="java.io.IOException"%>
@@ -22,7 +23,7 @@ ArrayList<School> schoolsRanked 	= (ArrayList<School>) request.getAttribute("sch
 
 Locale currentLocale = request.getLocale();
 
-LocalizedString strOverall = new LocalizedString(ImmutableMap.of( 	
+LocalizedString strOverallTitle = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "ACTIMANIA FINAL RESULTS", 
 		Locale.FRENCH, 	"RÉSULTATS FINAUX D'ACTIMANIA"
 		), currentLocale);
@@ -42,7 +43,7 @@ LocalizedString strScore = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"SCORE"
 		), currentLocale);
 
-LocalizedString strPlayoff = new LocalizedString(ImmutableMap.of( 	
+LocalizedString strPlayoff1 = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "PLAYOFF", 
 		Locale.FRENCH, 	"ÉLIMINATOIRES"
 		), currentLocale);
@@ -92,9 +93,15 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 <html>
 <head>
 <%@include file="head.jsp" %>
-<title><%= strOverall %></title>
+<title><%= strOverallTitle %></title>
 <link rel="stylesheet" type="text/css" href="css/template.css">
 <script src="jquery/sorttable.js"></script>
+<style>
+.headerOverall
+{
+	font-weight: bold !important;
+}
+</style>
 </head>
 
 <body>
@@ -107,7 +114,7 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 			<th><%= strRank %></th>
 			<th><%= strSchool %></th>
 			<th><%= strScore %></th>
-			<th><%= strPlayoff %></th>
+			<th><%= strPlayoff1 %></th>
 			<th><%= strKiosk %></th>
 			<th><%= strProgramming %></th>
 			<th><%= strRobotConstruction %></th>
@@ -120,7 +127,7 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 		<tr class="whiteBackgroundColor"/>
 		
 		<%
-		ArrayList<School> heatRanking = tournament.getPlayoffRanking();
+		ArrayList<SchoolInteger> heatRanking = tournament.getPlayoffRanking();
 		for(int i = 0; i < schoolsRanked.size(); i++)
 		{
 			School school = schoolsRanked.get(i);

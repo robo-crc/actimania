@@ -339,6 +339,7 @@ public class Game implements Comparable<Game>
 		return this.gameNumber - o.gameNumber;
 	}
 	
+	// This functions is slow (400ms) on laptop with 105 games.
 	public static ArrayList<Game> getGames(Essentials essentials)
 	{
 		ArrayList<Game> games = Lists.newArrayList(essentials.database.find(Game.class, "{ }"));

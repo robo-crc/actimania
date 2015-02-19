@@ -16,7 +16,7 @@ import com.framework.models.Essentials;
 // Show the preliminary tournament ranking.
 
 @WebServlet("/ranking")
-public class RankingController extends HttpServlet
+public class PreliminaryRankingController extends HttpServlet
 {
 	private static final long serialVersionUID = -6706366323781617236L;
 

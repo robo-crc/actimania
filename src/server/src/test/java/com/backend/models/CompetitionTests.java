@@ -76,7 +76,7 @@ public class CompetitionTests
 		kiosk.add(school3);
 		kiosk.add(school4);
 		
-		ArrayList<School> schools = new ArrayList<School>();
+		ArrayList<SchoolInteger> schools = new ArrayList<SchoolInteger>();
 		schools.add(school1);
 		schools.add(school2);
 		schools.add(school3);

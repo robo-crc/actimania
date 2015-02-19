@@ -3,7 +3,6 @@ package com.backend.models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.TreeMap;
 
 import org.bson.types.ObjectId;
 
@@ -46,13 +45,14 @@ public class Competition
 		websiteJournalism 	= _websiteJournalism;
 	}
 	
-	private static int getAspectPoints(ArrayList<School> aspect, School school)
+	private static int getAspectPoints(ArrayList<SchoolInteger> aspect, School school)
 	{
-		if(aspect.indexOf(school) == -1)
+		int indexOf = aspect.indexOf(school);
+		if(indexOf == -1)
 		{
 			return 0;
 		}
-		return aspect.size() - aspect.indexOf(school) + 1;
+		return aspect.size() - indexOf + 1;
 	}
 	
 	public static int getSchoolInteger(ArrayList<SchoolInteger> schoolIntegerList, School school)
@@ -71,7 +71,7 @@ public class Competition
 	}
 	
 	
-	public int getSchoolScore(ArrayList<School> playoffRanking, School school)
+	public int getSchoolScore(ArrayList<SchoolInteger> playoffRanking, School school)
 	{
 		int score = getAspectPoints(playoffRanking, school) * 2;
 		score += getAspectPointInteger(robotDesign, school);
@@ -86,23 +86,23 @@ public class Competition
 		return score;
 	}
 	
-	public ArrayList<School> getCompetitionRanking(Essentials essentials)
+	public ArrayList<SchoolInteger> getCompetitionRanking(Essentials essentials)
 	{
-		ArrayList<School> schoolsRanking = new ArrayList<School>(School.getSchools(essentials));
+		ArrayList<SchoolInteger> schoolsRanking = new ArrayList<SchoolInteger>();
 		Tournament tournament = Tournament.getTournament(essentials);
 		
-		final TreeMap<School, Integer> schoolsScore = new TreeMap<School, Integer>();
-		
-		for(School school : schoolsRanking)
+		ArrayList<SchoolInteger> playoffRanking = tournament.getPlayoffRanking();
+	
+		for(School school : School.getSchools(essentials))
 		{
-			schoolsScore.put(school, getSchoolScore(tournament.getPlayoffRanking(), school));
+			schoolsRanking.add(new SchoolInteger(school, getSchoolScore(playoffRanking, school)));
 		}
 		
-		Collections.sort(schoolsRanking, new Comparator<School>() {
+		Collections.sort(schoolsRanking, new Comparator<SchoolInteger>() {
 	        @Override
-	        public int compare(School school1, School school2)
+	        public int compare(SchoolInteger school1, SchoolInteger school2)
 	        {
-	            return schoolsScore.get(school2) - schoolsScore.get(school1);
+	            return school2.integer - school1.integer;
 	        }
 	    });
 		

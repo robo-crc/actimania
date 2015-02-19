@@ -459,7 +459,7 @@ public class PlayoffTests
 		PlayoffRound finalRound = FakeTournament.processRound(null, playoff, tournament, demiRound, random, GameTypeEnum.PLAYOFF_FINAL);
 		
 		//System.out.println("FINAL RANKING");
-		ArrayList<School> finalRanking = tournament.getPlayoffRanking();
+		ArrayList<SchoolInteger> finalRanking = tournament.getPlayoffRanking();
 		for(School school : finalRanking)
 		{
 			//System.out.println(school.name);

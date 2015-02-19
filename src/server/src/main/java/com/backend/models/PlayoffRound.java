@@ -213,6 +213,18 @@ public class PlayoffRound
 		return schools;
 	}
 	
+	public ArrayList<ArrayList<SchoolInteger>> getSchoolsRankedByGroup(Tournament tournament)
+	{
+		ArrayList<SchoolInteger> heatRanking = tournament.getHeatRanking(gameType);
+		ArrayList<ArrayList<SchoolInteger>> ret = new ArrayList<ArrayList<SchoolInteger>>();
+		for(PlayoffGroup group : playoffGroups)
+		{
+			ret.add(group.getSchoolsScore(heatRanking));
+		}
+		
+		return ret;
+	}
+	
 	public static PlayoffRound get(Database database, GameTypeEnum gameType)
 	{
 		return database.findOne(PlayoffRound.class, "{ gameType : # }", gameType.toString());

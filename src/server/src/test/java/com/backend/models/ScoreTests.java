@@ -62,7 +62,7 @@ public class ScoreTests
 		Validate.isTrue(game.getScore(school) == 90);
 		
 		// Not 3 games yet.
-		Validate.isTrue(tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) == 0);
+		Validate.isTrue(tournament.getTotalScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 0);
 		
 		ArrayList<GameEvent> game2Events = getGameEvents();
 		game2Events.add(new PointModifierEvent(TeamEnum.BLUE, -20, null, DateTime.now()));
@@ -83,11 +83,11 @@ public class ScoreTests
 		Validate.isTrue(game3.getScore(new School(null, null)) == 0);
 		
 		// Best score is 90
-		Validate.isTrue(tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) == 90);
+		Validate.isTrue(tournament.getTotalScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 90);
 		
 		// Bad kids. A misconduct penalty!
 		game3Events.add(new MisconductPenaltyEvent(school, DateTime.now()));
-		Validate.isTrue(tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) == 0);
+		Validate.isTrue(tournament.getTotalScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 0);
 		
 		ArrayList<GameEvent> game4Events = new ArrayList<GameEvent>();
 		game4Events.add(new StartGameEvent(DateTime.now()));
@@ -97,7 +97,7 @@ public class ScoreTests
 		
 		Game game4 = new Game(null, 4, "", DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), yellowTeam, game4Events, false);
 		tournament.games.add(game4);
-		Validate.isTrue(tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) == 120);
+		Validate.isTrue(tournament.getTotalScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 120);
 		
 		ArrayList<GameEvent> game5Events = new ArrayList<GameEvent>();
 		game5Events.add(new StartGameEvent(DateTime.now()));
@@ -108,7 +108,17 @@ public class ScoreTests
 		Game game5 = new Game(null, 5, "", DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), yellowTeam, game5Events, false);
 		tournament.games.add(game5);
 		// 3 "best games" are 0 (misconduct penalty), 120, 90
-		Validate.isTrue(tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) == 210);
+		Validate.isTrue(tournament.getTotalScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 210);
+	}
+	
+	@Test
+	// Make sure we account for all games.
+	public void testGetScorePlayoff()
+	{
+		School school = new School(new ObjectId("545b6ccf92fc2aed1f73a57b"), "21 Jump Street");
+		
+		ArrayList<School> blueTeam = new ArrayList<School>();
+		blueTeam.add(school);
 	}
 }
 
