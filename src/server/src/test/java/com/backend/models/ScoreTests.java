@@ -115,10 +115,43 @@ public class ScoreTests
 	// Make sure we account for all games.
 	public void testGetScorePlayoff()
 	{
-		School school = new School(new ObjectId("545b6ccf92fc2aed1f73a57b"), "21 Jump Street");
+		testGetScorePlayoff(GameTypeEnum.PLAYOFF_REPECHAGE);
+		testGetScorePlayoff(GameTypeEnum.PLAYOFF_QUARTER);
+		testGetScorePlayoff(GameTypeEnum.PLAYOFF_DEMI);
+		testGetScorePlayoff(GameTypeEnum.PLAYOFF_FINAL);
+	}
+	
+	private void testGetScorePlayoff(GameTypeEnum gameType)
+	{
+	School school = new School(new ObjectId("545b6ccf92fc2aed1f73a57b"), "21 Jump Street");
 		
 		ArrayList<School> blueTeam = new ArrayList<School>();
 		blueTeam.add(school);
+		
+		Game game = new Game(null, 1, "", DateTime.now(), gameType, blueTeam, new ArrayList<School>(), getGameEvents(), false);
+		Tournament tournament = new Tournament(new ArrayList<School>(), new ArrayList<Game>());
+		tournament.schools.add(school);
+		tournament.games.add(game);
+		
+		Validate.isTrue(game.getScore(school) == 100);
+		Validate.isTrue(tournament.getTotalScoreNoCache(school, gameType) == 100);
+		
+		ArrayList<GameEvent> game2Events = getGameEvents();
+		game2Events.add(new PointModifierEvent(TeamEnum.BLUE, -20, null, DateTime.now()));
+		Game game2 = new Game(null, 2, "", DateTime.now(), gameType, blueTeam, new ArrayList<School>(), game2Events, false);
+		Validate.isTrue(game2.getScore(school) == 80);
+		tournament.games.add(game2);
+		Validate.isTrue(tournament.getTotalScoreNoCache(school, gameType) == 180);
+		
+		ArrayList<GameEvent> game3Events = new ArrayList<GameEvent>();
+		game3Events.add(new StartGameEvent(DateTime.now()));
+		game3Events.add(new PointModifierEvent(TeamEnum.YELLOW, 40, null, DateTime.now()));
+		ArrayList<School> yellowTeam = new ArrayList<School>();
+		yellowTeam.add(school);
+		
+		Game game3 = new Game(null, 3, "", DateTime.now(), gameType, new ArrayList<School>(), yellowTeam, game3Events, false);
+		tournament.games.add(game3);
+		Validate.isTrue(tournament.getTotalScoreNoCache(school, gameType) == 220);
 	}
 }
 
