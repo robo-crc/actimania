@@ -51,7 +51,7 @@ public class Tournament
 		return retGames;
 	}
 	
-	public ArrayList<SchoolInteger> getHeatRanking(final GameTypeEnum gameType)
+	public ArrayList<SchoolInteger> getRoundRanking(final GameTypeEnum gameType)
 	{
 		ArrayList<SchoolInteger> ranking = new ArrayList<SchoolInteger>();
 
@@ -60,7 +60,7 @@ public class Tournament
 		{
 			if(gameType == GameTypeEnum.PRELIMINARY || getGamesPlayed(games, school, gameType).size() != 0 )
 			{
-				SchoolInteger schoolScore = new SchoolInteger(school, getTotalScore(school, gameType));
+				SchoolInteger schoolScore = new SchoolInteger(school, getRoundScore(school, gameType));
 				ranking.add(schoolScore);
 			}
 		}
@@ -78,9 +78,9 @@ public class Tournament
 	
 	public double getPreliminaryHeatScore(School school)
 	{
-		ArrayList<SchoolInteger> ranking = getHeatRanking(GameTypeEnum.PRELIMINARY);
+		ArrayList<SchoolInteger> ranking = getRoundRanking(GameTypeEnum.PRELIMINARY);
 		double bestScore = ranking.get(0).integer;
-		double currentScore = getTotalScore(school, GameTypeEnum.PRELIMINARY);
+		double currentScore = getRoundScore(school, GameTypeEnum.PRELIMINARY);
 		
 		if(bestScore == 0)
 			return 0;
@@ -132,7 +132,7 @@ public class Tournament
 		preliminarySchoolScore.clear();
 	}
 	
-	public int getTotalScoreNoCache(final School school, GameTypeEnum gameType)
+	public int getRoundScoreNoCache(final School school, GameTypeEnum gameType)
 	{
 		ArrayList<Game> gamesForType = getGamesPlayed(games, school, gameType);
 		
@@ -186,14 +186,14 @@ public class Tournament
 		return points;
 	}
 	
-	public int getTotalScore(final School school, GameTypeEnum gameType)
+	public int getRoundScore(final School school, GameTypeEnum gameType)
 	{
 		if(gameType == GameTypeEnum.PRELIMINARY && preliminarySchoolScore.containsKey(school))
 		{
 			return preliminarySchoolScore.get(school);
 		}
 		
-		int points = getTotalScoreNoCache(school, gameType);
+		int points = getRoundScoreNoCache(school, gameType);
 		
 		if(gameType == GameTypeEnum.PRELIMINARY)
 		{
@@ -236,10 +236,10 @@ public class Tournament
 	
 	public ArrayList<SchoolInteger> getPlayoffRanking()
 	{
-		ArrayList<SchoolInteger> schoolsFinal 		= getHeatRanking(GameTypeEnum.PLAYOFF_FINAL);
-		ArrayList<SchoolInteger> schoolsDemi 		= getHeatRanking(GameTypeEnum.PLAYOFF_DEMI);
-		ArrayList<SchoolInteger> schoolsQuarter 	= getHeatRanking(GameTypeEnum.PLAYOFF_QUARTER);
-		ArrayList<SchoolInteger> schoolsRepechage 	= getHeatRanking(GameTypeEnum.PLAYOFF_REPECHAGE);
+		ArrayList<SchoolInteger> schoolsFinal 		= getRoundRanking(GameTypeEnum.PLAYOFF_FINAL);
+		ArrayList<SchoolInteger> schoolsDemi 		= getRoundRanking(GameTypeEnum.PLAYOFF_DEMI);
+		ArrayList<SchoolInteger> schoolsQuarter 	= getRoundRanking(GameTypeEnum.PLAYOFF_QUARTER);
+		ArrayList<SchoolInteger> schoolsRepechage 	= getRoundRanking(GameTypeEnum.PLAYOFF_REPECHAGE);
 		
 		ArrayList<SchoolInteger> finalDemi = mergeSchoolList(schoolsFinal, schoolsDemi);
 		ArrayList<SchoolInteger> finalDemiSemi = mergeSchoolList(finalDemi, schoolsQuarter);

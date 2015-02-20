@@ -30,7 +30,7 @@ public class PreliminaryRankingController extends HttpServlet
 			SkillsCompetition skillsCompetition = SkillsCompetition.get(essentials.database);
 			
 			essentials.request.setAttribute("tournament", tournament);
-			essentials.request.setAttribute("heatRanking", tournament.getHeatRanking(GameTypeEnum.PRELIMINARY));
+			essentials.request.setAttribute("heatRanking", tournament.getRoundRanking(GameTypeEnum.PRELIMINARY));
 			essentials.request.setAttribute("cumulativeRanking", tournament.getPreliminaryRanking(skillsCompetition));
 			essentials.request.setAttribute("skillsCompetition", skillsCompetition);
 			

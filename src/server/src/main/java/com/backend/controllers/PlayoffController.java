@@ -128,24 +128,24 @@ public class PlayoffController extends HttpServlet
 		GameTypeEnum nextRound = GameTypeEnum.NONE;
 		Boolean isCurrentRoundStarted = false;
 		
-		if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_REPECHAGE).size() == 0)
+		if(tournament.getRoundRanking(GameTypeEnum.PLAYOFF_REPECHAGE).size() == 0)
 		{
 			currentRound = GameTypeEnum.NONE;
 			nextRound = GameTypeEnum.PLAYOFF_REPECHAGE;
 		}
-		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_QUARTER).size() == 0)
+		else if(tournament.getRoundRanking(GameTypeEnum.PLAYOFF_QUARTER).size() == 0)
 		{
 			currentRound = GameTypeEnum.PLAYOFF_REPECHAGE;
 			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_REPECHAGE).get(0).getGameStates().size() == 0;
 			nextRound = GameTypeEnum.PLAYOFF_QUARTER;
 		}
-		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_DEMI).size() == 0)
+		else if(tournament.getRoundRanking(GameTypeEnum.PLAYOFF_DEMI).size() == 0)
 		{
 			currentRound = GameTypeEnum.PLAYOFF_QUARTER;
 			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_QUARTER).get(0).getGameStates().size() > 0;
 			nextRound = GameTypeEnum.PLAYOFF_DEMI;
 		}
-		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_FINAL).size() == 0)
+		else if(tournament.getRoundRanking(GameTypeEnum.PLAYOFF_FINAL).size() == 0)
 		{
 			currentRound = GameTypeEnum.PLAYOFF_DEMI;
 			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_DEMI).get(0).getGameStates().size() > 0;

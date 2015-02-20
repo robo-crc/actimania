@@ -62,7 +62,7 @@ public class ScoreTests
 		Validate.isTrue(game.getScore(school) == 90);
 		
 		// Not 3 games yet.
-		Validate.isTrue(tournament.getTotalScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 0);
+		Validate.isTrue(tournament.getRoundScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 0);
 		
 		ArrayList<GameEvent> game2Events = getGameEvents();
 		game2Events.add(new PointModifierEvent(TeamEnum.BLUE, -20, null, DateTime.now()));
@@ -83,11 +83,11 @@ public class ScoreTests
 		Validate.isTrue(game3.getScore(new School(null, null)) == 0);
 		
 		// Best score is 90
-		Validate.isTrue(tournament.getTotalScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 90);
+		Validate.isTrue(tournament.getRoundScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 90);
 		
 		// Bad kids. A misconduct penalty!
 		game3Events.add(new MisconductPenaltyEvent(school, DateTime.now()));
-		Validate.isTrue(tournament.getTotalScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 0);
+		Validate.isTrue(tournament.getRoundScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 0);
 		
 		ArrayList<GameEvent> game4Events = new ArrayList<GameEvent>();
 		game4Events.add(new StartGameEvent(DateTime.now()));
@@ -97,7 +97,7 @@ public class ScoreTests
 		
 		Game game4 = new Game(null, 4, "", DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), yellowTeam, game4Events, false);
 		tournament.games.add(game4);
-		Validate.isTrue(tournament.getTotalScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 120);
+		Validate.isTrue(tournament.getRoundScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 120);
 		
 		ArrayList<GameEvent> game5Events = new ArrayList<GameEvent>();
 		game5Events.add(new StartGameEvent(DateTime.now()));
@@ -108,7 +108,7 @@ public class ScoreTests
 		Game game5 = new Game(null, 5, "", DateTime.now(), GameTypeEnum.PRELIMINARY, new ArrayList<School>(), yellowTeam, game5Events, false);
 		tournament.games.add(game5);
 		// 3 "best games" are 0 (misconduct penalty), 120, 90
-		Validate.isTrue(tournament.getTotalScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 210);
+		Validate.isTrue(tournament.getRoundScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 210);
 	}
 	
 	@Test
@@ -134,14 +134,14 @@ public class ScoreTests
 		tournament.games.add(game);
 		
 		Validate.isTrue(game.getScore(school) == 100);
-		Validate.isTrue(tournament.getTotalScoreNoCache(school, gameType) == 100);
+		Validate.isTrue(tournament.getRoundScoreNoCache(school, gameType) == 100);
 		
 		ArrayList<GameEvent> game2Events = getGameEvents();
 		game2Events.add(new PointModifierEvent(TeamEnum.BLUE, -20, null, DateTime.now()));
 		Game game2 = new Game(null, 2, "", DateTime.now(), gameType, blueTeam, new ArrayList<School>(), game2Events, false);
 		Validate.isTrue(game2.getScore(school) == 80);
 		tournament.games.add(game2);
-		Validate.isTrue(tournament.getTotalScoreNoCache(school, gameType) == 180);
+		Validate.isTrue(tournament.getRoundScoreNoCache(school, gameType) == 180);
 		
 		ArrayList<GameEvent> game3Events = new ArrayList<GameEvent>();
 		game3Events.add(new StartGameEvent(DateTime.now()));
@@ -151,7 +151,7 @@ public class ScoreTests
 		
 		Game game3 = new Game(null, 3, "", DateTime.now(), gameType, new ArrayList<School>(), yellowTeam, game3Events, false);
 		tournament.games.add(game3);
-		Validate.isTrue(tournament.getTotalScoreNoCache(school, gameType) == 220);
+		Validate.isTrue(tournament.getRoundScoreNoCache(school, gameType) == 220);
 	}
 }
 

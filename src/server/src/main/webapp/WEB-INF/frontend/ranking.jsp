@@ -113,7 +113,7 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 			</div>
 		</td>
 		<td class="center"><%= String.format("%.2f", tournament.getPreliminaryScore(school, skillsCompetition) * 100) %> %</td>
-		<td class="center"><%= tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) %></td>
+		<td class="center"><%=tournament.getRoundScore(school, GameTypeEnum.PRELIMINARY)%></td>
 		
 		<td class="center"><%= skillsCompetition.getPickballs(school).integer %></td>
 		<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td>

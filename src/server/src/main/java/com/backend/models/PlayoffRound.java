@@ -215,7 +215,7 @@ public class PlayoffRound
 	
 	public ArrayList<ArrayList<SchoolInteger>> getSchoolsRankedByGroup(Tournament tournament)
 	{
-		ArrayList<SchoolInteger> heatRanking = tournament.getHeatRanking(gameType);
+		ArrayList<SchoolInteger> heatRanking = tournament.getRoundRanking(gameType);
 		ArrayList<ArrayList<SchoolInteger>> ret = new ArrayList<ArrayList<SchoolInteger>>();
 		for(PlayoffGroup group : playoffGroups)
 		{
