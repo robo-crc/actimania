@@ -1,4 +1,4 @@
-package com.frontend.controllers;
+package com.backend.controllers;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import com.backend.models.Competition;
 import com.backend.models.Tournament;
 import com.framework.models.Essentials;
 
-@WebServlet("/overall")
+@WebServlet("/admin/overall")
 public class OverallController extends HttpServlet
 {
 	private static final long serialVersionUID = -2575101334482168155L;
@@ -28,7 +28,7 @@ public class OverallController extends HttpServlet
 			essentials.request.setAttribute("competition", competition);
 			essentials.request.setAttribute("schoolsRanked", competition.getCompetitionRanking(essentials));
 
-			essentials.request.getRequestDispatcher("/WEB-INF/frontend/overall.jsp").forward(essentials.request, essentials.response);
+			essentials.request.getRequestDispatcher("/WEB-INF/admin/overall.jsp").forward(essentials.request, essentials.response);
 		}
 	}
 }

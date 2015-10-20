@@ -37,9 +37,11 @@ public class Essentials implements java.lang.AutoCloseable
 		creationTime = DateTime.now();
 	}
 	
+	private static Database databaseInstance = new Database(Database.DatabaseType.PRODUCTION);
+	
 	public static Essentials createEssentials(HttpServletRequest _request, HttpServletResponse _response)
 	{
-		Essentials essentials = new Essentials(new Database(Database.DatabaseType.PRODUCTION), SecurityUtils.getSubject(), _request, _response, new ArrayList<LocalizedString>());
+		Essentials essentials = new Essentials(databaseInstance, SecurityUtils.getSubject(), _request, _response, new ArrayList<LocalizedString>());
 		essentials.request.setAttribute("errorList", essentials.errorList);
 		return essentials;
 	}
@@ -50,10 +52,10 @@ public class Essentials implements java.lang.AutoCloseable
 		try
 		{
 			System.out.println("Time spent in essentials : " + String.valueOf(DateTime.now().getMillis() - creationTime.getMillis()));
-			if(database != null)
-			{
-				database.close();
-			}
+			//if(database != null)
+			//{
+			//	database.close();
+			//}
 		}
 		catch(Exception e)
 		{

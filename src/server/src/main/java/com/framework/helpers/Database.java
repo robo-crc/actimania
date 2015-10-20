@@ -1,7 +1,5 @@
 package com.framework.helpers;
 
-import java.net.UnknownHostException;
-
 import org.apache.commons.lang.Validate;
 import org.bson.types.ObjectId;
 import org.jongo.Jongo;
@@ -16,8 +14,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
+// Database class should be thread safe.
 public class Database
 {
+	// Jongo client is thread safe
 	private Jongo jongo;
 
 	public enum DatabaseType
@@ -27,6 +27,7 @@ public class Database
 		PRODUCTION,
 	}
 
+	// Mongo client is thread safe.
 	private MongoClient db;
 
 	public final String databaseName;
@@ -49,14 +50,7 @@ public class Database
 		}
 
 		// TODO : Detect where we are and assign database string according to location.
-		try
-		{
-			db = new MongoClient("127.0.0.1");
-		}
-		catch(UnknownHostException e)
-		{
-			e.printStackTrace();
-		}
+		db = new MongoClient("127.0.0.1");
 
 		if(db != null)
 		{

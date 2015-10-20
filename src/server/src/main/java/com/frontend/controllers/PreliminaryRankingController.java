@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.backend.models.Playoff;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
 import com.backend.models.enums.GameTypeEnum;
@@ -33,6 +34,7 @@ public class PreliminaryRankingController extends HttpServlet
 			essentials.request.setAttribute("heatRanking", tournament.getRoundRanking(GameTypeEnum.PRELIMINARY));
 			essentials.request.setAttribute("cumulativeRanking", tournament.getPreliminaryRanking(skillsCompetition));
 			essentials.request.setAttribute("skillsCompetition", skillsCompetition);
+			essentials.request.setAttribute("excludedSchools", Playoff.get(essentials.database).excludedSchools);
 			
 			essentials.request.getRequestDispatcher("/WEB-INF/frontend/ranking.jsp").forward(essentials.request, essentials.response);
 		}

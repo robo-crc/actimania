@@ -15,6 +15,7 @@
 <%
 @SuppressWarnings("unchecked")
 ArrayList<School> cumulativeRanking = (ArrayList<School>)request.getAttribute("cumulativeRanking");
+ArrayList<School> excludedSchools = (ArrayList<School>)request.getAttribute("excludedSchools");
 
 Tournament tournament = (Tournament)request.getAttribute("tournament");
 SkillsCompetition skillsCompetition = (SkillsCompetition)request.getAttribute("skillsCompetition");
@@ -65,6 +66,11 @@ LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "TWO SWITCHES<br/>CHANGED", 
 		Locale.FRENCH, 	"CHANGER DEUX<br/>ACTUATEURS"
 		), currentLocale);
+
+LocalizedString strNoShow = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "*No show for playoff", 
+		Locale.FRENCH, 	"*Ne se présentera pas aux éliminatoires"
+		), currentLocale);
 %>
 
 <!DOCTYPE html>
@@ -98,18 +104,28 @@ LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of(
 <tr class="whiteBackgroundColor"/>
 <%
 
+int nbExcludedSchools = 0;
 for( int position = 0; position < cumulativeRanking.size(); position++ )
 {
 	School school = cumulativeRanking.get(position);
+	boolean isExcluded = excludedSchools.contains(school);
+	String excludedStyle = "";
+	String posToDisplay = Integer.toString(position + 1 - nbExcludedSchools);
+	
+	if(isExcluded)
+	{
+		excludedStyle = "excludedSchool";
+		posToDisplay = "* " + 0;
+	}
 %>
-	<tr>
-		<td class="rankAlignLeft"><%= position + 1 %></td>
+	<tr class="<%= excludedStyle %>">
+		<td class="rankAlignLeft"><%= posToDisplay %></td>
 		<td class="rankAlignLeft">
 			<div class="scheduleSchoolDiv clear">
 				<div class="scheduleSchoolInner">
 					<img class="scheduleSchoolLogo" src="images/schools/32x32/<%= school.getCompactName() %>.png" />
 				</div>
-				<a class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+				<a class="scheduleSchoolText <%= excludedStyle %>" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 			</div>
 		</td>
 		<td class="center"><%= String.format("%.2f", tournament.getPreliminaryScore(school, skillsCompetition) * 100) %> %</td>
@@ -120,9 +136,23 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 		<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td>
 	</tr>
 <%
+	if(isExcluded)
+	{
+		nbExcludedSchools++;
+	}
 }
 %>
 </table>
+
+<%
+if(nbExcludedSchools > 0)
+{
+%>
+	<br/>
+	<div class="excludedSchool center"><%= strNoShow %></div>
+<%
+}
+%>
 <%@include file="footer.jsp" %>
 </body>
 </html>

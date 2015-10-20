@@ -359,6 +359,11 @@ table.wrapper
 	padding-right: 20px;
 }
 
+.excludedSchool
+{
+	text-decoration: line-through;
+}
+
 /* School */
 .schoolScore
 {
