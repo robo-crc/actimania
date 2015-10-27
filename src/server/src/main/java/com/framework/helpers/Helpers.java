@@ -64,6 +64,10 @@ public class Helpers
 			{
 				return (T)Integer.valueOf(safeParam);
 			}
+			else if(entityType == Boolean.class)
+			{
+				return (T)Boolean.valueOf(safeParam);
+			}
 			else
 			{
 				T applicationSpecific = ApplicationSpecific.getParameter(safeParam, entityType);

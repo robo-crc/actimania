@@ -119,7 +119,7 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 	}
 %>
 	<tr class="<%= excludedStyle %>">
-		<td class="rankAlignLeft"><%= posToDisplay %></td>
+		<td class="rankAlignLeft" sorttable_customkey="<%= position %>"><%= posToDisplay %></td>
 		<td class="rankAlignLeft">
 			<div class="scheduleSchoolDiv clear">
 				<div class="scheduleSchoolInner">
@@ -128,7 +128,7 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 				<a class="scheduleSchoolText <%= excludedStyle %>" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 			</div>
 		</td>
-		<td class="center"><%= String.format("%.2f", tournament.getPreliminaryScore(school, skillsCompetition) * 100) %> %</td>
+		<td class="center" sorttable_customkey="<%= position %>"><%= String.format("%.2f", tournament.getPreliminaryScore(school, skillsCompetition) * 100) %> %</td>
 		<td class="center"><%=tournament.getRoundScore(school, GameTypeEnum.PRELIMINARY)%></td>
 		
 		<td class="center"><%= skillsCompetition.getPickballs(school).integer %></td>

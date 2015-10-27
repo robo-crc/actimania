@@ -23,11 +23,6 @@ LocalizedString strSchedule = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"HORAIRE"
 		), request.getLocale());
 
-LocalizedString strOverall = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "OVERALL", 
-		Locale.FRENCH, 	"GLOBAL"
-		), request.getLocale());
-
 %>
 
 <div class="header">
@@ -45,6 +40,5 @@ LocalizedString strOverall = new LocalizedString(ImmutableMap.of(
 		<a class="headerSchedule" href="schedule"><%= strSchedule %></a>
 		<a class="headerRanking" href="ranking"><%= strPreliminary %></a>
 		<a class="headerPlayoff" href="playoff"><%= strPlayoff %></a>
-		<a class="headerOverall" href="overall"><%= strOverall %></a>
 	</div>
 </div>

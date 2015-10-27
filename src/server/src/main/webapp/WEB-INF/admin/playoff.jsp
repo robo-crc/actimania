@@ -91,6 +91,12 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 <head>
 <title><%= strPlayoffTitle %></title>
 <%@include file="head.jsp" %>
+<script src="../jquery/iframeresizer/js/iframeResizer.min.js"></script>
+<script>
+	$(function() {
+	  	  $('.frontendFrame').iFrameResize({});
+	});
+</script>
 </head>
 <body>
 	<%@include file="header.jsp" %>
@@ -162,4 +168,6 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 		<input type="hidden" name="currentRound" value="<%= currentRound %>" />
 		<input type="submit" value="<%= strDeleteCurrentRound %>" />
 	</form>
+	
+	<iframe src="../playoff?showHeader=false" class="frontendFrame" scrolling="no" frameborder="0" height="1500px" width="1200px"></iframe>
 </body>

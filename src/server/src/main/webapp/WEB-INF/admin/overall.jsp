@@ -137,7 +137,7 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 				<td class="rankAlignLeft">
 					<div class="scheduleSchoolDiv clear">
 						<div class="scheduleSchoolInner">
-							<img class="scheduleSchoolLogo" src="images/schools/32x32/<%= school.getCompactName() %>.png" />
+							<img class="scheduleSchoolLogo" src="../images/schools/32x32/<%= school.getCompactName() %>.png" />
 						</div>
 						<a class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 					</div>
