@@ -2,7 +2,7 @@ html
 {
 	width: 1190px;
 	margin-left: auto;
-	margin-right: auto;	
+	margin-right: auto;
 	font-weight: lighter;
 	font-family: 'Open Sans', sans-serif;
 }
@@ -499,4 +499,9 @@ table.wrapper
     height: 250px;
     width: 300px;
     margin-left: 50px;
+}
+
+.overallFrame
+{
+	margin-left: -450px;
 }

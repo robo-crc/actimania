@@ -53,7 +53,6 @@ LocalizedString sdrAdmin = new LocalizedString(ImmutableMap.of(
 	<div class="headerRubban grayBackgroundColor">
 		<a href="competition"><%= strCompetition %></a>
 		<a href="../schedule"><%= strSchedule %></a>
-		<a href="overall"><%= strOverall %></a>
 		<a href="playoff"><%= strPlayoff %></a>
 		<!-- <a href="schools"><%= strSchools %></a>  -->
 		<a href="users"><%= strUsers %></a>

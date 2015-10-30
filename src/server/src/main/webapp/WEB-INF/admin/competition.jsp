@@ -124,13 +124,15 @@ LocalizedString strLiveRefreshOff = new LocalizedString(ImmutableMap.of(
 <head>
 <title><%= strCompetitionTitle %></title>
 <%@include file="head.jsp" %>
-
+<script src="../jquery/iframeresizer/js/iframeResizer.min.js"></script>
 <script>
 $(document).ready(function(){
-	$( ".spinner" ).spinner();
-	$( ".spinner" ).numeric();
+	$('.overallFrame').iFrameResize({});
 	
-	$(".chrono").inputmask("9:99.99");
+	$( '.spinner' ).spinner();
+	$( '.spinner' ).numeric();
+	
+	$( '.chrono' ).inputmask("9:99.99");
 });
 </script>
 </head>
@@ -228,5 +230,7 @@ $(document).ready(function(){
 			<input type="submit" value="<%= strSave %>" />
 		</div>
 	</form>
+	
+	<iframe src="overall" class="overallFrame" scrolling="no" frameborder="0" width="2000px"></iframe>
 </body>
 </html>

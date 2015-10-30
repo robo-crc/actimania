@@ -94,19 +94,19 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 <head>
 <%@include file="head.jsp" %>
 <title><%= strOverallTitle %></title>
-<link rel="stylesheet" type="text/css" href="css/template.css">
-<script src="jquery/sorttable.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/template.css">
+<script src="../jquery/sorttable.js"></script>
 <style>
 .headerOverall
 {
 	font-weight: bold !important;
 }
 </style>
+<script type="text/javascript" src="../jquery/iframeresizer/js/iframeResizer.contentWindow.min.js"></script>
 </head>
 
 <body>
-<%@include file="header.jsp" %>
-	<h1 class="grayColor"><%= strOverall %></h1>
+	<h1 class="grayColor"><%= strOverallTitle %></h1>
 	<div class="bar grayBackgroundColor"></div>
 	
 	<table class="sortable rank">
@@ -126,11 +126,53 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 		</tr>
 		<tr class="whiteBackgroundColor"/>
 		
+		<%!
+		int getDisplayRank(int schoolInt, int nbSchools)
+		{
+			if(schoolInt == 0)
+			{
+				return nbSchools;
+			}
+			else
+			{
+				return schoolInt;
+			}
+		}
+		%>
+		
 		<%
 		ArrayList<SchoolInteger> heatRanking = tournament.getPlayoffRanking();
 		for(int i = 0; i < schoolsRanked.size(); i++)
 		{
 			School school = schoolsRanked.get(i);
+			
+			int kioskInt = Competition.getSchoolInteger(competition.kiosk, school);
+			int kioskPos = getDisplayRank(kioskInt, competition.kiosk.size());
+
+			int programmingInt = Competition.getSchoolInteger(competition.programming, school);
+			int programmingPos = getDisplayRank(programmingInt, competition.programming.size());
+			
+			int robotConstructionInt = Competition.getSchoolInteger(competition.robotConstruction, school);
+			int robotConstructionPos = getDisplayRank(robotConstructionInt, competition.robotConstruction.size());
+			
+			int robotDesignInt = Competition.getSchoolInteger(competition.robotDesign, school);
+			int robotDesignPos = getDisplayRank(robotDesignInt, competition.robotDesign.size());
+			
+			int sportsmanshipInt = Competition.getSchoolInteger(competition.sportsmanship, school);
+			int sportsmanshipPos = getDisplayRank(sportsmanshipInt, competition.sportsmanship.size());
+			
+			int videoInt = Competition.getSchoolInteger(competition.video, school);
+			int videoPos = getDisplayRank(videoInt, competition.video.size());
+			
+			int websiteDesignInt = Competition.getSchoolInteger(competition.websiteDesign, school);
+			int websiteDesignPos = getDisplayRank(websiteDesignInt, competition.websiteDesign.size());
+			
+			int websiteJournalismInt = Competition.getSchoolInteger(competition.websiteJournalism, school);
+			int websiteJournalismPos = getDisplayRank(websiteJournalismInt, competition.websiteJournalism.size());
+			
+			int playoffInt = heatRanking.indexOf(school) + 1;
+			int playoffPos = getDisplayRank(playoffInt, heatRanking.size() + 1);
+	
 		%>
 			<tr>
 				<td class="rankAlignLeft"><%= String.valueOf(i + 1) %></td>
@@ -143,19 +185,20 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 					</div>
 				</td>
 				<td class="center"><%= competition.getSchoolScore(heatRanking, school) %></td>
-				<td class="center"><%= heatRanking.indexOf(school) + 1 %></td>
-				<td class="center"><%= Competition.getSchoolInteger(competition.kiosk, school) %></td>
-				<td class="center"><%= Competition.getSchoolInteger(competition.programming, school) %></td>
-				<td class="center"><%= Competition.getSchoolInteger(competition.robotConstruction, school) %></td>
-				<td class="center"><%= Competition.getSchoolInteger(competition.robotDesign, school) %></td>
-				<td class="center"><%= Competition.getSchoolInteger(competition.sportsmanship, school) %></td>
-				<td class="center"><%= Competition.getSchoolInteger(competition.video, school) %></td>
-				<td class="center"><%= Competition.getSchoolInteger(competition.websiteDesign, school) %></td>
-				<td class="center"><%= Competition.getSchoolInteger(competition.websiteJournalism, school) %></td>
+				<td class="center" sorttable_customkey="<%= playoffPos %>"><%= playoffInt %></td>
+				<td class="center" sorttable_customkey="<%= kioskPos %>"><%= kioskInt %></td>
+				<td class="center" sorttable_customkey="<%= programmingPos %>"><%= programmingInt %></td>
+				<td class="center" sorttable_customkey="<%= robotConstructionPos %>"><%= robotConstructionInt %></td>
+				<td class="center" sorttable_customkey="<%= robotDesignPos %>"><%= robotDesignInt %></td>
+				<td class="center" sorttable_customkey="<%= sportsmanshipPos %>"><%= sportsmanshipInt %></td>
+				<td class="center" sorttable_customkey="<%= videoPos %>"><%= videoInt %></td>
+				<td class="center" sorttable_customkey="<%= websiteDesignPos %>"><%= websiteDesignInt %></td>
+				<td class="center" sorttable_customkey="<%= websiteJournalismPos %>"><%= websiteJournalismInt %></td>
 			</tr>
 		<%
 		}
 		%>
 	</table>
+	<br/>
 </body>
 </html>
