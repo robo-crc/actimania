@@ -99,13 +99,13 @@ public class TournamentScoreCalculator implements EasyScoreCalculator<Tournament
 					
 					if(previous2Game.getSchools().contains(school))
 					{
-						mediumScore -= 1;
-						softScore -= 1;
+						hardScore -= 1;
+						//softScore -= 1;
 					}
 					
 					if(previous3Game.getSchools().contains(school))
 					{
-						softScore -= 1;
+						hardScore -= 1;
 					}
 				}
 				
@@ -155,7 +155,7 @@ public class TournamentScoreCalculator implements EasyScoreCalculator<Tournament
 				// Let's give a small bonus when we play 2 games in a round.
 				if( USE_IDEAL_GAMES_SCORE && gamesPlayed != IDEAL_GAMES_PER_BLOCK )
 				{
-					softScore -= 1;
+					hardScore -= 1;
 				}
 			}
 			
@@ -239,7 +239,7 @@ public class TournamentScoreCalculator implements EasyScoreCalculator<Tournament
 			
 			for( School yellowSchool : yellowTeam )
 			{
-				schoolAgainst.get(blueSchool).put(yellowSchool, schoolWith.get(blueSchool).get(yellowSchool) + 1);
+				schoolAgainst.get(blueSchool).put(yellowSchool, schoolAgainst.get(blueSchool).get(yellowSchool) + 1);
 			}
 		}
 		
@@ -255,7 +255,7 @@ public class TournamentScoreCalculator implements EasyScoreCalculator<Tournament
 			
 			for( School blueSchool : blueTeam )
 			{
-				schoolAgainst.get(yellowSchool).put(blueSchool, schoolWith.get(yellowSchool).get(blueSchool) + 1);
+				schoolAgainst.get(yellowSchool).put(blueSchool, schoolAgainst.get(yellowSchool).get(blueSchool) + 1);
 			}
 		}
 	}
