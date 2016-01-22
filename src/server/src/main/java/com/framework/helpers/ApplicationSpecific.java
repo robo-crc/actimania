@@ -21,7 +21,7 @@ public class ApplicationSpecific
 	
 	public static String getDatabaseName()
 	{
-		return "Actimania";
+		return "Pythagorium";
 	}
 	
 	public static Set<String> getAllRoles()

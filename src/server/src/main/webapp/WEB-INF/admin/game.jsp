@@ -1,10 +1,8 @@
 <%@page import="com.backend.models.GameEvent.GameEvent"%>
 <%@page import="com.backend.models.enums.TeamEnum"%>
-<%@page import="com.backend.models.enums.ActuatorStateEnum"%>
 <%@page import="java.io.IOException"%>
 <%@page import="org.joda.time.DateTime"%>
 <%@page import="com.backend.models.GameState"%>
-<%@page import="com.backend.models.enums.TargetEnum"%>
 <%@page import="com.backend.models.enums.SideEnum"%>
 <%@page import="com.backend.models.enums.GameEventEnum"%>
 <%@page import="com.backend.models.Game"%>
@@ -110,9 +108,9 @@ LocalizedString strActuatorState = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"État de l'actuateur"
 		), currentLocale);
 
-LocalizedString strActuatorStateChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Switch state change", 
-		Locale.FRENCH, 	"Changement de l'état de l'actuateur"
+LocalizedString strScoreboardUpdate = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Update score board", 
+		Locale.FRENCH, 	"Mettre à jour le tableau de pointage"
 		), currentLocale);
 
 LocalizedString strAddAfter = new LocalizedString(ImmutableMap.of( 	
@@ -233,36 +231,6 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 	out.write("</select>");
 }
 
-public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOException
-{
-	LocalizedString strSide = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "Side ", 
-			Locale.FRENCH, 	"Côté du terrain "
-			), currentLocale);
-	
-	LocalizedString strTarget = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, " Target ", 
-			Locale.FRENCH, 	" Cible "
-			), currentLocale);
-	
-	out.write(strSide.toString());
-	out.write("<select name=\"side\">");
-	
- 	for(SideEnum side : SideEnum.values())
-	{
-		out.write("<option value=\"" + side.toString() + "\">" + side.toString().toLowerCase() + "</option>");
- 	}
- 	out.write("</select>");
- 	out.write("<br/>");
- 	out.write(strTarget.toString());
- 	
-	out.write("<select name=\"target\">");
- 	for(TargetEnum target : TargetEnum.values())
-	{
-		out.write("<option value=\"" + target.toString() + "\">" + target.toString().toLowerCase() + "</option>");
- 	}
-	out.write("</select>");
-}
 %>
 
 	<%
@@ -305,40 +273,6 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 	{
 	%>
 	<br/>
-	
-	<form method="post">
-		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.TARGET_HIT.toString() %>" />
-		<input type="hidden" name="id" value="<%= game._id %>" />
-		<h2><%= strTargetHit %></h2>
-
-		<% outputSideTarget(currentLocale, out); %>
-		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
-		<br/>
-		<input type="submit" value="<%= strAdd %>" />
-	</form>
-	
-	<br/>
-	
-	<form method="post">
-		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.ACTUATOR_STATE_CHANGED.toString() %>" />
-		<input type="hidden" name="id" value="<%= game._id %>" />
-		<h2><%= strActuatorStateChanged %></h2>
-		
-		<% outputSideTarget(currentLocale, out); %>
-		<br/>
-		<%= strActuatorState %>
-		<select name="actuatorState">
-	<% 	for(ActuatorStateEnum actuatorState : ActuatorStateEnum.values())
-		{ %>
-			<option value="<%= actuatorState.toString() %>"> <%= actuatorState.toString().toLowerCase() %></option>
-	 <% } %>
-		</select>
-		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
-		<br/>
-		<input type="submit" value="<%= strAdd %>" />
-	</form>
 	
 	<form method="post">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.SCHOOL_PENALTY.toString() %>" />

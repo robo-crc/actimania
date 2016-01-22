@@ -1,8 +1,8 @@
 package com.backend.models.enums;
 
-public enum ActuatorStateEnum 
+public enum TriangleStateEnum 
 {
-	CLOSED,
+	EMPTY,
 	BLUE,
 	YELLOW
 }

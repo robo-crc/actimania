@@ -129,17 +129,6 @@ public class Game implements Comparable<Game>
 			{
 				gameEvents.add(pos, gameEvent);
 				added = true;
-				
-				// When all 6 actuator state are the same color, the game ends.
-				if(gameEvent.getGameEventEnum() == GameEventEnum.ACTUATOR_STATE_CHANGED)
-				{
-					ArrayList<GameState> gameStates = getGameStates();
-					if(GameState.areAllActuatorSameColor(gameStates.get(gameStates.size() - 1).actuatorsStates))
-					{
-						gameEvents.add(new EndGameEvent(DateTime.now()));
-						createEndLiveCallback(_id, DatabaseType.PRODUCTION);
-					}
-				}
 			}
 			break;
 		}

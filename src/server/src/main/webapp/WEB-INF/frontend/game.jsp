@@ -1,6 +1,4 @@
 <%@page import="com.backend.models.SchoolInteger"%>
-<%@page import="com.backend.models.GameEvent.TargetHitEvent"%>
-<%@page import="com.backend.models.GameEvent.ActuatorStateChangedEvent"%>
 <%@page import="com.framework.helpers.Helpers"%>
 <%@page import="com.backend.models.GameEvent.SchoolPenaltyEvent"%>
 <%@page import="org.joda.time.Duration"%>
@@ -8,8 +6,6 @@
 <%@page import="com.backend.models.enums.SideEnum"%>
 <%@page import="com.backend.models.enums.GameEventEnum"%>
 <%@page import="org.joda.time.DateTime"%>
-<%@page import="com.backend.models.enums.TargetEnum"%>
-<%@page import="com.backend.models.enums.ActuatorStateEnum"%>
 <%@page import="com.backend.models.GameState"%>
 <%@page import="com.google.common.collect.ImmutableMap"%>
 <%@page import="java.util.Locale"%>
@@ -67,29 +63,6 @@ String strH1 = strGame.get(currentLocale) + " " + String.valueOf(game.gameNumber
 if(isLive)
 {
 	strH1 += strLiveHeader.get(currentLocale);
-}
-%>
-
-<%!
-public void outputTargetActuator(GameState state, SideEnum side, TargetEnum target, JspWriter out) throws IOException
-{
-	ActuatorStateEnum actuatorColor = state.actuatorsStates[side.ordinal()][target.ordinal()];
-	out.write("\t<img src=\"images/playfield/side" + side.name() + "_target" + target.name() + "_actuator" + actuatorColor.name() + ".svg\"" );
-	
-	out.write(" class=\"fieldImage");
-	out.write("\"/>\n");
-
-	if(state.lastGameEvent.getGameEventEnum() == GameEventEnum.TARGET_HIT)
-	{
-		TargetHitEvent targetHitEvent = (TargetHitEvent) state.lastGameEvent;
-		if(targetHitEvent.side == side && targetHitEvent.target == target && actuatorColor != ActuatorStateEnum.CLOSED)
-		{
-			out.write("\t<img src=\"images/blip" + actuatorColor.name() + ".gif\" class=\"targetValue targetHit side" + side.name() + "target" + target.name() + "\">" );
-		}
-	}
-	
-	int targetValue = GameState.calculateTargetHitValue(state.actuatorsStates, side, target);
-	out.write("\t<div class=\"targetValue side" + side.name() + "target" + target.name() + " actuator" + actuatorColor.name() + "\">" + targetValue + "</div>" );
 }
 %>
 
@@ -360,20 +333,6 @@ if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
 <%
 }
 %>
-
-			<div class="playfield">
-				<img src="images/playfield/playfield.svg" class="playfieldBackground fieldImage" />
-				<%
-				// Targets
-				outputTargetActuator(state, SideEnum.BLUE, TargetEnum.LOW, out);
-				outputTargetActuator(state, SideEnum.BLUE, TargetEnum.MID, out);
-				outputTargetActuator(state, SideEnum.BLUE, TargetEnum.HIGH, out);
-				
-				outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.LOW, out);
-				outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.MID, out);
-				outputTargetActuator(state, SideEnum.YELLOW, TargetEnum.HIGH, out);
-				%>
-			</div>
 		</li>
 	<%
 	}

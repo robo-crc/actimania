@@ -14,14 +14,9 @@ import com.backend.models.SchoolDuration;
 import com.backend.models.SchoolInteger;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
-import com.backend.models.GameEvent.ActuatorStateChangedEvent;
 import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.StartGameEvent;
-import com.backend.models.GameEvent.TargetHitEvent;
-import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameTypeEnum;
-import com.backend.models.enums.SideEnum;
-import com.backend.models.enums.TargetEnum;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.framework.models.Essentials;
@@ -46,7 +41,7 @@ public class FakeTournament
 		
 		for(int eventNo = 0; eventNo < nbEvents; eventNo++)
 		{
-			SideEnum side = SideEnum.values()[random.nextInt(SideEnum.values().length)];
+/*			SideEnum side = SideEnum.values()[random.nextInt(SideEnum.values().length)];
 			TargetEnum target = TargetEnum.values()[random.nextInt(TargetEnum.values().length)];
 			
 			boolean isTargetHit = random.nextBoolean();
@@ -59,6 +54,7 @@ public class FakeTournament
 				ActuatorStateEnum actuator = ActuatorStateEnum.values()[random.nextInt(ActuatorStateEnum.values().length)];
 				currentGame.addGameEvent(new ActuatorStateChangedEvent(side, target, actuator, DateTime.now()));
 			}
+*/
 		}
 		
 		currentGame.addGameEvent(new EndGameEvent(DateTime.now()));

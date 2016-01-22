@@ -8,14 +8,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.backend.models.GameEvent.ActuatorStateChangedEvent;
 import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.StartGameEvent;
-import com.backend.models.GameEvent.TargetHitEvent;
-import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.SideEnum;
-import com.backend.models.enums.TargetEnum;
 import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.LocalizedString;
 
@@ -38,7 +34,7 @@ public class GameStateTests
 		GameState gameState = new GameState(null, new StartGameEvent(DateTime.now()));
 		
 		validateInitialState(gameState);
-
+/*
 		// Target is hit, but all actuator still closed.
 		GameState gameState2 = new GameState(gameState, new TargetHitEvent(SideEnum.BLUE, TargetEnum.LOW, DateTime.now()));
 		validateInitialState(gameState2);
@@ -113,59 +109,15 @@ public class GameStateTests
 		GameState gameState20 = new GameState(gameState19, new EndGameEvent(DateTime.now()));
 		Validate.isTrue(gameState20.blueScore == 80);
 		Validate.isTrue(gameState20.yellowScore == 50);
-		
+	
 		// Make sure values are copied and not referenced.
 		validateInitialState(gameState2);
+*/
 	}
 	
 	private void validateInitialState(GameState gameState)
 	{
 		Validate.isTrue(gameState.blueScore == 0);
 		Validate.isTrue(gameState.yellowScore == 0);
-		for( SideEnum side : SideEnum.values() )
-		{
-			for( TargetEnum target : TargetEnum.values() )
-			{
-				ActuatorStateEnum actuator = gameState.actuatorsStates[side.ordinal()][target.ordinal()];
-				Validate.isTrue(actuator == ActuatorStateEnum.CLOSED);
-			}
-		}
-	}
-	
-	public void testAreAllActuatorSameColor()
-	{
-		GameState gameState = new GameState(null, new StartGameEvent(DateTime.now()));
-		
-		// Make sure that when all actuators are closed, we still get false.
-		Validate.isTrue(GameState.areAllActuatorSameColor(gameState.actuatorsStates) == false);
-		
-		GameState previousGameState = gameState;
-		gameState = new GameState(previousGameState, new ActuatorStateChangedEvent(SideEnum.BLUE, TargetEnum.LOW, ActuatorStateEnum.BLUE, DateTime.now()));
-		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
-
-		previousGameState = gameState;
-		gameState = new GameState(previousGameState, new ActuatorStateChangedEvent(SideEnum.BLUE, TargetEnum.MID, ActuatorStateEnum.BLUE, DateTime.now()));
-		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
-		
-		previousGameState = gameState;
-		gameState = new GameState(previousGameState, new ActuatorStateChangedEvent(SideEnum.BLUE, TargetEnum.HIGH, ActuatorStateEnum.BLUE, DateTime.now()));
-		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
-		
-		previousGameState = gameState;
-		gameState = new GameState(previousGameState, new ActuatorStateChangedEvent(SideEnum.YELLOW, TargetEnum.LOW, ActuatorStateEnum.BLUE, DateTime.now()));
-		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
-		
-		previousGameState = gameState;
-		gameState = new GameState(previousGameState, new ActuatorStateChangedEvent(SideEnum.YELLOW, TargetEnum.MID, ActuatorStateEnum.BLUE, DateTime.now()));
-		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
-		
-		// Yippi all actuator are the same color!
-		previousGameState = gameState;
-		gameState = new GameState(previousGameState, new ActuatorStateChangedEvent(SideEnum.YELLOW, TargetEnum.HIGH, ActuatorStateEnum.BLUE, DateTime.now()));
-		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == true);
-		
-		previousGameState = gameState;
-		gameState = new GameState(previousGameState, new ActuatorStateChangedEvent(SideEnum.BLUE, TargetEnum.MID, ActuatorStateEnum.YELLOW, DateTime.now()));
-		Validate.isTrue(GameState.areAllActuatorSameColor(previousGameState.actuatorsStates) == false);
 	}
 }

@@ -1,3 +1,6 @@
 1- Performance (Database/Server jam)
+	3 times better now
 2- Only update the points and new elements (Live refresh improvements)
 3- How to handle excluded school for preliminary ranking
+	Done
+4- Run scoreboard locally

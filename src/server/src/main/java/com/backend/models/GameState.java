@@ -4,54 +4,57 @@ import java.util.ArrayList;
 
 import org.bson.types.ObjectId;
 
-import com.backend.models.GameEvent.ActuatorStateChangedEvent;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
-import com.backend.models.GameEvent.TargetHitEvent;
 import com.backend.models.GameEvent.TeamPenaltyEvent;
-import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
-import com.backend.models.enums.SideEnum;
-import com.backend.models.enums.TargetEnum;
 import com.backend.models.enums.TeamEnum;
+import com.backend.models.enums.TriangleStateEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GameState 
 {
 	@JsonIgnore
-	public static final int[] ACTUATOR_MULTIPLIERS = { 0, 1, 2, 5 };
-	@JsonIgnore
-	public static final int[] TARGET_VALUE = { 10, 20, 40 };
+	public static final int[] PIECE_VALUE_PER_LEVEL = { 10, 20, 30, 40 };
 	
 	public final ObjectId 					_id;
-	public final ActuatorStateEnum[][] 		actuatorsStates;
+	public final Hole[]						triangleLeft;
+	public final Hole[]						triangleRight;
 	public final GameEvent					lastGameEvent;
 	public final int 						blueScore;
 	public final int 						yellowScore;
 	
 	public final ArrayList<SchoolInteger>	penalties;
 	public final ArrayList<School>			misconductPenalties;
+	public final int						pointModifierBlue;
+	public final int						pointModifierYellow;
 	
 	public GameState(
 			@JsonProperty("_id")					ObjectId 					_gameEventId,
-			@JsonProperty("actuatorsStates")		ActuatorStateEnum[][]		_actuatorsStates,
+			@JsonProperty("triangleStateLeft")		Hole[] 						_triangleLeft,
+			@JsonProperty("triangleStateRight")		Hole[] 						_triangleRight,
 			@JsonProperty("lastGameEvent")			GameEvent					_lastGameEvent,
 			@JsonProperty("blueScore")				int 						_blueScore,
 			@JsonProperty("yellowScore")			int 						_yellowScore,
 			@JsonProperty("penalties")				ArrayList<SchoolInteger>	_penalties,
-			@JsonProperty("misconductPenalties")	ArrayList<School>			_misconductPenalties
+			@JsonProperty("misconductPenalties")	ArrayList<School>			_misconductPenalties,
+			@JsonProperty("pointModifierBlue")		int							_pointModifierBlue,
+			@JsonProperty("pointModifierYellow")	int							_pointModifierYellow
 			)
 	{
 		_id 				= _gameEventId;
-		actuatorsStates 	= _actuatorsStates;
+		triangleLeft		= 	_triangleLeft;
+		triangleRight 		= 	_triangleRight;
 		lastGameEvent		= _lastGameEvent;
 		blueScore 			= _blueScore;
 		yellowScore 		= _yellowScore;
 		penalties 			= _penalties;
 		misconductPenalties	= _misconductPenalties;
+		pointModifierBlue	= _pointModifierBlue;
+		pointModifierYellow	= _pointModifierYellow;
 	}
 	
 	public GameState(GameState previousState, GameEvent gameEvent)
@@ -59,24 +62,22 @@ public class GameState
 		_id = null;
 		lastGameEvent = gameEvent;
 
-		ActuatorStateEnum[][] localActuatorState = null;
+		Hole[] localTriangleLeft = null;
+		Hole[] localTriangleRight = null;
+		
 		int localBlueScore = 0;
 		int localYellowScore = 0;
+		
+		int localModifierBlue = 0;
+		int localModifierYellow = 0;
+		
 		ArrayList<SchoolInteger> 	localPenalties = null;
-		ArrayList<School> 	localMisconductPenalties = null;
+		ArrayList<School> 			localMisconductPenalties = null;
 		
 		if(gameEvent.getGameEventEnum() == GameEventEnum.START_GAME)
 		{
-			localActuatorState = new ActuatorStateEnum[SideEnum.values().length][TargetEnum.values().length];
-			for( SideEnum side : SideEnum.values() )
-			{
-				for( TargetEnum target : TargetEnum.values() )
-				{
-					localActuatorState[side.ordinal()][target.ordinal()] = ActuatorStateEnum.CLOSED;
-				}
-			}
-			localBlueScore = 0;
-			localYellowScore = 0;
+			localTriangleLeft = new Hole[9];
+			localTriangleRight = new Hole[9];
 			
 			localPenalties = new ArrayList<SchoolInteger>();
 			localMisconductPenalties = new ArrayList<School>();
@@ -84,49 +85,28 @@ public class GameState
 		else
 		{
 			// We need to make a copy of the array so that the array is not a reference of each
-			localActuatorState = new ActuatorStateEnum[SideEnum.values().length][TargetEnum.values().length];
-			for( SideEnum side : SideEnum.values() )
-			{
-				for( TargetEnum target : TargetEnum.values() )
-				{
-					localActuatorState[side.ordinal()][target.ordinal()] = previousState.actuatorsStates[side.ordinal()][target.ordinal()];
-				}
-			}
-			
-			localBlueScore	 = previousState.blueScore;
-			localYellowScore = previousState.yellowScore;
+			localTriangleLeft = previousState.triangleLeft.clone();
+			localTriangleLeft = previousState.triangleRight.clone();
+
+			localBlueScore = GetScore(TeamEnum.BLUE, localTriangleLeft) + GetScore(TeamEnum.BLUE, localTriangleRight);
+			localYellowScore = GetScore(TeamEnum.YELLOW, localTriangleLeft) + GetScore(TeamEnum.YELLOW, localTriangleRight);
+
+			localModifierBlue = previousState.pointModifierBlue;
+			localModifierYellow = previousState.pointModifierYellow;
 			
 			localPenalties 				= new ArrayList<SchoolInteger>(previousState.penalties);
 			localMisconductPenalties	= new ArrayList<School>(previousState.misconductPenalties);
 
-			if(gameEvent.getGameEventEnum() == GameEventEnum.TARGET_HIT)
-			{
-				TargetHitEvent targetHitevent = (TargetHitEvent)gameEvent;
-				ActuatorStateEnum currentActuator = localActuatorState[targetHitevent.side.ordinal()][targetHitevent.target.ordinal()];
-				if(currentActuator == ActuatorStateEnum.BLUE)
-				{
-					localBlueScore += calculateTargetHitValue(localActuatorState, targetHitevent.side, targetHitevent.target);
-				}
-				else if(currentActuator == ActuatorStateEnum.YELLOW)
-				{
-					localYellowScore += calculateTargetHitValue(localActuatorState, targetHitevent.side, targetHitevent.target);
-				}
-			}
-			else if(gameEvent.getGameEventEnum() == GameEventEnum.ACTUATOR_STATE_CHANGED)
-			{
-				ActuatorStateChangedEvent actuatorStateChangedEvent = (ActuatorStateChangedEvent)gameEvent;
-				localActuatorState[actuatorStateChangedEvent.side.ordinal()][actuatorStateChangedEvent.target.ordinal()] = actuatorStateChangedEvent.actuatorState;
-			}
-			else if(gameEvent.getGameEventEnum() == GameEventEnum.POINT_MODIFIER)
+			if(gameEvent.getGameEventEnum() == GameEventEnum.POINT_MODIFIER)
 			{
 				PointModifierEvent pointModifierEvent = (PointModifierEvent) gameEvent;
 				if(pointModifierEvent.team == TeamEnum.BLUE)
 				{
-					localBlueScore += pointModifierEvent.points;
+					localModifierBlue += pointModifierEvent.points;
 				}
 				else if(pointModifierEvent.team == TeamEnum.YELLOW)
 				{
-					localYellowScore += pointModifierEvent.points;
+					localModifierYellow += pointModifierEvent.points;
 				}
 			}
 			else if(gameEvent.getGameEventEnum() == GameEventEnum.SCHOOL_PENALTY)
@@ -139,11 +119,11 @@ public class GameState
 				TeamPenaltyEvent teamPenaltyEvent = (TeamPenaltyEvent) gameEvent;
 				if(teamPenaltyEvent.team == TeamEnum.BLUE)
 				{
-					localBlueScore -= teamPenaltyEvent.pointsDeduction;
+					localModifierBlue -= teamPenaltyEvent.pointsDeduction;
 				}
 				else if(teamPenaltyEvent.team == TeamEnum.YELLOW)
 				{
-					localYellowScore -= teamPenaltyEvent.pointsDeduction;
+					localModifierYellow -= teamPenaltyEvent.pointsDeduction;
 				}
 			}
 			else if(gameEvent.getGameEventEnum() == GameEventEnum.MISCONDUCT_PENALTY)
@@ -157,51 +137,120 @@ public class GameState
 			}
 		}
 
-		actuatorsStates 	= localActuatorState;
-		blueScore 			= localBlueScore;
-		yellowScore 		= localYellowScore;
+		triangleRight		= localTriangleRight;
+		triangleLeft		= localTriangleLeft;
+		blueScore 			= localBlueScore + localModifierBlue;
+		yellowScore 		= localYellowScore + localModifierYellow;
+		pointModifierBlue	= localModifierBlue;
+		pointModifierYellow	= localModifierYellow;
 		penalties			= localPenalties;
 		misconductPenalties	= localMisconductPenalties;
 	}
 	
-	public static int calculateTargetHitValue(ActuatorStateEnum[][] localActuatorStates, SideEnum side, TargetEnum targetHit)
+	public static int GetScore(TeamEnum team, Hole[] triangle)
 	{
-		ActuatorStateEnum actuatorValue = localActuatorStates[side.ordinal()][targetHit.ordinal()];
+		TriangleStateEnum triangleState = null;
 		
-		if(actuatorValue == ActuatorStateEnum.CLOSED)
+		if(team == TeamEnum.BLUE)
 		{
-			return 0;
+			triangleState = TriangleStateEnum.BLUE;
+		}
+		else if(team == TeamEnum.YELLOW)
+		{
+			triangleState = TriangleStateEnum.YELLOW;
 		}
 		
-		int numMultiplier = 0;
-		
-		for(ActuatorStateEnum actuator : localActuatorStates[side.ordinal()])
+		int score = 0;
+		for(int i = 0; i < triangle.length; i++)
 		{
-			if(actuatorValue == actuator)
-			{
-				numMultiplier++;
-			}
+			score += (GetPieceValueByVertex(i) * triangle[i].GetNumberOf(triangleState));
 		}
 		
-		return ACTUATOR_MULTIPLIERS[numMultiplier] * TARGET_VALUE[targetHit.ordinal()];
+		score *= GetMultiplier(triangleState, triangle);
+		
+		return score;
 	}
 	
-	public static boolean areAllActuatorSameColor(ActuatorStateEnum[][] localActuatorStates)
+	public static int GetPieceValueByVertex(int vertex)
 	{
-		ActuatorStateEnum actuatorState = localActuatorStates[0][0];
-		
-		for( SideEnum side : SideEnum.values() )
+		switch(vertex)
 		{
-			for( TargetEnum target : TargetEnum.values() )
+		case 0:
+			return PIECE_VALUE_PER_LEVEL[3];
+		case 1:
+		case 2:
+			return PIECE_VALUE_PER_LEVEL[2];
+		case 3:
+		case 4:
+		case 5:
+			return PIECE_VALUE_PER_LEVEL[1];
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+			return PIECE_VALUE_PER_LEVEL[0];
+		}
+		assert(true);
+		return 0;
+	}
+	
+	public static int GetMultiplier(TriangleStateEnum triangleState, Hole[] triangle)
+	{
+		/*
+			   0
+			  1 2
+			 3 4 5
+			6 7 8 9
+
+			0 1 3 6 7 8 9 5 2
+			0 1 3 4 5 2
+			1 3 6 7 8 4
+			2 3 7 8 9 5
+			0 1 2
+			1 3 4
+			2 4 5
+			3 6 7
+			4 7 8
+			5 8 9
+			1 4 2
+			3 4 7
+			4 5 8
+		 */
+		
+		if( foundTriangle(triangle, triangleState, new int[] {0, 1, 3, 6, 7, 8, 9, 5, 2} ))
+		{
+			return 4;
+		}
+		else if( foundTriangle(triangle, triangleState, new int[] {0, 1, 3, 4, 5, 2} ) ||
+				 foundTriangle(triangle, triangleState, new int[] {1, 3, 6, 7, 8, 4} ) ||
+				 foundTriangle(triangle, triangleState, new int[] {2, 3, 7, 8, 9, 5} ))
+		{
+			return 3;
+		}
+		else if( foundTriangle(triangle, triangleState, new int[] {0, 1, 2} ) ||
+				 foundTriangle(triangle, triangleState, new int[] {1, 3, 4} ) ||
+				 foundTriangle(triangle, triangleState, new int[] {2, 4, 5} ) ||
+				 foundTriangle(triangle, triangleState, new int[] {3, 6, 7} ) ||
+				 foundTriangle(triangle, triangleState, new int[] {4, 7, 8} ) ||
+				 foundTriangle(triangle, triangleState, new int[] {5, 8, 9} ) ||
+				 foundTriangle(triangle, triangleState, new int[] {1, 4, 2} ) ||
+				 foundTriangle(triangle, triangleState, new int[] {3, 4, 7} ) ||	 
+				 foundTriangle(triangle, triangleState, new int[] {4, 5, 8} ))
+		{
+			return 2;
+		}
+		return 1;
+	}
+	
+	public static boolean foundTriangle(Hole[] triangle, TriangleStateEnum triangleState, int[] vertexList)
+	{
+		for(int i = 0; i < vertexList.length; i++)
+		{
+			if(triangle[vertexList[i]].Front() != triangleState)
 			{
-				ActuatorStateEnum currentState = localActuatorStates[side.ordinal()][target.ordinal()];
-				if(currentState == ActuatorStateEnum.CLOSED || actuatorState != currentState)
-				{
-					return false;
-				}
+				return false;
 			}
 		}
-		
 		return true;
 	}
 }

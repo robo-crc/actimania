@@ -14,19 +14,15 @@ import org.joda.time.DateTime;
 
 import com.backend.models.Game;
 import com.backend.models.School;
-import com.backend.models.GameEvent.ActuatorStateChangedEvent;
 import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
 import com.backend.models.GameEvent.StartGameEvent;
-import com.backend.models.GameEvent.TargetHitEvent;
 import com.backend.models.GameEvent.TeamPenaltyEvent;
-import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.SideEnum;
-import com.backend.models.enums.TargetEnum;
 import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.ApplicationSpecific;
 import com.framework.helpers.Helpers;
@@ -109,7 +105,7 @@ public class GameController extends HttpServlet
 			
 			Game.createEndGameCallback(gameId);
 		}
-		else if( gameEvent.equalsIgnoreCase(GameEventEnum.ACTUATOR_STATE_CHANGED.toString()) )
+/*		else if( gameEvent.equalsIgnoreCase(GameEventEnum.ACTUATOR_STATE_CHANGED.toString()) )
 		{
 			SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
 			TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
@@ -124,6 +120,7 @@ public class GameController extends HttpServlet
 			
 			addToGame(essentials, game, new TargetHitEvent(side, target, DateTime.now()));
 		}
+		*/
 		else if( gameEvent.equalsIgnoreCase(GameEventEnum.SCHOOL_PENALTY.toString()) )
 		{
 			ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
