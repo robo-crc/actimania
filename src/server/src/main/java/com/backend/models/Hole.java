@@ -18,7 +18,14 @@ public class Hole
 	
 	public TriangleStateEnum Front()
 	{
-		return triangleStates[0];
+		for(int i = 0; i < triangleStates.length; i++)
+		{
+			if(triangleStates[i] != TriangleStateEnum.EMPTY)
+			{
+				return triangleStates[i];
+			}
+		}
+		return TriangleStateEnum.EMPTY;
 	}
 	
 	public int GetNumberOf(TriangleStateEnum triangleState)

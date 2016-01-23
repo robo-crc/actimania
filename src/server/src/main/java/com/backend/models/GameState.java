@@ -76,8 +76,8 @@ public class GameState
 		
 		if(gameEvent.getGameEventEnum() == GameEventEnum.START_GAME)
 		{
-			localTriangleLeft = new Hole[9];
-			localTriangleRight = new Hole[9];
+			localTriangleLeft = InitializeTriangle();
+			localTriangleRight = InitializeTriangle();
 			
 			localPenalties = new ArrayList<SchoolInteger>();
 			localMisconductPenalties = new ArrayList<School>();
@@ -147,6 +147,16 @@ public class GameState
 		misconductPenalties	= localMisconductPenalties;
 	}
 	
+	public static Hole[] InitializeTriangle()
+	{
+		Hole[] triangle = new Hole[10];
+		for(int i = 0; i < triangle.length; i++)
+		{
+			triangle[i] = new Hole();
+		}
+		return triangle;
+	}
+	
 	public static int GetScore(TeamEnum team, Hole[] triangle)
 	{
 		TriangleStateEnum triangleState = null;
@@ -205,7 +215,7 @@ public class GameState
 			0 1 3 6 7 8 9 5 2
 			0 1 3 4 5 2
 			1 3 6 7 8 4
-			2 3 7 8 9 5
+			2 4 7 8 9 5
 			0 1 2
 			1 3 4
 			2 4 5
@@ -223,7 +233,7 @@ public class GameState
 		}
 		else if( foundTriangle(triangle, triangleState, new int[] {0, 1, 3, 4, 5, 2} ) ||
 				 foundTriangle(triangle, triangleState, new int[] {1, 3, 6, 7, 8, 4} ) ||
-				 foundTriangle(triangle, triangleState, new int[] {2, 3, 7, 8, 9, 5} ))
+				 foundTriangle(triangle, triangleState, new int[] {2, 4, 7, 8, 9, 5} ))
 		{
 			return 3;
 		}

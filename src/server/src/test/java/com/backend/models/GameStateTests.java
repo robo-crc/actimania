@@ -13,6 +13,7 @@ import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TeamEnum;
+import com.backend.models.enums.TriangleStateEnum;
 import com.framework.helpers.LocalizedString;
 
 public class GameStateTests 
@@ -113,6 +114,78 @@ public class GameStateTests
 		// Make sure values are copied and not referenced.
 		validateInitialState(gameState2);
 */
+	}
+	
+	@Test
+	public void GetMultiplier()
+	{
+		Hole[] triangle = GameState.InitializeTriangle();
+		
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.BLUE, triangle) == 1);
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.YELLOW, triangle) == 1);
+		
+		triangle[0].triangleStates[0] = TriangleStateEnum.BLUE;
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.BLUE, triangle) == 1);
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.YELLOW, triangle) == 1);
+		
+		/*
+		       0
+			  1 2
+			 3 4 5
+			6 7 8 9
+		 */
+		triangle[1].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangle[2].triangleStates[0] = TriangleStateEnum.BLUE;
+		
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.BLUE, triangle) == 2);
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.YELLOW, triangle) == 1);
+		
+		triangle[4].triangleStates[0] = TriangleStateEnum.YELLOW;
+		triangle[5].triangleStates[0] = TriangleStateEnum.YELLOW;
+		triangle[8].triangleStates[0] = TriangleStateEnum.YELLOW;
+		
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.BLUE, triangle) == 2);
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.YELLOW, triangle) == 2);
+		
+		triangle[4].triangleStates[1] = TriangleStateEnum.BLUE;
+
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.BLUE, triangle) == 2);
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.YELLOW, triangle) == 2);
+
+		triangle[2].triangleStates[0] = TriangleStateEnum.YELLOW;
+		triangle[7].triangleStates[0] = TriangleStateEnum.YELLOW;
+		triangle[9].triangleStates[0] = TriangleStateEnum.YELLOW;
+
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.BLUE, triangle) == 1);
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.YELLOW, triangle) == 3);
+
+		/*
+	       0
+		  1 2
+		 3 4 5
+		6 7 8 9
+	 */
+
+		triangle[0].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangle[1].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangle[3].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangle[4].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangle[5].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangle[2].triangleStates[0] = TriangleStateEnum.BLUE;
+		
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.BLUE, triangle) == 3);
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.YELLOW, triangle) == 1);
+
+		triangle[0].triangleStates[0] = TriangleStateEnum.YELLOW;
+		triangle[1].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangle[3].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangle[6].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangle[7].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangle[8].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangle[4].triangleStates[0] = TriangleStateEnum.BLUE;
+		
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.BLUE, triangle) == 3);
+		Validate.isTrue(GameState.GetMultiplier(TriangleStateEnum.YELLOW, triangle) == 1);		
 	}
 	
 	private void validateInitialState(GameState gameState)
