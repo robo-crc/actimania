@@ -68,14 +68,14 @@ public class FakeTournament
 			{
 				Tournament tournament = Tournament.getTournament(essentials);
 				
-				ArrayList<SchoolInteger> pickBallsArray = new ArrayList<SchoolInteger>();
+				ArrayList<SchoolDuration> pickBallsArray = new ArrayList<SchoolDuration>();
 				ArrayList<SchoolDuration> twoActuatorsArray = new ArrayList<SchoolDuration>();
 				ArrayList<SchoolDuration> twoTargetsArray = new ArrayList<SchoolDuration>();
 				
 				SkillsCompetition skills = SkillsCompetition.get(essentials.database);
 				for(School school : tournament.schools)
 				{
-					pickBallsArray.add(new SchoolInteger(school, random.nextInt(20)));
+					pickBallsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
 					twoActuatorsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
 					twoTargetsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
 				}

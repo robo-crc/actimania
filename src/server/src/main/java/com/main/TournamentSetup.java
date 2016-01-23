@@ -60,13 +60,13 @@ public class TournamentSetup
     					new ArrayList<SchoolInteger>(),
     					new ArrayList<SchoolInteger>());
     			
-    			ArrayList<SchoolInteger> pickBalls = new ArrayList<SchoolInteger>();
+    			ArrayList<SchoolDuration> pickBalls = new ArrayList<SchoolDuration>();
     			ArrayList<SchoolDuration> twoActuatorChanged = new ArrayList<SchoolDuration>();
     			ArrayList<SchoolDuration> twoTargetHits = new ArrayList<SchoolDuration>();
     			
     			for(School school : schools)
     			{
-    				pickBalls.add(new SchoolInteger(school, 0));
+    				pickBalls.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
     				// Initialize to 99 minutes.
     				twoActuatorChanged.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
     				twoTargetHits.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));

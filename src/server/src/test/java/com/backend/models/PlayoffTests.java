@@ -397,7 +397,7 @@ public class PlayoffTests
 		ArrayList<School> schools = new ArrayList<School>();
 		ArrayList<SchoolDuration> twoActuators = new ArrayList<SchoolDuration>();
 		ArrayList<SchoolDuration> twoTargets = new ArrayList<SchoolDuration>();
-		ArrayList<SchoolInteger> pickupBalls = new ArrayList<SchoolInteger>();
+		ArrayList<SchoolDuration> pickupBalls = new ArrayList<SchoolDuration>();
 		
 		Random random = new Random(0);
 		
@@ -416,7 +416,7 @@ public class PlayoffTests
 			schools.add(school);
 			twoActuators.add(new SchoolDuration(school, new Duration(random.nextInt(1000))));
 			twoTargets.add(new SchoolDuration(school, new Duration(random.nextInt(1000))));
-			pickupBalls.add(new SchoolInteger(school, random.nextInt(1000)));
+			pickupBalls.add(new SchoolDuration(school, new Duration(random.nextInt(1000))));
 		}
 		
 		SkillsCompetition skillsCompetition = new SkillsCompetition(null, pickupBalls, twoTargets, twoActuators);

@@ -3,11 +3,13 @@ package com.backend.models;
 import java.util.ArrayList;
 
 import org.bson.types.ObjectId;
+import org.optaplanner.core.impl.exhaustivesearch.node.bounder.ScoreBounder;
 
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
+import com.backend.models.GameEvent.ScoreboardUpdateEvent;
 import com.backend.models.GameEvent.TeamPenaltyEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.TeamEnum;
@@ -86,7 +88,7 @@ public class GameState
 		{
 			// We need to make a copy of the array so that the array is not a reference of each
 			localTriangleLeft = previousState.triangleLeft.clone();
-			localTriangleLeft = previousState.triangleRight.clone();
+			localTriangleRight = previousState.triangleRight.clone();
 
 			localBlueScore = GetScore(TeamEnum.BLUE, localTriangleLeft) + GetScore(TeamEnum.BLUE, localTriangleRight);
 			localYellowScore = GetScore(TeamEnum.YELLOW, localTriangleLeft) + GetScore(TeamEnum.YELLOW, localTriangleRight);
@@ -97,7 +99,17 @@ public class GameState
 			localPenalties 				= new ArrayList<SchoolInteger>(previousState.penalties);
 			localMisconductPenalties	= new ArrayList<School>(previousState.misconductPenalties);
 
-			if(gameEvent.getGameEventEnum() == GameEventEnum.POINT_MODIFIER)
+			if(gameEvent.getGameEventEnum() == GameEventEnum.SCOREBOARD_UPDATED)
+			{
+				ScoreboardUpdateEvent scoreboardUpdatedEvent = (ScoreboardUpdateEvent) gameEvent;
+				
+				localTriangleLeft = scoreboardUpdatedEvent.triangleLeft.clone();
+				localTriangleRight = scoreboardUpdatedEvent.triangleRight.clone();
+
+				localBlueScore = GetScore(TeamEnum.BLUE, localTriangleLeft) + GetScore(TeamEnum.BLUE, localTriangleRight);
+				localYellowScore = GetScore(TeamEnum.YELLOW, localTriangleLeft) + GetScore(TeamEnum.YELLOW, localTriangleRight);
+			}
+			else if(gameEvent.getGameEventEnum() == GameEventEnum.POINT_MODIFIER)
 			{
 				PointModifierEvent pointModifierEvent = (PointModifierEvent) gameEvent;
 				if(pointModifierEvent.team == TeamEnum.BLUE)

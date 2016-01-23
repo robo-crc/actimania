@@ -132,11 +132,11 @@ public class SkillsCompetitionTests
 		twoTargets.add(new SchoolDuration(school3, new Duration(2700)));
 		twoTargets.add(new SchoolDuration(school4, new Duration(1800)));
 		
-		ArrayList<SchoolInteger> pickupBalls = new ArrayList<SchoolInteger>();
-		pickupBalls.add(new SchoolInteger(school1, 8));
-		pickupBalls.add(new SchoolInteger(school2, 6));
-		pickupBalls.add(new SchoolInteger(school3, 5));
-		pickupBalls.add(new SchoolInteger(school4, 3));
+		ArrayList<SchoolDuration> pickupBalls = new ArrayList<SchoolDuration>();
+		pickupBalls.add(new SchoolDuration(school1, new Duration(5)));
+		pickupBalls.add(new SchoolDuration(school2, new Duration(6)));
+		pickupBalls.add(new SchoolDuration(school3, new Duration(7)));
+		pickupBalls.add(new SchoolDuration(school4, new Duration(8)));
 		
 		SkillsCompetition competition = new SkillsCompetition(null, pickupBalls, twoTargets, twoActuators);
 		database.save(competition);

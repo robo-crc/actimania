@@ -16,55 +16,55 @@ public class SkillsCompetition
 {
 	public final ObjectId 					_id;
 	
-	private final ArrayList<SchoolInteger> 	pickBalls;
-	private final ArrayList<SchoolDuration> twoTargetHits;
-	private final ArrayList<SchoolDuration> twoActuatorChanged;
+	private final ArrayList<SchoolDuration> takeAllPieces;
+	private final ArrayList<SchoolDuration> placeThreePieces;
+	private final ArrayList<SchoolDuration> placeHighest;
 	
 	@JsonIgnore
-	private final TreeMap<School, Integer> pickBallsPosition;
+	private final TreeMap<School, Integer> takeAllPiecesPosition;
 	@JsonIgnore
-	private final TreeMap<School, Integer> twoTargetHitsPosition;
+	private final TreeMap<School, Integer> placeThreePiecesPosition;
 	@JsonIgnore
-	private final TreeMap<School, Integer> twoActuatorChangedPosition;
+	private final TreeMap<School, Integer> placeHighestPosition;
 	
 	@JsonIgnore
-	private final SchoolInteger pickBallsBest;
+	private final SchoolDuration takeAllPiecesBest;
 	@JsonIgnore
-	private final SchoolDuration twoTargetHitsBest;
+	private final SchoolDuration placeThreePiecesBest;
 	@JsonIgnore
-	private final SchoolDuration twoActuatorChangedBest;
+	private final SchoolDuration placeHighestBest;
 	
 	@JsonIgnore
 	public final static double SKILL_WEIGTH = 0.1; // 10% per skill competition in the final note
 	
 	public SkillsCompetition(
 			@JsonProperty("_id") 				ObjectId 					_skillCompetitionId,
-			@JsonProperty("pickBalls") 			ArrayList<SchoolInteger> 	_pickBalls,
-			@JsonProperty("twoTargetHits") 		ArrayList<SchoolDuration> 	_twoTargetHits,
-			@JsonProperty("twoActuatorChanged") ArrayList<SchoolDuration> 	_twoActuatorChanged)
+			@JsonProperty("takeAllPieces") 		ArrayList<SchoolDuration> 	_takeAllPieces,
+			@JsonProperty("placeThreePieces") 	ArrayList<SchoolDuration> 	_placeThreePieces,
+			@JsonProperty("placeHighest") 		ArrayList<SchoolDuration> 	_placeHighest)
 	{
 		_id 				=_skillCompetitionId;
-		pickBalls 			= _pickBalls;
-		twoTargetHits 		= _twoTargetHits;
-		twoActuatorChanged 	= _twoActuatorChanged;
+		takeAllPieces 		= _takeAllPieces;
+		placeThreePieces 	= _placeThreePieces;
+		placeHighest 		= _placeHighest;
 		
-		pickBallsPosition = new TreeMap<School, Integer>();
-		twoTargetHitsPosition = new TreeMap<School, Integer>();
-		twoActuatorChangedPosition = new TreeMap<School, Integer>();
+		takeAllPiecesPosition = new TreeMap<School, Integer>();
+		placeThreePiecesPosition = new TreeMap<School, Integer>();
+		placeHighestPosition = new TreeMap<School, Integer>();
 		
-		ArrayList<SchoolInteger> pickBallsRanking = getOrderedInteger(pickBalls);
-		ArrayList<SchoolDuration> twoTargetsRanking = getOrderedDuration(twoTargetHits);
-		ArrayList<SchoolDuration> twoActuatorsRanking = getOrderedDuration(twoActuatorChanged);
+		ArrayList<SchoolDuration> pickBallsRanking = getOrderedDuration(takeAllPieces);
+		ArrayList<SchoolDuration> twoTargetsRanking = getOrderedDuration(placeThreePieces);
+		ArrayList<SchoolDuration> twoActuatorsRanking = getOrderedDuration(placeHighest);
 		
-		pickBallsBest = pickBallsRanking.get(0);
-		twoTargetHitsBest = twoTargetsRanking.get(0);
-		twoActuatorChangedBest = twoActuatorsRanking.get(0);
+		takeAllPiecesBest = pickBallsRanking.get(0);
+		placeThreePiecesBest = twoTargetsRanking.get(0);
+		placeHighestBest = twoActuatorsRanking.get(0);
 		
-		for(School school : pickBalls)
+		for(School school : takeAllPieces)
 		{
-			pickBallsPosition.put(school, getPositionInteger(pickBallsRanking, school));
-			twoTargetHitsPosition.put(school, getPositionDuration(twoTargetsRanking, school));
-			twoActuatorChangedPosition.put(school, getPositionDuration(twoActuatorsRanking, school));
+			takeAllPiecesPosition.put(school, getPositionDuration(pickBallsRanking, school));
+			placeThreePiecesPosition.put(school, getPositionDuration(twoTargetsRanking, school));
+			placeHighestPosition.put(school, getPositionDuration(twoActuatorsRanking, school));
 		}
 	}
 	
@@ -126,64 +126,64 @@ public class SkillsCompetition
 		return position;
 	}
 	
-	public int getPickballsPosition(School school)
+	public int getTakeAllPiecesPosition(School school)
 	{
-		return pickBallsPosition.get(school);
+		return takeAllPiecesPosition.get(school);
 	}
 	
-	public int getTwoTargetHitsPosition(School school)
+	public int getPlaceThreePiecesPosition(School school)
 	{
-		return twoTargetHitsPosition.get(school);
+		return placeThreePiecesPosition.get(school);
 	}
 	
-	public int getTwoActuatorChangedPosition(School school)
+	public int getPlaceHighestPosition(School school)
 	{
-		return twoActuatorChangedPosition.get(school);
+		return placeHighestPosition.get(school);
 	}
 	
-	public SchoolInteger getPickballs(School school)
+	public SchoolDuration getTakeAllPieces(School school)
 	{
-		return pickBalls.get(pickBalls.indexOf(school));
+		return takeAllPieces.get(takeAllPieces.indexOf(school));
 	}
 	
-	public SchoolDuration getTwoTargetHits(School school)
+	public SchoolDuration getPlaceThreePieces(School school)
 	{
-		return twoTargetHits.get(twoTargetHits.indexOf(school));
+		return placeThreePieces.get(placeThreePieces.indexOf(school));
 	}
 	
-	public SchoolDuration getTwoActuatorChanged(School school)
+	public SchoolDuration getPlaceHighest(School school)
 	{
-		return twoActuatorChanged.get(twoActuatorChanged.indexOf(school));
+		return placeHighest.get(placeHighest.indexOf(school));
 	}
 	
-	public ArrayList<SchoolInteger> getPickballsOrdered()
+	public ArrayList<SchoolDuration> getTakeAllPiecesOrdered()
 	{
-		return getOrderedInteger(pickBalls);
+		return getOrderedDuration(takeAllPieces);
 	}
 	
-	public ArrayList<SchoolDuration> getTwoTargetHitsOrdered()
+	public ArrayList<SchoolDuration> getPlaceThreePiecesOrdered()
 	{
-		return getOrderedDuration(twoTargetHits);
+		return getOrderedDuration(placeThreePieces);
 	}
 	
-	public ArrayList<SchoolDuration> getTwoActuatorChangedOrdered()
+	public ArrayList<SchoolDuration> getPlaceHighestOrdered()
 	{
-		return getOrderedDuration(twoActuatorChanged);
+		return getOrderedDuration(placeHighest);
 	}
 	
-	public double getPickballsPoints(School school)
+	public double getTakeAllPiecesBestPoints(School school)
 	{
-		return getPointsInteger(pickBallsBest, getPickballs(school));
+		return getPointsDuration(takeAllPiecesBest, getTakeAllPieces(school));
 	}
 	
-	public double getTwoTargetHitsPoints(School school)
+	public double getPlaceThreePiecesBestPoints(School school)
 	{
-		return getPointsDuration(twoTargetHitsBest, getTwoTargetHits(school));
+		return getPointsDuration(placeThreePiecesBest, getPlaceThreePieces(school));
 	}
 	
-	public double getTwoActuatorChangedPoints(School school)
+	public double getPlaceHighestBestPoints(School school)
 	{
-		return getPointsDuration(twoActuatorChangedBest, getTwoActuatorChanged(school));
+		return getPointsDuration(placeHighestBest, getPlaceHighest(school));
 	}
 	
 	public static double getPointsInteger(SchoolInteger best, SchoolInteger current)
@@ -220,9 +220,9 @@ public class SkillsCompetition
 	
 	public double getSchoolScore(School school)
 	{
-		double score = getPickballsPoints(school);
-		score += getTwoTargetHitsPoints(school);
-		score += getTwoActuatorChangedPoints(school);
+		double score = getTakeAllPiecesBestPoints(school);
+		score += getPlaceThreePiecesBestPoints(school);
+		score += getPlaceHighestBestPoints(school);
 		return score;
 	}
 	

@@ -50,36 +50,36 @@ public class CompetitionController extends HttpServlet
 			if(action.equals("skillsCompetition"))
 			{
 				SkillsCompetition skillsCompetition = SkillsCompetition.get(essentials.database);
-				ArrayList<SchoolInteger> pickBallsArray = new ArrayList<SchoolInteger>();
-				ArrayList<SchoolDuration> twoActuatorsArray = new ArrayList<SchoolDuration>();
-				ArrayList<SchoolDuration> twoTargetsArray = new ArrayList<SchoolDuration>();
+				ArrayList<SchoolDuration> takeAllPiecesArray = new ArrayList<SchoolDuration>();
+				ArrayList<SchoolDuration> placeThreePiecesArray = new ArrayList<SchoolDuration>();
+				ArrayList<SchoolDuration> placeHighestArray = new ArrayList<SchoolDuration>();
 				
 				for(String parameter : Collections.list(request.getParameterNames()) )
 				{
-					final String pickballs = "pickballs_";
-					final String twoTargets = "twoTargets_";
-					final String twoActuators = "twoActuators_";
+					final String takeAllPieces = "takeAllPieces_";
+					final String placeThreePieces = "placeThreePieces_";
+					final String placeHighest = "placeHighest_";
 					
-					if(parameter.startsWith(pickballs))
+					if(parameter.startsWith(takeAllPieces))
 					{
-						ObjectId id = new ObjectId(parameter.substring(pickballs.length()));
-						Integer value = Helpers.getParameter(parameter, Integer.class, essentials);
-						pickBallsArray.add(new SchoolInteger(essentials.database.findOne(School.class, id), value));
-					}
-					else if(parameter.startsWith(twoTargets))
-					{
-						ObjectId id = new ObjectId(parameter.substring(twoTargets.length()));
+						ObjectId id = new ObjectId(parameter.substring(takeAllPieces.length()));
 						Duration value = Helpers.stopwatchFormatter.parsePeriod(Helpers.getParameter(parameter, String.class, essentials)).toStandardDuration();
-						twoTargetsArray.add(new SchoolDuration(essentials.database.findOne(School.class, id), value));
+						takeAllPiecesArray.add(new SchoolDuration(essentials.database.findOne(School.class, id), value));
 					}
-					else if(parameter.startsWith(twoActuators))
+					else if(parameter.startsWith(placeThreePieces))
 					{
-						ObjectId id = new ObjectId(parameter.substring(twoActuators.length()));
+						ObjectId id = new ObjectId(parameter.substring(placeThreePieces.length()));
 						Duration value = Helpers.stopwatchFormatter.parsePeriod(Helpers.getParameter(parameter, String.class, essentials)).toStandardDuration();
-						twoActuatorsArray.add(new SchoolDuration(essentials.database.findOne(School.class, id), value));
+						placeHighestArray.add(new SchoolDuration(essentials.database.findOne(School.class, id), value));
+					}
+					else if(parameter.startsWith(placeHighest))
+					{
+						ObjectId id = new ObjectId(parameter.substring(placeHighest.length()));
+						Duration value = Helpers.stopwatchFormatter.parsePeriod(Helpers.getParameter(parameter, String.class, essentials)).toStandardDuration();
+						placeThreePiecesArray.add(new SchoolDuration(essentials.database.findOne(School.class, id), value));
 					}
 				}
-				SkillsCompetition competition = new SkillsCompetition(skillsCompetition._id, pickBallsArray, twoTargetsArray, twoActuatorsArray);
+				SkillsCompetition competition = new SkillsCompetition(skillsCompetition._id, takeAllPiecesArray, placeHighestArray, placeThreePiecesArray);
 				essentials.database.save(competition);
 			}
 			else if(action.equals("toggleLiveRefresh"))

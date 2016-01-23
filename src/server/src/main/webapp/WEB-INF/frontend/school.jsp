@@ -148,9 +148,9 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <table class="schoolTable schoolCompetition">
 <tr><th class="whiteBackgroundColor"></th>	<th class="center"><%= strScore %></th></tr>
 <tr><td><%= strTournament %></td>			<td class="center"><%= score %></td></tr>
-<tr><td><%= strPickupRace %></td>			<td class="center"><%= skillsCompetition.getPickballs(school).integer %></td></tr>
-<tr><td><%= strTwoTargetHits %></td>		<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td></tr>
-<tr><td><%= strTwoActuatorChanged %></td>	<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td></tr>
+<tr><td><%= strPickupRace %></td>			<td class="center"><%=skillsCompetition.getTakeAllPieces(school).integer%></td></tr>
+<tr><td><%= strTwoTargetHits %></td>		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%></td></tr>
+<tr><td><%= strTwoActuatorChanged %></td>	<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%></td></tr>
 <tr><td><b><%= strCumulative %></b></td> 	<td class="center"><b><%=tournament.getPreliminaryRanking(skillsCompetition).indexOf(school) + 1%> / <%= schoolCount %></b></td></tr>
 </table>
 <br/>
