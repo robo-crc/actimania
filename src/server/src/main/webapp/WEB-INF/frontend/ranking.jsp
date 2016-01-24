@@ -131,7 +131,7 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 		<td class="center" sorttable_customkey="<%= position %>"><%= String.format("%.2f", tournament.getPreliminaryScore(school, skillsCompetition) * 100) %> %</td>
 		<td class="center"><%=tournament.getRoundScore(school, GameTypeEnum.PRELIMINARY)%></td>
 		
-		<td class="center"><%=skillsCompetition.getTakeAllPieces(school).integer%></td>
+		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%></td>
 		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%></td>
 		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%></td>
 	</tr>

@@ -1,1 +1,1 @@
-START /B "" "../../tools/mongodb/mongod.exe" --logpath ../../tmp/mongodb/logs --logappend --dbpath ../../tmp/mongodb/data
+START /B "" "../../tools/mongodb/mongod.exe" --logpath ../../tmp/mongodb/logs/log.txt --logappend --dbpath ../../tmp/mongodb/data
