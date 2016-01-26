@@ -1,1 +1,1 @@
-..\..\tools\mongodb\mongodump.exe --dbpath ..\..\tmp\mongodb\data --out ..\..\tmp\mongodump
+..\..\tools\mongodb\mongodump.exe --out ..\..\tmp\mongodump

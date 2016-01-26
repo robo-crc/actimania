@@ -116,8 +116,8 @@ public class TournamentSetup
 			DateTime[] RoundStartHour = new DateTime[Tournament.BLOCK_NUMBERS];
 			RoundStartHour[0] = new DateTime(2015, 2, 12, 18, 30);
 			RoundStartHour[1] = new DateTime(2015, 2, 13, 9, 0);
-			RoundStartHour[2] = new DateTime(2015, 2, 13, 13, 30);
-			RoundStartHour[3] = new DateTime(2015, 2, 13, 18, 30);
+			RoundStartHour[2] = new DateTime(2015, 2, 13, 13, 00);
+			RoundStartHour[3] = new DateTime(2015, 2, 13, 18, 00);
 			
 			TournamentSolution solvedTournament = TournamentSolver.solve(essentials, Tournament.GAME_PER_SCHOOL / (Tournament.SCHOOLS_PER_TEAM * 2), Tournament.SCHOOLS_PER_TEAM * 2, "com/backend/models/optaplanner/TournamentSolverConfig.xml");
 			if(solvedTournament != null)

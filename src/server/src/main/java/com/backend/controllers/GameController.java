@@ -13,17 +13,21 @@ import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
 import com.backend.models.Game;
+import com.backend.models.GameState;
+import com.backend.models.Hole;
 import com.backend.models.School;
 import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
+import com.backend.models.GameEvent.ScoreboardUpdateEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.GameEvent.TeamPenaltyEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TeamEnum;
+import com.backend.models.enums.TriangleStateEnum;
 import com.framework.helpers.ApplicationSpecific;
 import com.framework.helpers.Helpers;
 import com.framework.helpers.LocalizedString;
@@ -105,22 +109,13 @@ public class GameController extends HttpServlet
 			
 			Game.createEndGameCallback(gameId);
 		}
-/*		else if( gameEvent.equalsIgnoreCase(GameEventEnum.ACTUATOR_STATE_CHANGED.toString()) )
+		else if( gameEvent.equalsIgnoreCase(GameEventEnum.SCOREBOARD_UPDATED.toString()) )
 		{
-			SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
-			TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
-			ActuatorStateEnum actuatorState = ActuatorStateEnum.valueOf(Helpers.getParameter("actuatorState", String.class, essentials));
+			Hole[] triangleSide1 = getTriangleFromParameters(SideEnum.SIDE1, essentials);
+			Hole[] triangleSide2 = getTriangleFromParameters(SideEnum.SIDE1, essentials);
 			
-			addToGame(essentials, game, new ActuatorStateChangedEvent(side, target, actuatorState, DateTime.now()));
+			addToGame(essentials, game, new ScoreboardUpdateEvent(triangleSide1, triangleSide2, DateTime.now()));
 		}
-		else if( gameEvent.equalsIgnoreCase(GameEventEnum.TARGET_HIT.toString()) )
-		{
-			SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
-			TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
-			
-			addToGame(essentials, game, new TargetHitEvent(side, target, DateTime.now()));
-		}
-		*/
 		else if( gameEvent.equalsIgnoreCase(GameEventEnum.SCHOOL_PENALTY.toString()) )
 		{
 			ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
@@ -175,6 +170,23 @@ public class GameController extends HttpServlet
 		return game;
 	}
 	
+	private static Hole[] getTriangleFromParameters(SideEnum side, Essentials essentials)
+	{
+		Hole[] triangle = GameState.InitializeTriangle();
+		
+		for(int holeNb = 0; holeNb < triangle.length; holeNb++)
+		{
+			for(int posInHole = 0; posInHole < triangle[holeNb].triangleStates.length; posInHole++)
+			{
+				String parameterName = "hole_" + side.toString() + "_" + holeNb + "_" + posInHole;
+				TriangleStateEnum triangleState = TriangleStateEnum.valueOf(Helpers.getParameter(parameterName, String.class, essentials));
+				triangle[holeNb].triangleStates[posInHole] = triangleState;
+			}
+		}
+		
+		return triangle;
+	}
+	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
@@ -189,6 +201,7 @@ public class GameController extends HttpServlet
 	{
 		essentials.request.setAttribute("game", game);
 		essentials.request.setAttribute("errorList", essentials.errorList);
+		
 		essentials.request.getRequestDispatcher("/WEB-INF/admin/game.jsp").forward(essentials.request, essentials.response);
 	}
 }

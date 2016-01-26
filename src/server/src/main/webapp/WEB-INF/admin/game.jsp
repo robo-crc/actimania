@@ -1,3 +1,5 @@
+<%@page import="com.backend.models.enums.TriangleStateEnum"%>
+<%@page import="com.backend.models.Hole"%>
 <%@page import="com.backend.models.GameEvent.GameEvent"%>
 <%@page import="com.backend.models.enums.TeamEnum"%>
 <%@page import="java.io.IOException"%>
@@ -46,11 +48,6 @@ LocalizedString strStartGame = new LocalizedString(ImmutableMap.of(
 LocalizedString strRestartGame = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Re-Start Game", 
 		Locale.FRENCH, 	"Redémarrer la partie"
-		), currentLocale);
-
-LocalizedString strTargetHit = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Target hit", 
-		Locale.FRENCH, 	"Démarrer la partie"
 		), currentLocale);
 
 LocalizedString strSubmitConfirm = new LocalizedString(ImmutableMap.of( 	
@@ -169,6 +166,18 @@ LocalizedString strGameAdmin = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Administration de la partie"
 		), currentLocale);
 
+
+LocalizedString strSide1Triangle = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Triangle side 1", 
+		Locale.FRENCH, 	"Triangle côté 1"
+		), currentLocale);
+
+LocalizedString strSide2Triangle = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Triangle side 2", 
+		Locale.FRENCH, 	"Triangle côté 2"
+		), currentLocale);
+
+
 String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameNumber);
 %>
 
@@ -273,6 +282,84 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 	{
 	%>
 	<br/>
+	
+	<form method="post">
+		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.SCOREBOARD_UPDATED.toString() %>" />
+		<input type="hidden" name="id" value="<%= game._id %>" />
+		<h2><%= strScoreboardUpdate %></h2>
+		
+		
+		<table>
+		<tr>
+		<%= strSide1Triangle %>
+		<%
+		Hole[] triangleLeft = game.getGameStates().get(game.getGameStates().size() - 1).triangleLeft;
+		for(int holeNb = 0; holeNb < triangleLeft.length; holeNb++)
+		{
+			/*
+		       0
+			  1 2
+			 3 4 5
+			6 7 8 9
+		 */
+			if(holeNb == 1 || holeNb == 3 || holeNb == 6)
+			{
+			%>
+				</tr>
+				<tr>
+			<%
+			}
+			
+			String firstTD = "<td>";
+			if(holeNb == 0 || holeNb == 1 || holeNb == 3)
+			{
+				firstTD = "<td colspan=\"8\" align=\"center\"><table><tr><td>";
+			}
+			%>
+			<%= firstTD %><%= holeNb %></td>
+			<td width="90px">
+			<%
+			Hole hole = triangleLeft[holeNb];
+			for(int triangleStateNb = 0; triangleStateNb < hole.triangleStates.length; triangleStateNb++)
+			{
+				 TriangleStateEnum triangleState = hole.triangleStates[triangleStateNb];
+				%>
+				
+				<select name="hole_<%=SideEnum.SIDE1.toString()%>_<%=holeNb%>_<%=triangleStateNb%>">
+				<%
+				for(TriangleStateEnum triangleStateEnum : TriangleStateEnum.values())
+				{
+					String isSelected = "";
+					if(triangleStateEnum == triangleState)
+					{
+						isSelected = " selected";
+					}
+				%>
+					<option value="<%= triangleStateEnum.name() %>" class="triangleStateEnum_<%= triangleStateEnum.name() %>"<%=isSelected%>><%= triangleStateEnum.name() %></option>
+		 		<%
+				}
+				%>
+				</select>
+			<%
+			}
+			String lastTd = "</td>";
+			if(holeNb == 0 || holeNb == 2 || holeNb == 5)
+			{
+				lastTd = "</td></tr></table></td>";
+			}
+			%>
+			<%= lastTd %>
+			<%
+	 	} 
+	 	%>
+	 	<tr>
+	 	</table>
+		<br/>
+		<% outputAddAfter(game, strAddAfter, out); %>
+		<br/>
+		<input type="submit" value="<%= strAdd %>" />
+	</form>
+	
 	
 	<form method="post">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.SCHOOL_PENALTY.toString() %>" />

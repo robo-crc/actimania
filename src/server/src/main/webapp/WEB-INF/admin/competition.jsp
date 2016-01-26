@@ -178,7 +178,7 @@ $(document).ready(function(){
 		%>
 			<tr>
 				<td><%= school.name %></td>
-				<td><input class="spinner" type="text" name="pickballs_<%= school._id %>" value="<%=skillsCompetition.getTakeAllPieces(school).integer%>" /></td>
+				<td><input type="text" class="chrono" name="pickballs_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%>" /></td>
 				<td><input type="text" class="chrono" name="twoTargets_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%>" /></td>
 				<td><input type="text" class="chrono" name="twoActuators_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%>" /></td>
 			</tr>

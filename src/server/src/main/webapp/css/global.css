@@ -22,7 +22,8 @@ h2
 table
 {
 	border-spacing: 7px;
-	margin-left: auto;      margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 	overflow: auto;
 	padding-bottom: 35px;
 }
