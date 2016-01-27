@@ -30,22 +30,33 @@ public class PlayoffRankingController extends HttpServlet
 		{
 			Tournament tournament = Tournament.getTournament(essentials);
 			
-			PlayoffRound repechageRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_REPECHAGE);
 			ArrayList<ArrayList<SchoolInteger>> repechageRankedByGroup = new ArrayList<ArrayList<SchoolInteger>>();
-			repechageRankedByGroup.addAll(repechageRound.getSchoolsRankedByGroup(tournament));
-
-			PlayoffRound quarterRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_QUARTER);
+			PlayoffRound repechageRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_REPECHAGE);
+			if(repechageRound != null)
+			{
+				repechageRankedByGroup.addAll(repechageRound.getSchoolsRankedByGroup(tournament));
+			}
+			
 			ArrayList<ArrayList<SchoolInteger>> quarterRankedByGroup = new ArrayList<ArrayList<SchoolInteger>>();
-			quarterRankedByGroup.addAll(quarterRound.getSchoolsRankedByGroup(tournament));
-
-			PlayoffRound semiRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_DEMI);
+			PlayoffRound quarterRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_QUARTER);
+			if(quarterRound != null)
+			{
+				quarterRankedByGroup.addAll(quarterRound.getSchoolsRankedByGroup(tournament));
+			}
+			
 			ArrayList<ArrayList<SchoolInteger>> semiRankedByGroup = new ArrayList<ArrayList<SchoolInteger>>();
-			semiRankedByGroup.addAll(semiRound.getSchoolsRankedByGroup(tournament));
-
-			PlayoffRound finalRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_FINAL);
+			PlayoffRound semiRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_DEMI);
+			if(semiRound != null)
+			{
+				semiRankedByGroup.addAll(semiRound.getSchoolsRankedByGroup(tournament));
+			}
+			
 			ArrayList<ArrayList<SchoolInteger>> finalRankedByGroup = new ArrayList<ArrayList<SchoolInteger>>();
-			finalRankedByGroup.addAll(finalRound.getSchoolsRankedByGroup(tournament));
-
+			PlayoffRound finalRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_FINAL);
+			if(finalRound != null)
+			{
+				finalRankedByGroup.addAll(finalRound.getSchoolsRankedByGroup(tournament));
+			}
 			boolean showHeader = true;
 			if(request.getParameter("showHeader") != null)
 			{

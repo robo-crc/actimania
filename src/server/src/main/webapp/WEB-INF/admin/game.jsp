@@ -188,24 +188,32 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 <%@include file="head.jsp" %>
 
 <script>
-$(function() {
-    function refreshPage() 
-    {
-        var source = new EventSource('/actimania/gameRefresh');
 
-        source.onmessage = function(event) 
-        {
-        	// Refresh page, make sure it's a get request.
-            window.location = window.location.href;
-        };
-    }
-    window.addEventListener("load", refreshPage);
+$('select').on('change', function(){
+	alert("12345");
+	if(($this).val() == "EMPTY")
+	{
+		$(this).css("background-color", "white");	
+	}
+	else if(($this).val() == "BLUE")
+	{
+		$(this).css("background-color", "lightblue");
+	}
+	else if(($this).val() == "YELLOW")
+	{
+		$(this).css("background-color", "yellow");
+	}
+	else	
+	{
+		alert($(this).val());
+	}
 });
-
+/*
 $(document).ready(function(){
 	$( ".spinner" ).numeric();
 	$( ".spinner" ).spinner();
 });
+*/
 </script>
 
 </head>
@@ -325,7 +333,7 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 				 TriangleStateEnum triangleState = hole.triangleStates[triangleStateNb];
 				%>
 				
-				<select name="hole_<%=SideEnum.SIDE1.toString()%>_<%=holeNb%>_<%=triangleStateNb%>">
+				<select class="selectColor" name="hole_<%=SideEnum.SIDE1.toString()%>_<%=holeNb%>_<%=triangleStateNb%>">
 				<%
 				for(TriangleStateEnum triangleStateEnum : TriangleStateEnum.values())
 				{

@@ -15,6 +15,7 @@
 <%
 @SuppressWarnings("unchecked")
 ArrayList<School> cumulativeRanking = (ArrayList<School>)request.getAttribute("cumulativeRanking");
+@SuppressWarnings("unchecked")
 ArrayList<School> excludedSchools = (ArrayList<School>)request.getAttribute("excludedSchools");
 
 Tournament tournament = (Tournament)request.getAttribute("tournament");
@@ -52,20 +53,21 @@ LocalizedString strCompetition = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"COMPÉTITION"
 		), currentLocale);
 
-LocalizedString strPickupRace = new LocalizedString(ImmutableMap.of( 	
+LocalizedString strTakeAllPieces = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "PICK-UP<br/>RACE", 
 		Locale.FRENCH, 	"RAMASSAGE<br/>DE VITESSE"
 		), currentLocale);
 
-LocalizedString strTwoTargetHits = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "TWO TARGETS<br/>HIT", 
-		Locale.FRENCH, 	"TOUCHER<br/>DEUX CIBLES"
+LocalizedString strPlaceThreePieces = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "PLACE<br/>THREE PIECES", 
+		Locale.FRENCH, 	"POSITIONNER<br/>TROIS PIÈCES"
 		), currentLocale);
 
-LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "TWO SWITCHES<br/>CHANGED", 
-		Locale.FRENCH, 	"CHANGER DEUX<br/>ACTUATEURS"
+LocalizedString strPlaceHighest = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "PLACE<br/>HIGHEST", 
+		Locale.FRENCH, 	"POSITIONNER<br/>LE PLUS HAUT"
 		), currentLocale);
+
 
 LocalizedString strNoShow = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "*No show for playoff", 
@@ -97,9 +99,9 @@ LocalizedString strNoShow = new LocalizedString(ImmutableMap.of(
 	<th><%= strSchool %></th>
 	<th><%= strScore %></th>
 	<th><%= strCompetition %></th>
-	<th><%= strPickupRace %></th>
-	<th><%= strTwoTargetHits %></th>
-	<th><%= strTwoActuatorChanged %></th>
+	<th><%= strTakeAllPieces %></th>
+	<th><%= strPlaceThreePieces %></th>
+	<th><%= strPlaceHighest %></th>
 </tr>
 <tr class="whiteBackgroundColor"/>
 <%

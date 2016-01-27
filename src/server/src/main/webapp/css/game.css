@@ -1,10 +1,19 @@
-.fieldImage
+.triangleLeft
 {
 	position:relative;
 	float: left;
 	left: 100%;
 	margin-left: -100%;
-	width: 1180px;
+	z-index: 1;
+	padding-bottom: 3%;
+}
+
+.triangleRight
+{
+	position:relative;
+	float: left;
+	left: 150%;
+	margin-left: -100%;
 	z-index: 1;
 	padding-bottom: 3%;
 }
@@ -246,3 +255,10 @@
 	padding-top: 0px;
 	border-spacing: 0px;
 }
+
+
+}
+
+
+}
+

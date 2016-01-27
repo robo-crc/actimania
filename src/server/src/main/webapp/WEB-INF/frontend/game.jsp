@@ -323,6 +323,17 @@ if( gameStates.size() == 0)
 					</tr>
 				</table>
 			</div>
+			<div class="clear playground">
+				<img src="images/triangleLeft.png" class="playfieldBackground triangleLeft" />
+				<img src="images/triangleRight.png" class="playfieldBackground triangleRight" />
+				
+				<%
+					//for(int i = 0; i < )
+				
+				%>
+			</div>
+			<br/>
+			<div class="clear"></div>
 <%
 if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
 {
@@ -340,6 +351,9 @@ if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
 	</ul>
 </div>
 <div class="clear"></div>
+
+
+
 
  
 <%

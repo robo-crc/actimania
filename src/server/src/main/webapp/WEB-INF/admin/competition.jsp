@@ -48,19 +48,19 @@ LocalizedString strSkillsCompetition = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Compétitions d'agilités"
 		), currentLocale);
 
-LocalizedString strPickupRace = new LocalizedString(ImmutableMap.of( 	
+LocalizedString strTakeAllPieces = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Pick-up race", 
 		Locale.FRENCH, 	"Ramassage de vitesse"
 		), currentLocale);
 
-LocalizedString strTwoTargetHits = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Two target hits", 
-		Locale.FRENCH, 	"Toucher deux cibles"
+LocalizedString strPlaceThreePieces = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Place three pieces", 
+		Locale.FRENCH, 	"Positionner trois pièce"
 		), currentLocale);
 
-LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Two switches changed", 
-		Locale.FRENCH, 	"Changer deux actuateurs"
+LocalizedString strPlaceHighest = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Place highest", 
+		Locale.FRENCH, 	"Positionner le plus haut"
 		), currentLocale);
 
 LocalizedString strRank = new LocalizedString(ImmutableMap.of( 	
@@ -170,7 +170,7 @@ $(document).ready(function(){
 		<input type="hidden" name="action" value="skillsCompetition" />
 		
 		<table>
-		<tr><th><%= strSchool %></th><th><%= strPickupRace %></th><th><%= strTwoTargetHits %></th><th><%= strTwoActuatorChanged %></th></tr>
+		<tr><th><%= strSchool %></th><th><%= strTakeAllPieces %></th><th><%= strPlaceThreePieces %></th><th><%= strPlaceHighest %></th></tr>
 		
 		<%
 		for(School school : schools)
@@ -178,9 +178,9 @@ $(document).ready(function(){
 		%>
 			<tr>
 				<td><%= school.name %></td>
-				<td><input type="text" class="chrono" name="pickballs_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%>" /></td>
-				<td><input type="text" class="chrono" name="twoTargets_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%>" /></td>
-				<td><input type="text" class="chrono" name="twoActuators_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%>" /></td>
+				<td><input type="text" class="chrono" name="takeAllPieces_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%>" /></td>
+				<td><input type="text" class="chrono" name="placeThreePieces_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%>" /></td>
+				<td><input type="text" class="chrono" name="placeHighest_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%>" /></td>
 			</tr>
 			<%
 		}
