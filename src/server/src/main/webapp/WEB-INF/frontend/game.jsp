@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.enums.TriangleStateEnum"%>
 <%@page import="com.backend.models.SchoolInteger"%>
 <%@page import="com.framework.helpers.Helpers"%>
 <%@page import="com.backend.models.GameEvent.SchoolPenaltyEvent"%>
@@ -328,8 +329,17 @@ if( gameStates.size() == 0)
 				<img src="images/triangleRight.png" class="playfieldBackground triangleRight" />
 				
 				<%
-					//for(int i = 0; i < )
-				
+					for(int holeNb = 0; holeNb < state.triangleLeft.length; holeNb++)
+					{
+						for(int unitPos = 0; unitPos < state.triangleLeft[holeNb].triangleStates.length; unitPos++)
+						{
+							TriangleStateEnum triangleState = state.triangleLeft[holeNb].triangleStates[unitPos];
+							if(triangleState != TriangleStateEnum.EMPTY )
+							{
+								out.write("<img src=\"images/" + triangleState + "UnitLeft.png\" class=\"Unit Unit" + unitPos + " LEFTUnit" + holeNb + "_" + unitPos + "\"/>");
+							}
+						}
+					}
 				%>
 			</div>
 			<br/>

@@ -256,9 +256,68 @@
 	border-spacing: 0px;
 }
 
-
+.Unit
+{
+	position: absolute;
 }
 
-
+.Unit0
+{
+	z-index: 5;
 }
 
+.Unit1
+{
+	z-index: 4;
+}
+
+.Unit2
+{
+	z-index: 3;
+}
+
+.Unit3
+{
+	z-index: 2;
+}
+
+.Unit4
+{
+	z-index: 1;
+}
+
+.LEFTUnit0_0
+{
+	left: 289px;
+	top: 297px;
+}
+
+.LEFTUnit0_1
+{
+	left: 274px;
+	top: 288px;
+}
+
+.LEFTUnit0_2
+{
+	left: 274px;
+	top: 270px;
+}
+
+.LEFTUnit0_3
+{
+	left: 274px;
+	top: 270px;
+}
+
+.LEFTUnit0_4
+{
+	left: 274px;
+	top: 270px;
+}
+
+.LEFTUnit0_5
+{
+	left: 274px;
+	top: 270px;
+}
