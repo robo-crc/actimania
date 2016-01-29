@@ -112,7 +112,7 @@ public class GameController extends HttpServlet
 		else if( gameEvent.equalsIgnoreCase(GameEventEnum.SCOREBOARD_UPDATED.toString()) )
 		{
 			Hole[] triangleSide1 = getTriangleFromParameters(SideEnum.SIDE1, essentials);
-			Hole[] triangleSide2 = getTriangleFromParameters(SideEnum.SIDE1, essentials);
+			Hole[] triangleSide2 = getTriangleFromParameters(SideEnum.SIDE2, essentials);
 			
 			addToGame(essentials, game, new ScoreboardUpdateEvent(triangleSide1, triangleSide2, DateTime.now()));
 		}

@@ -296,72 +296,71 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 		<input type="hidden" name="id" value="<%= game._id %>" />
 		<h2><%= strScoreboardUpdate %></h2>
 		
-		
-		<table>
-		<tr>
 		<%= strSide1Triangle %>
-		<%
-		Hole[] triangleLeft = game.getGameStates().get(game.getGameStates().size() - 1).triangleLeft;
-		for(int holeNb = 0; holeNb < triangleLeft.length; holeNb++)
+		
+		<%!
+		public void outputTriangle(Hole[] triangle, SideEnum side, JspWriter out) throws IOException
 		{
-			/*
-		       0
-			  1 2
-			 3 4 5
-			6 7 8 9
-		 */
-			if(holeNb == 1 || holeNb == 3 || holeNb == 6)
+			out.write("<table><tr>");
+			for(int holeNb = 0; holeNb < triangle.length; holeNb++)
 			{
-			%>
-				</tr>
-				<tr>
-			<%
-			}
-			
-			String firstTD = "<td>";
-			if(holeNb == 0 || holeNb == 1 || holeNb == 3)
-			{
-				firstTD = "<td colspan=\"8\" align=\"center\"><table><tr><td>";
-			}
-			%>
-			<%= firstTD %><%= holeNb %></td>
-			<td width="90px">
-			<%
-			Hole hole = triangleLeft[holeNb];
-			for(int triangleStateNb = 0; triangleStateNb < hole.triangleStates.length; triangleStateNb++)
-			{
-				 TriangleStateEnum triangleState = hole.triangleStates[triangleStateNb];
-				%>
-				
-				<select class="selectColor" name="hole_<%=SideEnum.SIDE1.toString()%>_<%=holeNb%>_<%=triangleStateNb%>">
-				<%
-				for(TriangleStateEnum triangleStateEnum : TriangleStateEnum.values())
+				/*
+			       0
+				  1 2
+				 3 4 5
+				6 7 8 9
+			 */
+				if(holeNb == 1 || holeNb == 3 || holeNb == 6)
 				{
-					String isSelected = "";
-					if(triangleStateEnum == triangleState)
-					{
-						isSelected = " selected";
-					}
-				%>
-					<option value="<%= triangleStateEnum.name() %>" class="triangleStateEnum_<%= triangleStateEnum.name() %>"<%=isSelected%>><%= triangleStateEnum.name() %></option>
-		 		<%
+					out.write("</tr><tr>");
 				}
-				%>
-				</select>
-			<%
-			}
-			String lastTd = "</td>";
-			if(holeNb == 0 || holeNb == 2 || holeNb == 5)
-			{
-				lastTd = "</td></tr></table></td>";
-			}
-			%>
-			<%= lastTd %>
-			<%
-	 	} 
-	 	%>
-	 	<tr>
-	 	</table>
+				
+				String firstTD = "<td>";
+				if(holeNb == 0 || holeNb == 1 || holeNb == 3)
+				{
+					firstTD = "<td colspan=\"8\" align=\"center\"><table><tr><td>";
+				}
+				out.write(firstTD + holeNb + "</td>");
+				
+				out.write("<td width=\"90px\">");
+				
+				Hole hole = triangle[holeNb];
+				for(int triangleStateNb = 0; triangleStateNb < hole.triangleStates.length; triangleStateNb++)
+				{
+					 TriangleStateEnum triangleState = hole.triangleStates[triangleStateNb];
+					
+					out.write("<select class=\"selectColor\" name=\"hole_" + side.toString() + "_" + holeNb + "_" + triangleStateNb + "\">");
+
+					for(TriangleStateEnum triangleStateEnum : TriangleStateEnum.values())
+					{
+						String isSelected = "";
+						if(triangleStateEnum == triangleState)
+						{
+							isSelected = " selected";
+						}
+						
+						out.write("<option value=\"" + triangleStateEnum.name() + "\" class=\"triangleStateEnum_" + triangleStateEnum.name() + "\"" + isSelected + ">" + triangleStateEnum.name() + "</option>");
+					}
+					out.write("</select>");
+				}
+				String lastTd = "</td>";
+				if(holeNb == 0 || holeNb == 2 || holeNb == 5)
+				{
+					lastTd = "</td></tr></table></td>";
+				}
+				out.write(lastTd);
+		 	} 
+			out.write("</tr></table>");
+		}
+		%>
+		
+		<% 
+		Hole[] triangleLeft = game.getGameStates().get(game.getGameStates().size() - 1).triangleLeft;
+		Hole[] triangleRight = game.getGameStates().get(game.getGameStates().size() - 1).triangleRight;
+		
+		outputTriangle(triangleLeft, SideEnum.SIDE1, out);
+		outputTriangle(triangleRight, SideEnum.SIDE2, out);
+		%>
 		<br/>
 		<% outputAddAfter(game, strAddAfter, out); %>
 		<br/>
