@@ -58,3 +58,14 @@ h2
 {
 	background-color: yellow;
 }
+
+
+.triangleStateEnum_EMPTY
+{
+	background: white;
+}
+
+.triangle
+{
+	float: left;
+}

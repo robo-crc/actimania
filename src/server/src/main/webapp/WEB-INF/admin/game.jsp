@@ -166,18 +166,6 @@ LocalizedString strGameAdmin = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Administration de la partie"
 		), currentLocale);
 
-
-LocalizedString strSide1Triangle = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Triangle side 1", 
-		Locale.FRENCH, 	"Triangle côté 1"
-		), currentLocale);
-
-LocalizedString strSide2Triangle = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Triangle side 2", 
-		Locale.FRENCH, 	"Triangle côté 2"
-		), currentLocale);
-
-
 String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameNumber);
 %>
 
@@ -186,36 +174,6 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 <head>
 <title><%= strH1 %></title>
 <%@include file="head.jsp" %>
-
-<script>
-
-$('select').on('change', function(){
-	alert("12345");
-	if(($this).val() == "EMPTY")
-	{
-		$(this).css("background-color", "white");	
-	}
-	else if(($this).val() == "BLUE")
-	{
-		$(this).css("background-color", "lightblue");
-	}
-	else if(($this).val() == "YELLOW")
-	{
-		$(this).css("background-color", "yellow");
-	}
-	else	
-	{
-		alert($(this).val());
-	}
-});
-/*
-$(document).ready(function(){
-	$( ".spinner" ).numeric();
-	$( ".spinner" ).spinner();
-});
-*/
-</script>
-
 </head>
 <body>
 <%@include file="header.jsp" %>
@@ -296,12 +254,10 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 		<input type="hidden" name="id" value="<%= game._id %>" />
 		<h2><%= strScoreboardUpdate %></h2>
 		
-		<%= strSide1Triangle %>
-		
 		<%!
 		public void outputTriangle(Hole[] triangle, SideEnum side, JspWriter out) throws IOException
 		{
-			out.write("<table><tr>");
+			out.write("<table class=\"triangle\"><tr>");
 			for(int holeNb = 0; holeNb < triangle.length; holeNb++)
 			{
 				/*
@@ -329,7 +285,7 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 				{
 					 TriangleStateEnum triangleState = hole.triangleStates[triangleStateNb];
 					
-					out.write("<select class=\"selectColor\" name=\"hole_" + side.toString() + "_" + holeNb + "_" + triangleStateNb + "\">");
+					out.write("<select class=\"selectColor triangleStateEnum_" + triangleState.name() + "\" name=\"hole_" + side.toString() + "_" + holeNb + "_" + triangleStateNb + "\">");
 
 					for(TriangleStateEnum triangleStateEnum : TriangleStateEnum.values())
 					{
@@ -361,11 +317,13 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 		outputTriangle(triangleLeft, SideEnum.SIDE1, out);
 		outputTriangle(triangleRight, SideEnum.SIDE2, out);
 		%>
+		<div class="clear"></div>
 		<br/>
 		<% outputAddAfter(game, strAddAfter, out); %>
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
+	
 	
 	
 	<form method="post">
@@ -498,5 +456,25 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 		}
 		%>
 	</table>
+<script>
+
+$('.selectColor').change(function()
+{
+	if(this.value == "EMPTY")
+	{
+		$(this).css("background-color", "white");	
+	}
+	else if(this.value == "BLUE")
+	{
+		$(this).css("background-color", "lightblue");
+	}
+	else if(this.value == "YELLOW")
+	{
+		$(this).css("background-color", "yellow");
+	}
+});
+
+</script>
+
 </body>
 </html>
