@@ -340,6 +340,18 @@ if( gameStates.size() == 0)
 							}
 						}
 					}
+				
+					for(int holeNb = 0; holeNb < state.triangleRight.length; holeNb++)
+					{
+						for(int unitPos = 0; unitPos < state.triangleRight[holeNb].triangleStates.length; unitPos++)
+						{
+							TriangleStateEnum triangleState = state.triangleRight[holeNb].triangleStates[unitPos];
+							if(triangleState != TriangleStateEnum.EMPTY )
+							{
+								out.write("<img src=\"images/" + triangleState + "UnitRight.png\" class=\"Unit Unit" + unitPos + " RIGHTUnit" + holeNb + "_" + unitPos + "\"/>");
+							}
+						}
+					}
 				%>
 			</div>
 			<br/>
