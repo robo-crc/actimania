@@ -62,6 +62,7 @@ public class School implements Comparable<School>
 				.toLowerCase()
 				.replaceAll(" ", "_")
 				.replaceAll("'", "")
+				.replaceAll("’", "")
 				.replaceAll("è", "e")
 				.replaceAll("é", "e");
 	}

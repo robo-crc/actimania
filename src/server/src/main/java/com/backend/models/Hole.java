@@ -16,6 +16,16 @@ public class Hole
 		}
 	}
 	
+	public Hole(Hole holeToClone)
+	{
+		triangleStates = new TriangleStateEnum[holeToClone.triangleStates.length];
+
+		for(int currentState = 0 ; currentState < holeToClone.triangleStates.length; currentState++)
+		{
+			triangleStates[currentState] = holeToClone.triangleStates[currentState];
+		}
+	}
+	
 	public TriangleStateEnum Front()
 	{
 		for(int i = 0; i < triangleStates.length; i++)

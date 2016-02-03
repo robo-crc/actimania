@@ -65,8 +65,19 @@ public class GameStateTests
 		GameState gameState4 = new GameState(gameState3, new ScoreboardUpdateEvent(triangleLeft, triangleRight, DateTime.now()));	
 		Validate.isTrue(gameState4.blueScore == (40 + 40 + 40 + 30 + 30) * 2);
 		Validate.isTrue(gameState4.yellowScore == 30);
+
+		// Make sure right triangle don't get the left triangle.
+		triangleLeft = GameState.InitializeTriangle();
+		triangleRight = GameState.InitializeTriangle();
+		triangleLeft[0].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangleLeft[1].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangleLeft[2].triangleStates[0] = TriangleStateEnum.BLUE;
+		triangleRight[0].triangleStates[0] = TriangleStateEnum.BLUE;
 		
-		// GameState18 was a false positive, a robot touched the captor.
+		GameState gameState5 = new GameState(gameState4, new ScoreboardUpdateEvent(triangleLeft, triangleRight, DateTime.now()));	
+		Validate.isTrue(gameState5.blueScore == (40 + 30 + 30) * 2 + 40);
+		Validate.isTrue(gameState5.yellowScore == 0);
+
 		GameState gameState19 = new GameState(gameState4, new PointModifierEvent(TeamEnum.BLUE, -200, new LocalizedString(Locale.ENGLISH, "Salwyn's house robot touch captor", "Le robot de salwyn's house a touché le capteur"), DateTime.now()));
 		Validate.isTrue(gameState19.blueScore == 360 - 200);
 		Validate.isTrue(gameState19.yellowScore == 30);

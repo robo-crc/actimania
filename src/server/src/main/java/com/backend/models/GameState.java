@@ -87,8 +87,8 @@ public class GameState
 		else
 		{
 			// We need to make a copy of the array so that the array is not a reference of each
-			localTriangleLeft = previousState.triangleLeft.clone();
-			localTriangleRight = previousState.triangleRight.clone();
+			localTriangleLeft = CloneTriangle(previousState.triangleLeft);
+			localTriangleRight = CloneTriangle(previousState.triangleRight);
 
 			localBlueScore = GetScore(TeamEnum.BLUE, localTriangleLeft) + GetScore(TeamEnum.BLUE, localTriangleRight);
 			localYellowScore = GetScore(TeamEnum.YELLOW, localTriangleLeft) + GetScore(TeamEnum.YELLOW, localTriangleRight);
@@ -157,6 +157,16 @@ public class GameState
 		pointModifierYellow	= localModifierYellow;
 		penalties			= localPenalties;
 		misconductPenalties	= localMisconductPenalties;
+	}
+	
+	public static Hole[] CloneTriangle(Hole[] previousTriangle)
+	{
+		Hole[] triangle = new Hole[previousTriangle.length];
+		for(int i = 0; i < triangle.length; i++)
+		{
+			triangle[i] = new Hole(previousTriangle[i]);
+		}
+		return triangle;		
 	}
 	
 	public static Hole[] InitializeTriangle()
