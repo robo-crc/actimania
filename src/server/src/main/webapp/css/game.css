@@ -156,12 +156,9 @@
 	width: 16px;
 	height: 16px;
 	margin: 0 4px 10px;
-	
-	
-	
 	cursor: pointer;
-	
 	list-style-image: url('../images/dotEmpty.svg');
+	z-index: 0;
 }
 
 
@@ -174,6 +171,7 @@
 .active-marker
 {
 	list-style-image: url('../images/dotFull.svg') !important;
+	z-index: 0;
 }
 
 .gameTimer

@@ -66,8 +66,8 @@ public class TournamentSetup
     			
     			for(School school : schools)
     			{
+    				// Initialize to 59 minutes.
     				pickBalls.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
-    				// Initialize to 99 minutes.
     				twoActuatorChanged.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
     				twoTargetHits.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
 
@@ -114,10 +114,10 @@ public class TournamentSetup
 			
 			Duration TIME_BETWEEN_GAMES = new Duration(5 * 60 * 1000);
 			DateTime[] RoundStartHour = new DateTime[Tournament.BLOCK_NUMBERS];
-			RoundStartHour[0] = new DateTime(2015, 2, 12, 18, 30);
-			RoundStartHour[1] = new DateTime(2015, 2, 13, 9, 0);
-			RoundStartHour[2] = new DateTime(2015, 2, 13, 13, 00);
-			RoundStartHour[3] = new DateTime(2015, 2, 13, 18, 00);
+			RoundStartHour[0] = new DateTime(2016, 2, 25, 18, 30);
+			RoundStartHour[1] = new DateTime(2016, 2, 26, 9, 0);
+			RoundStartHour[2] = new DateTime(2016, 2, 26, 13, 00);
+			RoundStartHour[3] = new DateTime(2016, 2, 26, 18, 00);
 			
 			TournamentSolution solvedTournament = TournamentSolver.solve(essentials, Tournament.GAME_PER_SCHOOL / (Tournament.SCHOOLS_PER_TEAM * 2), Tournament.SCHOOLS_PER_TEAM * 2, "com/backend/models/optaplanner/TournamentSolverConfig.xml");
 			if(solvedTournament != null)

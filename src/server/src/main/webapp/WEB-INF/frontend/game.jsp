@@ -98,7 +98,7 @@ if(isLive)
 	    %>
 	    	$('#game-slideshow').bjqs({
 	    		width : 1190,
-	    		height : 920,
+	    		height : 600,
 	            responsive : false,
 	            showcontrols : false,
 	            automatic : false,

@@ -55,9 +55,6 @@ public class PlayoffController extends HttpServlet
 				{
 					essentials.database.remove(Game.class, game._id);
 				}
-				
-				essentials.response.sendRedirect("../schedule");
-				return;
 			}
 			else if(action.equals("generateNextRound"))
 			{
@@ -71,16 +68,16 @@ public class PlayoffController extends HttpServlet
 				switch(nextGameType)
 				{
 				case PLAYOFF_REPECHAGE:
-					startTime = new DateTime(2015, 2, 14, 9, 0);
+					startTime = new DateTime(2016, 2, 27, 8, 30);
 					break;
 				case PLAYOFF_QUARTER:
-					startTime = new DateTime(2015, 2, 14, 12, 30);
+					startTime = new DateTime(2016, 2, 27, 11, 45);
 					break;
 				case PLAYOFF_DEMI:
-					startTime = new DateTime(2015, 2, 14, 14, 50);
+					startTime = new DateTime(2016, 2, 27, 14, 45);
 					break;
 				case PLAYOFF_FINAL:
-					startTime = new DateTime(2015, 2, 14, 16, 40);
+					startTime = new DateTime(2016, 2, 27, 16, 15);
 					break;
 				default:
 					break;
@@ -93,10 +90,6 @@ public class PlayoffController extends HttpServlet
 				{
 					essentials.database.save(game);
 				}
-				
-				// Show the newly generated schedule
-				essentials.response.sendRedirect("../schedule");
-				return;
 			}
 			else if(action.equals("addExcludedSchool"))
 			{

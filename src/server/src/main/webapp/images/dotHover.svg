@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16px"
+   height="16px"
+   id="svg17692"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="dotHover.svg">
+  <defs
+     id="defs17694" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="22.197802"
+     inkscape:cx="2.6165841"
+     inkscape:cy="8"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     inkscape:window-width="1440"
+     inkscape:window-height="838"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata17697">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <path
+       style="fill:#3c3c3b"
+       inkscape:connector-curvature="0"
+       id="path269"
+       d="m 14.000026,7.9976201 c 0,3.3140779 -2.686326,6.0012119 -6.0012115,6.0012119 -3.31327,0 -5.9987881,-2.687134 -5.9987881,-6.0012119 0,-3.3140779 2.6855181,-5.9963643 5.9987881,-5.9963643 3.3148855,0 6.0012115,2.6822864 6.0012115,5.9963643 z" />
+    <circle
+       transform="translate(-1509.202,-1610.67)"
+       style="fill:none;stroke:#3c3c3b;stroke-width:1.04910004;stroke-miterlimit:10"
+       sodipodi:ry="7.4250002"
+       sodipodi:rx="7.4250002"
+       sodipodi:cy="1618.67"
+       sodipodi:cx="1517.202"
+       id="circle271"
+       r="7.4250002"
+       cy="1618.67"
+       cx="1517.202"
+       stroke-miterlimit="10" />
+  </g>
+</svg>

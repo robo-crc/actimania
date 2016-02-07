@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PlayoffGroup 
 {
-	@JsonIgnore
-	public static final int KEEP_SCHOOLS = 2;
 	public final ArrayList<School> schools;
 	public final int groupNo;
 	
@@ -20,7 +18,7 @@ public class PlayoffGroup
 		groupNo = _groupNo;
 	}
 	
-	public ArrayList<School> getSchoolsForNextRound(ArrayList<SchoolInteger> rankedSchools)
+	public ArrayList<School> getSchoolsForNextRound(ArrayList<SchoolInteger> rankedSchools, int nbOfSchoolsToKepp)
 	{
 		ArrayList<School> toNextRound = new ArrayList<School>();
 		for(School school : rankedSchools)
@@ -28,7 +26,7 @@ public class PlayoffGroup
 			if(schools.contains(school))
 			{
 				toNextRound.add(school);
-				if(toNextRound.size() >= KEEP_SCHOOLS)
+				if(toNextRound.size() >= nbOfSchoolsToKepp)
 				{
 					break;
 				}
