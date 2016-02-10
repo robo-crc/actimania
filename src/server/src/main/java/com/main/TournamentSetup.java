@@ -33,6 +33,57 @@ public class TournamentSetup
 		keyboard.close();
 	}
 	
+	public static Competition setupCompetition(ArrayList<School> schools)
+	{
+		Competition competition = new Competition(
+				null,
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>());
+		
+		for(School school : schools)
+		{
+			competition.kiosk.add(new SchoolInteger(school, 0));
+			competition.programming.add(new SchoolInteger(school, 0));
+			competition.robotConstruction.add(new SchoolInteger(school, 0));
+			competition.robotDesign.add(new SchoolInteger(school, 0));
+			competition.sportsmanship.add(new SchoolInteger(school, 0));
+			competition.video.add(new SchoolInteger(school, 0));
+			competition.websiteDesign.add(new SchoolInteger(school, 0));
+			competition.websiteJournalism.add(new SchoolInteger(school, 0));
+		}
+		
+		return competition;
+	}
+	
+	public static SkillsCompetition setupSkillCompetition(ArrayList<School> schools)
+	{
+		ArrayList<SchoolDuration> pickBalls = new ArrayList<SchoolDuration>();
+		ArrayList<SchoolDuration> twoActuatorChanged = new ArrayList<SchoolDuration>();
+		ArrayList<SchoolDuration> twoTargetHits = new ArrayList<SchoolDuration>();
+		
+		for(School school : schools)
+		{
+			// Initialize to 59 minutes.
+			pickBalls.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
+			twoActuatorChanged.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
+			twoTargetHits.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
+		}
+		
+		SkillsCompetition skillsCompetition = new SkillsCompetition(
+				null,
+				pickBalls, 
+				twoTargetHits,
+				twoActuatorChanged);
+		
+		return skillsCompetition;
+	}
+	
 	public static void setupCompetitions(Scanner keyboard)
 	{
 		System.out.println("Do you want to setup competitions and skill competitions?");
@@ -47,55 +98,18 @@ public class TournamentSetup
     	{
     		try(Essentials essentials = new Essentials(new Database(Database.DatabaseType.PRODUCTION), null, null, null, null))
     		{
-    			ArrayList<School> schools = School.getSchools(essentials);
-
-    			Competition competition = new Competition(
-    					null,
-    					new ArrayList<SchoolInteger>(),
-    					new ArrayList<SchoolInteger>(),
-    					new ArrayList<SchoolInteger>(),
-    					new ArrayList<SchoolInteger>(),
-    					new ArrayList<SchoolInteger>(),
-    					new ArrayList<SchoolInteger>(),
-    					new ArrayList<SchoolInteger>(),
-    					new ArrayList<SchoolInteger>());
-    			
-    			ArrayList<SchoolDuration> pickBalls = new ArrayList<SchoolDuration>();
-    			ArrayList<SchoolDuration> twoActuatorChanged = new ArrayList<SchoolDuration>();
-    			ArrayList<SchoolDuration> twoTargetHits = new ArrayList<SchoolDuration>();
-    			
-    			for(School school : schools)
-    			{
-    				// Initialize to 59 minutes.
-    				pickBalls.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
-    				twoActuatorChanged.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
-    				twoTargetHits.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
-
-    				competition.kiosk.add(new SchoolInteger(school, 0));
-    				competition.programming.add(new SchoolInteger(school, 0));
-    				competition.robotConstruction.add(new SchoolInteger(school, 0));
-    				competition.robotDesign.add(new SchoolInteger(school, 0));
-    				competition.sportsmanship.add(new SchoolInteger(school, 0));
-    				competition.video.add(new SchoolInteger(school, 0));
-    				competition.websiteDesign.add(new SchoolInteger(school, 0));
-    				competition.websiteJournalism.add(new SchoolInteger(school, 0));
-    			}
+    			essentials.database.dropCollection(LiveRefresh.class);
     			essentials.database.dropCollection(SkillsCompetition.class);
     			essentials.database.dropCollection(Competition.class);
-    			essentials.database.dropCollection(LiveRefresh.class);
-    			
-    			SkillsCompetition skillsCompetition = new SkillsCompetition(
-    					null,
-						pickBalls, 
-						twoTargetHits,
-						twoActuatorChanged);
-    			
+    		
+    			ArrayList<School> schools = School.getSchools(essentials);
+
     			LiveRefresh liveRefresh = new LiveRefresh(null, true);
+    			SkillsCompetition skillsCompetition = setupSkillCompetition(schools);
+    			Competition competition = setupCompetition(schools);
     			
     			essentials.database.save(liveRefresh);
     			essentials.database.save(skillsCompetition);
-    			essentials.database.save(competition);
-    			
     			essentials.database.save(competition);
     		}
     	}

@@ -115,7 +115,8 @@ public class Playoff
 	// I've tried to make this function generic, but finally those are kind of decisions my tournament per tournament.
 	public PlayoffRound generatePlayoffRound(Database database, Tournament tournament, PlayoffRound previousRound, GameTypeEnum gameType)
 	{
-		ArrayList<PlayoffGroup> playoffGroups = new ArrayList<PlayoffGroup>();
+		SkillsCompetition skillsCompetition = SkillsCompetition.get(database);
+		ArrayList<School> preliminaryRanking = getRemainingSchools(tournament.getPreliminaryRanking(skillsCompetition));
 		
 		int groupNo = 0;
 		if(previousRound != null)
@@ -123,8 +124,7 @@ public class Playoff
 			groupNo = previousRound.playoffGroups.get(previousRound.playoffGroups.size() - 1).groupNo + 1;
 		}
 		
-		SkillsCompetition skillsCompetition = SkillsCompetition.get(database);
-		ArrayList<School> preliminaryRanking = getRemainingSchools(tournament.getPreliminaryRanking(skillsCompetition));
+		ArrayList<PlayoffGroup> playoffGroups = new ArrayList<PlayoffGroup>();
 		
 		switch (gameType)
 		{
