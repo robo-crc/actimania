@@ -13,7 +13,6 @@ import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
-import com.backend.models.enums.SideEnum;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.framework.models.Essentials;

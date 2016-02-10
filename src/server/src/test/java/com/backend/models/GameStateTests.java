@@ -12,7 +12,6 @@ import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.ScoreboardUpdateEvent;
 import com.backend.models.GameEvent.StartGameEvent;
-import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TeamEnum;
 import com.backend.models.enums.TriangleStateEnum;
 import com.framework.helpers.LocalizedString;

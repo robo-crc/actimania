@@ -1,7 +1,6 @@
 package com.backend.models;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import org.apache.commons.lang.Validate;
 import org.bson.types.ObjectId;
@@ -10,14 +9,11 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.StartGameEvent;
-import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
 import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.Database;
-import com.framework.helpers.LocalizedString;
 import com.framework.helpers.Database.DatabaseType;
 import com.main.TournamentSetup;
 

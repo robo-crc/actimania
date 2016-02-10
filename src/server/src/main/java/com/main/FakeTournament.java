@@ -7,16 +7,20 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import com.backend.models.Game;
+import com.backend.models.GameState;
+import com.backend.models.Hole;
 import com.backend.models.Playoff;
 import com.backend.models.PlayoffRound;
 import com.backend.models.School;
 import com.backend.models.SchoolDuration;
-import com.backend.models.SchoolInteger;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
 import com.backend.models.GameEvent.EndGameEvent;
+import com.backend.models.GameEvent.GameEvent;
+import com.backend.models.GameEvent.ScoreboardUpdateEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.enums.GameTypeEnum;
+import com.backend.models.enums.TriangleStateEnum;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.framework.models.Essentials;
@@ -33,28 +37,35 @@ public class FakeTournament
 		}
 	}
 	
+	public static Hole[] fillTriangle(Random random)
+	{
+		Hole[] triangle = GameState.InitializeTriangle();
+		for(Hole hole : triangle)
+		{
+			for(int i = 0; i < hole.triangleStates.length; i++)
+			{
+				hole.triangleStates[i] = TriangleStateEnum.values()[random.nextInt(3)];
+				if(hole.triangleStates[i] == TriangleStateEnum.EMPTY)
+				{
+					break;
+				}
+			}
+		}
+		return triangle;
+	}
+	
 	public static void fillFakGameEvents(Game currentGame, Random random)
 	{
 		currentGame.addGameEvent(new StartGameEvent(DateTime.now()));
 		
-		int nbEvents = random.nextInt(30) + 20;
+		int nbEvents = random.nextInt(30) + 10;
 		
 		for(int eventNo = 0; eventNo < nbEvents; eventNo++)
 		{
-/*			SideEnum side = SideEnum.values()[random.nextInt(SideEnum.values().length)];
-			TargetEnum target = TargetEnum.values()[random.nextInt(TargetEnum.values().length)];
+			Hole[] triangleLeft = fillTriangle(random);
+			Hole[] triangleRight = fillTriangle(random);
 			
-			boolean isTargetHit = random.nextBoolean();
-			if(isTargetHit)
-			{
-				currentGame.addGameEvent(new TargetHitEvent(side, target, DateTime.now()));
-			}
-			else
-			{
-				ActuatorStateEnum actuator = ActuatorStateEnum.values()[random.nextInt(ActuatorStateEnum.values().length)];
-				currentGame.addGameEvent(new ActuatorStateChangedEvent(side, target, actuator, DateTime.now()));
-			}
-*/
+			currentGame.addGameEvent(new ScoreboardUpdateEvent(triangleLeft, triangleRight, DateTime.now()));
 		}
 		
 		currentGame.addGameEvent(new EndGameEvent(DateTime.now()));
@@ -91,6 +102,8 @@ public class FakeTournament
 				{
 					essentials.database.remove(Game.class, game._id);
 				}
+				
+				tournament.games.removeAll(games);
 				
 				for(int i = 0; i < tournament.games.size(); i++)
 				{

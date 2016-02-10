@@ -1,17 +1,9 @@
 package com.backend.models;
 
-import java.util.ArrayList;
-
-import org.apache.commons.lang.Validate;
-import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.backend.models.GameEvent.GameEvent;
-import com.backend.models.enums.GameEventEnum;
-import com.backend.models.enums.GameTypeEnum;
-import com.backend.models.enums.SideEnum;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 
