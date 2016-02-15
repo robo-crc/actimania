@@ -5,14 +5,16 @@ html, body
 
 .twitchStream
 {
-    display: block;   
+    display: block;
     margin: auto;
     margin-top: 80px;
-    float: right;
-    margin-right: 80px;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
 }
 
 .gameFrame
 {
     margin-top: 45px;
 }
+

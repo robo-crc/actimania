@@ -37,8 +37,7 @@ LocalizedString strLive = new LocalizedString(ImmutableMap.of(
 <body>
 <%@include file="header.jsp" %>
 <iframe src="http://www.twitch.tv/crc_robotics/embed" class="twitchStream" frameborder="0" scrolling="no" height="378" width="620"></iframe>
-<iframe src="gameNumber" frameborder="0" scrolling="no" class="liveGameNumber"></iframe>
-<iframe src="game" class="gameFrame" scrolling="no" frameborder="0" height="1500px" width="1200px"></iframe>
+<div class="clear"></div>
 <%@include file="footer.jsp" %>
 </body>
 </html>
