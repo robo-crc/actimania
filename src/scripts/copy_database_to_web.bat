@@ -1,0 +1,1 @@
+..\..\tools\putty\putty.exe -R 27018:localhost:27017 -t -load "Pythagorium" -l USERNAME -pw PASSWORD -m "copy_database.script"

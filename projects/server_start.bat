@@ -1,5 +1,7 @@
 @echo off
-:: https://developers.google.com/appengine/docs/java/tools/maven
+pushd ..\src\scripts
+start start_mongo.bat
+popd
 pushd ..\src\server
-call ..\..\tools\maven\bin\mvn.bat appengine:devserver
+call ..\..\tools\maven\bin\mvn.bat jetty:run
 popd
