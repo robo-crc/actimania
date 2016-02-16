@@ -83,5 +83,6 @@ LocalizedString strSchoolName = new LocalizedString(ImmutableMap.of(
 	<% 
 	}
 	%>
+<%@include file="footer.jsp" %>
 </body>
 </html>

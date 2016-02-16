@@ -475,6 +475,6 @@ $('.selectColor').change(function()
 });
 
 </script>
-
+<%@include file="footer.jsp" %>
 </body>
 </html>

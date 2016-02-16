@@ -170,4 +170,6 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 	</form>
 	
 	<iframe src="../playoff?showHeader=false" class="frontendFrame" scrolling="no" frameborder="0" height="1500px" width="1200px"></iframe>
+	
+	<%@include file="footer.jsp" %>
 </body>
