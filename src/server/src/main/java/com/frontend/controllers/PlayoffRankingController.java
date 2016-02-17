@@ -29,33 +29,64 @@ public class PlayoffRankingController extends HttpServlet
 		try(Essentials essentials = Essentials.createEssentials(request,  response))
 		{
 			Tournament tournament = Tournament.getTournament(essentials);
+			boolean isAdmin = essentials.subject.isAuthenticated();
 			
 			ArrayList<ArrayList<SchoolInteger>> repechageRankedByGroup = new ArrayList<ArrayList<SchoolInteger>>();
 			PlayoffRound repechageRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_REPECHAGE);
-			if(repechageRound != null)
-			{
-				repechageRankedByGroup.addAll(repechageRound.getSchoolsRankedByGroup(tournament));
-			}
-			
+
 			ArrayList<ArrayList<SchoolInteger>> quarterRankedByGroup = new ArrayList<ArrayList<SchoolInteger>>();
 			PlayoffRound quarterRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_QUARTER);
-			if(quarterRound != null)
-			{
-				quarterRankedByGroup.addAll(quarterRound.getSchoolsRankedByGroup(tournament));
-			}
-			
+
 			ArrayList<ArrayList<SchoolInteger>> semiRankedByGroup = new ArrayList<ArrayList<SchoolInteger>>();
 			PlayoffRound semiRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_DEMI);
-			if(semiRound != null)
-			{
-				semiRankedByGroup.addAll(semiRound.getSchoolsRankedByGroup(tournament));
-			}
-			
+
 			ArrayList<ArrayList<SchoolInteger>> finalRankedByGroup = new ArrayList<ArrayList<SchoolInteger>>();
 			PlayoffRound finalRound = PlayoffRound.get(essentials.database, GameTypeEnum.PLAYOFF_FINAL);
-			if(finalRound != null)
+
+			if(isAdmin)
 			{
-				finalRankedByGroup.addAll(finalRound.getSchoolsRankedByGroup(tournament));
+				if(repechageRound != null)
+				{
+					repechageRankedByGroup.addAll(repechageRound.getSchoolsRankedByGroup(tournament));
+				}
+				
+				if(quarterRound != null)
+				{
+					quarterRankedByGroup.addAll(quarterRound.getSchoolsRankedByGroup(tournament));
+				}
+				
+				if(semiRound != null)
+				{
+					semiRankedByGroup.addAll(semiRound.getSchoolsRankedByGroup(tournament));
+				}
+				
+				if(finalRound != null)
+				{
+					finalRankedByGroup.addAll(finalRound.getSchoolsRankedByGroup(tournament));
+				}
+			}
+			else
+			{
+				// For everyone, we only show the results up to previous round.
+				if(repechageRound != null && quarterRound != null)
+				{
+					repechageRankedByGroup.addAll(repechageRound.getSchoolsRankedByGroup(tournament));
+				}
+				
+				if(quarterRound != null && semiRound != null)
+				{
+					quarterRankedByGroup.addAll(quarterRound.getSchoolsRankedByGroup(tournament));
+				}
+				
+				if(semiRound != null && finalRound != null)
+				{
+					semiRankedByGroup.addAll(semiRound.getSchoolsRankedByGroup(tournament));
+				}
+				
+				if(finalRound != null)
+				{
+					finalRankedByGroup.addAll(finalRound.getSchoolsRankedByGroup(tournament));
+				}
 			}
 			boolean showHeader = true;
 			if(request.getParameter("showHeader") != null)

@@ -39,8 +39,8 @@ public class ScoreboardUpdateEvent implements GameEvent
 	public LocalizedString getLocalizedString(Locale locale)
 	{
 		return new LocalizedString(locale,
-				"Score board updated",
-				"Mise à jour du pointage"
+				"Scoreboard update",
+				"Pointage mis-à-jour"
 				);
 	}
 }
