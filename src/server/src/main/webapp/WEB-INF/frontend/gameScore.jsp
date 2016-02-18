@@ -64,14 +64,76 @@ LocalizedString strGameNotStarted = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Game has not been played yet", 
 		Locale.FRENCH, 	"Cette parte n'a pas encore été jouée"
 		), currentLocale);
+
+LocalizedString strGame = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Game", 
+		Locale.FRENCH, 	"Partie"
+		), currentLocale);
+
 %>
 </head>
 <body>
+<h1 class="grayBackgroundColor whiteColor gameNumberH1">Game/Partie <%= String.valueOf(game.gameNumber) %></h1>
 <%
 if(state == null)
 {
 %>
-<h2 class="grayColor gameH2"><%= strGameNotStarted %></h2>
+<h2 class="grayBackgroundColor whiteColor gameH2"><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></h2>
+<div class="bar grayBackgroundColor gameNumberBar"></div>
+
+	<div class="team blueTeam grayBackgroundColor">
+		<div class="blueBackgroundColor gameBarNotStarted"></div>
+		<table class="wrapperNotStarted">
+			<tr>
+			<td class="teamName">
+			<%
+				for(School school : game.blueTeam)
+				{
+			%>
+				<div class="gameSchoolDiv clear">
+					<div class="gameSchoolInner">
+						<img src="images/schools/32x32/<%= school.getCompactName() %>.png" />
+					</div>
+					<a target="_blank" class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+				</div>
+				<%
+					}
+				%>
+			</td>
+			<td class="whiteDiv"></td>
+			<td class="gameScore whiteColor">
+			</td>
+			</tr>
+		</table>
+	</div>
+			
+	<div class="team grayBackgroundColor">
+		<div class="yellowBackgroundColor gameBarNotStarted"></div>
+		<table class="wrapperNotStarted">
+			<tr>
+				<td class="teamName">
+				<%
+				for(School school : game.yellowTeam)
+				{
+				%>
+					<div class="gameSchoolDiv clear">
+						<div class="gameSchoolInner">
+							<img src="images/schools/32x32/<%= school.getCompactName() %>.png" />
+						</div>
+						<a target="_blank" class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+					</div>
+				<%
+				}
+				%>
+				</td>
+				<td class="whiteDiv"></td>
+				<td class="gameScore whiteColor">
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="clear"></div>
 </body>
 <%
 }
@@ -88,11 +150,10 @@ else
 		}%>">
 			<%= timeInGame.getMinuteOfHour() + ":" + (timeInGame.getSecondOfMinute() < 10 ? "0" : "") + timeInGame.getSecondOfMinute() %>
 		</div>
-		<div class="gameEvent whiteColor"><%= state.lastGameEvent.getLocalizedString(currentLocale) %></div>
 	</div>
 	
 	<div class="gameScoreBlue team blueTeam grayBackgroundColor">
-		<div class="blueBackgroundColor gameBar"></div>
+		<div class="blueBackgroundColor gameBarScore"></div>
 		<table class="wrapper">
 			<tr>
 			<td class="teamName">
@@ -140,7 +201,7 @@ else
 	</div>
 	
 	<div class="team grayBackgroundColor">
-		<div class="yellowBackgroundColor gameBar"></div>
+		<div class="yellowBackgroundColor gameBarScore"></div>
 		<table class="wrapper">
 			<tr>
 				<td class="teamName">

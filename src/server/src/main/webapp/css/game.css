@@ -205,6 +205,12 @@
     height: 16px;
 }
 
+.gameBarScore
+{
+    width: 585px;
+    height: 16px;
+}
+
 .gameScore
 {
 	text-align: center;

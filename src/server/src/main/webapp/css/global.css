@@ -93,6 +93,11 @@ table.wrapper
 	background-color: white;
 }
 
+.whiteColor
+{
+	color: white;
+}
+
 .grayBackgroundColor
 {
 	background-color: rgb(60,60,59);
