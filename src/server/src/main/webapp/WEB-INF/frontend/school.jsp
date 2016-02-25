@@ -76,19 +76,19 @@ LocalizedString strSchoolScore = new LocalizedString(ImmutableMap.of(
         Locale.FRENCH,  "POINTAGE DE L'ÉCOLE"
         ), currentLocale);
 
-LocalizedString strPickupRace = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Pick-up race", 
-		Locale.FRENCH, 	"Ramassage de vitesse"
+LocalizedString strTakeAllPieces = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "PICK-UP<br/>RACE", 
+		Locale.FRENCH, 	"RAMASSAGE<br/>DE VITESSE"
 		), currentLocale);
 
-LocalizedString strTwoTargetHits = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Two target hits", 
-		Locale.FRENCH, 	"Toucher deux cibles"
+LocalizedString strPlaceThreePieces = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "PLACE<br/>THREE PIECES", 
+		Locale.FRENCH, 	"POSITIONNER<br/>TROIS PIÈCES"
 		), currentLocale);
 
-LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Two switches changed", 
-		Locale.FRENCH, 	"Changer deux actuateurs"
+LocalizedString strPlaceHighest = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "PLACE<br/>HIGHEST", 
+		Locale.FRENCH, 	"POSITIONNER<br/>LE PLUS HAUT"
 		), currentLocale);
 
 LocalizedString strSchool = new LocalizedString(ImmutableMap.of( 	
@@ -148,9 +148,9 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <table class="schoolTable schoolCompetition">
 <tr><th class="whiteBackgroundColor"></th>	<th class="center"><%= strScore %></th></tr>
 <tr><td><%= strTournament %></td>			<td class="center"><%= score %></td></tr>
-<tr><td><%= strPickupRace %></td>			<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%></td></tr>
-<tr><td><%= strTwoTargetHits %></td>		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%></td></tr>
-<tr><td><%= strTwoActuatorChanged %></td>	<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%></td></tr>
+<tr><td><%= strTakeAllPieces %></td>			<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%></td></tr>
+<tr><td><%= strPlaceThreePieces %></td>		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%></td></tr>
+<tr><td><%= strPlaceHighest %></td>	<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%></td></tr>
 <tr><td><b><%= strCumulative %></b></td> 	<td class="center"><b><%=tournament.getPreliminaryRanking(skillsCompetition).indexOf(school) + 1%> / <%= schoolCount %></b></td></tr>
 </table>
 <br/>
