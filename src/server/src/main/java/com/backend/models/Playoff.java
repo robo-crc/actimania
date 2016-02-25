@@ -116,7 +116,7 @@ public class Playoff
 	public PlayoffRound generatePlayoffRound(Database database, Tournament tournament, PlayoffRound previousRound, GameTypeEnum gameType)
 	{
 		SkillsCompetition skillsCompetition = SkillsCompetition.get(database);
-		ArrayList<School> preliminaryRanking = getRemainingSchools(tournament.getPreliminaryRanking(skillsCompetition));
+		ArrayList<School> preliminaryRanking = getRemainingSchools(tournament.getPreliminaryRanking(skillsCompetition), excludedSchools);
 		
 		int groupNo = 0;
 		if(previousRound != null)
@@ -260,10 +260,10 @@ public class Playoff
 		return playoff;
 	}
 	
-	public ArrayList<School> getRemainingSchools(ArrayList<School> allSchools)
+	public static ArrayList<School> getRemainingSchools(ArrayList<School> allSchools, ArrayList<School> excludedSchools)
 	{
 		ArrayList<School> ret = new ArrayList<School>(allSchools);
-		ret.removeAll(excludedSchools);		
+		ret.removeAll(excludedSchools);
 		return ret;
 	}
 }

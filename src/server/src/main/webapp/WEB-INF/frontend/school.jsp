@@ -17,7 +17,9 @@ School school	= (School) request.getAttribute("school");
 Integer rank 	= (Integer) request.getAttribute("rank");
 Integer score	= (Integer) request.getAttribute("score");
 SkillsCompetition skillsCompetition = (SkillsCompetition) request.getAttribute("skillsCompetition");
-int schoolCount = tournament.schools.size();
+Integer posToDisplay	= (Integer) request.getAttribute("posToDisplay");
+Integer numberOfSchools	= (Integer) request.getAttribute("numberOfSchools");
+Boolean isExcluded	= (Boolean) request.getAttribute("isExcluded");
 
 Locale currentLocale = request.getLocale();
 
@@ -77,18 +79,18 @@ LocalizedString strSchoolScore = new LocalizedString(ImmutableMap.of(
         ), currentLocale);
 
 LocalizedString strTakeAllPieces = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "PICK-UP<br/>RACE", 
-		Locale.FRENCH, 	"RAMASSAGE<br/>DE VITESSE"
+		Locale.ENGLISH, "Pick-up race", 
+		Locale.FRENCH, 	"Ramassage de vitesse"
 		), currentLocale);
 
 LocalizedString strPlaceThreePieces = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "PLACE<br/>THREE PIECES", 
-		Locale.FRENCH, 	"POSITIONNER<br/>TROIS PIÈCES"
+		Locale.ENGLISH, "Place three pieces", 
+		Locale.FRENCH, 	"Positionner trois pièce"
 		), currentLocale);
 
 LocalizedString strPlaceHighest = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "PLACE<br/>HIGHEST", 
-		Locale.FRENCH, 	"POSITIONNER<br/>LE PLUS HAUT"
+		Locale.ENGLISH, "Place highest", 
+		Locale.FRENCH, 	"Positionner le plus haut"
 		), currentLocale);
 
 LocalizedString strSchool = new LocalizedString(ImmutableMap.of( 	
@@ -125,6 +127,11 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "FINAL", 
 		Locale.FRENCH, 	"FINALE"
 		), currentLocale);
+
+LocalizedString strNoShow = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "No show for playoff", 
+		Locale.FRENCH, 	"Ne se présentera pas aux éliminatoires"
+		), currentLocale);
 %>
 
 <!DOCTYPE html>
@@ -148,10 +155,21 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <table class="schoolTable schoolCompetition">
 <tr><th class="whiteBackgroundColor"></th>	<th class="center"><%= strScore %></th></tr>
 <tr><td><%= strTournament %></td>			<td class="center"><%= score %></td></tr>
-<tr><td><%= strTakeAllPieces %></td>			<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%></td></tr>
+<tr><td><%= strTakeAllPieces %></td>		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%></td></tr>
 <tr><td><%= strPlaceThreePieces %></td>		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%></td></tr>
-<tr><td><%= strPlaceHighest %></td>	<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%></td></tr>
-<tr><td><b><%= strCumulative %></b></td> 	<td class="center"><b><%=tournament.getPreliminaryRanking(skillsCompetition).indexOf(school) + 1%> / <%= schoolCount %></b></td></tr>
+<tr><td><%= strPlaceHighest %></td>			<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%></td></tr>
+<tr><td><b><%= strCumulative %></b></td> 	<td class="center"><b>
+<% if(!isExcluded.booleanValue())
+{
+	out.print(posToDisplay + " / " + numberOfSchools);
+}
+else
+{
+	out.print(strNoShow);
+}
+%>
+</b></td></tr>
+
 </table>
 <br/>
 
