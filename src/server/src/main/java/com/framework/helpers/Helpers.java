@@ -37,6 +37,17 @@ public class Helpers
 	.appendMillis()
 	.toFormatter();
 	
+	public static final PeriodFormatter stopwatchFormatterFull = new PeriodFormatterBuilder()
+			.printZeroAlways()
+			.minimumPrintedDigits(2)
+			.appendMinutes()
+			.appendSuffix(":")
+			.minimumPrintedDigits(2)
+			.appendSeconds()
+			.appendSuffix(".")
+			.appendMillis()
+			.toFormatter();
+	
 	public static <T> T getParameter(String parameter, Class<T> entityType, Essentials global)
 	{
 		return getParameter(parameter, entityType, global.request, global.errorList);

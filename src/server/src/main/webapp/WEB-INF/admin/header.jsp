@@ -27,6 +27,12 @@ LocalizedString sdrAdmin = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "ADMINISTRATION", 
 		Locale.FRENCH, 	"ADMINISTRATION"
 		), request.getLocale());
+
+
+LocalizedString strLive = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "LIVE", 
+		Locale.FRENCH, 	"EN COURS"
+		), request.getLocale());
 %>
 
 <div class="header">
@@ -35,6 +41,7 @@ LocalizedString sdrAdmin = new LocalizedString(ImmutableMap.of(
 	<h1 class="headerAdmin"><%= sdrAdmin %></h1>
 	
 	<div class="headerRubban grayBackgroundColor">
+		<a href="../game"><%= strLive %></a>
 		<a href="competition"><%= strCompetition %></a>
 		<a href="../schedule"><%= strSchedule %></a>
 		<a href="playoff"><%= strPlayoff %></a>

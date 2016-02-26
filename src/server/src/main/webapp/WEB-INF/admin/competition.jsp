@@ -178,9 +178,9 @@ $(document).ready(function(){
 		%>
 			<tr>
 				<td><%= school.name %></td>
-				<td><input type="text" class="chrono" name="takeAllPieces_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%>" /></td>
-				<td><input type="text" class="chrono" name="placeThreePieces_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%>" /></td>
-				<td><input type="text" class="chrono" name="placeHighest_<%= school._id %>" value="<%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%>" /></td>
+				<td><input type="text" class="chrono" name="takeAllPieces_<%= school._id %>" value="<%=Helpers.stopwatchFormatterFull.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%>" /></td>
+				<td><input type="text" class="chrono" name="placeThreePieces_<%= school._id %>" value="<%=Helpers.stopwatchFormatterFull.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%>" /></td>
+				<td><input type="text" class="chrono" name="placeHighest_<%= school._id %>" value="<%=Helpers.stopwatchFormatterFull.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%>" /></td>
 			</tr>
 			<%
 		}
