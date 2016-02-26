@@ -16,6 +16,7 @@ import com.backend.models.Game;
 import com.backend.models.GameState;
 import com.backend.models.Hole;
 import com.backend.models.School;
+import com.backend.models.GameEvent.DidNotScoreEvent;
 import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
@@ -137,6 +138,13 @@ public class GameController extends HttpServlet
 			School school = essentials.database.findOne(School.class, schoolId);
 			
 			addToGame(essentials, game, new MisconductPenaltyEvent(school, DateTime.now()));
+		}
+		else if( gameEvent.equalsIgnoreCase(GameEventEnum.DID_NOT_SCORE.toString()) )
+		{
+			ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
+			School school = essentials.database.findOne(School.class, schoolId);
+			
+			addToGame(essentials, game, new DidNotScoreEvent(school, DateTime.now()));
 		}
 		else if( gameEvent.equalsIgnoreCase(GameEventEnum.POINT_MODIFIER.toString()) )
 		{

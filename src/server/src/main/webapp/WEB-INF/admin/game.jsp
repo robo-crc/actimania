@@ -130,6 +130,11 @@ LocalizedString strMisconductPenalty = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Pénalité de mauvaise conduite"
 		), currentLocale);
 
+LocalizedString strDidNotScore = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "School did not score", 
+		Locale.FRENCH, 	"École qui n'a pas compter de points"
+		), currentLocale);
+
 LocalizedString strEndGame = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "End game", 
 		Locale.FRENCH, 	"Fin de partie"
@@ -324,7 +329,23 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
 	
-	
+	<form method="post">
+		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.DID_NOT_SCORE.toString() %>" />
+		<input type="hidden" name="id" value="<%= game._id %>" />
+		<h2><%= strDidNotScore %></h2>
+		
+		<%= strSchool %>
+		<select name="school">
+	<% 	for(School school : game.getSchools())
+		{ %>
+			<option value="<%= school._id %>"> <%= school.name %></option>
+	 <% } %>
+		</select>
+		<br/>
+		<% outputAddAfter(game, strAddAfter, out); %>
+		<br/>
+		<input type="submit" value="<%= strAdd %>" />
+	</form>
 	
 	<form method="post">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.SCHOOL_PENALTY.toString() %>" />

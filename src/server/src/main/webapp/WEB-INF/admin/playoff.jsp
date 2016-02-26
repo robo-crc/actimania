@@ -111,7 +111,7 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 		<%= strSchool %>
 		<select name="school">
 	<% 	
-		ArrayList<School> schoolsToAdd = playoff.getRemainingSchools(tournament.schools, playoff.excludedSchools);
+		ArrayList<School> schoolsToAdd = Playoff.getRemainingSchools(tournament.schools, playoff.excludedSchools);
 		
 		for(School school : schoolsToAdd)
 		{ %>

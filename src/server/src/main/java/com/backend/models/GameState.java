@@ -3,8 +3,8 @@ package com.backend.models;
 import java.util.ArrayList;
 
 import org.bson.types.ObjectId;
-import org.optaplanner.core.impl.exhaustivesearch.node.bounder.ScoreBounder;
 
+import com.backend.models.GameEvent.DidNotScoreEvent;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
@@ -31,6 +31,7 @@ public class GameState
 	
 	public final ArrayList<SchoolInteger>	penalties;
 	public final ArrayList<School>			misconductPenalties;
+	public final ArrayList<School>			didNotScore;
 	public final int						pointModifierBlue;
 	public final int						pointModifierYellow;
 	
@@ -43,6 +44,7 @@ public class GameState
 			@JsonProperty("yellowScore")			int 						_yellowScore,
 			@JsonProperty("penalties")				ArrayList<SchoolInteger>	_penalties,
 			@JsonProperty("misconductPenalties")	ArrayList<School>			_misconductPenalties,
+			@JsonProperty("didNotScore")			ArrayList<School>			_didNotScore,
 			@JsonProperty("pointModifierBlue")		int							_pointModifierBlue,
 			@JsonProperty("pointModifierYellow")	int							_pointModifierYellow
 			)
@@ -55,6 +57,7 @@ public class GameState
 		yellowScore 		= _yellowScore;
 		penalties 			= _penalties;
 		misconductPenalties	= _misconductPenalties;
+		didNotScore			= _didNotScore;
 		pointModifierBlue	= _pointModifierBlue;
 		pointModifierYellow	= _pointModifierYellow;
 	}
@@ -75,6 +78,7 @@ public class GameState
 		
 		ArrayList<SchoolInteger> 	localPenalties = null;
 		ArrayList<School> 			localMisconductPenalties = null;
+		ArrayList<School> 			localDidNotScore = null;
 		
 		if(gameEvent.getGameEventEnum() == GameEventEnum.START_GAME)
 		{
@@ -83,6 +87,7 @@ public class GameState
 			
 			localPenalties = new ArrayList<SchoolInteger>();
 			localMisconductPenalties = new ArrayList<School>();
+			localDidNotScore = new ArrayList<School>();
 		}
 		else
 		{
@@ -98,6 +103,7 @@ public class GameState
 			
 			localPenalties 				= new ArrayList<SchoolInteger>(previousState.penalties);
 			localMisconductPenalties	= new ArrayList<School>(previousState.misconductPenalties);
+			localDidNotScore			= new ArrayList<School>(previousState.didNotScore);
 
 			if(gameEvent.getGameEventEnum() == GameEventEnum.SCOREBOARD_UPDATED)
 			{
@@ -143,6 +149,11 @@ public class GameState
 				MisconductPenaltyEvent misconductPenaltyEvent = (MisconductPenaltyEvent) gameEvent;
 				localMisconductPenalties.add(misconductPenaltyEvent.school);
 			}
+			else if(gameEvent.getGameEventEnum() == GameEventEnum.DID_NOT_SCORE)
+			{
+				DidNotScoreEvent didNotScoreEvent = (DidNotScoreEvent) gameEvent;
+				localDidNotScore.add(didNotScoreEvent.school);
+			}
 			else if(gameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
 			{
 				// Nothing to do for now.
@@ -157,6 +168,7 @@ public class GameState
 		pointModifierYellow	= localModifierYellow;
 		penalties			= localPenalties;
 		misconductPenalties	= localMisconductPenalties;
+		didNotScore			= localDidNotScore;
 	}
 	
 	public static Hole[] CloneTriangle(Hole[] previousTriangle)

@@ -34,7 +34,7 @@ public class Game implements Comparable<Game>
 	private final ArrayList<GameEvent> 		gameEvents;
 	public final boolean					isLive;
 
-	public final static Duration END_LIVE_DELAY	= new Duration(60 * 1000);
+	public final static Duration END_LIVE_DELAY	= new Duration(2 * 60 * 1000);
 	
 	public Game(
 			@JsonProperty("_id")					ObjectId 					_gameId,
@@ -279,6 +279,12 @@ public class Game implements Comparable<Game>
 			return 0;
 		}
 		
+		// A 0 score is given if the school couldn't score any points.
+		if(gameState.didNotScore.contains(school))
+		{
+			return 0;
+		}
+
 		int score = 0;
 		if( isBlueTeam )
 		{
