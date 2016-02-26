@@ -132,7 +132,7 @@ $(document).ready(function(){
 	$( '.spinner' ).spinner();
 	$( '.spinner' ).numeric();
 	
-	$( '.chrono' ).inputmask("9:99.99");
+	$( '.chrono' ).inputmask("99:99.99");
 });
 </script>
 </head>
