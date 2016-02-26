@@ -28,10 +28,10 @@ LocalizedString strSchedule = new LocalizedString(ImmutableMap.of(
 <div class="header">
 	<img class="headerLogo" src="images/crc.jpg" />
 	
-	<a class="headerInstagram" href="http://www.instagram.com/robocrc">
+	<a class="headerInstagram" href="http://www.instagram.com/robocrc" target="_blank">
 		<img src="images/instagram.svg" />
 	</a>
-	<a class="headerFacebook" href="https://www.facebook.com/roboCRC">
+	<a class="headerFacebook" href="https://www.facebook.com/roboCRC" target="_blank">
 		<img src="images/facebook.svg" />
 	</a>
 	
