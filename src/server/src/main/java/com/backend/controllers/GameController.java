@@ -12,9 +12,9 @@ import org.apache.shiro.SecurityUtils;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
+import com.backend.controllers.yearly.GameYearlyController;
 import com.backend.models.Game;
 import com.backend.models.GameState;
-import com.backend.models.Hole;
 import com.backend.models.School;
 import com.backend.models.GameEvent.DidNotScoreEvent;
 import com.backend.models.GameEvent.EndGameEvent;
@@ -29,6 +29,7 @@ import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TeamEnum;
 import com.backend.models.enums.TriangleStateEnum;
+import com.backend.models.yearly.Hole;
 import com.framework.helpers.ApplicationSpecific;
 import com.framework.helpers.Helpers;
 import com.framework.helpers.LocalizedString;
@@ -100,6 +101,7 @@ public class GameController extends HttpServlet
 		String 	gameEvent	= Helpers.getParameter("gameEvent", String.class, essentials);
 		
 		boolean actionProcessed = true;
+		
 		if( gameEvent.equalsIgnoreCase(GameEventEnum.START_GAME.toString()) )
 		{
 			game = Game.setLiveGame(essentials.database, game._id, true);
@@ -109,13 +111,6 @@ public class GameController extends HttpServlet
 			addToGame(essentials, game, new StartGameEvent(DateTime.now()));
 			
 			Game.createEndGameCallback(gameId);
-		}
-		else if( gameEvent.equalsIgnoreCase(GameEventEnum.SCOREBOARD_UPDATED.toString()) )
-		{
-			Hole[] triangleSide1 = getTriangleFromParameters(SideEnum.SIDE1, essentials);
-			Hole[] triangleSide2 = getTriangleFromParameters(SideEnum.SIDE2, essentials);
-			
-			addToGame(essentials, game, new ScoreboardUpdateEvent(triangleSide1, triangleSide2, DateTime.now()));
 		}
 		else if( gameEvent.equalsIgnoreCase(GameEventEnum.SCHOOL_PENALTY.toString()) )
 		{
@@ -167,7 +162,15 @@ public class GameController extends HttpServlet
 		}
 		else
 		{
-			actionProcessed = false;
+			GameEvent gameEventYearly = GameYearlyController.processAction(essentials, gameEvent);
+			if(gameEventYearly != null)
+			{
+				addToGame(essentials, game, gameEventYearly);
+			}
+			else
+			{
+				actionProcessed = false;
+			}
 		}
 		
 		if(actionProcessed)
@@ -178,22 +181,6 @@ public class GameController extends HttpServlet
 		return game;
 	}
 	
-	private static Hole[] getTriangleFromParameters(SideEnum side, Essentials essentials)
-	{
-		Hole[] triangle = GameState.InitializeTriangle();
-		
-		for(int holeNb = 0; holeNb < triangle.length; holeNb++)
-		{
-			for(int posInHole = 0; posInHole < triangle[holeNb].triangleStates.length; posInHole++)
-			{
-				String parameterName = "hole_" + side.toString() + "_" + holeNb + "_" + posInHole;
-				TriangleStateEnum triangleState = TriangleStateEnum.valueOf(Helpers.getParameter(parameterName, String.class, essentials));
-				triangle[holeNb].triangleStates[posInHole] = triangleState;
-			}
-		}
-		
-		return triangle;
-	}
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

@@ -8,7 +8,6 @@ import org.joda.time.Duration;
 
 import com.backend.models.Game;
 import com.backend.models.GameState;
-import com.backend.models.Hole;
 import com.backend.models.Playoff;
 import com.backend.models.PlayoffRound;
 import com.backend.models.School;
@@ -21,6 +20,8 @@ import com.backend.models.GameEvent.ScoreboardUpdateEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.enums.GameTypeEnum;
 import com.backend.models.enums.TriangleStateEnum;
+import com.backend.models.yearly.GameStateYearly;
+import com.backend.models.yearly.Hole;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.framework.models.Essentials;
@@ -39,7 +40,7 @@ public class FakeTournament
 	
 	public static Hole[] fillTriangle(Random random)
 	{
-		Hole[] triangle = GameState.InitializeTriangle();
+		Hole[] triangle = GameStateYearly.InitializeTriangle();
 		for(Hole hole : triangle)
 		{
 			for(int i = 0; i < hole.triangleStates.length; i++)

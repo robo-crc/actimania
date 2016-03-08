@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
+import com.backend.controllers.yearly.PlayoffYearlyController;
 import com.backend.models.Game;
 import com.backend.models.Playoff;
 import com.backend.models.PlayoffRound;
@@ -64,24 +65,7 @@ public class PlayoffController extends HttpServlet
 				
 				PlayoffRound playoffRound = playoff.generatePlayoffRound(essentials.database, tournament, currentRound, nextGameType);
 				
-				DateTime startTime = null;
-				switch(nextGameType)
-				{
-				case PLAYOFF_REPECHAGE:
-					startTime = new DateTime(2016, 2, 27, 8, 30);
-					break;
-				case PLAYOFF_QUARTER:
-					startTime = new DateTime(2016, 2, 27, 11, 45);
-					break;
-				case PLAYOFF_DEMI:
-					startTime = new DateTime(2016, 2, 27, 14, 45);
-					break;
-				case PLAYOFF_FINAL:
-					startTime = new DateTime(2016, 2, 27, 16, 15);
-					break;
-				default:
-					break;
-				}
+				DateTime startTime = PlayoffYearlyController.GetPlayoffRoundStartTime(nextGameType);
 				
 				ArrayList<Game> playoffGames = playoffRound.getGames(startTime, tournament.games.size() + 1);
 				essentials.database.save(playoffRound);

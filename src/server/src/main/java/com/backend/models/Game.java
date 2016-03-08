@@ -15,6 +15,7 @@ import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
+import com.backend.models.yearly.GameStateYearly;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
@@ -74,7 +75,7 @@ public class Game implements Comparable<Game>
 		
 		for( GameEvent gameEvent : gameEvents )
 		{
-			GameState actualGameState = new GameState(previousGameState, gameEvent);
+			GameState actualGameState = new GameStateYearly(previousGameState, gameEvent);
 			gameStates.add(actualGameState);
 			previousGameState = actualGameState;
 		}

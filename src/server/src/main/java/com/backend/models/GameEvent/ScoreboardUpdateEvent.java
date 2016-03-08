@@ -4,8 +4,8 @@ import java.util.Locale;
 
 import org.joda.time.DateTime;
 
-import com.backend.models.Hole;
 import com.backend.models.enums.GameEventEnum;
+import com.backend.models.yearly.Hole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.helpers.LocalizedString;
 
