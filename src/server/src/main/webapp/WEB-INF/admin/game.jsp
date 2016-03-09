@@ -1,3 +1,4 @@
+<%@page import="com.backend.views.yearly.GameYearlyView"%>
 <%@page import="com.backend.controllers.GameController"%>
 <%@page import="com.backend.controllers.yearly.GameYearlyController"%>
 <%@page import="com.backend.models.yearly.GameStateYearly"%>
@@ -219,7 +220,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 	%>
 	<br/>
 	
-	<% out.write(GameYearlyController.getGameEventsForView(game, currentLocale)); %>
+	<% out.write(GameYearlyView.getHtmlForGame(game, currentLocale)); %>
 	
 	<form method="post">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.DID_NOT_SCORE.toString() %>" />
@@ -371,7 +372,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 	</table>
 
 <script>
-<% out.write(GameYearlyController.getScriptsForView()); %>
+<% out.write(GameYearlyView.getScripts()); %>
 </script>
 <%@include file="footer.jsp" %>
 </body>

@@ -1,4 +1,4 @@
-<%@page import="com.frontend.controllers.yearly.GameYearlyController"%>
+<%@page import="com.frontend.views.yearly.GameYearlyView"%>
 <%@page import="com.backend.models.SchoolInteger"%>
 <%@page import="com.framework.helpers.Helpers"%>
 <%@page import="com.backend.models.GameEvent.SchoolPenaltyEvent"%>
@@ -98,7 +98,7 @@ if(isLive)
 	    %>
 	    	$('#game-slideshow').bjqs({
 	    		width : 1190,
-	    		height : <%= GameYearlyController.GAME_PORTION_HEIGHT %>,
+	    		height : <%= GameYearlyView.GAME_PORTION_HEIGHT %>,
 	            responsive : false,
 	            showcontrols : false,
 	            automatic : false,
@@ -324,7 +324,7 @@ if( gameStates.size() == 0)
 					</tr>
 				</table>
 			</div>
-			<%= GameYearlyController.getHtmlForView(state) %>
+			<%= GameYearlyView.getHtmlForGameState(state) %>
 			<br/>
 			<div class="clear"></div>
 <%

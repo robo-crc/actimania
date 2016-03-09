@@ -1,14 +1,14 @@
-package com.frontend.controllers.yearly;
+package com.frontend.views.yearly;
 
 import com.backend.models.GameState;
 import com.backend.models.enums.yearly.TriangleStateEnum;
 import com.backend.models.yearly.GameStateYearly;
 
-public class GameYearlyController 
+public class GameYearlyView 
 {
 	public final static int GAME_PORTION_HEIGHT = 600;
 	
-	public static String getHtmlForView(GameState gameState)
+	public static String getHtmlForGameState(GameState gameState)
 	{
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("<div class=\"clear playground\">");
