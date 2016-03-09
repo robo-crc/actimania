@@ -1,5 +1,7 @@
-<%@page import="com.backend.models.enums.TriangleStateEnum"%>
-<%@page import="com.backend.models.Hole"%>
+<%@page import="com.backend.controllers.GameController"%>
+<%@page import="com.backend.controllers.yearly.GameYearlyController"%>
+<%@page import="com.backend.models.yearly.GameStateYearly"%>
+<%@page import="com.backend.models.yearly.Hole"%>
 <%@page import="com.backend.models.GameEvent.GameEvent"%>
 <%@page import="com.backend.models.enums.TeamEnum"%>
 <%@page import="java.io.IOException"%>
@@ -105,16 +107,6 @@ LocalizedString strActuatorState = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"État de l'actuateur"
 		), currentLocale);
 
-LocalizedString strScoreboardUpdate = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Update score board", 
-		Locale.FRENCH, 	"Mettre à jour le tableau de pointage"
-		), currentLocale);
-
-LocalizedString strAddAfter = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Add this new game event after game event #", 
-		Locale.FRENCH, 	"Ajouter ce nouvel événement après l'événement #"
-		), currentLocale);
-
 LocalizedString strSchoolPenalty = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "School Penalty", 
 		Locale.FRENCH, 	"Pénalité à une école"
@@ -186,33 +178,6 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 <h1 class="grayColor"><%= strH1 %></h1>
 <div class="bar grayBackgroundColor"></div>
 
-<%!
-public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out) throws IOException
-{
-	out.write(strAddAfter.toString());
-	out.write("<select name=\"insertAfter\">");
-
-	ArrayList<GameEvent> gameEvents = game.getGameEvents();
-	int iterationEnd = gameEvents.size();
-	if(gameEvents.size() > 0 && gameEvents.get(gameEvents.size() - 1).getGameEventEnum() == GameEventEnum.END_GAME)
-	{
-		iterationEnd--;
-	}
-	for(int i = 0; i < iterationEnd; i++)
-	{
-		String selected = "";
-		if(i == iterationEnd - 1)
-		{
-			selected = "selected=\"selected\"";
-		}
-		
-		out.write("<option " + selected + " value=\"" + String.valueOf(i + 1) + "\">" + String.valueOf(i + 1) + "</option>");
-	}
-	out.write("</select>");
-}
-
-%>
-
 	<%
 	for(LocalizedString error : errorList)
 	{
@@ -254,80 +219,7 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 	%>
 	<br/>
 	
-	<form method="post">
-		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.SCOREBOARD_UPDATED.toString() %>" />
-		<input type="hidden" name="id" value="<%= game._id %>" />
-		<h2><%= strScoreboardUpdate %></h2>
-		
-		<%!
-		public void outputTriangle(Hole[] triangle, SideEnum side, JspWriter out) throws IOException
-		{
-			out.write("<table class=\"triangle\"><tr>");
-			for(int holeNb = 0; holeNb < triangle.length; holeNb++)
-			{
-				/*
-			       0
-				  1 2
-				 3 4 5
-				6 7 8 9
-			 */
-				if(holeNb == 1 || holeNb == 3 || holeNb == 6)
-				{
-					out.write("</tr><tr>");
-				}
-				
-				String firstTD = "<td>";
-				if(holeNb == 0 || holeNb == 1 || holeNb == 3)
-				{
-					firstTD = "<td colspan=\"8\" align=\"center\"><table><tr><td>";
-				}
-				out.write(firstTD + holeNb + "</td>");
-				
-				out.write("<td width=\"90px\">");
-				
-				Hole hole = triangle[holeNb];
-				for(int triangleStateNb = 0; triangleStateNb < hole.triangleStates.length; triangleStateNb++)
-				{
-					 TriangleStateEnum triangleState = hole.triangleStates[triangleStateNb];
-					
-					out.write("<select class=\"selectColor triangleStateEnum_" + triangleState.name() + "\" name=\"hole_" + side.toString() + "_" + holeNb + "_" + triangleStateNb + "\">");
-
-					for(TriangleStateEnum triangleStateEnum : TriangleStateEnum.values())
-					{
-						String isSelected = "";
-						if(triangleStateEnum == triangleState)
-						{
-							isSelected = " selected";
-						}
-						
-						out.write("<option value=\"" + triangleStateEnum.name() + "\" class=\"triangleStateEnum_" + triangleStateEnum.name() + "\"" + isSelected + ">" + triangleStateEnum.name() + "</option>");
-					}
-					out.write("</select>");
-				}
-				String lastTd = "</td>";
-				if(holeNb == 0 || holeNb == 2 || holeNb == 5)
-				{
-					lastTd = "</td></tr></table></td>";
-				}
-				out.write(lastTd);
-		 	} 
-			out.write("</tr></table>");
-		}
-		%>
-		
-		<% 
-		Hole[] triangleLeft = game.getGameStates().get(game.getGameStates().size() - 1).triangleLeft;
-		Hole[] triangleRight = game.getGameStates().get(game.getGameStates().size() - 1).triangleRight;
-		
-		outputTriangle(triangleLeft, SideEnum.SIDE1, out);
-		outputTriangle(triangleRight, SideEnum.SIDE2, out);
-		%>
-		<div class="clear"></div>
-		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
-		<br/>
-		<input type="submit" value="<%= strAdd %>" />
-	</form>
+	<% out.write(GameYearlyController.getGameEventsForView(game, currentLocale)); %>
 	
 	<form method="post">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.DID_NOT_SCORE.toString() %>" />
@@ -342,7 +234,7 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 	 <% } %>
 		</select>
 		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
+		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
@@ -362,7 +254,7 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 		<br/>
 		<%= strPointDeduction %><input class="spinner" name="points" value="0" />
 		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
+		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
@@ -381,7 +273,7 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 		<br/>
 		<%= strPointDeduction %><input class="spinner" name="points" value="0" />
 		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
+		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
@@ -402,7 +294,7 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 		<%= strCommentEnglish %><input type="text" name="commentEn" /><br/>
 		<%= strCommentFrench %><input type="text" name="commentFr" />
 		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
+		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
@@ -420,7 +312,7 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 	 <% } %>
 		</select>
 		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
+		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
@@ -477,24 +369,9 @@ public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out
 		}
 		%>
 	</table>
+
 <script>
-
-$('.selectColor').change(function()
-{
-	if(this.value == "EMPTY")
-	{
-		$(this).css("background-color", "white");	
-	}
-	else if(this.value == "BLUE")
-	{
-		$(this).css("background-color", "lightblue");
-	}
-	else if(this.value == "YELLOW")
-	{
-		$(this).css("background-color", "yellow");
-	}
-});
-
+<% out.write(GameYearlyController.getScriptsForView()); %>
 </script>
 <%@include file="footer.jsp" %>
 </body>

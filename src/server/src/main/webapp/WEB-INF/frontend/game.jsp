@@ -1,4 +1,4 @@
-<%@page import="com.backend.models.enums.TriangleStateEnum"%>
+<%@page import="com.frontend.controllers.yearly.GameYearlyController"%>
 <%@page import="com.backend.models.SchoolInteger"%>
 <%@page import="com.framework.helpers.Helpers"%>
 <%@page import="com.backend.models.GameEvent.SchoolPenaltyEvent"%>
@@ -98,7 +98,7 @@ if(isLive)
 	    %>
 	    	$('#game-slideshow').bjqs({
 	    		width : 1190,
-	    		height : 600,
+	    		height : <%= GameYearlyController.GAME_PORTION_HEIGHT %>,
 	            responsive : false,
 	            showcontrols : false,
 	            automatic : false,
@@ -324,36 +324,7 @@ if( gameStates.size() == 0)
 					</tr>
 				</table>
 			</div>
-			<div class="clear playground">
-				<img src="images/triangleLeft.png" class="playfieldBackground triangleLeft" />
-				<img src="images/triangleRight.png" class="playfieldBackground triangleRight" />
-				
-				<%
-					for(int holeNb = 0; holeNb < state.triangleLeft.length; holeNb++)
-					{
-						for(int unitPos = 0; unitPos < state.triangleLeft[holeNb].triangleStates.length; unitPos++)
-						{
-							TriangleStateEnum triangleState = state.triangleLeft[holeNb].triangleStates[unitPos];
-							if(triangleState != TriangleStateEnum.EMPTY )
-							{
-								out.write("<img src=\"images/" + triangleState + "UnitLeft.png\" class=\"Unit Unit" + unitPos + " LEFTUnit" + holeNb + "_" + unitPos + "\"/>");
-							}
-						}
-					}
-				
-					for(int holeNb = 0; holeNb < state.triangleRight.length; holeNb++)
-					{
-						for(int unitPos = 0; unitPos < state.triangleRight[holeNb].triangleStates.length; unitPos++)
-						{
-							TriangleStateEnum triangleState = state.triangleRight[holeNb].triangleStates[unitPos];
-							if(triangleState != TriangleStateEnum.EMPTY )
-							{
-								out.write("<img src=\"images/" + triangleState + "UnitRight.png\" class=\"Unit Unit" + unitPos + " RIGHTUnit" + holeNb + "_" + unitPos + "\"/>");
-							}
-						}
-					}
-				%>
-			</div>
+			<%= GameYearlyController.getHtmlForView(state) %>
 			<br/>
 			<div class="clear"></div>
 <%

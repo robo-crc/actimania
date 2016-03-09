@@ -13,7 +13,7 @@ import com.backend.models.GameEvent.ScoreboardUpdateEvent;
 import com.backend.models.GameEvent.TeamPenaltyEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.TeamEnum;
-import com.backend.models.enums.TriangleStateEnum;
+import com.backend.models.enums.yearly.TriangleStateEnum;
 import com.backend.models.yearly.Hole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

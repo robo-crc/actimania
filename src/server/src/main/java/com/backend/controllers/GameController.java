@@ -1,6 +1,8 @@
 package com.backend.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,12 +30,13 @@ import com.backend.models.GameEvent.TeamPenaltyEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TeamEnum;
-import com.backend.models.enums.TriangleStateEnum;
+import com.backend.models.enums.yearly.TriangleStateEnum;
 import com.backend.models.yearly.Hole;
 import com.framework.helpers.ApplicationSpecific;
 import com.framework.helpers.Helpers;
 import com.framework.helpers.LocalizedString;
 import com.framework.models.Essentials;
+import com.google.common.collect.ImmutableMap;
 
 @WebServlet("/admin/game")
 public class GameController extends HttpServlet
@@ -181,6 +184,37 @@ public class GameController extends HttpServlet
 		return game;
 	}
 	
+	public static String outputAddAfterForView(Game game, Locale currentLocale) 
+	{
+		LocalizedString strAddAfter = new LocalizedString(ImmutableMap.of( 	
+				Locale.ENGLISH, "Add this new game event after game event #", 
+				Locale.FRENCH, 	"Ajouter ce nouvel événement après l'événement #"
+				), currentLocale);
+
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append(strAddAfter.toString());
+		strBuilder.append("<select name=\"insertAfter\">");
+
+		ArrayList<GameEvent> gameEvents = game.getGameEvents();
+		int iterationEnd = gameEvents.size();
+		if(gameEvents.size() > 0 && gameEvents.get(gameEvents.size() - 1).getGameEventEnum() == GameEventEnum.END_GAME)
+		{
+			iterationEnd--;
+		}
+		for(int i = 0; i < iterationEnd; i++)
+		{
+			String selected = "";
+			if(i == iterationEnd - 1)
+			{
+				selected = "selected=\"selected\"";
+			}
+			
+			strBuilder.append("<option " + selected + " value=\"" + String.valueOf(i + 1) + "\">" + String.valueOf(i + 1) + "</option>");
+		}
+		strBuilder.append("</select>");
+		
+		return strBuilder.toString();
+	}
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

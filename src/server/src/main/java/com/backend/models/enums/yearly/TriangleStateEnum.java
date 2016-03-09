@@ -1,4 +1,4 @@
-package com.backend.models.enums;
+package com.backend.models.enums.yearly;
 
 public enum TriangleStateEnum 
 {

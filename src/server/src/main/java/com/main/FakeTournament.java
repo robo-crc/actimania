@@ -19,7 +19,7 @@ import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.ScoreboardUpdateEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.enums.GameTypeEnum;
-import com.backend.models.enums.TriangleStateEnum;
+import com.backend.models.enums.yearly.TriangleStateEnum;
 import com.backend.models.yearly.GameStateYearly;
 import com.backend.models.yearly.Hole;
 import com.framework.helpers.Database;

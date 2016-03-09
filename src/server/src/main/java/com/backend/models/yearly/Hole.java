@@ -1,6 +1,6 @@
 package com.backend.models.yearly;
 
-import com.backend.models.enums.TriangleStateEnum;
+import com.backend.models.enums.yearly.TriangleStateEnum;
 
 public class Hole 
 {
