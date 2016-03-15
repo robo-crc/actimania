@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
+
 import com.backend.models.School;
 
 @PlanningEntity

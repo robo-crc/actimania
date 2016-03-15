@@ -11,8 +11,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.framework.helpers.Database;
-import com.framework.helpers.LocalizedString;
 import com.framework.helpers.Database.DatabaseType;
+import com.framework.helpers.LocalizedString;
 
 public class SkillsCompetitionTests 
 {

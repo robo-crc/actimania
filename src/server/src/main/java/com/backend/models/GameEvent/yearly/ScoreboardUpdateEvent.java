@@ -1,9 +1,10 @@
-package com.backend.models.GameEvent;
+package com.backend.models.GameEvent.yearly;
 
 import java.util.Locale;
 
 import org.joda.time.DateTime;
 
+import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.yearly.Hole;
 import com.fasterxml.jackson.annotation.JsonProperty;

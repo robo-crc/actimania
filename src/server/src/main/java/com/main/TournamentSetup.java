@@ -10,7 +10,6 @@ import com.backend.models.Competition;
 import com.backend.models.Game;
 import com.backend.models.LiveRefresh;
 import com.backend.models.School;
-import com.backend.models.SchoolDuration;
 import com.backend.models.SchoolInteger;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
@@ -22,6 +21,7 @@ import com.backend.models.optaplanner.TournamentSolution;
 import com.backend.models.optaplanner.TournamentSolver;
 import com.framework.helpers.Database;
 import com.framework.models.Essentials;
+import com.main.yearly.TournamentYearlySetup;
 
 public class TournamentSetup 
 {

@@ -16,10 +16,10 @@
 
 package com.backend.models.optaplanner;
 
-import com.backend.models.School;
-
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
+
+import com.backend.models.School;
 
 @PlanningEntity
 public class TeamAssignment

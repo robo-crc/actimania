@@ -4,23 +4,16 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
 
 import com.backend.models.Game;
-import com.backend.models.GameState;
-import com.backend.models.ISchoolScore;
 import com.backend.models.Playoff;
 import com.backend.models.PlayoffRound;
 import com.backend.models.School;
-import com.backend.models.SchoolDuration;
-import com.backend.models.SchoolInteger;
-import com.backend.models.Skill;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
 import com.backend.models.GameEvent.EndGameEvent;
-import com.backend.models.GameEvent.GameEvent;
-import com.backend.models.GameEvent.ScoreboardUpdateEvent;
 import com.backend.models.GameEvent.StartGameEvent;
+import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.GameTypeEnum;
 import com.backend.models.enums.yearly.TriangleStateEnum;
 import com.backend.models.yearly.GameStateYearly;
@@ -28,6 +21,7 @@ import com.backend.models.yearly.Hole;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.framework.models.Essentials;
+import com.main.yearly.TournamentYearlySetup;
 
 public class FakeTournament 
 {

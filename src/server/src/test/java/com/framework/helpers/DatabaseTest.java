@@ -3,7 +3,6 @@ package com.framework.helpers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 
 public class DatabaseTest

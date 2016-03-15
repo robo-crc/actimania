@@ -3,9 +3,6 @@ package com.backend.models;
 import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-import com.framework.helpers.Helpers;
 
 public class SchoolInteger extends School implements ISchoolScore
 {

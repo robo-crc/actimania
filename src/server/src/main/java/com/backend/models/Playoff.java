@@ -2,7 +2,6 @@ package com.backend.models;
 
 import java.util.ArrayList;
 
-import org.apache.commons.lang.Validate;
 import org.bson.types.ObjectId;
 
 import com.backend.models.enums.GameTypeEnum;

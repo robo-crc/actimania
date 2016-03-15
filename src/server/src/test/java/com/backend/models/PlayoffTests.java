@@ -6,7 +6,6 @@ import java.util.Random;
 import org.apache.commons.lang.Validate;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,7 +15,7 @@ import com.backend.models.enums.GameTypeEnum;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.main.FakeTournament;
-import com.main.TournamentYearlySetup;
+import com.main.yearly.TournamentYearlySetup;
 
 public class PlayoffTests 
 {

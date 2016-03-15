@@ -9,14 +9,9 @@ import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
-import com.backend.models.GameEvent.ScoreboardUpdateEvent;
 import com.backend.models.GameEvent.TeamPenaltyEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.TeamEnum;
-import com.backend.models.enums.yearly.TriangleStateEnum;
-import com.backend.models.yearly.Hole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public abstract class GameState 
 {
@@ -58,12 +53,6 @@ public abstract class GameState
 	{
 		_id = null;
 		lastGameEvent = gameEvent;
-
-		Hole[] localTriangleLeft = null;
-		Hole[] localTriangleRight = null;
-		
-		int localBlueScore = 0;
-		int localYellowScore = 0;
 		
 		int localModifierBlue = 0;
 		int localModifierYellow = 0;

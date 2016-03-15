@@ -15,8 +15,7 @@ import com.backend.models.enums.GameTypeEnum;
 import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
-import com.main.TournamentSetup;
-import com.main.TournamentYearlySetup;
+import com.main.yearly.TournamentYearlySetup;
 
 public class PlayoffRoundTests 
 {

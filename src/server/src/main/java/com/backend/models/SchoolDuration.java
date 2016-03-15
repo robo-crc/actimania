@@ -4,8 +4,6 @@ import org.bson.types.ObjectId;
 import org.joda.time.Duration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.framework.helpers.Helpers;
 
 public class SchoolDuration extends School implements ISchoolScore

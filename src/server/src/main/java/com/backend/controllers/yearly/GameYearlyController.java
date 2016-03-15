@@ -1,22 +1,16 @@
 package com.backend.controllers.yearly;
 
-import java.util.Locale;
-
 import org.joda.time.DateTime;
 
-import com.backend.controllers.GameController;
-import com.backend.models.Game;
 import com.backend.models.GameEvent.GameEvent;
-import com.backend.models.GameEvent.ScoreboardUpdateEvent;
+import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.yearly.TriangleStateEnum;
 import com.backend.models.yearly.GameStateYearly;
 import com.backend.models.yearly.Hole;
 import com.framework.helpers.Helpers;
-import com.framework.helpers.LocalizedString;
 import com.framework.models.Essentials;
-import com.google.common.collect.ImmutableMap;
 
 public class GameYearlyController
 {
