@@ -16,6 +16,7 @@ import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.main.TournamentSetup;
+import com.main.TournamentYearlySetup;
 
 public class PlayoffRoundTests 
 {
@@ -47,7 +48,7 @@ public class PlayoffRoundTests
 		}
 		
 		Tournament tournament = new Tournament(schools, new ArrayList<Game>());
-		SkillsCompetition skillsCompetition = TournamentSetup.setupSkillCompetition(schools);
+		SkillsCompetition skillsCompetition = TournamentYearlySetup.setupSkillCompetition(null, schools, true);
 		database.save(skillsCompetition);
 		
 		PlayoffRound playoffRound = playoff.generatePlayoffRound(database, tournament, null, GameTypeEnum.PLAYOFF_REPECHAGE);

@@ -16,6 +16,7 @@ import com.backend.models.enums.GameTypeEnum;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.main.FakeTournament;
+import com.main.TournamentYearlySetup;
 
 public class PlayoffTests 
 {
@@ -401,12 +402,7 @@ public class PlayoffTests
 	public void testPlayoffSteps()
 	{
 		ArrayList<School> schools = new ArrayList<School>();
-		ArrayList<SchoolDuration> twoActuators = new ArrayList<SchoolDuration>();
-		ArrayList<SchoolDuration> twoTargets = new ArrayList<SchoolDuration>();
-		ArrayList<SchoolDuration> pickupBalls = new ArrayList<SchoolDuration>();
-		
-		Random random = new Random(0);
-		
+				
 		for(int i = 1; i <= 31; i++)
 		{
 			String id = "";
@@ -420,12 +416,10 @@ public class PlayoffTests
 			}
 			School school = new School(new ObjectId(id), String.valueOf(i));
 			schools.add(school);
-			twoActuators.add(new SchoolDuration(school, new Duration(random.nextInt(1000))));
-			twoTargets.add(new SchoolDuration(school, new Duration(random.nextInt(1000))));
-			pickupBalls.add(new SchoolDuration(school, new Duration(random.nextInt(1000))));
 		}
 		
-		SkillsCompetition skillsCompetition = new SkillsCompetition(null, pickupBalls, twoTargets, twoActuators);
+		Random random = new Random(0);
+		SkillsCompetition skillsCompetition = TournamentYearlySetup.setupSkillCompetition(null, schools, true);
 		
 		ArrayList<Game> games = new ArrayList<Game>();
 		for(int i = 0; i < 64; i++)
@@ -441,7 +435,7 @@ public class PlayoffTests
 			blueTeam.add(schools.get(random.nextInt(31)));
 			
 			Game game = new Game(new ObjectId(), i, "", new DateTime(), GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false);
-			FakeTournament.fillFakGameEvents(game, random);
+			FakeTournament.fillFakeGameEvents(game, random);
 			games.add(game);
 		}
 		

@@ -8,10 +8,13 @@ import org.joda.time.Duration;
 
 import com.backend.models.Game;
 import com.backend.models.GameState;
+import com.backend.models.ISchoolScore;
 import com.backend.models.Playoff;
 import com.backend.models.PlayoffRound;
 import com.backend.models.School;
 import com.backend.models.SchoolDuration;
+import com.backend.models.SchoolInteger;
+import com.backend.models.Skill;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
 import com.backend.models.GameEvent.EndGameEvent;
@@ -55,7 +58,7 @@ public class FakeTournament
 		return triangle;
 	}
 	
-	public static void fillFakGameEvents(Game currentGame, Random random)
+	public static void fillFakeGameEvents(Game currentGame, Random random)
 	{
 		currentGame.addGameEvent(new StartGameEvent(DateTime.now()));
 		
@@ -80,18 +83,7 @@ public class FakeTournament
 			{
 				Tournament tournament = Tournament.getTournament(essentials);
 				
-				ArrayList<SchoolDuration> pickBallsArray = new ArrayList<SchoolDuration>();
-				ArrayList<SchoolDuration> twoActuatorsArray = new ArrayList<SchoolDuration>();
-				ArrayList<SchoolDuration> twoTargetsArray = new ArrayList<SchoolDuration>();
-				
-				SkillsCompetition skills = SkillsCompetition.get(essentials.database);
-				for(School school : tournament.schools)
-				{
-					pickBallsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
-					twoActuatorsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
-					twoTargetsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
-				}
-				SkillsCompetition skillsCompetition = new SkillsCompetition(skills._id, pickBallsArray, twoTargetsArray, twoActuatorsArray);
+				SkillsCompetition skillsCompetition = TournamentYearlySetup.setupSkillCompetition(SkillsCompetition.get(essentials.database)._id, tournament.schools, true);
 				essentials.database.save(skillsCompetition);
 				
 				ArrayList<Game> games = tournament.getHeatGames(GameTypeEnum.PLAYOFF_REPECHAGE);
@@ -110,7 +102,7 @@ public class FakeTournament
 				{
 					Game currentGame = tournament.games.get(i).getInitialState();
 					
-					fillFakGameEvents(currentGame, random);
+					fillFakeGameEvents(currentGame, random);
 					
 					essentials.database.save(currentGame);
 				}
@@ -120,7 +112,13 @@ public class FakeTournament
 			// There's caching in the tournament which would be problematic if we use the same tournament as previously.
 			Tournament tournament = Tournament.getTournament(essentials);
 			ArrayList<School> excludedSchools = new ArrayList<School>();
-			
+			for(School school : tournament.schools)
+			{
+				if(school.name.equals("Bialik High School"))
+				{
+					excludedSchools.add(school);
+				}
+			}
 			Playoff playoff = new Playoff(null, excludedSchools);
 			
 			PlayoffRound repechageRound = processRound(essentials.database, playoff, tournament, null, random, GameTypeEnum.PLAYOFF_REPECHAGE);
@@ -142,7 +140,7 @@ public class FakeTournament
 		tournament.games.addAll(playoffGames);
 		for(Game game : playoffGames)
 		{
-			FakeTournament.fillFakGameEvents(game, random);
+			FakeTournament.fillFakeGameEvents(game, random);
 			if(database != null)
 			{
 				database.save(game);

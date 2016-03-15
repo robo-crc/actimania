@@ -4,8 +4,11 @@ import org.bson.types.ObjectId;
 import org.joda.time.Duration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.framework.helpers.Helpers;
 
-public class SchoolDuration extends School
+public class SchoolDuration extends School implements ISchoolScore
 {
 	public final Duration 	duration;
 	
@@ -23,5 +26,25 @@ public class SchoolDuration extends School
 	{
 		super(school._id, school.name);
 		duration 	= _duration;
+	}
+	
+
+	public double getPercentage(ISchoolScore best)
+	{
+		// Don't divide by 0
+		if(duration.getMillis() == 0)
+			return 0;
+		
+		return ((double)((SchoolDuration)best).duration.getMillis() / (double)duration.getMillis());
+	}
+	
+	public String getDisplay()
+	{
+		 return Helpers.stopwatchFormatter.print(duration.toPeriod()).toString();
+	}
+	
+	public String getDisplayLong()
+	{
+		 return Helpers.stopwatchFormatterFull.print(duration.toPeriod()).toString();
 	}
 }

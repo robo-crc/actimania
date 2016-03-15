@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.Skill"%>
 <%@page import="org.joda.time.format.PeriodFormatterBuilder"%>
 <%@page import="org.joda.time.format.PeriodFormatter"%>
 <%@page import="com.backend.models.SkillsCompetition"%>
@@ -155,9 +156,14 @@ LocalizedString strNoShow = new LocalizedString(ImmutableMap.of(
 <table class="schoolTable schoolCompetition">
 <tr><th class="whiteBackgroundColor"></th>	<th class="center"><%= strScore %></th></tr>
 <tr><td><%= strTournament %></td>			<td class="center"><%= score %></td></tr>
-<tr><td><%= strTakeAllPieces %></td>		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%></td></tr>
-<tr><td><%= strPlaceThreePieces %></td>		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%></td></tr>
-<tr><td><%= strPlaceHighest %></td>			<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%></td></tr>
+<%
+for(Skill skill : skillsCompetition.skills)
+{	
+%>
+<tr><td><%= skill.displayName %></td>		<td class="center"><%= skill.getSchoolScore(school).getDisplay() %></td></tr>
+<%
+}
+%>
 <tr><td><b><%= strCumulative %></b></td> 	<td class="center"><b>
 <% if(!isExcluded.booleanValue())
 {

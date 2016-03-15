@@ -61,29 +61,6 @@ public class TournamentSetup
 		return competition;
 	}
 	
-	public static SkillsCompetition setupSkillCompetition(ArrayList<School> schools)
-	{
-		ArrayList<SchoolDuration> pickBalls = new ArrayList<SchoolDuration>();
-		ArrayList<SchoolDuration> twoActuatorChanged = new ArrayList<SchoolDuration>();
-		ArrayList<SchoolDuration> twoTargetHits = new ArrayList<SchoolDuration>();
-		
-		for(School school : schools)
-		{
-			// Initialize to 59 minutes.
-			pickBalls.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
-			twoActuatorChanged.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
-			twoTargetHits.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
-		}
-		
-		SkillsCompetition skillsCompetition = new SkillsCompetition(
-				null,
-				pickBalls, 
-				twoTargetHits,
-				twoActuatorChanged);
-		
-		return skillsCompetition;
-	}
-	
 	public static void setupCompetitions(Scanner keyboard)
 	{
 		System.out.println("Do you want to setup competitions and skill competitions?");
@@ -105,7 +82,7 @@ public class TournamentSetup
     			ArrayList<School> schools = School.getSchools(essentials);
 
     			LiveRefresh liveRefresh = new LiveRefresh(null, true);
-    			SkillsCompetition skillsCompetition = setupSkillCompetition(schools);
+    			SkillsCompetition skillsCompetition = TournamentYearlySetup.setupSkillCompetition(null, schools, false);
     			Competition competition = setupCompetition(schools);
     			
     			essentials.database.save(liveRefresh);
@@ -127,11 +104,7 @@ public class TournamentSetup
 			}
 			
 			Duration TIME_BETWEEN_GAMES = new Duration(5 * 60 * 1000);
-			DateTime[] RoundStartHour = new DateTime[Tournament.BLOCK_NUMBERS];
-			RoundStartHour[0] = new DateTime(2016, 2, 25, 18, 30);
-			RoundStartHour[1] = new DateTime(2016, 2, 26, 9, 0);
-			RoundStartHour[2] = new DateTime(2016, 2, 26, 13, 00);
-			RoundStartHour[3] = new DateTime(2016, 2, 26, 18, 00);
+			DateTime[] RoundStartHour = TournamentYearlySetup.getRoundStartTime();
 			
 			TournamentSolution solvedTournament = TournamentSolver.solve(essentials, Tournament.GAME_PER_SCHOOL / (Tournament.SCHOOLS_PER_TEAM * 2), Tournament.SCHOOLS_PER_TEAM * 2, "com/backend/models/optaplanner/TournamentSolverConfig.xml");
 			if(solvedTournament != null)

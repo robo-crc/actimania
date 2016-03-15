@@ -18,10 +18,12 @@ import org.bson.types.ObjectId;
 import org.joda.time.Duration;
 
 import com.backend.models.Competition;
+import com.backend.models.ISchoolScore;
 import com.backend.models.LiveRefresh;
 import com.backend.models.School;
 import com.backend.models.SchoolDuration;
 import com.backend.models.SchoolInteger;
+import com.backend.models.Skill;
 import com.backend.models.SkillsCompetition;
 import com.framework.helpers.Helpers;
 import com.framework.models.Essentials;
@@ -50,37 +52,37 @@ public class CompetitionController extends HttpServlet
 			if(action.equals("skillsCompetition"))
 			{
 				SkillsCompetition skillsCompetition = SkillsCompetition.get(essentials.database);
-				ArrayList<SchoolDuration> takeAllPiecesArray = new ArrayList<SchoolDuration>();
-				ArrayList<SchoolDuration> placeThreePiecesArray = new ArrayList<SchoolDuration>();
-				ArrayList<SchoolDuration> placeHighestArray = new ArrayList<SchoolDuration>();
-				
+
 				for(String parameter : Collections.list(request.getParameterNames()) )
 				{
-					final String takeAllPieces = "takeAllPieces_";
-					final String placeThreePieces = "placeThreePieces_";
-					final String placeHighest = "placeHighest_";
-					
-					if(parameter.startsWith(takeAllPieces))
+					for(Skill skill : skillsCompetition.skills)
 					{
-						ObjectId id = new ObjectId(parameter.substring(takeAllPieces.length()));
-						Duration value = Helpers.stopwatchFormatter.parsePeriod(Helpers.getParameter(parameter, String.class, essentials)).toStandardDuration();
-						takeAllPiecesArray.add(new SchoolDuration(essentials.database.findOne(School.class, id), value));
-					}
-					else if(parameter.startsWith(placeThreePieces))
-					{
-						ObjectId id = new ObjectId(parameter.substring(placeThreePieces.length()));
-						Duration value = Helpers.stopwatchFormatter.parsePeriod(Helpers.getParameter(parameter, String.class, essentials)).toStandardDuration();
-						placeHighestArray.add(new SchoolDuration(essentials.database.findOne(School.class, id), value));
-					}
-					else if(parameter.startsWith(placeHighest))
-					{
-						ObjectId id = new ObjectId(parameter.substring(placeHighest.length()));
-						Duration value = Helpers.stopwatchFormatter.parsePeriod(Helpers.getParameter(parameter, String.class, essentials)).toStandardDuration();
-						placeThreePiecesArray.add(new SchoolDuration(essentials.database.findOne(School.class, id), value));
+						if(parameter.startsWith(skill.shortName))
+						{
+							ObjectId id = new ObjectId(parameter.substring(skill.shortName.length() + 1));
+							School school = essentials.database.findOne(School.class, id);
+							
+							skill.schoolsScore.remove(skill.getSchoolScore(school));
+							
+							ISchoolScore schoolScore = null;
+							
+							if(skill.schoolsScore.get(0) instanceof SchoolDuration)
+							{
+								Duration value = Helpers.stopwatchFormatter.parsePeriod(Helpers.getParameter(parameter, String.class, essentials)).toStandardDuration();
+								schoolScore = new SchoolDuration(school, value);
+							}
+							else if(skill.schoolsScore.get(0) instanceof SchoolInteger)
+							{
+								Integer value = Integer.parseInt(Helpers.getParameter(parameter, String.class, essentials));
+								schoolScore = new SchoolInteger(school, value);
+							}
+							
+							skill.schoolsScore.add(schoolScore);
+						}
 					}
 				}
-				SkillsCompetition competition = new SkillsCompetition(skillsCompetition._id, takeAllPiecesArray, placeHighestArray, placeThreePiecesArray);
-				essentials.database.save(competition);
+				
+				essentials.database.save(skillsCompetition);
 			}
 			else if(action.equals("toggleLiveRefresh"))
 			{

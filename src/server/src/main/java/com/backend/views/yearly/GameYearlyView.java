@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableMap;
 
 public class GameYearlyView 
 {
+	// Called by the view
 	public static String getScripts()
 	{
 		StringBuilder strBuilder = new StringBuilder();		
@@ -37,6 +38,7 @@ public class GameYearlyView
 		return strBuilder.toString();
 	}
 	
+	// Called by the view
 	public static String getHtmlForGame(Game game, Locale currentLocale)
 	{
 		LocalizedString strScoreboardUpdate = new LocalizedString(ImmutableMap.of( 	
@@ -71,7 +73,7 @@ public class GameYearlyView
 		return strBuilder.toString();
 	}
 
-	public static void outputTriangle(Hole[] triangle, SideEnum side, StringBuilder strBuilder)
+	private static void outputTriangle(Hole[] triangle, SideEnum side, StringBuilder strBuilder)
 	{
 		strBuilder.append("<table class=\"triangle\"><tr>");
 		for(int holeNb = 0; holeNb < triangle.length; holeNb++)

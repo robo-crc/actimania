@@ -1,6 +1,7 @@
 package com.backend.models;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.apache.commons.lang.Validate;
 import org.bson.types.ObjectId;
@@ -10,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.framework.helpers.Database;
+import com.framework.helpers.LocalizedString;
 import com.framework.helpers.Database.DatabaseType;
 
 public class SkillsCompetitionTests 
@@ -118,27 +120,36 @@ public class SkillsCompetitionTests
 		School school3 = new School(new ObjectId("333333333333333333333333"), "3");
 		School school4 = new School(new ObjectId("444444444444444444444444"), "4");
 		
-		ArrayList<SchoolDuration> schoolDuration1 = new ArrayList<SchoolDuration>();
+		ArrayList<ISchoolScore> schoolDuration1 = new ArrayList<ISchoolScore>();
 		
 		schoolDuration1.add(new SchoolDuration(school1, new Duration(500)));
 		schoolDuration1.add(new SchoolDuration(school2, new Duration(600)));
 		schoolDuration1.add(new SchoolDuration(school3, new Duration(700)));
 		schoolDuration1.add(new SchoolDuration(school4, new Duration(800)));
 		
-		ArrayList<SchoolDuration> schoolDuration2 = new ArrayList<SchoolDuration>();
+		LocalizedString skillName = new LocalizedString(Locale.ENGLISH, "", "");
+		ArrayList<Skill> skills = new ArrayList<Skill>();
+		
+		skills.add(new Skill(schoolDuration1, skillName, skillName, ""));
+		
+		ArrayList<ISchoolScore> schoolDuration2 = new ArrayList<ISchoolScore>();
 		
 		schoolDuration2.add(new SchoolDuration(school1, new Duration(4500)));
 		schoolDuration2.add(new SchoolDuration(school2, new Duration(3600)));
 		schoolDuration2.add(new SchoolDuration(school3, new Duration(2700)));
 		schoolDuration2.add(new SchoolDuration(school4, new Duration(1800)));
 		
-		ArrayList<SchoolDuration> schoolDuration3 = new ArrayList<SchoolDuration>();
+		skills.add(new Skill(schoolDuration2, skillName, skillName, ""));
+		
+		ArrayList<ISchoolScore> schoolDuration3 = new ArrayList<ISchoolScore>();
 		schoolDuration3.add(new SchoolDuration(school1, new Duration(5)));
 		schoolDuration3.add(new SchoolDuration(school2, new Duration(6)));
 		schoolDuration3.add(new SchoolDuration(school3, new Duration(7)));
 		schoolDuration3.add(new SchoolDuration(school4, new Duration(8)));
 		
-		SkillsCompetition competition = new SkillsCompetition(null, schoolDuration3, schoolDuration2, schoolDuration1);
+		skills.add(new Skill(schoolDuration3, skillName, skillName, ""));
+		
+		SkillsCompetition competition = new SkillsCompetition(null, skills);
 		database.save(competition);
 		
 		SkillsCompetition competition2 = SkillsCompetition.get(database);

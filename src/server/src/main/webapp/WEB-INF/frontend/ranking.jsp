@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.Skill"%>
 <%@page import="com.framework.helpers.Helpers"%>
 <%@page import="org.joda.time.format.PeriodFormatterBuilder"%>
 <%@page import="org.joda.time.format.PeriodFormatter"%>
@@ -53,22 +54,6 @@ LocalizedString strCompetition = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"COMPÉTITION"
 		), currentLocale);
 
-LocalizedString strTakeAllPieces = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "PICK-UP<br/>RACE", 
-		Locale.FRENCH, 	"RAMASSAGE<br/>DE VITESSE"
-		), currentLocale);
-
-LocalizedString strPlaceThreePieces = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "PLACE<br/>THREE PIECES", 
-		Locale.FRENCH, 	"POSITIONNER<br/>TROIS PIÈCES"
-		), currentLocale);
-
-LocalizedString strPlaceHighest = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "PLACE<br/>HIGHEST", 
-		Locale.FRENCH, 	"POSITIONNER<br/>LE PLUS HAUT"
-		), currentLocale);
-
-
 LocalizedString strNoShow = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "*No show for playoff", 
 		Locale.FRENCH, 	"*Ne se présentera pas aux éliminatoires"
@@ -99,9 +84,12 @@ LocalizedString strNoShow = new LocalizedString(ImmutableMap.of(
 	<th><%= strSchool %></th>
 	<th><%= strScore %></th>
 	<th><%= strCompetition %></th>
-	<th><%= strTakeAllPieces %></th>
-	<th><%= strPlaceThreePieces %></th>
-	<th><%= strPlaceHighest %></th>
+<%
+	for(Skill skill : skillsCompetition.skills)
+	{
+		out.write("<th>" + skill.displayNameUpperCompact + "</th>");
+	}
+%>
 </tr>
 <tr class="whiteBackgroundColor"/>
 <%
@@ -132,11 +120,14 @@ for( int position = 0; position < cumulativeRanking.size(); position++ )
 		</td>
 		<td class="center" sorttable_customkey="<%= position %>"><%= String.format("%.2f", tournament.getPreliminaryScore(school, skillsCompetition) * 100) %> %</td>
 		<td class="center"><%=tournament.getRoundScore(school, GameTypeEnum.PRELIMINARY)%></td>
-		
-		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%></td>
-		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%></td>
-		<td class="center"><%=Helpers.stopwatchFormatter.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%></td>
-	</tr>
+
+<%
+	for(Skill skill : skillsCompetition.skills)
+	{
+		out.write("<td class=\"center\">" + skill.getSchoolScore(school).getDisplay() + "</td>");
+	}
+%>
+</tr>
 <%
 	if(isExcluded)
 	{

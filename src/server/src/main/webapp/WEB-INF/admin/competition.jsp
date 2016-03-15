@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.Skill"%>
 <%@page import="java.io.IOException"%>
 <%@page import="com.framework.helpers.Helpers"%>
 <%@page import="com.backend.models.SkillsCompetition"%>
@@ -46,21 +47,6 @@ LocalizedString strCompetitionTitle = new LocalizedString(ImmutableMap.of(
 LocalizedString strSkillsCompetition = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Skills competition", 
 		Locale.FRENCH, 	"Compétitions d'agilités"
-		), currentLocale);
-
-LocalizedString strTakeAllPieces = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Pick-up race", 
-		Locale.FRENCH, 	"Ramassage de vitesse"
-		), currentLocale);
-
-LocalizedString strPlaceThreePieces = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Place three pieces", 
-		Locale.FRENCH, 	"Positionner trois pièce"
-		), currentLocale);
-
-LocalizedString strPlaceHighest = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Place highest", 
-		Locale.FRENCH, 	"Positionner le plus haut"
 		), currentLocale);
 
 LocalizedString strRank = new LocalizedString(ImmutableMap.of( 	
@@ -170,17 +156,25 @@ $(document).ready(function(){
 		<input type="hidden" name="action" value="skillsCompetition" />
 		
 		<table>
-		<tr><th><%= strSchool %></th><th><%= strTakeAllPieces %></th><th><%= strPlaceThreePieces %></th><th><%= strPlaceHighest %></th></tr>
-		
+		<tr><th><%= strSchool %></th>
 		<%
+		for(Skill skill : skillsCompetition.skills)
+		{
+			out.write("<th>" + skill.displayNameUpperCompact + "</th>");
+		}
+		
 		for(School school : schools)
 		{
 		%>
 			<tr>
 				<td><%= school.name %></td>
-				<td><input type="text" class="chrono" name="takeAllPieces_<%= school._id %>" value="<%=Helpers.stopwatchFormatterFull.print(skillsCompetition.getTakeAllPieces(school).duration.toPeriod())%>" /></td>
-				<td><input type="text" class="chrono" name="placeThreePieces_<%= school._id %>" value="<%=Helpers.stopwatchFormatterFull.print(skillsCompetition.getPlaceThreePieces(school).duration.toPeriod())%>" /></td>
-				<td><input type="text" class="chrono" name="placeHighest_<%= school._id %>" value="<%=Helpers.stopwatchFormatterFull.print(skillsCompetition.getPlaceHighest(school).duration.toPeriod())%>" /></td>
+				
+				<%
+				for(Skill skill : skillsCompetition.skills)
+				{
+					out.write("<td><input type=\"text\" class=\"chrono\" name=\"" + skill.shortName + "_" + school._id + "\" value=\"" + skill.getSchoolScore(school).getDisplayLong() + "\"/></td>");
+				}
+				%>
 			</tr>
 			<%
 		}
