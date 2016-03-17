@@ -17,7 +17,7 @@ import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.main.yearly.TournamentYearlySetup;
 
-public class PlayoffRoundTests 
+public class Playoff23TeamsTests 
 {
 	private static Database database;
 	
@@ -47,7 +47,7 @@ public class PlayoffRoundTests
 		}
 		
 		Tournament tournament = new Tournament(schools, new ArrayList<Game>());
-		SkillsCompetition skillsCompetition = TournamentYearlySetup.setupSkillCompetition(null, schools, true);
+		SkillsCompetition skillsCompetition = TournamentYearlySetup.setupSkillCompetition(null, schools, false);
 		database.save(skillsCompetition);
 		
 		PlayoffRound playoffRound = playoff.generatePlayoffRound(database, tournament, null, GameTypeEnum.PLAYOFF_REPECHAGE);

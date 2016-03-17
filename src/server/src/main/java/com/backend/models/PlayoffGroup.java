@@ -17,7 +17,7 @@ public class PlayoffGroup
 		groupNo = _groupNo;
 	}
 	
-	public ArrayList<School> getSchoolsForNextRound(ArrayList<SchoolInteger> rankedSchools, int nbOfSchoolsToKepp)
+	public ArrayList<School> getSchoolsRanked(ArrayList<SchoolInteger> rankedSchools)
 	{
 		ArrayList<School> toNextRound = new ArrayList<School>();
 		for(School school : rankedSchools)
@@ -25,10 +25,6 @@ public class PlayoffGroup
 			if(schools.contains(school))
 			{
 				toNextRound.add(school);
-				if(toNextRound.size() >= nbOfSchoolsToKepp)
-				{
-					break;
-				}
 			}
 		}
 		

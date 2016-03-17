@@ -10,14 +10,16 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.backend.controllers.yearly.Playoff30Teams;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameTypeEnum;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.main.FakeTournament;
+import com.main.yearly.FakeYearlyTournament;
 import com.main.yearly.TournamentYearlySetup;
 
-public class PlayoffTests 
+public class Playoff30TeamsTests 
 {
 	private static Database database;
 	
@@ -38,14 +40,12 @@ public class PlayoffTests
 	@Test
 	public void testGetRounds()
 	{
-		/*
-		Validate.isTrue(Playoff.getRoundsCount(16) == 3);
-		Validate.isTrue(Playoff.getRoundsCount(20) == 4);
-		Validate.isTrue(Playoff.getRoundsCount(30) == 4);
-		Validate.isTrue(Playoff.getRoundsCount(32) == 4);
-		Validate.isTrue(Playoff.getRoundsCount(33) == 5);
-		Validate.isTrue(Playoff.getRoundsCount(40) == 5);
-		*/
+		Validate.isTrue(Playoff30Teams.getRoundsCount(16) == 3);
+		Validate.isTrue(Playoff30Teams.getRoundsCount(20) == 4);
+		Validate.isTrue(Playoff30Teams.getRoundsCount(30) == 4);
+		Validate.isTrue(Playoff30Teams.getRoundsCount(32) == 4);
+		Validate.isTrue(Playoff30Teams.getRoundsCount(33) == 5);
+		Validate.isTrue(Playoff30Teams.getRoundsCount(40) == 5);
 	}
 	
 	
@@ -57,8 +57,8 @@ public class PlayoffTests
 		{
 			schools.add(new School(new ObjectId(), String.valueOf(i)));
 		}
-		
-		//PlayoffRound playoffRound = Playoff.generateRepechageRound(schools);
+
+		ArrayList<PlayoffGroup> playoffGroups = Playoff30Teams.generateRepechageRound(schools);
 		/*
 		Expected
 		7	13	24	30
@@ -68,106 +68,105 @@ public class PlayoffTests
 		11	17	20	26
 		12	18	19	25
 		*/
-		/*
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(0).name.equals("7"));
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(1).name.equals("13"));
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(2).name.equals("24"));
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(3).name.equals("30"));
+
+		Validate.isTrue(playoffGroups.get(0).schools.get(0).name.equals("7"));
+		Validate.isTrue(playoffGroups.get(0).schools.get(1).name.equals("13"));
+		Validate.isTrue(playoffGroups.get(0).schools.get(2).name.equals("24"));
+		Validate.isTrue(playoffGroups.get(0).schools.get(3).name.equals("30"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(0).name.equals("8"));
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(1).name.equals("14"));
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(2).name.equals("23"));
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(3).name.equals("29"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(0).name.equals("8"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(1).name.equals("14"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(2).name.equals("23"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(3).name.equals("29"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(0).name.equals("9"));
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(1).name.equals("15"));
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(2).name.equals("22"));
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(3).name.equals("28"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(0).name.equals("9"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(1).name.equals("15"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(2).name.equals("22"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(3).name.equals("28"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(0).name.equals("10"));
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(1).name.equals("16"));
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(2).name.equals("21"));
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(3).name.equals("27"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(0).name.equals("10"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(1).name.equals("16"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(2).name.equals("21"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(3).name.equals("27"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(0).name.equals("11"));
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(1).name.equals("17"));
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(2).name.equals("20"));
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(3).name.equals("26"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(0).name.equals("11"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(1).name.equals("17"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(2).name.equals("20"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(3).name.equals("26"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(0).name.equals("12"));
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(1).name.equals("18"));
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(2).name.equals("19"));
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(3).name.equals("25"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(0).name.equals("12"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(1).name.equals("18"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(2).name.equals("19"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(3).name.equals("25"));
 
 		schools.add(new School(new ObjectId(), "31"));
-		playoffRound = Playoff.generateRepechageRound(schools);
+		playoffGroups = Playoff30Teams.generateRepechageRound(schools);
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(0).name.equals("7"));
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(1).name.equals("13"));
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(2).name.equals("25"));
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(3).name.equals("31"));
+		Validate.isTrue(playoffGroups.get(0).schools.get(0).name.equals("7"));
+		Validate.isTrue(playoffGroups.get(0).schools.get(1).name.equals("13"));
+		Validate.isTrue(playoffGroups.get(0).schools.get(2).name.equals("25"));
+		Validate.isTrue(playoffGroups.get(0).schools.get(3).name.equals("31"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(0).name.equals("8"));
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(1).name.equals("14"));
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(2).name.equals("24"));
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(3).name.equals("30"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(0).name.equals("8"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(1).name.equals("14"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(2).name.equals("24"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(3).name.equals("30"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(0).name.equals("9"));
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(1).name.equals("15"));
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(2).name.equals("23"));
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(3).name.equals("29"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(0).name.equals("9"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(1).name.equals("15"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(2).name.equals("23"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(3).name.equals("29"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(0).name.equals("10"));
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(1).name.equals("16"));
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(2).name.equals("22"));
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(3).name.equals("28"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(0).name.equals("10"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(1).name.equals("16"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(2).name.equals("22"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(3).name.equals("28"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(0).name.equals("11"));
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(1).name.equals("17"));
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(2).name.equals("21"));
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(3).name.equals("27"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(0).name.equals("11"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(1).name.equals("17"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(2).name.equals("21"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(3).name.equals("27"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(0).name.equals("12"));
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(1).name.equals("18"));
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(2).name.equals("20"));
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(3).name.equals("26"));
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(4).name.equals("19"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(0).name.equals("12"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(1).name.equals("18"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(2).name.equals("20"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(3).name.equals("26"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(4).name.equals("19"));
 		
 		schools.add(new School(new ObjectId(), "32"));
-		playoffRound = Playoff.generateRepechageRound(schools);
+		playoffGroups = Playoff30Teams.generateRepechageRound(schools);
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(0).name.equals("7"));
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(1).name.equals("13"));
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(2).name.equals("26"));
-		Validate.isTrue(playoffRound.playoffGroups.get(0).schools.get(3).name.equals("32"));
+		Validate.isTrue(playoffGroups.get(0).schools.get(0).name.equals("7"));
+		Validate.isTrue(playoffGroups.get(0).schools.get(1).name.equals("13"));
+		Validate.isTrue(playoffGroups.get(0).schools.get(2).name.equals("26"));
+		Validate.isTrue(playoffGroups.get(0).schools.get(3).name.equals("32"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(0).name.equals("8"));
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(1).name.equals("14"));
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(2).name.equals("25"));
-		Validate.isTrue(playoffRound.playoffGroups.get(1).schools.get(3).name.equals("31"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(0).name.equals("8"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(1).name.equals("14"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(2).name.equals("25"));
+		Validate.isTrue(playoffGroups.get(1).schools.get(3).name.equals("31"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(0).name.equals("9"));
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(1).name.equals("15"));
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(2).name.equals("24"));
-		Validate.isTrue(playoffRound.playoffGroups.get(2).schools.get(3).name.equals("30"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(0).name.equals("9"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(1).name.equals("15"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(2).name.equals("24"));
+		Validate.isTrue(playoffGroups.get(2).schools.get(3).name.equals("30"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(0).name.equals("10"));
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(1).name.equals("16"));
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(2).name.equals("23"));
-		Validate.isTrue(playoffRound.playoffGroups.get(3).schools.get(3).name.equals("29"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(0).name.equals("10"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(1).name.equals("16"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(2).name.equals("23"));
+		Validate.isTrue(playoffGroups.get(3).schools.get(3).name.equals("29"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(0).name.equals("11"));
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(1).name.equals("17"));
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(2).name.equals("22"));
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(3).name.equals("28"));
-		Validate.isTrue(playoffRound.playoffGroups.get(4).schools.get(4).name.equals("21"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(0).name.equals("11"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(1).name.equals("17"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(2).name.equals("22"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(3).name.equals("28"));
+		Validate.isTrue(playoffGroups.get(4).schools.get(4).name.equals("21"));
 		
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(0).name.equals("12"));
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(1).name.equals("18"));
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(2).name.equals("21"));
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(3).name.equals("27"));
-		Validate.isTrue(playoffRound.playoffGroups.get(5).schools.get(4).name.equals("20"));
-		*/
+		Validate.isTrue(playoffGroups.get(5).schools.get(0).name.equals("12"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(1).name.equals("18"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(2).name.equals("21"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(3).name.equals("27"));
+		Validate.isTrue(playoffGroups.get(5).schools.get(4).name.equals("20"));
 	}
 	
 	@Test
@@ -179,21 +178,13 @@ public class PlayoffTests
 			schools.add(new School(new ObjectId(), String.valueOf(i)));
 		}
 
-
-		/*#
-		PlayoffRound playoffRound = Playoff.generateRepechageRound(schools);
+		ArrayList<PlayoffGroup> repechageGroups = Playoff30Teams.generateRepechageRound(schools);
 		DateTime dateTime = new DateTime(2015,1,1,0,0);
+		
+		PlayoffRound playoffRound = new PlayoffRound(null, repechageGroups, GameTypeEnum.PLAYOFF_REPECHAGE);
 		ArrayList<Game> games = playoffRound.getGames(dateTime, 0);
 		Validate.isTrue(games.size() == 18);
 
-		for(int i = 0; i < games.size(); i++)
-		{
-			System.out.println("Validate.isTrue(games.get(" + i + ").blueTeam.get(0).name.equals(\"" + games.get(i).blueTeam.get(0).name + "\"));");
-			System.out.println("Validate.isTrue(games.get(" + i + ").blueTeam.get(1).name.equals(\"" + games.get(i).blueTeam.get(1).name + "\"));");
-			System.out.println("Validate.isTrue(games.get(" + i + ").yellowTeam.get(0).name.equals(\"" + games.get(i).yellowTeam.get(0).name + "\"));");
-			System.out.println("Validate.isTrue(games.get(" + i + ").yellowTeam.get(1).name.equals(\"" + games.get(i).yellowTeam.get(1).name + "\"));\n");
-		}
-		
 		Validate.isTrue(games.get(0).blueTeam.get(0).name.equals("7"));
 		Validate.isTrue(games.get(0).blueTeam.get(1).name.equals("13"));
 		Validate.isTrue(games.get(0).yellowTeam.get(0).name.equals("24"));
@@ -287,7 +278,9 @@ public class PlayoffTests
 		
 		schools.add(new School(new ObjectId(), "31"));
 		
-		playoffRound 	= Playoff.generateRepechageRound(schools);
+		repechageGroups = Playoff30Teams.generateRepechageRound(schools);		
+		playoffRound = new PlayoffRound(null, repechageGroups, GameTypeEnum.PLAYOFF_REPECHAGE);
+
 		dateTime 		= new DateTime(2015,1,1,0,0);
 		games 			= playoffRound.getGames(dateTime, 0);
 		Validate.isTrue(games.size() == 20);
@@ -391,8 +384,6 @@ public class PlayoffTests
 		Validate.isTrue(games.get(19).blueTeam.get(1).name.equals("27"));
 		Validate.isTrue(games.get(19).yellowTeam.get(0).name.equals("17"));
 		Validate.isTrue(games.get(19).yellowTeam.get(1).name.equals("21"));
-		*/
-		
 	}
 	
 	
@@ -418,7 +409,7 @@ public class PlayoffTests
 		}
 		
 		Random random = new Random(0);
-		SkillsCompetition skillsCompetition = TournamentYearlySetup.setupSkillCompetition(null, schools, true);
+		SkillsCompetition skillsCompetition = TournamentYearlySetup.setupSkillCompetition(null, schools, false);
 		
 		ArrayList<Game> games = new ArrayList<Game>();
 		for(int i = 0; i < 64; i++)
@@ -434,7 +425,7 @@ public class PlayoffTests
 			blueTeam.add(schools.get(random.nextInt(31)));
 			
 			Game game = new Game(new ObjectId(), i, "", new DateTime(), GameTypeEnum.PRELIMINARY, blueTeam, yellowTeam, new ArrayList<GameEvent>(), false);
-			FakeTournament.fillFakeGameEvents(game, random);
+			FakeYearlyTournament.fillFakeGameEvents(game, random);
 			games.add(game);
 		}
 		
@@ -444,7 +435,7 @@ public class PlayoffTests
 		School excludedSchool = schools.get(2);
 		excludedSchools.add(excludedSchool);
 		
-		Playoff playoff = new Playoff(null, excludedSchools);
+		Playoff playoff = new Playoff(null, excludedSchools, new Playoff30Teams());
 		/*
 		System.out.println("PRELIMINARY RANKING");
 		for(School school : playoff.preliminaryRanking)

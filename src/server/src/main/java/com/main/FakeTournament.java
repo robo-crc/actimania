@@ -11,16 +11,11 @@ import com.backend.models.PlayoffRound;
 import com.backend.models.School;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
-import com.backend.models.GameEvent.EndGameEvent;
-import com.backend.models.GameEvent.StartGameEvent;
-import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.GameTypeEnum;
-import com.backend.models.enums.yearly.TriangleStateEnum;
-import com.backend.models.yearly.GameStateYearly;
-import com.backend.models.yearly.Hole;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.framework.models.Essentials;
+import com.main.yearly.FakeYearlyTournament;
 import com.main.yearly.TournamentYearlySetup;
 
 public class FakeTournament 
@@ -35,39 +30,6 @@ public class FakeTournament
 		}
 	}
 	
-	public static Hole[] fillTriangle(Random random)
-	{
-		Hole[] triangle = GameStateYearly.InitializeTriangle();
-		for(Hole hole : triangle)
-		{
-			for(int i = 0; i < hole.triangleStates.length; i++)
-			{
-				hole.triangleStates[i] = TriangleStateEnum.values()[random.nextInt(3)];
-				if(hole.triangleStates[i] == TriangleStateEnum.EMPTY)
-				{
-					break;
-				}
-			}
-		}
-		return triangle;
-	}
-	
-	public static void fillFakeGameEvents(Game currentGame, Random random)
-	{
-		currentGame.addGameEvent(new StartGameEvent(DateTime.now()));
-		
-		int nbEvents = random.nextInt(30) + 10;
-		
-		for(int eventNo = 0; eventNo < nbEvents; eventNo++)
-		{
-			Hole[] triangleLeft = fillTriangle(random);
-			Hole[] triangleRight = fillTriangle(random);
-			
-			currentGame.addGameEvent(new ScoreboardUpdateEvent(triangleLeft, triangleRight, DateTime.now()));
-		}
-		
-		currentGame.addGameEvent(new EndGameEvent(DateTime.now()));
-	}
 	
 	public static void main(String[] args) 
 	{
@@ -96,7 +58,7 @@ public class FakeTournament
 				{
 					Game currentGame = tournament.games.get(i).getInitialState();
 					
-					fillFakeGameEvents(currentGame, random);
+					FakeYearlyTournament.fillFakeGameEvents(currentGame, random);
 					
 					essentials.database.save(currentGame);
 				}
@@ -113,7 +75,7 @@ public class FakeTournament
 					excludedSchools.add(school);
 				}
 			}
-			Playoff playoff = new Playoff(null, excludedSchools);
+			Playoff playoff = new Playoff(null, excludedSchools, null);
 			
 			PlayoffRound repechageRound = processRound(essentials.database, playoff, tournament, null, random, GameTypeEnum.PLAYOFF_REPECHAGE);
 			essentials.database.save(repechageRound);
@@ -134,7 +96,7 @@ public class FakeTournament
 		tournament.games.addAll(playoffGames);
 		for(Game game : playoffGames)
 		{
-			FakeTournament.fillFakeGameEvents(game, random);
+			FakeYearlyTournament.fillFakeGameEvents(game, random);
 			if(database != null)
 			{
 				database.save(game);

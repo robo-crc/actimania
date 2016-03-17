@@ -58,7 +58,7 @@ public class Tournament
 		// Optimization : Let's just calculate the score once instead of each time we sort.
 		for(School school : schools)
 		{
-			if(gameType == GameTypeEnum.PRELIMINARY || getGamesPlayed(games, school, gameType).size() != 0 )
+			if(gameType == GameTypeEnum.PRELIMINARY || getGamesPlayed(games, school, gameType).size() != 0)
 			{
 				SchoolInteger schoolScore = new SchoolInteger(school, getRoundScore(school, gameType));
 				ranking.add(schoolScore);
