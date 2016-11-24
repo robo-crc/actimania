@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bson.types.ObjectId;
 
+import com.backend.models.enums.Division;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.framework.models.Essentials;
@@ -15,13 +16,16 @@ public class School implements Comparable<School>
 {
 	public final ObjectId 			_id;
 	public final String 			name;
+	public final Division 			division;
 	
-	public School(	@JsonProperty("_id") 	ObjectId 		_schoolId,
-					@JsonProperty("name") 	String 			_name
+	public School(	@JsonProperty("_id") 		ObjectId 	_schoolId,
+					@JsonProperty("name") 		String 		_name,
+					@JsonProperty("division") 	Division	_division
 					)
 	{
-		_id 	= _schoolId;
-		name 	= _name;
+		_id 		= _schoolId;
+		name 		= _name;
+		division 	= _division;
 	}
 
 	@Override

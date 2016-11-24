@@ -15,6 +15,7 @@ import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
 import com.backend.models.GameEvent.StartGameEvent;
+import com.backend.models.enums.Division;
 import com.backend.models.enums.GameTypeEnum;
 import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.LocalizedString;
@@ -44,7 +45,7 @@ public class ScoreTests
 	@Test
 	public void testGetScore()
 	{
-		School school = new School(new ObjectId("545b6ccf92fc2aed1f73a57b"), "21 Jump Street");
+		School school = new School(new ObjectId("545b6ccf92fc2aed1f73a57b"), "21 Jump Street", Division.ONE);
 		
 		ArrayList<School> blueTeam = new ArrayList<School>();
 		blueTeam.add(school);
@@ -80,7 +81,7 @@ public class ScoreTests
 		
 		tournament.games.add(game3);
 		Validate.isTrue(game3.getScore(school) == 40);
-		Validate.isTrue(game3.getScore(new School(null, null)) == 0);
+		Validate.isTrue(game3.getScore(new School(null, null, Division.ONE)) == 0);
 		
 		// Best score is 90
 		Validate.isTrue(tournament.getRoundScoreNoCache(school, GameTypeEnum.PRELIMINARY) == 90);
@@ -123,7 +124,7 @@ public class ScoreTests
 	
 	private void testGetScorePlayoff(GameTypeEnum gameType)
 	{
-	School school = new School(new ObjectId("545b6ccf92fc2aed1f73a57b"), "21 Jump Street");
+	School school = new School(new ObjectId("545b6ccf92fc2aed1f73a57b"), "21 Jump Street", Division.ONE);
 		
 		ArrayList<School> blueTeam = new ArrayList<School>();
 		blueTeam.add(school);

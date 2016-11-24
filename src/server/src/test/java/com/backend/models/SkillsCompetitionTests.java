@@ -10,6 +10,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.backend.models.enums.Division;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.framework.helpers.LocalizedString;
@@ -35,10 +36,10 @@ public class SkillsCompetitionTests
 	@Test
 	public void getSkillPointsIntegerTest()
 	{
-		School school1 = new School(new ObjectId("111111111111111111111111"), "1");
-		School school2 = new School(new ObjectId("222222222222222222222222"), "2");
-		School school3 = new School(new ObjectId("333333333333333333333333"), "3");
-		School school4 = new School(new ObjectId("444444444444444444444444"), "4");
+		School school1 = new School(new ObjectId("111111111111111111111111"), "1", Division.ONE);
+		School school2 = new School(new ObjectId("222222222222222222222222"), "2", Division.ONE);
+		School school3 = new School(new ObjectId("333333333333333333333333"), "3", Division.ONE);
+		School school4 = new School(new ObjectId("444444444444444444444444"), "4", Division.ONE);
 		
 		ArrayList<SchoolInteger> score = new ArrayList<SchoolInteger>();
 		score.add(new SchoolInteger(school1, 8));
@@ -79,10 +80,10 @@ public class SkillsCompetitionTests
 	@Test
 	public void getSkillPointsDurationTest()
 	{
-		School school1 = new School(new ObjectId("111111111111111111111111"), "1");
-		School school2 = new School(new ObjectId("222222222222222222222222"), "2");
-		School school3 = new School(new ObjectId("333333333333333333333333"), "3");
-		School school4 = new School(new ObjectId("444444444444444444444444"), "4");
+		School school1 = new School(new ObjectId("111111111111111111111111"), "1", Division.ONE);
+		School school2 = new School(new ObjectId("222222222222222222222222"), "2", Division.ONE);
+		School school3 = new School(new ObjectId("333333333333333333333333"), "3", Division.ONE);
+		School school4 = new School(new ObjectId("444444444444444444444444"), "4", Division.ONE);
 		
 		ArrayList<SchoolDuration> score = new ArrayList<SchoolDuration>();
 		
@@ -115,10 +116,10 @@ public class SkillsCompetitionTests
 	@Test
 	public void getDatabaseTest()
 	{
-		School school1 = new School(new ObjectId("111111111111111111111111"), "1");
-		School school2 = new School(new ObjectId("222222222222222222222222"), "2");
-		School school3 = new School(new ObjectId("333333333333333333333333"), "3");
-		School school4 = new School(new ObjectId("444444444444444444444444"), "4");
+		School school1 = new School(new ObjectId("111111111111111111111111"), "1", Division.ONE);
+		School school2 = new School(new ObjectId("222222222222222222222222"), "2", Division.ONE);
+		School school3 = new School(new ObjectId("333333333333333333333333"), "3", Division.ONE);
+		School school4 = new School(new ObjectId("444444444444444444444444"), "4", Division.ONE);
 		
 		ArrayList<ISchoolScore> schoolDuration1 = new ArrayList<ISchoolScore>();
 		

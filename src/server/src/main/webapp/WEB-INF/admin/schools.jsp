@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.enums.Division"%>
 <%@page import="com.backend.models.School"%>
 <%@page import="java.util.Set"%>
 <%@page import="com.google.common.collect.ImmutableMap"%>
@@ -35,6 +36,12 @@ LocalizedString strSchoolName = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "School name : ", 
 		Locale.FRENCH, 	"Nom de l'école : "
 		), currentLocale);
+
+LocalizedString strDivision = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Division", 
+		Locale.FRENCH, 	"Division"
+		), currentLocale);
+
 %>
 
 <!DOCTYPE html>
@@ -56,7 +63,16 @@ LocalizedString strSchoolName = new LocalizedString(ImmutableMap.of(
 	<h1><%= strAddSchool %></h1>
 	<form method="post">
 		<input type="hidden" name="action" value="create" />
-		<span><%= strSchoolName %><input type="text" name="schoolName" /> </span><br/>
+		<span><%= strSchoolName %><input type="text" name="schoolName" /> </span>
+		<%= strDivision %>
+		<select name="division">
+		<% 	for(Division division : Division.values())
+			{ %>
+				<option value="<%= division.name() %>" <% if( division.equals(Division.ONE) ) { %> selected="selected" <% } %>> 
+					<%= division.name() %>
+				</option>
+		 <% } %>
+		</select>
 		<br/>
 		<input type="submit" value="<%= strAddSchool %>" />
 	</form>
@@ -70,7 +86,16 @@ LocalizedString strSchoolName = new LocalizedString(ImmutableMap.of(
 		<form method="post">
 			<input type="hidden" name="action" value="edit" />
 			<input type="hidden" name="id" value="<%= school._id %>" />
-			<span><%= strSchoolName %><input type="text" name="schoolName" value="<%= school.name %>" /> </span><br/>
+			<span><%= strSchoolName %><input type="text" name="schoolName" value="<%= school.name %>" /> </span>
+			<%= strDivision %>
+			<select name="division">
+			<% 	for(Division division : Division.values())
+				{ %>
+					<option value="<%= division.name() %>" <% if( division.equals(school.division) ) { %> selected="selected" <% } %>> 
+						<%= division.name() %>
+					</option>
+			 <% } %>
+			</select>
 			<input type="submit" value="<%= strEditSchool %>" />
 		</form>
 		

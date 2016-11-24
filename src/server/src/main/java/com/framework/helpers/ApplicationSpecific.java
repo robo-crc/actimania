@@ -21,7 +21,7 @@ public class ApplicationSpecific
 	
 	public static String getDatabaseName()
 	{
-		return "Pythagorium";
+		return "Loops";
 	}
 	
 	public static Set<String> getAllRoles()

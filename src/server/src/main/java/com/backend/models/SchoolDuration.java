@@ -3,6 +3,7 @@ package com.backend.models;
 import org.bson.types.ObjectId;
 import org.joda.time.Duration;
 
+import com.backend.models.enums.Division;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.helpers.Helpers;
 
@@ -11,18 +12,19 @@ public class SchoolDuration extends School implements ISchoolScore
 	public final Duration 	duration;
 	
 	public SchoolDuration(
-			@JsonProperty("_id") 		ObjectId 		_schoolId,
-			@JsonProperty("name") 		String 			_name,
-			@JsonProperty("duration") 	Duration _duration
+			@JsonProperty("_id") 		ObjectId 	_schoolId,
+			@JsonProperty("name") 		String 		_name,
+			@JsonProperty("division") 	Division	_division,
+			@JsonProperty("duration") 	Duration 	_duration
 			)
 	{
-		super(_schoolId, _name);
+		super(_schoolId, _name, _division);
 		duration 	= _duration;
 	}
 	
 	public SchoolDuration(School school, Duration _duration)
 	{
-		super(school._id, school.name);
+		super(school._id, school.name, school.division);
 		duration 	= _duration;
 	}
 	

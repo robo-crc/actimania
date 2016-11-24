@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.StartGameEvent;
+import com.backend.models.enums.Division;
 import com.backend.models.enums.GameTypeEnum;
 import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.Database;
@@ -43,7 +44,7 @@ public class Playoff23TeamsTests
 		ArrayList<School> schools = new ArrayList<School>();
 		for(int i = 1; i <= 23; i++)
 		{
-			schools.add(new School(new ObjectId(), String.valueOf(i)));
+			schools.add(new School(new ObjectId(), String.valueOf(i), Division.ONE));
 		}
 		
 		Tournament tournament = new Tournament(schools, new ArrayList<Game>());
