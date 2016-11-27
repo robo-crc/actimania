@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Area
 {
 	public final int value;
-	public final int spoolCount;
+	public int spoolCount;
 	
 	public Area(
 			@JsonProperty("value")		int	_value,

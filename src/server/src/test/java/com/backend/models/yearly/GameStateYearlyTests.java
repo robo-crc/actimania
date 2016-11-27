@@ -13,6 +13,7 @@ import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.TeamEnum;
+import com.backend.models.enums.yearly.AreaPoints;
 import com.framework.helpers.LocalizedString;
 
 public class GameStateYearlyTests 
@@ -47,6 +48,32 @@ public class GameStateYearlyTests
 		GameStateYearly gameStateUpdate2 = new GameStateYearly(gameStateUpdate, scoreboard);
 		Validate.isTrue(gameStateUpdate2.yellowScore == 50);
 		Validate.isTrue(gameStateUpdate2.blueScore == 50);
+		
+		yellowField[AreaPoints.ONE_HUNDRED.ordinal()].spoolCount 	= 1;
+		yellowField[AreaPoints.FORTY.ordinal()].spoolCount 			= 1;
+		yellowField[AreaPoints.THIRTHY.ordinal()].spoolCount 		= 3;
+		yellowField[AreaPoints.TWENTY_BIG.ordinal()].spoolCount 	= 1;
+		yellowField[AreaPoints.TWENTY_SMALL.ordinal()].spoolCount 	= 1;
+		yellowField[AreaPoints.TEN_TOP.ordinal()].spoolCount 		= 2;
+		yellowField[AreaPoints.TEN_BOTTOM.ordinal()].spoolCount 	= 1;
+		yellowField[AreaPoints.FIVE_TOP.ordinal()].spoolCount 		= 2;
+		yellowField[AreaPoints.FIVE_BOTTOM.ordinal()].spoolCount 	= 0;
+
+		blueField[AreaPoints.ONE_HUNDRED.ordinal()].spoolCount 		= 0;
+		blueField[AreaPoints.FORTY.ordinal()].spoolCount 			= 1;
+		blueField[AreaPoints.THIRTHY.ordinal()].spoolCount 			= 1;
+		blueField[AreaPoints.TWENTY_BIG.ordinal()].spoolCount 		= 0;
+		blueField[AreaPoints.TWENTY_SMALL.ordinal()].spoolCount 	= 1;
+		blueField[AreaPoints.TEN_TOP.ordinal()].spoolCount 			= 3;
+		blueField[AreaPoints.TEN_BOTTOM.ordinal()].spoolCount 		= 2;
+		blueField[AreaPoints.FIVE_TOP.ordinal()].spoolCount 		= 1;
+		blueField[AreaPoints.FIVE_BOTTOM.ordinal()].spoolCount 		= 4;
+
+		scoreboard = new ScoreboardUpdateEvent(yellowField, blueField, 6, 6, 10, 0, 12, 12, TeamEnum.BLUE, DateTime.now());
+		GameStateYearly gameStateUpdate3 = new GameStateYearly(gameStateUpdate, scoreboard);
+		Validate.isTrue(gameStateUpdate3.yellowScore == 765);
+		Validate.isTrue(gameStateUpdate3.blueScore == 1640);
+
 	}
 	
 	private void validateInitialState(GameStateYearly gameState)

@@ -11,12 +11,16 @@ import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.TeamEnum;
+import com.backend.models.enums.yearly.AreaPoints;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GameStateYearly extends GameState
 {
 	public final ScoreboardUpdateEvent currentScoreboard;
+	
+	@JsonIgnore
+	public final int INITIAL_ALLOWED_SPOOLS = 12;	
 	
 	public GameStateYearly(
 			@JsonProperty("_id")					ObjectId 					_gameEventId,
@@ -40,7 +44,8 @@ public class GameStateYearly extends GameState
 		super(previousState, gameEvent);
 		if(gameEvent.getGameEventEnum() == GameEventEnum.START_GAME)
 		{
-			currentScoreboard = null;
+			// Initialize the score board with a score board update event
+			currentScoreboard = new ScoreboardUpdateEvent(InitializeField(), InitializeField(), 0, 0, 0, 0, INITIAL_ALLOWED_SPOOLS, INITIAL_ALLOWED_SPOOLS, TeamEnum.NONE, gameEvent.getTime());
 		}
 		else if(gameEvent.getGameEventEnum() == GameEventEnum.SCOREBOARD_UPDATED)
 		{
@@ -58,15 +63,15 @@ public class GameStateYearly extends GameState
 		
 		// Important to be sorted from biggest to smallest
 		// For penalty calculations
-		field[0] = new Area(100, 0);
-		field[1] = new Area(40, 0);
-		field[2] = new Area(30, 0);
-		field[3] = new Area(20, 0);
-		field[4] = new Area(20, 0);
-		field[5] = new Area(10, 0);
-		field[6] = new Area(10, 0);
-		field[7] = new Area(5, 0);
-		field[8] = new Area(5, 0);
+		field[AreaPoints.ONE_HUNDRED.ordinal()] = new Area(100, 0);
+		field[AreaPoints.FORTY.ordinal()] 		= new Area(40, 0);
+		field[AreaPoints.THIRTHY.ordinal()] 	= new Area(30, 0);
+		field[AreaPoints.TWENTY_BIG.ordinal()] 	= new Area(20, 0);
+		field[AreaPoints.TWENTY_SMALL.ordinal()] = new Area(20, 0);
+		field[AreaPoints.TEN_TOP.ordinal()] 	= new Area(10, 0);
+		field[AreaPoints.TEN_BOTTOM.ordinal()] 	= new Area(10, 0);
+		field[AreaPoints.FIVE_TOP.ordinal()] 	= new Area(5, 0);
+		field[AreaPoints.FIVE_BOTTOM.ordinal()] = new Area(5, 0);
 		
 		return field;
 	}

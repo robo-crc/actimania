@@ -23,22 +23,22 @@ public class TournamentYearlySetup
 	public static DateTime[] getRoundStartTime()
 	{
 		DateTime[] roundStartHour = new DateTime[Tournament.BLOCK_NUMBERS];
-		roundStartHour[0] = new DateTime(2016, 2, 25, 18, 30);
-		roundStartHour[1] = new DateTime(2016, 2, 26, 9, 0);
-		roundStartHour[2] = new DateTime(2016, 2, 26, 13, 00);
-		roundStartHour[3] = new DateTime(2016, 2, 26, 18, 00);
+		roundStartHour[0] = new DateTime(2017, 2, 16, 18, 30);
+		roundStartHour[1] = new DateTime(2017, 2, 17, 9, 0);
+		roundStartHour[2] = new DateTime(2017, 2, 17, 13, 00);
+		roundStartHour[3] = new DateTime(2017, 2, 17, 18, 00);
 		
 		return roundStartHour;
 	}
 	
-	private static final LocalizedString strTakeAllPieces = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "Pick-up race", 
-			Locale.FRENCH, 	"Ramassage de vitesse"
+	private static final LocalizedString strEmptyCharger = new LocalizedString(ImmutableMap.of( 	
+			Locale.ENGLISH, "Empty charger", 
+			Locale.FRENCH, 	"Vider le chargeur"
 			), Locale.ENGLISH);
 
-	private static final LocalizedString strPlaceThreePieces = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "Place three pieces", 
-			Locale.FRENCH, 	"Positionner trois pièce"
+	private static final LocalizedString strClosestToTarget = new LocalizedString(ImmutableMap.of( 	
+			Locale.ENGLISH, "Closest to target", 
+			Locale.FRENCH, 	"Le plus proche de la cible"
 			), Locale.ENGLISH);
 
 	private static final LocalizedString strPlaceHighest = new LocalizedString(ImmutableMap.of( 	
@@ -46,9 +46,9 @@ public class TournamentYearlySetup
 			Locale.FRENCH, 	"Positionner le plus haut"
 			), Locale.ENGLISH);
 	
-	private static final LocalizedString strTakeAllPiecesUpperCompact = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "PICK-UP<BR/>RACE", 
-			Locale.FRENCH, 	"RAMASSAGE<BR/>DE VITESSE"
+	private static final LocalizedString strEmptyChargerCompact = new LocalizedString(ImmutableMap.of( 	
+			Locale.ENGLISH, "EMPTY<BR/>CHARGER", 
+			Locale.FRENCH, 	"VIDER<BR/>LE CHARGEUR"
 			), Locale.ENGLISH);
 
 	private static final LocalizedString strPlaceThreePiecesUpperCompact = new LocalizedString(ImmutableMap.of( 	
@@ -71,8 +71,8 @@ public class TournamentYearlySetup
 			random = new Random(0);
 		}
 		
-		skills.add(SetupSkillDuration(schools, strTakeAllPieces, 	strTakeAllPiecesUpperCompact, 	"takeAllPieces", random));
-		skills.add(SetupSkillDuration(schools, strPlaceThreePieces, strPlaceThreePiecesUpperCompact,"placeThreePieces", random));
+		skills.add(SetupSkillDuration(schools, strEmptyCharger, 	strEmptyChargerCompact, 		"emptyCharger", random));
+		skills.add(SetupSkillInteger(schools, strClosestToTarget, strPlaceThreePiecesUpperCompact,"placeThreePieces", random));
 		skills.add(SetupSkillDuration(schools, strPlaceHighest, 	strPlaceHighestUpperCompact, 	"placeHighest", random));
 		
 		SkillsCompetition skillsCompetition = new SkillsCompetition(
