@@ -3,11 +3,9 @@ Installations
 1- Download/Install Eclipse IDE for Java EE Developers (https://www.eclipse.org/downloads/)
 	-> Requires Java SE Development Kit 8 Downloads (http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
-2- Download/Install tomcat7 (http://tomcat.apache.org/download-70.cgi)
+2- Download/Install Visual studio Community edition (http://www.visualstudio.com/en-us/products/free-developer-offers-vs.aspx)
 
-3- Download/Install Visual studio Community edition (http://www.visualstudio.com/en-us/products/free-developer-offers-vs.aspx)
-
-4. Install data\vb_vbpowerpacks.exe
+3- Install data\vb_vbpowerpacks.exe
 
 Running locally instructions
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -28,7 +26,7 @@ Running locally instructions
 4- In eclipse Select the green button dropdown --> Run as --> Maven build
 		-> Name : Actimania
 		-> Base directory : ${workspace_loc:/Actimania}
-	    -> Goals : tomcat7:run
+	    -> Goals : jetty:run
 
 ~~~ Each time
 1- run src\scripts\start_mongo.bat

@@ -15,6 +15,7 @@ import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
+import com.backend.models.yearly.GameStateYearly;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
@@ -34,7 +35,7 @@ public class Game implements Comparable<Game>
 	private final ArrayList<GameEvent> 		gameEvents;
 	public final boolean					isLive;
 
-	public final static Duration END_LIVE_DELAY	= new Duration(60 * 1000);
+	public final static Duration END_LIVE_DELAY	= new Duration(2 * 60 * 1000);
 	
 	public Game(
 			@JsonProperty("_id")					ObjectId 					_gameId,
@@ -74,7 +75,7 @@ public class Game implements Comparable<Game>
 		
 		for( GameEvent gameEvent : gameEvents )
 		{
-			GameState actualGameState = new GameState(previousGameState, gameEvent);
+			GameState actualGameState = new GameStateYearly(previousGameState, gameEvent);
 			gameStates.add(actualGameState);
 			previousGameState = actualGameState;
 		}
@@ -129,17 +130,6 @@ public class Game implements Comparable<Game>
 			{
 				gameEvents.add(pos, gameEvent);
 				added = true;
-				
-				// When all 6 actuator state are the same color, the game ends.
-				if(gameEvent.getGameEventEnum() == GameEventEnum.ACTUATOR_STATE_CHANGED)
-				{
-					ArrayList<GameState> gameStates = getGameStates();
-					if(GameState.areAllActuatorSameColor(gameStates.get(gameStates.size() - 1).actuatorsStates))
-					{
-						gameEvents.add(new EndGameEvent(DateTime.now()));
-						createEndLiveCallback(_id, DatabaseType.PRODUCTION);
-					}
-				}
 			}
 			break;
 		}
@@ -147,11 +137,18 @@ public class Game implements Comparable<Game>
 		return added;
 	}
 	
+	
+	static ScheduledExecutorService liveScheduledExecutorService = null;
+
 	public static void createEndLiveCallback(final ObjectId gameId, final Database.DatabaseType databaseType)
 	{
-		ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+		if(liveScheduledExecutorService != null)
+		{
+			liveScheduledExecutorService.shutdownNow();
+		}
+		liveScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
-		scheduledExecutorService.schedule(
+		liveScheduledExecutorService.schedule(
 			new Callable<Boolean>() 
 			{
 				public Boolean call() throws Exception 
@@ -173,14 +170,25 @@ public class Game implements Comparable<Game>
 			END_LIVE_DELAY.getStandardSeconds(),
 		    TimeUnit.SECONDS);
 
-		scheduledExecutorService.shutdown();
+		liveScheduledExecutorService.shutdown();
 	}
-
+	
+	static ScheduledExecutorService endScheduledExecutorService = null;
+	
 	public static void createEndGameCallback(final ObjectId gameId)
 	{
-		ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+		if(endScheduledExecutorService != null)
+		{
+			endScheduledExecutorService.shutdownNow();
+		}
+		if(liveScheduledExecutorService != null)
+		{
+			liveScheduledExecutorService.shutdownNow();
+			liveScheduledExecutorService = null;
+		}
+		endScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
-		scheduledExecutorService.schedule(
+		endScheduledExecutorService.schedule(
 			new Callable<GameEvent>() 
 			{
 				public GameEvent call() throws Exception 
@@ -204,7 +212,7 @@ public class Game implements Comparable<Game>
 		    getGameLength().getStandardSeconds(),
 		    TimeUnit.SECONDS);
 
-		scheduledExecutorService.shutdown();
+		endScheduledExecutorService.shutdown();
 	}
 	
 	public void removeGameEvent(int pos)
@@ -245,8 +253,7 @@ public class Game implements Comparable<Game>
 		return false;
 	}
 	
-	// Score does not take into account misconduct penalties since they are global penalties.
-	public int getScore(School school)
+	public int getScore(School school, GameState gameState)
 	{
 		boolean isBlueTeam 		= blueTeam.contains(school);
 		boolean isYellowTeam 	= yellowTeam.contains(school);
@@ -257,12 +264,15 @@ public class Game implements Comparable<Game>
 			return 0;
 		}
 		
-		// This might be a performance bottleneck ...
-		ArrayList<GameState> gameStates = getGameStates();
-		if(gameStates.size() == 0)
-			return 0;
-		
-		GameState gameState = gameStates.get(gameStates.size() - 1);
+		if(gameState == null)
+		{
+			// This might be a performance bottleneck ...
+			ArrayList<GameState> gameStates = getGameStates();
+			if(gameStates.size() == 0)
+				return 0;
+			
+			gameState = gameStates.get(gameStates.size() - 1);
+		}
 		
 		// A 0 score is given if we give a misconduct penalty.
 		if(gameState.misconductPenalties.contains(school))
@@ -270,6 +280,12 @@ public class Game implements Comparable<Game>
 			return 0;
 		}
 		
+		// A 0 score is given if the school couldn't score any points.
+		if(gameState.didNotScore.contains(school))
+		{
+			return 0;
+		}
+
 		int score = 0;
 		if( isBlueTeam )
 		{
@@ -290,6 +306,12 @@ public class Game implements Comparable<Game>
 		}
 		
 		return score;
+	}
+	
+	// Score does not take into account misconduct penalties since they are global penalties.
+	public int getScore(School school)
+	{
+		return getScore(school, null);
 	}
 	
 	@Override
@@ -313,6 +335,7 @@ public class Game implements Comparable<Game>
 		return this.gameNumber - o.gameNumber;
 	}
 	
+	// This functions is slow (400ms) on laptop with 105 games.
 	public static ArrayList<Game> getGames(Essentials essentials)
 	{
 		ArrayList<Game> games = Lists.newArrayList(essentials.database.find(Game.class, "{ }"));

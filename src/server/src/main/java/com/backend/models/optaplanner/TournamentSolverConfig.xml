@@ -14,7 +14,8 @@
 
   <!-- Optimization algorithms configuration -->
   <termination>
-    <secondsSpentLimit>120</secondsSpentLimit>
+    <secondsSpentLimit>18000</secondsSpentLimit>
+	<bestScoreLimit>0hard/0medium/0soft</bestScoreLimit>
   </termination>
 
   <constructionHeuristic>

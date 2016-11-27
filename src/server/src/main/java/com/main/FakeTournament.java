@@ -4,27 +4,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
 
 import com.backend.models.Game;
 import com.backend.models.Playoff;
 import com.backend.models.PlayoffRound;
 import com.backend.models.School;
-import com.backend.models.SchoolDuration;
-import com.backend.models.SchoolInteger;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
-import com.backend.models.GameEvent.ActuatorStateChangedEvent;
-import com.backend.models.GameEvent.EndGameEvent;
-import com.backend.models.GameEvent.StartGameEvent;
-import com.backend.models.GameEvent.TargetHitEvent;
-import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameTypeEnum;
-import com.backend.models.enums.SideEnum;
-import com.backend.models.enums.TargetEnum;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.framework.models.Essentials;
+import com.main.yearly.FakeYearlyTournament;
+import com.main.yearly.TournamentYearlySetup;
 
 public class FakeTournament 
 {
@@ -38,31 +30,6 @@ public class FakeTournament
 		}
 	}
 	
-	public static void fillFakGameEvents(Game currentGame, Random random)
-	{
-		currentGame.addGameEvent(new StartGameEvent(DateTime.now()));
-		
-		int nbEvents = random.nextInt(30) + 20;
-		
-		for(int eventNo = 0; eventNo < nbEvents; eventNo++)
-		{
-			SideEnum side = SideEnum.values()[random.nextInt(SideEnum.values().length)];
-			TargetEnum target = TargetEnum.values()[random.nextInt(TargetEnum.values().length)];
-			
-			boolean isTargetHit = random.nextBoolean();
-			if(isTargetHit)
-			{
-				currentGame.addGameEvent(new TargetHitEvent(side, target, DateTime.now()));
-			}
-			else
-			{
-				ActuatorStateEnum actuator = ActuatorStateEnum.values()[random.nextInt(ActuatorStateEnum.values().length)];
-				currentGame.addGameEvent(new ActuatorStateChangedEvent(side, target, actuator, DateTime.now()));
-			}
-		}
-		
-		currentGame.addGameEvent(new EndGameEvent(DateTime.now()));
-	}
 	
 	public static void main(String[] args) 
 	{
@@ -72,18 +39,7 @@ public class FakeTournament
 			{
 				Tournament tournament = Tournament.getTournament(essentials);
 				
-				ArrayList<SchoolInteger> pickBallsArray = new ArrayList<SchoolInteger>();
-				ArrayList<SchoolDuration> twoActuatorsArray = new ArrayList<SchoolDuration>();
-				ArrayList<SchoolDuration> twoTargetsArray = new ArrayList<SchoolDuration>();
-				
-				SkillsCompetition skills = SkillsCompetition.get(essentials.database);
-				for(School school : tournament.schools)
-				{
-					pickBallsArray.add(new SchoolInteger(school, random.nextInt(20)));
-					twoActuatorsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
-					twoTargetsArray.add(new SchoolDuration(school, new Duration(random.nextInt(10*60*1000))));
-				}
-				SkillsCompetition skillsCompetition = new SkillsCompetition(skills._id, pickBallsArray, twoTargetsArray, twoActuatorsArray);
+				SkillsCompetition skillsCompetition = TournamentYearlySetup.setupSkillCompetition(SkillsCompetition.get(essentials.database)._id, tournament.schools, true);
 				essentials.database.save(skillsCompetition);
 				
 				ArrayList<Game> games = tournament.getHeatGames(GameTypeEnum.PLAYOFF_REPECHAGE);
@@ -96,11 +52,13 @@ public class FakeTournament
 					essentials.database.remove(Game.class, game._id);
 				}
 				
+				tournament.games.removeAll(games);
+				
 				for(int i = 0; i < tournament.games.size(); i++)
 				{
 					Game currentGame = tournament.games.get(i).getInitialState();
 					
-					fillFakGameEvents(currentGame, random);
+					FakeYearlyTournament.fillFakeGameEvents(currentGame, random);
 					
 					essentials.database.save(currentGame);
 				}
@@ -110,8 +68,14 @@ public class FakeTournament
 			// There's caching in the tournament which would be problematic if we use the same tournament as previously.
 			Tournament tournament = Tournament.getTournament(essentials);
 			ArrayList<School> excludedSchools = new ArrayList<School>();
-			
-			Playoff playoff = new Playoff(null, excludedSchools);
+			for(School school : tournament.schools)
+			{
+				if(school.name.equals("Bialik High School"))
+				{
+					excludedSchools.add(school);
+				}
+			}
+			Playoff playoff = new Playoff(null, excludedSchools, null);
 			
 			PlayoffRound repechageRound = processRound(essentials.database, playoff, tournament, null, random, GameTypeEnum.PLAYOFF_REPECHAGE);
 			essentials.database.save(repechageRound);
@@ -132,7 +96,7 @@ public class FakeTournament
 		tournament.games.addAll(playoffGames);
 		for(Game game : playoffGames)
 		{
-			FakeTournament.fillFakGameEvents(game, random);
+			FakeYearlyTournament.fillFakeGameEvents(game, random);
 			if(database != null)
 			{
 				database.save(game);

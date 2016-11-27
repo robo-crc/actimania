@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.Skill"%>
 <%@page import="com.framework.helpers.Helpers"%>
 <%@page import="org.joda.time.format.PeriodFormatterBuilder"%>
 <%@page import="org.joda.time.format.PeriodFormatter"%>
@@ -14,10 +15,9 @@
 
 <%
 @SuppressWarnings("unchecked")
-ArrayList<School> heatRanking = (ArrayList<School>)request.getAttribute("heatRanking");
-
-@SuppressWarnings("unchecked")
 ArrayList<School> cumulativeRanking = (ArrayList<School>)request.getAttribute("cumulativeRanking");
+@SuppressWarnings("unchecked")
+ArrayList<School> excludedSchools = (ArrayList<School>)request.getAttribute("excludedSchools");
 
 Tournament tournament = (Tournament)request.getAttribute("tournament");
 SkillsCompetition skillsCompetition = (SkillsCompetition)request.getAttribute("skillsCompetition");
@@ -25,8 +25,13 @@ SkillsCompetition skillsCompetition = (SkillsCompetition)request.getAttribute("s
 Locale currentLocale = request.getLocale();
 
 LocalizedString strRankingTitle = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Ranking", 
-		Locale.FRENCH, 	"Classement"
+		Locale.ENGLISH, "Preliminary heats ranking", 
+		Locale.FRENCH, 	"Classement de la ronde préliminaire"
+		), currentLocale);
+
+LocalizedString strRankingLong = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "PRELIMINARY HEATS RANKING", 
+		Locale.FRENCH, 	"CLASSEMENT DE LA RONDE PRÉLIMINAIRE"
 		), currentLocale);
 
 LocalizedString strPosition = new LocalizedString(ImmutableMap.of( 	
@@ -49,19 +54,9 @@ LocalizedString strCompetition = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"COMPÉTITION"
 		), currentLocale);
 
-LocalizedString strPickupRace = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "PICK-UP<br/>RACE", 
-		Locale.FRENCH, 	"RAMASSAGE<br/>DE VITESSE"
-		), currentLocale);
-
-LocalizedString strTwoTargetHits = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "TWO TARGETS<br/>HIT", 
-		Locale.FRENCH, 	"TOUCHER<br/>DEUX CIBLES"
-		), currentLocale);
-
-LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "TWO ACTUATOR<br/>CHANGED", 
-		Locale.FRENCH, 	"CHANGER DEUX<br/>ACTUATEURS"
+LocalizedString strNoShow = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "*No show for playoff", 
+		Locale.FRENCH, 	"*Ne se présentera pas aux éliminatoires"
 		), currentLocale);
 %>
 
@@ -81,39 +76,76 @@ LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of(
 </head>
 <body>
 <%@include file="header.jsp" %>
-<h1 class="grayColor"><%= strRanking %></h1>
+<h1 class="grayColor"><%= strRankingLong %></h1>
 <div class="bar grayBackgroundColor"></div>
 <table class="sortable rank">
 <tr>
-<th><%= strPosition %></th><th><%= strSchool %></th><th><%= strCompetition %></th><th><%= strPickupRace %></th><th><%= strTwoTargetHits %></th><th><%= strTwoActuatorChanged %></th>
+	<th><%= strPosition %></th>
+	<th><%= strSchool %></th>
+	<th><%= strScore %></th>
+	<th><%= strCompetition %></th>
+<%
+	for(Skill skill : skillsCompetition.skills)
+	{
+		out.write("<th>" + skill.displayNameUpperCompact + "</th>");
+	}
+%>
 </tr>
 <tr class="whiteBackgroundColor"/>
 <%
 
+int nbExcludedSchools = 0;
 for( int position = 0; position < cumulativeRanking.size(); position++ )
 {
 	School school = cumulativeRanking.get(position);
+	boolean isExcluded = excludedSchools.contains(school);
+	String excludedStyle = "";
+	String posToDisplay = Integer.toString(position + 1 - nbExcludedSchools);
+	
+	if(isExcluded)
+	{
+		excludedStyle = "excludedSchool";
+		posToDisplay = "* " + 0;
+	}
 %>
-	<tr>
-		<td class="rankAlignLeft"><%= position + 1 %></td>
+	<tr class="<%= excludedStyle %>">
+		<td class="rankAlignLeft" sorttable_customkey="<%= position %>"><%= posToDisplay %></td>
 		<td class="rankAlignLeft">
 			<div class="scheduleSchoolDiv clear">
 				<div class="scheduleSchoolInner">
 					<img class="scheduleSchoolLogo" src="images/schools/32x32/<%= school.getCompactName() %>.png" />
 				</div>
-				<a class="scheduleSchoolText" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
+				<a class="scheduleSchoolText <%= excludedStyle %>" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 			</div>
 		</td>
-		<td class="center"><%= tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY) %></td>
-		
-		<td class="center"><%= skillsCompetition.getPickballs(school).integer %></td>
-		<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td>
-		<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td>
-	</tr>
+		<td class="center" sorttable_customkey="<%= position %>"><%= String.format("%.2f", tournament.getPreliminaryScore(school, skillsCompetition) * 100) %> %</td>
+		<td class="center"><%=tournament.getRoundScore(school, GameTypeEnum.PRELIMINARY)%></td>
+
 <%
+	for(Skill skill : skillsCompetition.skills)
+	{
+		out.write("<td class=\"center\">" + skill.getSchoolScore(school).getDisplay() + "</td>");
+	}
+%>
+</tr>
+<%
+	if(isExcluded)
+	{
+		nbExcludedSchools++;
+	}
 }
 %>
 </table>
+
+<%
+if(nbExcludedSchools > 0)
+{
+%>
+	<br/>
+	<div class="excludedSchool center"><%= strNoShow %></div>
+<%
+}
+%>
 <%@include file="footer.jsp" %>
 </body>
 </html>

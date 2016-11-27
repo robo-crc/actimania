@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.backend.models.LiveRefresh;
+import com.framework.models.Essentials;
+
 // Display a game with all it's events
 // http://stackoverflow.com/questions/10878243/sse-and-servlet-3-0
 
@@ -80,13 +83,21 @@ public class GameRefreshController extends HttpServlet
 				}
 			}
 		};
-		service = Executors.newScheduledThreadPool(10);
+		service = Executors.newScheduledThreadPool(1);
 		service.scheduleAtFixedRate(notifier, 1, 1, TimeUnit.SECONDS);
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
+		try (Essentials essentials = Essentials.createEssentials(request, response)) 
+		{
+			if(!LiveRefresh.liveRefreshAvailable(essentials))
+			{
+				// Live refresh is not available for this person. Get out of this function.
+				return;
+			}
+		}
 		response.setContentType("text/event-stream");
 		response.setCharacterEncoding("UTF-8");
 		request.setAttribute("org.apache.catalina.ASYNC_SUPPORTED", true);

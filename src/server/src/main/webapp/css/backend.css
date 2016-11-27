@@ -1,0 +1,71 @@
+h2
+{
+	text-align: left;
+	color: rgb(60,60,59);
+}
+
+.headerAdmin
+{
+	color: red;
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+.positionLi
+{
+    padding-top: 4px !important;
+	
+    padding-bottom: 4px !important;
+}
+
+.sortableUI
+{
+}
+
+  .sortableUI, .sortable 
+  { 
+  	list-style-type: none; 
+  	margin: 0; 
+  	padding: 0; 
+  }
+  .sortableUI li, .sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; height: 40px; }
+  .sortableUI li {
+    height: 52.5px !important;
+    margin: 0;
+    padding-top: 1px !important;
+}
+  .sortable li { width : 175px; }
+  .sortableUI li span, .sortable li span { position: absolute; margin-left: -1.3em; }
+  
+.competition
+{
+	width: 65px;
+	text-align: center;
+}
+
+.competitionTable
+{
+	text-align: center;
+}
+
+
+.triangleStateEnum_BLUE
+{
+	background: lightblue;
+}
+
+.triangleStateEnum_YELLOW
+{
+	background-color: yellow;
+}
+
+
+.triangleStateEnum_EMPTY
+{
+	background: white;
+}
+
+.triangle
+{
+	float: left;
+}

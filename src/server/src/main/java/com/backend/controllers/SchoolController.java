@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
 
 import com.backend.models.School;
+import com.backend.models.enums.Division;
+import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.Helpers;
 import com.framework.models.Essentials;
 
@@ -44,7 +46,9 @@ public class SchoolController extends HttpServlet
 			
 			if(action.equals("create") || action.equals("edit"))
 			{
-				School school = new School(id, schoolName);
+				Division division 	= Division.valueOf(Helpers.getParameter("division", String.class, essentials));
+				
+				School school = new School(id, schoolName, division);
 				essentials.database.save(school);
 			}
 			else if(action.equals("delete"))

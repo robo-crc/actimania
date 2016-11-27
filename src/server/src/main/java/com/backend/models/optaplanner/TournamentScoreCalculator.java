@@ -23,8 +23,14 @@ public class TournamentScoreCalculator implements EasyScoreCalculator<Tournament
 		Map<School, Map<School, Integer>> schoolWith = new HashMap<School, Map<School, Integer>>();
 		Map<School, Map<School, Integer>> schoolAgainst = new HashMap<School, Map<School, Integer>>();
 		
+		Map<School, Integer> schoolsNotIdealCount = new HashMap<School, Integer>();
+		
 		initSchoolWithAgainst(schoolWith, tournament.schools);
 		initSchoolWithAgainst(schoolAgainst, tournament.schools);
+		for(School school : tournament.schools)
+		{
+			schoolsNotIdealCount.put(school, 0);
+		}
 		
 		// fakeGame is used as previous game when starting a round.
 		GameProcess fakeGame = new GameProcess(new ArrayList<School>(), new ArrayList<School>());
@@ -99,13 +105,12 @@ public class TournamentScoreCalculator implements EasyScoreCalculator<Tournament
 					
 					if(previous2Game.getSchools().contains(school))
 					{
-						mediumScore -= 1;
-						softScore -= 1;
+						hardScore -= 1;
 					}
 					
 					if(previous3Game.getSchools().contains(school))
 					{
-						softScore -= 1;
+						hardScore -= 1;
 					}
 				}
 				
@@ -153,18 +158,31 @@ public class TournamentScoreCalculator implements EasyScoreCalculator<Tournament
 				}
 				
 				// Let's give a small bonus when we play 2 games in a round.
-				if( USE_IDEAL_GAMES_SCORE && gamesPlayed != IDEAL_GAMES_PER_BLOCK )
+				if( gamesPlayed != IDEAL_GAMES_PER_BLOCK )
 				{
-					softScore -= 1;
+					if(USE_IDEAL_GAMES_SCORE)
+					{
+						hardScore -= 1;
+					}
+					else
+					{
+						schoolsNotIdealCount.put(school, schoolsNotIdealCount.get(school) + 1);
+					}
 				}
 			}
 			
 			blockStart = blockEnd;
-		}
+		}		
 
 		for(School school : tournament.schools)
 		{
 			hardScore -= Math.abs(Tournament.GAME_PER_SCHOOL - TournamentSolution.getGamesPlayed(gamesToIteration, school));
+		}
+		
+		for(int notIdealCount : schoolsNotIdealCount.values())
+		{
+			// When it's not possible to have the ideal count, we allow 2 blocks to be 1 game over or under to adjust.
+			hardScore -= Math.max(0, notIdealCount - 2);
 		}
 		
 		tournament.setGames(gamesToIteration);
@@ -180,10 +198,18 @@ public class TournamentScoreCalculator implements EasyScoreCalculator<Tournament
 		int gamesPerBlock 		= numberOfGames / Tournament.BLOCK_NUMBERS;
 		int blockWithExtraGames = numberOfGames % Tournament.BLOCK_NUMBERS;
 		
-		for(int currentBlockCount = 0; currentBlockCount <Tournament.BLOCK_NUMBERS; currentBlockCount++)
+		for(int currentBlockCount = 0; currentBlockCount < Tournament.BLOCK_NUMBERS; currentBlockCount++)
 		{
 			int gamesThisBlock = gamesPerBlock;
-			if(currentBlockCount < blockWithExtraGames)
+		
+			if(Tournament.BLOCK_NUMBERS == 4 && blockWithExtraGames == 2)
+			{
+				if(currentBlockCount == 0 || currentBlockCount == 3)
+				{
+					gamesThisBlock++;
+				}
+			}
+			else if(currentBlockCount < blockWithExtraGames)
 			{
 				gamesThisBlock++;
 			}
@@ -239,7 +265,7 @@ public class TournamentScoreCalculator implements EasyScoreCalculator<Tournament
 			
 			for( School yellowSchool : yellowTeam )
 			{
-				schoolAgainst.get(blueSchool).put(yellowSchool, schoolWith.get(blueSchool).get(yellowSchool) + 1);
+				schoolAgainst.get(blueSchool).put(yellowSchool, schoolAgainst.get(blueSchool).get(yellowSchool) + 1);
 			}
 		}
 		
@@ -255,7 +281,7 @@ public class TournamentScoreCalculator implements EasyScoreCalculator<Tournament
 			
 			for( School blueSchool : blueTeam )
 			{
-				schoolAgainst.get(yellowSchool).put(blueSchool, schoolWith.get(yellowSchool).get(blueSchool) + 1);
+				schoolAgainst.get(yellowSchool).put(blueSchool, schoolAgainst.get(yellowSchool).get(blueSchool) + 1);
 			}
 		}
 	}

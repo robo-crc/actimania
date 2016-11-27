@@ -8,8 +8,8 @@ import org.joda.time.Duration;
 
 import com.backend.models.Competition;
 import com.backend.models.Game;
+import com.backend.models.LiveRefresh;
 import com.backend.models.School;
-import com.backend.models.SchoolDuration;
 import com.backend.models.SchoolInteger;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
@@ -21,6 +21,7 @@ import com.backend.models.optaplanner.TournamentSolution;
 import com.backend.models.optaplanner.TournamentSolver;
 import com.framework.helpers.Database;
 import com.framework.models.Essentials;
+import com.main.yearly.TournamentYearlySetup;
 
 public class TournamentSetup 
 {
@@ -30,6 +31,34 @@ public class TournamentSetup
 		setupCompetitions(keyboard);
 		setupSchedule(keyboard);
 		keyboard.close();
+	}
+	
+	public static Competition setupCompetition(ArrayList<School> schools)
+	{
+		Competition competition = new Competition(
+				null,
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>(),
+				new ArrayList<SchoolInteger>());
+		
+		for(School school : schools)
+		{
+			competition.kiosk.add(new SchoolInteger(school, 0));
+			competition.programming.add(new SchoolInteger(school, 0));
+			competition.robotConstruction.add(new SchoolInteger(school, 0));
+			competition.robotDesign.add(new SchoolInteger(school, 0));
+			competition.sportsmanship.add(new SchoolInteger(school, 0));
+			competition.video.add(new SchoolInteger(school, 0));
+			competition.websiteDesign.add(new SchoolInteger(school, 0));
+			competition.websiteJournalism.add(new SchoolInteger(school, 0));
+		}
+		
+		return competition;
 	}
 	
 	public static void setupCompetitions(Scanner keyboard)
@@ -46,47 +75,17 @@ public class TournamentSetup
     	{
     		try(Essentials essentials = new Essentials(new Database(Database.DatabaseType.PRODUCTION), null, null, null, null))
     		{
-    			ArrayList<School> schools = School.getSchools(essentials);
-
-    			Competition competition = new Competition(
-    					null,
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>(),
-    					new ArrayList<School>());
-    			
-    			ArrayList<SchoolInteger> pickBalls = new ArrayList<SchoolInteger>();
-    			ArrayList<SchoolDuration> twoActuatorChanged = new ArrayList<SchoolDuration>();
-    			ArrayList<SchoolDuration> twoTargetHits = new ArrayList<SchoolDuration>();
-    			
-    			for(School school : schools)
-    			{
-    				pickBalls.add(new SchoolInteger(school, 0));
-    				// Initialize to 99 minutes.
-    				twoActuatorChanged.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
-    				twoTargetHits.add(new SchoolDuration(school, new Duration(59 * 60 * 1000)));
-
-    				competition.kiosk.add(school);
-    				competition.programming.add(school);
-    				competition.robotConstruction.add(school);
-    				competition.robotDesign.add(school);
-    				competition.sportsmanship.add(school);
-    				competition.video.add(school);
-    				competition.websiteDesign.add(school);
-    				competition.websiteJournalism.add(school);
-    			}
+    			essentials.database.dropCollection(LiveRefresh.class);
     			essentials.database.dropCollection(SkillsCompetition.class);
     			essentials.database.dropCollection(Competition.class);
+    		
+    			ArrayList<School> schools = School.getSchools(essentials);
+
+    			LiveRefresh liveRefresh = new LiveRefresh(null, true);
+    			SkillsCompetition skillsCompetition = TournamentYearlySetup.setupSkillCompetition(null, schools, false);
+    			Competition competition = setupCompetition(schools);
     			
-    			SkillsCompetition skillsCompetition = new SkillsCompetition(
-    					null,
-						pickBalls, 
-						twoTargetHits,
-						twoActuatorChanged);
+    			essentials.database.save(liveRefresh);
     			essentials.database.save(skillsCompetition);
     			essentials.database.save(competition);
     		}
@@ -105,11 +104,7 @@ public class TournamentSetup
 			}
 			
 			Duration TIME_BETWEEN_GAMES = new Duration(5 * 60 * 1000);
-			DateTime[] RoundStartHour = new DateTime[Tournament.BLOCK_NUMBERS];
-			RoundStartHour[0] = new DateTime(2015, 2, 12, 18, 30);
-			RoundStartHour[1] = new DateTime(2015, 2, 13, 9, 0);
-			RoundStartHour[2] = new DateTime(2015, 2, 13, 13, 30);
-			RoundStartHour[3] = new DateTime(2015, 2, 13, 18, 30);
+			DateTime[] RoundStartHour = TournamentYearlySetup.getRoundStartTime();
 			
 			TournamentSolution solvedTournament = TournamentSolver.solve(essentials, Tournament.GAME_PER_SCHOOL / (Tournament.SCHOOLS_PER_TEAM * 2), Tournament.SCHOOLS_PER_TEAM * 2, "com/backend/models/optaplanner/TournamentSolverConfig.xml");
 			if(solvedTournament != null)

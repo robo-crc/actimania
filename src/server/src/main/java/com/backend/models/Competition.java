@@ -3,35 +3,35 @@ package com.backend.models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.TreeMap;
 
 import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.framework.helpers.Database;
 import com.framework.models.Essentials;
 
 public class Competition 
 {
-	public final ObjectId 			_id;
-	public final ArrayList<School> 	kiosk;
-	public final ArrayList<School> 	programming;
-	public final ArrayList<School> 	robotConstruction;
-	public final ArrayList<School> 	robotDesign;
-	public final ArrayList<School> 	sportsmanship;
-	public final ArrayList<School> 	video;
-	public final ArrayList<School> 	websiteDesign;
-	public final ArrayList<School> 	websiteJournalism;
+	public final ObjectId 					_id;
+	public final ArrayList<SchoolInteger> 	kiosk;
+	public final ArrayList<SchoolInteger> 	programming;
+	public final ArrayList<SchoolInteger> 	robotConstruction;
+	public final ArrayList<SchoolInteger> 	robotDesign;
+	public final ArrayList<SchoolInteger> 	sportsmanship;
+	public final ArrayList<SchoolInteger> 	video;
+	public final ArrayList<SchoolInteger> 	websiteDesign;
+	public final ArrayList<SchoolInteger> 	websiteJournalism;
 	
 	public Competition(
-			@JsonProperty("_id") 				ObjectId			_competitionId,
-			@JsonProperty("kiosk") 				ArrayList<School> 	_kiosk,
-			@JsonProperty("programming") 		ArrayList<School> 	_programming,
-			@JsonProperty("robotConstruction") 	ArrayList<School> 	_robotConstruction,
-			@JsonProperty("robotDesign") 		ArrayList<School> 	_robotDesign,
-			@JsonProperty("sportsmanship") 		ArrayList<School> 	_sportsmanship,
-			@JsonProperty("video") 				ArrayList<School> 	_video,
-			@JsonProperty("websiteDesign") 		ArrayList<School> 	_websiteDesign,
-			@JsonProperty("websiteJournalism") 	ArrayList<School> 	_websiteJournalism
+			@JsonProperty("_id") 				ObjectId					_competitionId,
+			@JsonProperty("kiosk") 				ArrayList<SchoolInteger> 	_kiosk,
+			@JsonProperty("programming") 		ArrayList<SchoolInteger> 	_programming,
+			@JsonProperty("robotConstruction") 	ArrayList<SchoolInteger> 	_robotConstruction,
+			@JsonProperty("robotDesign") 		ArrayList<SchoolInteger> 	_robotDesign,
+			@JsonProperty("sportsmanship") 		ArrayList<SchoolInteger> 	_sportsmanship,
+			@JsonProperty("video") 				ArrayList<SchoolInteger> 	_video,
+			@JsonProperty("websiteDesign") 		ArrayList<SchoolInteger> 	_websiteDesign,
+			@JsonProperty("websiteJournalism") 	ArrayList<SchoolInteger> 	_websiteJournalism
 			)
 	{
 		_id 				= _competitionId;
@@ -45,55 +45,72 @@ public class Competition
 		websiteJournalism 	= _websiteJournalism;
 	}
 	
-	public static int getAspectPoints(ArrayList<School> aspect, School school)
+	private static int getAspectPoints(ArrayList<SchoolInteger> aspect, School school)
 	{
-		if(aspect.indexOf(school) == -1)
+		int indexOf = aspect.indexOf(school);
+		if(indexOf == -1)
 		{
 			return 0;
 		}
-		return aspect.size() - aspect.indexOf(school);
+		return aspect.size() - indexOf + 1;
 	}
 	
-	public int getSchoolScore(ArrayList<School> playoffRanking, School school)
+	public static int getSchoolInteger(ArrayList<SchoolInteger> schoolIntegerList, School school)
+	{
+		return schoolIntegerList.get(schoolIntegerList.indexOf(school)).integer;
+	}
+	
+	public static int getAspectPointInteger(ArrayList<SchoolInteger> schoolIntegerList, School school)
+	{
+		int intValue = schoolIntegerList.get(schoolIntegerList.indexOf(school)).integer;
+		if(intValue == 0)
+		{
+			return 0;
+		}
+		return schoolIntegerList.size() - intValue + 1;
+	}
+	
+	
+	public int getSchoolScore(ArrayList<SchoolInteger> playoffRanking, School school)
 	{
 		int score = getAspectPoints(playoffRanking, school) * 2;
-		score += getAspectPoints(robotDesign, school);
-		score += getAspectPoints(robotConstruction, school);
-		score += getAspectPoints(video, school);
-		score += getAspectPoints(websiteDesign, school);
-		score += getAspectPoints(websiteJournalism, school);
-		score += getAspectPoints(kiosk, school);
-		score += getAspectPoints(sportsmanship, school);
-		score += getAspectPoints(programming, school);
+		score += getAspectPointInteger(robotDesign, school);
+		score += getAspectPointInteger(robotConstruction, school);
+		score += getAspectPointInteger(video, school);
+		score += getAspectPointInteger(websiteDesign, school);
+		score += getAspectPointInteger(websiteJournalism, school);
+		score += getAspectPointInteger(kiosk, school);
+		score += getAspectPointInteger(sportsmanship, school);
+		score += getAspectPointInteger(programming, school);
 		
 		return score;
 	}
 	
-	public ArrayList<School> getCompetitionRanking(Essentials essentials)
+	public ArrayList<SchoolInteger> getCompetitionRanking(Essentials essentials)
 	{
-		ArrayList<School> schoolsRanking = new ArrayList<School>(School.getSchools(essentials));
+		ArrayList<SchoolInteger> schoolsRanking = new ArrayList<SchoolInteger>();
 		Tournament tournament = Tournament.getTournament(essentials);
 		
-		final TreeMap<School, Integer> schoolsScore = new TreeMap<School, Integer>();
-		
-		for(School school : schoolsRanking)
+		ArrayList<SchoolInteger> playoffRanking = tournament.getPlayoffRanking();
+	
+		for(School school : School.getSchools(essentials))
 		{
-			schoolsScore.put(school, getSchoolScore(tournament.getPlayoffRanking(), school));
+			schoolsRanking.add(new SchoolInteger(school, getSchoolScore(playoffRanking, school)));
 		}
 		
-		Collections.sort(schoolsRanking, new Comparator<School>() {
+		Collections.sort(schoolsRanking, new Comparator<SchoolInteger>() {
 	        @Override
-	        public int compare(School school1, School school2)
+	        public int compare(SchoolInteger school1, SchoolInteger school2)
 	        {
-	            return schoolsScore.get(school2) - schoolsScore.get(school1);
+	            return school2.integer - school1.integer;
 	        }
 	    });
 		
 		return schoolsRanking;
 	}
 	
-	public static Competition get(Essentials essentials)
+	public static Competition get(Database database)
 	{
-		return essentials.database.findOne(Competition.class, "{ }");
+		return database.findOne(Competition.class, "{ }");
 	}
 }

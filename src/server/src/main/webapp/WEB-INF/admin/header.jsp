@@ -4,48 +4,46 @@
 <%
 
 LocalizedString strOverall = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Overall", 
-		Locale.FRENCH, 	"Classement final"
+		Locale.ENGLISH, "OVERALL", 
+		Locale.FRENCH, 	"CLASSEMENT"
 		), request.getLocale());
-
 
 LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schedule", 
-		Locale.FRENCH, 	"Horaire"
+		Locale.ENGLISH, "SCHEDULE", 
+		Locale.FRENCH, 	"HORAIRE"
 		), request.getLocale());
-
-
-LocalizedString strSchools = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Schools", 
-		Locale.FRENCH, 	"Écoles"
-		), request.getLocale());
-
-
-LocalizedString strUsers = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Users", 
-		Locale.FRENCH, 	"Utilisateurs"
-		), request.getLocale());
-
 
 LocalizedString strCompetition = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Competition", 
-		Locale.FRENCH, 	"Compétition"
+		Locale.ENGLISH, "COMPETITION", 
+		Locale.FRENCH, 	"COMPÉTITION"
 		), request.getLocale());
 
 LocalizedString strPlayoff = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Playoff", 
-		Locale.FRENCH, 	"Éliminatoire"
+		Locale.ENGLISH, "PLAYOFF", 
+		Locale.FRENCH, 	"ÉLIMINATOIRE"
 		), request.getLocale());
 
-LocalizedString strLogout = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Logout", 
-		Locale.FRENCH, 	"Déconnexion"
+LocalizedString sdrAdmin = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "ADMINISTRATION", 
+		Locale.FRENCH, 	"ADMINISTRATION"
+		), request.getLocale());
+
+
+LocalizedString strLive = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "LIVE", 
+		Locale.FRENCH, 	"EN COURS"
 		), request.getLocale());
 %>
 
-<a href="../overall"><%= strOverall %></a><br/>
-<a href="competition"><%= strCompetition %></a><br/>
-<a href="playoff"><%= strPlayoff %></a><br/>
-<a href="../schedule"><%= strSchedule %></a><br/>
-<a href="users"><%= strUsers %></a><br/>
-<a href="../logout"><%= strLogout %></a>
+<div class="header">
+	<img class="headerLogo" src="../images/crc.jpg" />
+	
+	<h1 class="headerAdmin"><%= sdrAdmin %></h1>
+	
+	<div class="headerRubban grayBackgroundColor">
+		<a href="../game"><%= strLive %></a>
+		<a href="competition"><%= strCompetition %></a>
+		<a href="../schedule"><%= strSchedule %></a>
+		<a href="playoff"><%= strPlayoff %></a>
+	</div>
+</div>

@@ -15,12 +15,12 @@ public class Tournament
 	@JsonIgnore
 	public static final int PRELIMINARY_GAMES_SKIPPED_IN_SCORE = 2;
 	
-	public static final int GAME_PER_SCHOOL = 12;
-	public static final int SCHOOLS_PER_TEAM = 3;
+	public static final int GAME_PER_SCHOOL = 8;
+	public static final int SCHOOLS_PER_TEAM = 2;
 	public static final int BLOCK_NUMBERS = 4;
 	
-	public static final int NUMBER_OF_JUDGES = 20;
-	public static final int EACH_SCHOOL_JUDGED = 4;
+	public static final int NUMBER_OF_JUDGES = 31;
+	public static final int EACH_SCHOOL_JUDGED = 6;
 	
 	public final ArrayList<School> 	schools;
 	public final ArrayList<Game> 	games;
@@ -51,30 +51,25 @@ public class Tournament
 		return retGames;
 	}
 	
-	public ArrayList<School> getHeatRanking(final GameTypeEnum gameType)
+	public ArrayList<SchoolInteger> getRoundRanking(final GameTypeEnum gameType)
 	{
-		ArrayList<School> ranking = new ArrayList<School>(schools);
-		ArrayList<School> rankingCopy = new ArrayList<School>(schools);
+		ArrayList<SchoolInteger> ranking = new ArrayList<SchoolInteger>();
 
 		// Optimization : Let's just calculate the score once instead of each time we sort.
-		final TreeMap<School, Integer> score = new TreeMap<School, Integer>();
-		for(School school : rankingCopy)
+		for(School school : schools)
 		{
-			if(gameType != GameTypeEnum.PRELIMINARY && getGamesPlayed(games, school, gameType).size() == 0 )
+			if(gameType == GameTypeEnum.PRELIMINARY || getGamesPlayed(games, school, gameType).size() != 0)
 			{
-				ranking.remove(school);
-			}
-			else
-			{
-				score.put(school, getTotalScore(school, gameType));
+				SchoolInteger schoolScore = new SchoolInteger(school, getRoundScore(school, gameType));
+				ranking.add(schoolScore);
 			}
 		}
 
-		Collections.sort(ranking, new Comparator<School>() {
+		Collections.sort(ranking, new Comparator<SchoolInteger>() {
 	        @Override
-	        public int compare(School school1, School school2)
+	        public int compare(SchoolInteger school1, SchoolInteger school2)
 	        {
-	            return score.get(school2) - score.get(school1);
+	            return school2.integer - school1.integer;
 	        }
 	    });
 		
@@ -83,9 +78,9 @@ public class Tournament
 	
 	public double getPreliminaryHeatScore(School school)
 	{
-		ArrayList<School> ranking = getHeatRanking(GameTypeEnum.PRELIMINARY);
-		double bestScore = getTotalScore(ranking.get(0), GameTypeEnum.PRELIMINARY);
-		double currentScore = getTotalScore(school, GameTypeEnum.PRELIMINARY);
+		ArrayList<SchoolInteger> ranking = getRoundRanking(GameTypeEnum.PRELIMINARY);
+		double bestScore = ranking.get(0).integer;
+		double currentScore = getRoundScore(school, GameTypeEnum.PRELIMINARY);
 		
 		if(bestScore == 0)
 			return 0;
@@ -132,22 +127,14 @@ public class Tournament
 		return cumulativeSchools;
 	}
 	
-	public int getTotalScore(final School school, GameTypeEnum gameType)
+	public void resetTournamentCache()
 	{
-		if(gameType == GameTypeEnum.PRELIMINARY && preliminarySchoolScore.containsKey(school))
-		{
-			return preliminarySchoolScore.get(school);
-		}
-		
-		ArrayList<Game> gamesForType = new ArrayList<Game>();
-		
-		for(Game game : getGamesPlayed(games, school, gameType))
-		{
-			if( game.gameType == gameType )
-			{
-				gamesForType.add(game);
-			}
-		}
+		preliminarySchoolScore.clear();
+	}
+	
+	public int getRoundScoreNoCache(final School school, GameTypeEnum gameType)
+	{
+		ArrayList<Game> gamesForType = getGamesPlayed(games, school, gameType);
 		
 		// Optimization : Let's just calculate the score once instead of each time we sort.
 		final TreeMap<Game, Integer> score = new TreeMap<Game, Integer>();
@@ -184,16 +171,35 @@ public class Tournament
 	        }
 	    });
 		
+		int skipGames = 0;
+		if(gameType == GameTypeEnum.PRELIMINARY)
+		{
+			skipGames = PRELIMINARY_GAMES_SKIPPED_IN_SCORE;
+		}
+		
 		int points = 0;
-		for(int i = 0; i < gamesForType.size() - PRELIMINARY_GAMES_SKIPPED_IN_SCORE; i++)
+		for(int i = 0; i < gamesForType.size() - skipGames; i++)
 		{
 			points += gamesForType.get(i).getScore(school);
 		}
+		
+		return points;
+	}
+	
+	public int getRoundScore(final School school, GameTypeEnum gameType)
+	{
+		if(gameType == GameTypeEnum.PRELIMINARY && preliminarySchoolScore.containsKey(school))
+		{
+			return preliminarySchoolScore.get(school);
+		}
+		
+		int points = getRoundScoreNoCache(school, gameType);
 		
 		if(gameType == GameTypeEnum.PRELIMINARY)
 		{
 			preliminarySchoolScore.put(school, points);
 		}
+		
 		return points;
 	}
 	
@@ -228,25 +234,22 @@ public class Tournament
 		return null;
 	}
 	
-	public ArrayList<School> getPlayoffRanking()
+	public ArrayList<SchoolInteger> getPlayoffRanking()
 	{
-		ArrayList<School> schoolsFinal 		= getHeatRanking(GameTypeEnum.PLAYOFF_FINAL);
-		ArrayList<School> schoolsDemi 		= getHeatRanking(GameTypeEnum.PLAYOFF_DEMI);
-		ArrayList<School> schoolsQuarter 	= getHeatRanking(GameTypeEnum.PLAYOFF_QUARTER);
-		ArrayList<School> schoolsRepechage 	= getHeatRanking(GameTypeEnum.PLAYOFF_REPECHAGE);
+		ArrayList<SchoolInteger> schoolsFinal 		= getRoundRanking(GameTypeEnum.PLAYOFF_FINAL);
+		ArrayList<SchoolInteger> schoolsDemi 		= getRoundRanking(GameTypeEnum.PLAYOFF_DEMI);
+		ArrayList<SchoolInteger> schoolsQuarter 	= getRoundRanking(GameTypeEnum.PLAYOFF_QUARTER);
+		ArrayList<SchoolInteger> schoolsRepechage 	= getRoundRanking(GameTypeEnum.PLAYOFF_REPECHAGE);
 		
-		ArrayList<School> finalDemi = mergeSchoolList(schoolsFinal, schoolsDemi);
-		ArrayList<School> finalDemiSemi = mergeSchoolList(finalDemi, schoolsQuarter);
+		ArrayList<SchoolInteger> finalDemi = mergeSchoolList(schoolsFinal, schoolsDemi);
+		ArrayList<SchoolInteger> finalDemiSemi = mergeSchoolList(finalDemi, schoolsQuarter);
 		return mergeSchoolList(finalDemiSemi, schoolsRepechage);
 	}
 	
-	public static ArrayList<School> mergeSchoolList(ArrayList<School> keepAll, ArrayList<School> keepNot)
+	public static ArrayList<SchoolInteger> mergeSchoolList(ArrayList<SchoolInteger> keepAll, ArrayList<SchoolInteger> keepNot)
 	{
-		ArrayList<School> mergedList = new ArrayList<School>(keepNot);
-		for(School keepSchool : keepAll)
-		{
-			mergedList.remove(keepSchool);
-		}
+		ArrayList<SchoolInteger> mergedList = new ArrayList<SchoolInteger>(keepNot);
+		mergedList.removeAll(keepAll);
 		
 		for(int i = keepAll.size() - 1; i >= 0; i--)
 		{

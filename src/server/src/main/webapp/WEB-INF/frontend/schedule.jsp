@@ -88,7 +88,7 @@ LocalizedString strPlayoffQuarter = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strPlayoffDemi = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "DEMI FINAL", 
+		Locale.ENGLISH, "SEMI FINAL", 
 		Locale.FRENCH, 	"DEMI FINALE"
 		), currentLocale);
 

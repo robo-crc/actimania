@@ -14,8 +14,8 @@ LocalizedString strLiveGameFooter = new LocalizedString(ImmutableMap.of(
 		), request.getLocale());
 
 LocalizedString strRankingFooter = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Ranking", 
-		Locale.FRENCH, 	"Classement"
+		Locale.ENGLISH, "Preliminary heats ranking", 
+		Locale.FRENCH, 	"Classement de la ronde préliminaire"
 		), request.getLocale());
 
 LocalizedString strScheduleFooter = new LocalizedString(ImmutableMap.of( 	
@@ -49,13 +49,13 @@ LocalizedString strCRCFooter = new LocalizedString(ImmutableMap.of(
 		<a href="http://www.robo-crc.ca/"><%= strCRCFooter %></a><br/>
 	</div>
 	<div class="footerFred">
-		<a href="https://ca.linkedin.com/pub/fr%C3%A9d%C3%A9ric-joanis/3/b06/764">
+		<a href="https://ca.linkedin.com/pub/fr%C3%A9d%C3%A9ric-joanis/3/b06/764" target="_blank">
 			<img class="footerLinkedin" src="images/linkedinWhite.svg" />
 		</a>
-		<a href="https://github.com/fredericjoanis/actimania">
+		<a href="https://github.com/fredericjoanis/actimania" target="_blank">
 			<img class="footerGithub" src="images/githubWhite.png" />
 		</a>
 		<br/>
-		<a href="http://www.github.com/fredericjoanis/actimania"><%= strFred %></a>
+		<a href="https://ca.linkedin.com/pub/fr%C3%A9d%C3%A9ric-joanis/3/b06/764" target="_blank"><%= strFred %></a>
 	</div>
 </div>

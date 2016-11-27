@@ -1,6 +1,8 @@
 package com.backend.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,26 +14,24 @@ import org.apache.shiro.SecurityUtils;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
+import com.backend.controllers.yearly.GameYearlyController;
 import com.backend.models.Game;
 import com.backend.models.School;
-import com.backend.models.GameEvent.ActuatorStateChangedEvent;
+import com.backend.models.GameEvent.DidNotScoreEvent;
 import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
 import com.backend.models.GameEvent.StartGameEvent;
-import com.backend.models.GameEvent.TargetHitEvent;
 import com.backend.models.GameEvent.TeamPenaltyEvent;
-import com.backend.models.enums.ActuatorStateEnum;
 import com.backend.models.enums.GameEventEnum;
-import com.backend.models.enums.SideEnum;
-import com.backend.models.enums.TargetEnum;
 import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.ApplicationSpecific;
 import com.framework.helpers.Helpers;
 import com.framework.helpers.LocalizedString;
 import com.framework.models.Essentials;
+import com.google.common.collect.ImmutableMap;
 
 @WebServlet("/admin/game")
 public class GameController extends HttpServlet
@@ -99,6 +99,7 @@ public class GameController extends HttpServlet
 		String 	gameEvent	= Helpers.getParameter("gameEvent", String.class, essentials);
 		
 		boolean actionProcessed = true;
+		
 		if( gameEvent.equalsIgnoreCase(GameEventEnum.START_GAME.toString()) )
 		{
 			game = Game.setLiveGame(essentials.database, game._id, true);
@@ -108,21 +109,6 @@ public class GameController extends HttpServlet
 			addToGame(essentials, game, new StartGameEvent(DateTime.now()));
 			
 			Game.createEndGameCallback(gameId);
-		}
-		else if( gameEvent.equalsIgnoreCase(GameEventEnum.ACTUATOR_STATE_CHANGED.toString()) )
-		{
-			SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
-			TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
-			ActuatorStateEnum actuatorState = ActuatorStateEnum.valueOf(Helpers.getParameter("actuatorState", String.class, essentials));
-			
-			addToGame(essentials, game, new ActuatorStateChangedEvent(side, target, actuatorState, DateTime.now()));
-		}
-		else if( gameEvent.equalsIgnoreCase(GameEventEnum.TARGET_HIT.toString()) )
-		{
-			SideEnum side = SideEnum.valueOf(Helpers.getParameter("side", String.class, essentials));
-			TargetEnum target = TargetEnum.valueOf(Helpers.getParameter("target", String.class, essentials));
-			
-			addToGame(essentials, game, new TargetHitEvent(side, target, DateTime.now()));
 		}
 		else if( gameEvent.equalsIgnoreCase(GameEventEnum.SCHOOL_PENALTY.toString()) )
 		{
@@ -146,6 +132,13 @@ public class GameController extends HttpServlet
 			
 			addToGame(essentials, game, new MisconductPenaltyEvent(school, DateTime.now()));
 		}
+		else if( gameEvent.equalsIgnoreCase(GameEventEnum.DID_NOT_SCORE.toString()) )
+		{
+			ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
+			School school = essentials.database.findOne(School.class, schoolId);
+			
+			addToGame(essentials, game, new DidNotScoreEvent(school, DateTime.now()));
+		}
 		else if( gameEvent.equalsIgnoreCase(GameEventEnum.POINT_MODIFIER.toString()) )
 		{
 			TeamEnum team = TeamEnum.valueOf(Helpers.getParameter("team", String.class, essentials));
@@ -167,7 +160,15 @@ public class GameController extends HttpServlet
 		}
 		else
 		{
-			actionProcessed = false;
+			GameEvent gameEventYearly = GameYearlyController.processAction(essentials, gameEvent);
+			if(gameEventYearly != null)
+			{
+				addToGame(essentials, game, gameEventYearly);
+			}
+			else
+			{
+				actionProcessed = false;
+			}
 		}
 		
 		if(actionProcessed)
@@ -176,6 +177,38 @@ public class GameController extends HttpServlet
 		}
 		
 		return game;
+	}
+	
+	public static String outputAddAfterForView(Game game, Locale currentLocale) 
+	{
+		LocalizedString strAddAfter = new LocalizedString(ImmutableMap.of( 	
+				Locale.ENGLISH, "Add this new game event after game event #", 
+				Locale.FRENCH, 	"Ajouter ce nouvel événement après l'événement #"
+				), currentLocale);
+
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append(strAddAfter.toString());
+		strBuilder.append("<select name=\"insertAfter\">");
+
+		ArrayList<GameEvent> gameEvents = game.getGameEvents();
+		int iterationEnd = gameEvents.size();
+		if(gameEvents.size() > 0 && gameEvents.get(gameEvents.size() - 1).getGameEventEnum() == GameEventEnum.END_GAME)
+		{
+			iterationEnd--;
+		}
+		for(int i = 0; i < iterationEnd; i++)
+		{
+			String selected = "";
+			if(i == iterationEnd - 1)
+			{
+				selected = "selected=\"selected\"";
+			}
+			
+			strBuilder.append("<option " + selected + " value=\"" + String.valueOf(i + 1) + "\">" + String.valueOf(i + 1) + "</option>");
+		}
+		strBuilder.append("</select>");
+		
+		return strBuilder.toString();
 	}
 	
 	@Override
@@ -192,6 +225,7 @@ public class GameController extends HttpServlet
 	{
 		essentials.request.setAttribute("game", game);
 		essentials.request.setAttribute("errorList", essentials.errorList);
+		
 		essentials.request.getRequestDispatcher("/WEB-INF/admin/game.jsp").forward(essentials.request, essentials.response);
 	}
 }

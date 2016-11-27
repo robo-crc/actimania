@@ -74,19 +74,19 @@ public class PlayoffRound
 					switch(currentPass)
 					{
 					case 0:
-						games.add(createGame(startTime, currentGame, playoffGroup.groupNo, startGame, gameType, schools, 0, 3, /* vs */ 1, 2));
+						games.add(createGame(startTime, currentGame, playoffGroup.groupNo, startGame, gameType, schools, 0, 1, /* vs */ 2, 3));
 						break;
 					case 1:
-						games.add(createGame(startTime, currentGame, playoffGroup.groupNo, startGame, gameType, schools, 0, 4, /* vs */ 1, 3));
+						games.add(createGame(startTime, currentGame, playoffGroup.groupNo, startGame, gameType, schools, 4, 0, /* vs */ 1, 2));
 						break;
 					case 2:
-						games.add(createGame(startTime, currentGame, playoffGroup.groupNo, startGame, gameType, schools, 0, 2, /* vs */ 3, 4));
+						games.add(createGame(startTime, currentGame, playoffGroup.groupNo, startGame, gameType, schools, 3, 0, /* vs */ 1, 4));
 						break;
 					case 3:
-						games.add(createGame(startTime, currentGame, playoffGroup.groupNo, startGame, gameType, schools, 1, 4, /* vs */ 2, 3));
+						games.add(createGame(startTime, currentGame, playoffGroup.groupNo, startGame, gameType, schools, 2, 0, /* vs */ 4, 3));
 						break;
 					case 4:
-						games.add(createGame(startTime, currentGame, playoffGroup.groupNo, startGame, gameType, schools, 0, 1, /* vs */ 2, 4));
+						games.add(createGame(startTime, currentGame, playoffGroup.groupNo, startGame, gameType, schools, 1, 3, /* vs */ 2, 4));
 						break;
 					}
 				}
@@ -211,6 +211,18 @@ public class PlayoffRound
 		}
 		
 		return schools;
+	}
+	
+	public ArrayList<ArrayList<SchoolInteger>> getSchoolsRankedByGroup(Tournament tournament)
+	{
+		ArrayList<SchoolInteger> heatRanking = tournament.getRoundRanking(gameType);
+		ArrayList<ArrayList<SchoolInteger>> ret = new ArrayList<ArrayList<SchoolInteger>>();
+		for(PlayoffGroup group : playoffGroups)
+		{
+			ret.add(group.getSchoolsScore(heatRanking));
+		}
+		
+		return ret;
 	}
 	
 	public static PlayoffRound get(Database database, GameTypeEnum gameType)

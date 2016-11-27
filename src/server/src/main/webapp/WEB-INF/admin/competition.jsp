@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.Skill"%>
 <%@page import="java.io.IOException"%>
 <%@page import="com.framework.helpers.Helpers"%>
 <%@page import="com.backend.models.SkillsCompetition"%>
@@ -10,7 +11,6 @@
 <%@page import="com.framework.helpers.LocalizedString"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <% 
 @SuppressWarnings("unchecked")
@@ -20,6 +20,7 @@ ArrayList<LocalizedString> errorList = (ArrayList<LocalizedString>) request.getA
 ArrayList<School> schools = (ArrayList<School>) request.getAttribute("schools");
 Competition competition = (Competition) request.getAttribute("competition");
 SkillsCompetition skillsCompetition = (SkillsCompetition) request.getAttribute("skillsCompetition");
+boolean isLivreRefreshOn = ((Boolean) request.getAttribute("isLivreRefreshOn"));
 
 Locale currentLocale = request.getLocale();
 
@@ -46,21 +47,6 @@ LocalizedString strCompetitionTitle = new LocalizedString(ImmutableMap.of(
 LocalizedString strSkillsCompetition = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Skills competition", 
 		Locale.FRENCH, 	"Compétitions d'agilités"
-		), currentLocale);
-
-LocalizedString strPickupRace = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Pick-up race", 
-		Locale.FRENCH, 	"Ramassage de vitesse"
-		), currentLocale);
-
-LocalizedString strTwoTargetHits = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Two target hits", 
-		Locale.FRENCH, 	"Toucher deux cibles"
-		), currentLocale);
-
-LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Two actuator changed", 
-		Locale.FRENCH, 	"Changer deux actuateurs"
 		), currentLocale);
 
 LocalizedString strRank = new LocalizedString(ImmutableMap.of( 	
@@ -107,54 +93,33 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "Website journalism", 
 		Locale.FRENCH, 	"Journalisme du site web"
 		), currentLocale);
+
+LocalizedString strLiveRefreshOn = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Turn on live refresh", 
+		Locale.FRENCH, 	"Activer le rafraichissement des pages automatiques"
+		), currentLocale);
+
+LocalizedString strLiveRefreshOff = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Turn off live refresh", 
+		Locale.FRENCH, 	"Désactiver le rafraichissement des pages automatiques"
+		), currentLocale);
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><%= strCompetitionTitle %></title>
-<link rel="shortcut icon" href="images/favicon.ico" />
-
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-<script src="../jquery/jquery.js"></script>
-<script src="../jquery/jquery.inputmask.min.js"></script>
-<script src="../jquery/jquery.numeric.min.js"></script>
-<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-
-<style>
-  .sortableUI, .sortable { list-style-type: none; margin: 0; padding: 0; }
-  .sortableUI li, .sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; height: 40px; }
-  .sortableUI li { margin-bottom: 5px; margin-top: 4px; }
-  .sortable li { width : 175px; }
-  .sortableUI li span, .sortable li span { position: absolute; margin-left: -1.3em; }
-</style>
-
+<%@include file="head.jsp" %>
+<script src="../jquery/iframeresizer/js/iframeResizer.min.js"></script>
 <script>
 $(document).ready(function(){
-	$( ".spinner" ).spinner();
-	$( ".spinner" ).numeric();
+	$('.overallFrame').iFrameResize({});
 	
-	$(".chrono").inputmask("9:99.99");
+	$( '.spinner' ).spinner();
+	$( '.spinner' ).numeric();
+	
+	$( '.chrono' ).inputmask("99:99.99");
 });
-
-$(function() {
-    $( ".sortable" ).sortable({
-	    		update: function (event, ui) 
-	    		{
-	    	        var data = $(this).sortable('serialize');
-	    	        data += "&arrayId=" + this.id;
-	    	        console.log(data);
-	    	        // POST to server using $.post or $.ajax
-	    	        $.ajax(
-	    	        {
-	    	            data: data,
-	    	            type: 'POST',
-	    	            url: 'competitionUpdate'
-	    	        });
-	    	    }});
-    $( ".sortable" ).disableSelection();
-  });
 </script>
 </head>
 <body>
@@ -167,125 +132,99 @@ $(function() {
 		<%
 	}
 	%>
-	<h1><%= strSkillsCompetition %></h1>
+
+	<h1 class="grayColor"><%= strSkillsCompetition %></h1>
+	<div class="bar grayBackgroundColor"></div>
+
+	<div class="center">
+		<form method="post">
+			<input type="hidden" name="action" value="toggleLiveRefresh" />
+			
+			<% 
+			LocalizedString strToggle = strLiveRefreshOn;
+			if(isLivreRefreshOn) 
+			{
+				strToggle = strLiveRefreshOff;
+			}
+			%>
+			<input type="submit" value="<%= strToggle %>" />
+		</form>
+	</div>
+	<br/><br/><br/>
+		
 	<form method="post">
 		<input type="hidden" name="action" value="skillsCompetition" />
 		
 		<table>
-		<tr><td><%= strSchool %></td><td><%= strPickupRace %></td><td><%= strTwoTargetHits %></td><td><%= strTwoActuatorChanged %></td></tr>
-		
+		<tr><th><%= strSchool %></th>
 		<%
+		for(Skill skill : skillsCompetition.skills)
+		{
+			out.write("<th>" + skill.displayNameUpperCompact + "</th>");
+		}
+		
 		for(School school : schools)
 		{
 		%>
 			<tr>
 				<td><%= school.name %></td>
-				<td><input class="spinner" type="text" name="pickballs_<%= school._id %>" value="<%= skillsCompetition.getPickballs(school).integer %>" /></td>
-				<td><input type="text" class="chrono" name="twoTargets_<%= school._id %>" value="<%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %>" /></td>
-				<td><input type="text" class="chrono" name="twoActuators_<%= school._id %>" value="<%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %>" /></td>
+				
+				<%
+				for(Skill skill : skillsCompetition.skills)
+				{
+					out.write("<td><input type=\"text\" class=\"chrono\" name=\"" + skill.shortName + "_" + school._id + "\" value=\"" + skill.getSchoolScore(school).getDisplayLong() + "\"/></td>");
+				}
+				%>
 			</tr>
 			<%
 		}
 		%>
 		</table>
 		
-		<input type="submit" value="<%= strSave %>" />
+		<div class="center">
+			<input type="submit" value="<%= strSave %>" />
+		</div>
 	</form>
 	
 	<h1><%= strCompetition %></h1>
+		
+	<form method="post">
+		<input type="hidden" name="action" value="overallCompetition" />
+		<table class="competitionTable">
+			<tr>
+				<th><%= strRank %></th>
+				<th><%= strKiosk %></th>
+				<th><%= strProgramming %></th>
+				<th><%= strRobotConstruction %></th>
+				<th><%= strRobotDesign %></th>
+				<th><%= strSportsmanship %></th>
+				<th><%= strVideo %></th>
+				<th><%= strWebsiteDesign %></th>
+				<th><%= strWebsiteJournalism %></th>
+			</tr>
+			<% for(School school : schools)
+			{ 
+			%>
+			<tr>
+				<td><%= school.name %></td>
+				<td><input class="spinner competition" type="text" name="kiosk_<%= school._id %>" 				value="<%= Competition.getSchoolInteger(competition.kiosk, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="programming_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.programming, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="robotConstruction_<%= school._id %>" 	value="<%= Competition.getSchoolInteger(competition.robotConstruction, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="robotDesign_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.robotDesign, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="sportsmanship_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.sportsmanship, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="video_<%= school._id %>" 				value="<%= Competition.getSchoolInteger(competition.video, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="websiteDesign_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.websiteDesign, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="websiteJournalism_<%= school._id %>" 	value="<%= Competition.getSchoolInteger(competition.websiteJournalism, school) %>" /></td>
+			</tr>
+			<%
+			}
+			%>
+		</table>
+		<div class="center">
+			<input type="submit" value="<%= strSave %>" />
+		</div>
+	</form>
 	
-	<%!
-	public void outputListSchools(ArrayList<School> schools, JspWriter out) throws IOException
-	{
-		for(School school : schools)
-		{
-			out.write("<li id=\"id_" + school._id.toString() + "\"class=\"ui-state-default\"><span class=\"ui-icon ui-icon-arrowthick-2-n-s\"></span>" + school.name + "</li>\n");
-		}
-	}
-	%>
-	
-	<table>
-		<tr>
-			<td><%= strRank %></td>
-			<td><%= strKiosk %></td>
-			<td><%= strProgramming %></td>
-			<td><%= strRobotConstruction %></td>
-			<td><%= strRobotDesign %></td>
-		</tr>
-		<tr>
-			<td>
-				<ul id="position" class="sortableUI">
-				<%
-				for(int i = 1; i <= schools.size(); i++)
-				{
-					out.write("<li>" + i + "</li>\n");
-				}
-				%>
-				</ul>
-			</td>
-			<td>
-				<ul id="kiosk" class="sortable">
-					<% outputListSchools(competition.kiosk, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="programming" class="sortable">
-					<% outputListSchools(competition.programming, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="robotConstruction" class="sortable">
-					<% outputListSchools(competition.robotConstruction, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="robotDesign" class="sortable">
-					<% outputListSchools(competition.robotDesign, out); %>
-				</ul>
-			</td>
-		</tr>
-	</table>
-	
-		<table>
-		<tr>
-			<td><%= strRank %></td>
-			<td><%= strSportsmanship %></td>
-			<td><%= strVideo %></td>
-			<td><%= strWebsiteDesign %></td>
-			<td><%= strWebsiteJournalism %></td>
-		</tr>
-		<tr>
-			<td>
-				<ul id="position" class="sortableUI">
-				<%
-				for(int i = 1; i <= schools.size(); i++)
-				{
-					out.write("<li>" + i + "</li>\n");
-				}
-				%>
-				</ul>
-			</td>
-			<td>
-				<ul id="sportsmanship" class="sortable">
-					<% outputListSchools(competition.sportsmanship, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="video" class="sortable">
-					<% outputListSchools(competition.video, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="websiteDesign" class="sortable">
-					<% outputListSchools(competition.websiteDesign, out); %>
-				</ul>
-			</td>
-			<td>
-				<ul id="websiteJournalism" class="sortable">
-					<% outputListSchools(competition.websiteJournalism, out); %>
-				</ul>
-			</td>
-		</tr>
-	</table>
+	<iframe src="overall" class="overallFrame" scrolling="no" frameborder="0" width="2000px"></iframe>
 </body>
 </html>

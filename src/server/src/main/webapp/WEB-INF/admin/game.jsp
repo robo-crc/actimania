@@ -1,10 +1,13 @@
+<%@page import="com.backend.views.yearly.GameYearlyView"%>
+<%@page import="com.backend.controllers.GameController"%>
+<%@page import="com.backend.controllers.yearly.GameYearlyController"%>
+<%@page import="com.backend.models.yearly.GameStateYearly"%>
+<%@page import="com.backend.models.yearly.Hole"%>
 <%@page import="com.backend.models.GameEvent.GameEvent"%>
 <%@page import="com.backend.models.enums.TeamEnum"%>
-<%@page import="com.backend.models.enums.ActuatorStateEnum"%>
 <%@page import="java.io.IOException"%>
 <%@page import="org.joda.time.DateTime"%>
 <%@page import="com.backend.models.GameState"%>
-<%@page import="com.backend.models.enums.TargetEnum"%>
 <%@page import="com.backend.models.enums.SideEnum"%>
 <%@page import="com.backend.models.enums.GameEventEnum"%>
 <%@page import="com.backend.models.Game"%>
@@ -16,7 +19,6 @@
 <%@page import="com.framework.helpers.LocalizedString"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
 <% 
 @SuppressWarnings("unchecked")
@@ -41,11 +43,6 @@ LocalizedString strDelete = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Supprimer"
 		), currentLocale);
 
-LocalizedString strGameAdmin = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Game administration", 
-		Locale.FRENCH, 	"Administration des parties"
-		), currentLocale);
-
 LocalizedString strStartGame = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Start Game", 
 		Locale.FRENCH, 	"Démarrer la partie"
@@ -54,11 +51,6 @@ LocalizedString strStartGame = new LocalizedString(ImmutableMap.of(
 LocalizedString strRestartGame = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Re-Start Game", 
 		Locale.FRENCH, 	"Redémarrer la partie"
-		), currentLocale);
-
-LocalizedString strTargetHit = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Target hit", 
-		Locale.FRENCH, 	"Démarrer la partie"
 		), currentLocale);
 
 LocalizedString strSubmitConfirm = new LocalizedString(ImmutableMap.of( 	
@@ -112,18 +104,8 @@ LocalizedString strGameEvents = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strActuatorState = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Actuator state", 
+		Locale.ENGLISH, "Switch state", 
 		Locale.FRENCH, 	"État de l'actuateur"
-		), currentLocale);
-
-LocalizedString strActuatorStateChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Actuator state change", 
-		Locale.FRENCH, 	"Changement de l'état de l'actuateur"
-		), currentLocale);
-
-LocalizedString strAddAfter = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Add this new game event after game event #", 
-		Locale.FRENCH, 	"Ajouter ce nouvel événement après l'événement #"
 		), currentLocale);
 
 LocalizedString strSchoolPenalty = new LocalizedString(ImmutableMap.of( 	
@@ -139,6 +121,11 @@ LocalizedString strTeamPenalty = new LocalizedString(ImmutableMap.of(
 LocalizedString strMisconductPenalty = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Misconduct Penalty", 
 		Locale.FRENCH, 	"Pénalité de mauvaise conduite"
+		), currentLocale);
+
+LocalizedString strDidNotScore = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "School did not score", 
+		Locale.FRENCH, 	"École qui n'a pas compter de points"
 		), currentLocale);
 
 LocalizedString strEndGame = new LocalizedString(ImmutableMap.of( 	
@@ -171,89 +158,26 @@ LocalizedString strCommentFrench = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Commentaire en français"
 		), currentLocale);
 
+
+LocalizedString strGameAdmin = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Admin of game", 
+		Locale.FRENCH, 	"Administration de la partie"
+		), currentLocale);
+
+String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameNumber);
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="shortcut icon" href="images/favicon.ico" />
-<title><%= strGameAdmin %></title>
-<link rel="icon" type="image/png" href="favicon.png">
-
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-<script src="../jquery/jquery.js"></script>
-<script src="../jquery/jquery.numeric.min.js"></script>
-<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-
-<script>
-$(document).ready(function(){
-	$( ".spinner" ).spinner();
-	$( ".spinner" ).numeric();
-});
-
-</script>
-
+<title><%= strH1 %></title>
+<%@include file="head.jsp" %>
 </head>
 <body>
 <%@include file="header.jsp" %>
-<br/>
-<%!
-public void outputAddAfter(Game game, LocalizedString strAddAfter, JspWriter out) throws IOException
-{
-	out.write(strAddAfter.toString());
-	out.write("<select name=\"insertAfter\">");
 
-	ArrayList<GameEvent> gameEvents = game.getGameEvents();
-	int iterationEnd = gameEvents.size();
-	if(gameEvents.size() > 0 && gameEvents.get(gameEvents.size() - 1).getGameEventEnum() == GameEventEnum.END_GAME)
-	{
-		iterationEnd--;
-	}
-	for(int i = 0; i < iterationEnd; i++)
-	{
-		String selected = "";
-		if(i == iterationEnd - 1)
-		{
-			selected = "selected=\"selected\"";
-		}
-		
-		out.write("<option " + selected + " value=\"" + String.valueOf(i + 1) + "\">" + String.valueOf(i + 1) + "</option>");
-	}
-	out.write("</select>");
-}
-
-public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOException
-{
-	LocalizedString strSide = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "Side ", 
-			Locale.FRENCH, 	"Côté du terrain "
-			), currentLocale);
-	
-	LocalizedString strTarget = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, " Target ", 
-			Locale.FRENCH, 	" Cible "
-			), currentLocale);
-	
-	out.write(strSide.toString());
-	out.write("<select name=\"side\">");
-	
- 	for(SideEnum side : SideEnum.values())
-	{
-		out.write("<option value=\"" + side.toString() + "\">" + side.toString().toLowerCase() + "</option>");
- 	}
- 	out.write("</select>");
- 	out.write("<br/>");
- 	out.write(strTarget.toString());
- 	
-	out.write("<select name=\"target\">");
- 	for(TargetEnum target : TargetEnum.values())
-	{
-		out.write("<option value=\"" + target.toString() + "\">" + target.toString().toLowerCase() + "</option>");
- 	}
-	out.write("</select>");
-}
-%>
+<h1 class="grayColor"><%= strH1 %></h1>
+<div class="bar grayBackgroundColor"></div>
 
 	<%
 	for(LocalizedString error : errorList)
@@ -296,36 +220,22 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 	%>
 	<br/>
 	
-	<form method="post">
-		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.TARGET_HIT.toString() %>" />
-		<input type="hidden" name="id" value="<%= game._id %>" />
-		<h2><%= strTargetHit %></h2>
-
-		<% outputSideTarget(currentLocale, out); %>
-		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
-		<br/>
-		<input type="submit" value="<%= strAdd %>" />
-	</form>
-	
-	<br/>
+	<% out.write(GameYearlyView.getHtmlForGame(game, currentLocale)); %>
 	
 	<form method="post">
-		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.ACTUATOR_STATE_CHANGED.toString() %>" />
+		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.DID_NOT_SCORE.toString() %>" />
 		<input type="hidden" name="id" value="<%= game._id %>" />
-		<h2><%= strActuatorStateChanged %></h2>
+		<h2><%= strDidNotScore %></h2>
 		
-		<% outputSideTarget(currentLocale, out); %>
-		<br/>
-		<%= strActuatorState %>
-		<select name="actuatorState">
-	<% 	for(ActuatorStateEnum actuatorState : ActuatorStateEnum.values())
+		<%= strSchool %>
+		<select name="school">
+	<% 	for(School school : game.getSchools())
 		{ %>
-			<option value="<%= actuatorState.toString() %>"> <%= actuatorState.toString().toLowerCase() %></option>
+			<option value="<%= school._id %>"> <%= school.name %></option>
 	 <% } %>
 		</select>
 		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
+		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
@@ -345,7 +255,7 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 		<br/>
 		<%= strPointDeduction %><input class="spinner" name="points" value="0" />
 		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
+		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
@@ -364,7 +274,7 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 		<br/>
 		<%= strPointDeduction %><input class="spinner" name="points" value="0" />
 		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
+		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
@@ -385,7 +295,7 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 		<%= strCommentEnglish %><input type="text" name="commentEn" /><br/>
 		<%= strCommentFrench %><input type="text" name="commentFr" />
 		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
+		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
@@ -403,7 +313,7 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 	 <% } %>
 		</select>
 		<br/>
-		<% outputAddAfter(game, strAddAfter, out); %>
+		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
@@ -427,7 +337,7 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 	<h1><%= strGameEvents %></h1>
 	
 	<table>
-		<tr><td>#</td><td><%= strTimeInGame %></td><td><%= strBlueScore %></td><td><%= strYellowScore %></td><td><%= strEvent %></td><td><%= strAction %></td></tr>
+		<tr><th>#</th><th><%= strTimeInGame %></th><th><%= strBlueScore %></th><th><%= strYellowScore %></th><th><%= strEvent %></th><th><%= strAction %></th></tr>
 	<%
 		int i = 0;
 		for(GameState state : game.getGameStates())
@@ -460,5 +370,10 @@ public void outputSideTarget(Locale currentLocale, JspWriter out) throws IOExcep
 		}
 		%>
 	</table>
+
+<script>
+<% out.write(GameYearlyView.getScripts()); %>
+</script>
+<%@include file="footer.jsp" %>
 </body>
 </html>

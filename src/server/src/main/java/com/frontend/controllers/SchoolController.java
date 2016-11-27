@@ -1,6 +1,7 @@
 package com.frontend.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.bson.types.ObjectId;
 
+import com.backend.models.Playoff;
 import com.backend.models.School;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
@@ -33,12 +35,30 @@ public class SchoolController extends HttpServlet
 			School school = essentials.database.findOne(School.class, Helpers.getParameter("schoolId", ObjectId.class, essentials));
 			
 			Tournament tournament = Tournament.getTournament(essentials);
+			SkillsCompetition skillsCompetition = SkillsCompetition.get(essentials.database);
 			
+			ArrayList<School> preliminaryRanking = tournament.getPreliminaryRanking(skillsCompetition);
+			ArrayList<School> excludedSchools = Playoff.get(essentials.database).excludedSchools;
+			
+			ArrayList<School> preliminaryRankingForPlayoff = Playoff.getRemainingSchools(preliminaryRanking, excludedSchools);
+			
+			boolean isExcluded = excludedSchools.contains(school);
+			
+			int posToDisplay = 0;
+			
+			if(!isExcluded)
+			{
+				posToDisplay = preliminaryRankingForPlayoff.indexOf(school) + 1;
+			}
+
 			essentials.request.setAttribute("tournament", tournament);
 			essentials.request.setAttribute("school", school);
-			essentials.request.setAttribute("rank", tournament.getHeatRanking(GameTypeEnum.PRELIMINARY).indexOf(school) + 1);
-			essentials.request.setAttribute("score", tournament.getTotalScore(school, GameTypeEnum.PRELIMINARY));
-			essentials.request.setAttribute("skillsCompetition", SkillsCompetition.get(essentials.database));
+			essentials.request.setAttribute("rank", tournament.getRoundRanking(GameTypeEnum.PRELIMINARY).indexOf(school) + 1);
+			essentials.request.setAttribute("score", tournament.getRoundScore(school, GameTypeEnum.PRELIMINARY));
+			essentials.request.setAttribute("skillsCompetition", skillsCompetition);
+			essentials.request.setAttribute("posToDisplay", posToDisplay);
+			essentials.request.setAttribute("numberOfSchools", preliminaryRankingForPlayoff.size());
+			essentials.request.setAttribute("isExcluded", isExcluded);
 			essentials.request.getRequestDispatcher("/WEB-INF/frontend/school.jsp").forward(essentials.request, essentials.response);
 		}
 	}

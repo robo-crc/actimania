@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
+import com.backend.controllers.yearly.PlayoffYearlyController;
 import com.backend.models.Game;
 import com.backend.models.Playoff;
 import com.backend.models.PlayoffRound;
@@ -55,9 +56,6 @@ public class PlayoffController extends HttpServlet
 				{
 					essentials.database.remove(Game.class, game._id);
 				}
-				
-				essentials.response.sendRedirect("../schedule");
-				return;
 			}
 			else if(action.equals("generateNextRound"))
 			{
@@ -67,24 +65,7 @@ public class PlayoffController extends HttpServlet
 				
 				PlayoffRound playoffRound = playoff.generatePlayoffRound(essentials.database, tournament, currentRound, nextGameType);
 				
-				DateTime startTime = null;
-				switch(nextGameType)
-				{
-				case PLAYOFF_REPECHAGE:
-					startTime = new DateTime(2015, 2, 14, 8, 30);
-					break;
-				case PLAYOFF_QUARTER:
-					startTime = new DateTime(2015, 2, 14, 12, 20);
-					break;
-				case PLAYOFF_DEMI:
-					startTime = new DateTime(2015, 2, 14, 14, 40);
-					break;
-				case PLAYOFF_FINAL:
-					startTime = new DateTime(2015, 2, 14, 16, 30);
-					break;
-				default:
-					break;
-				}
+				DateTime startTime = PlayoffYearlyController.GetPlayoffRoundStartTime(nextGameType);
 				
 				ArrayList<Game> playoffGames = playoffRound.getGames(startTime, tournament.games.size() + 1);
 				essentials.database.save(playoffRound);
@@ -93,10 +74,6 @@ public class PlayoffController extends HttpServlet
 				{
 					essentials.database.save(game);
 				}
-				
-				// Show the newly generated schedule
-				essentials.response.sendRedirect("../schedule");
-				return;
 			}
 			else if(action.equals("addExcludedSchool"))
 			{
@@ -128,33 +105,33 @@ public class PlayoffController extends HttpServlet
 		GameTypeEnum nextRound = GameTypeEnum.NONE;
 		Boolean isCurrentRoundStarted = false;
 		
-		if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_REPECHAGE).size() == 0)
+		if(tournament.getRoundRanking(GameTypeEnum.PLAYOFF_REPECHAGE).size() == 0)
 		{
 			currentRound = GameTypeEnum.NONE;
 			nextRound = GameTypeEnum.PLAYOFF_REPECHAGE;
 		}
-		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_QUARTER).size() == 0)
+		else if(tournament.getRoundRanking(GameTypeEnum.PLAYOFF_QUARTER).size() == 0)
 		{
 			currentRound = GameTypeEnum.PLAYOFF_REPECHAGE;
 			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_REPECHAGE).get(0).getGameStates().size() == 0;
 			nextRound = GameTypeEnum.PLAYOFF_QUARTER;
 		}
-		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_DEMI).size() == 0)
+		else if(tournament.getRoundRanking(GameTypeEnum.PLAYOFF_DEMI).size() == 0)
 		{
 			currentRound = GameTypeEnum.PLAYOFF_QUARTER;
-			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_QUARTER).get(0).getGameStates().size() == 0;
+			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_QUARTER).get(0).getGameStates().size() > 0;
 			nextRound = GameTypeEnum.PLAYOFF_DEMI;
 		}
-		else if(tournament.getHeatRanking(GameTypeEnum.PLAYOFF_FINAL).size() == 0)
+		else if(tournament.getRoundRanking(GameTypeEnum.PLAYOFF_FINAL).size() == 0)
 		{
 			currentRound = GameTypeEnum.PLAYOFF_DEMI;
-			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_DEMI).get(0).getGameStates().size() == 0;
+			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_DEMI).get(0).getGameStates().size() > 0;
 			nextRound = GameTypeEnum.PLAYOFF_FINAL;
 		}
 		else
 		{
 			currentRound = GameTypeEnum.PLAYOFF_FINAL;
-			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_FINAL).get(0).getGameStates().size() == 0;
+			isCurrentRoundStarted = tournament.getHeatGames(GameTypeEnum.PLAYOFF_FINAL).get(0).getGameStates().size() > 0;
 			nextRound = GameTypeEnum.NONE;
 		}
 		

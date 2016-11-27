@@ -8,9 +8,14 @@ LocalizedString strLiveGame = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"PARTIE EN COURS"
 		), request.getLocale());
 
-LocalizedString strRanking = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "RANKING", 
-		Locale.FRENCH, 	"CLASSEMENT"
+LocalizedString strPreliminary = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "PRELIMINARY", 
+		Locale.FRENCH, 	"PRÉLIMINAIRE"
+		), request.getLocale());
+
+LocalizedString strPlayoff = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "PLAYOFF", 
+		Locale.FRENCH, 	"ÉLIMINATOIRES"
 		), request.getLocale());
 
 LocalizedString strSchedule = new LocalizedString(ImmutableMap.of( 	
@@ -18,38 +23,22 @@ LocalizedString strSchedule = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"HORAIRE"
 		), request.getLocale());
 
-LocalizedString strFacebook = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "FACEBOOK", 
-		Locale.FRENCH, 	"FACEBOOK"
-		), request.getLocale());
-
-LocalizedString strInstagram = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "INSTAGRAM", 
-		Locale.FRENCH, 	"INSTAGRAM"
-		), request.getLocale());
-
-LocalizedString strCRC = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "CRC", 
-		Locale.FRENCH, 	"CRC"
-		), request.getLocale());
 %>
 
 <div class="header">
 	<img class="headerLogo" src="images/crc.jpg" />
 	
-	<a class="headerInstagram" href="http://www.instagram.com/robocrc">
+	<a class="headerInstagram" href="http://www.instagram.com/robocrc" target="_blank">
 		<img src="images/instagram.svg" />
 	</a>
-	<a class="headerFacebook" href="https://www.facebook.com/roboCRC">
+	<a class="headerFacebook" href="https://www.facebook.com/roboCRC" target="_blank">
 		<img src="images/facebook.svg" />
 	</a>
 	
 	<div class="headerRubban grayBackgroundColor">
 		<a class="headerLive" href="live"><%= strLiveGame %></a>
 		<a class="headerSchedule" href="schedule"><%= strSchedule %></a>
-		<a class="headerRanking" href="ranking"><%= strRanking %></a>
-		<a href="https://www.facebook.com/roboCRC"><%= strFacebook %></a>
-		<a href="http://www.instagram.com/robocrc"><%= strInstagram %></a>
-		<a href="http://www.robo-crc.ca/"><%= strCRC %></a>
+		<a class="headerRanking" href="ranking"><%= strPreliminary %></a>
+		<a class="headerPlayoff" href="playoff"><%= strPlayoff %></a>
 	</div>
 </div>

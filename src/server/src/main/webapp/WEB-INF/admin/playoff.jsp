@@ -16,7 +16,7 @@ ArrayList<School> excludedSchools = (ArrayList<School>) request.getAttribute("ex
 GameTypeEnum currentRound = (GameTypeEnum) request.getAttribute("currentRound");
 GameTypeEnum nextRound = (GameTypeEnum) request.getAttribute("nextRound");
 
-Boolean isCurrentRoundStarted = (Boolean) request.getAttribute("isCurrentRoundStarted");
+boolean isCurrentRoundStarted = ((Boolean) request.getAttribute("isCurrentRoundStarted")).booleanValue();
 
 Locale currentLocale = request.getLocale();
 
@@ -71,7 +71,7 @@ LocalizedString strDeleteCurrentRound = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 LocalizedString strDeleteConfirm = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "This action will delete the current round and there's already at least a match played. Are you sure you want to do this?", 
+		Locale.ENGLISH, "This action will delete the current round and there is already at least a match played. Are you sure you want to do this?", 
 		Locale.FRENCH, 	"Cette action entrainera la suppresion de la ronde en cours. Au moins un match a déjà été joué! Êtes-vous sûr de vouloir supprimer la ronde actuelle?"
 		), currentLocale);
 
@@ -89,13 +89,20 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><%= strPlayoffTitle %></title>
-<link rel="shortcut icon" href="images/favicon.ico" />
+<%@include file="head.jsp" %>
+<script src="../jquery/iframeresizer/js/iframeResizer.min.js"></script>
+<script>
+	$(function() {
+	  	  $('.frontendFrame').iFrameResize({});
+	});
+</script>
 </head>
 <body>
 	<%@include file="header.jsp" %>
-	<h1><%= strPlayoff %></h1>
+
+	<h1 class="grayColor"><%= strPlayoff %></h1>
+	<div class="bar grayBackgroundColor"></div>
 	
 	<form method="post">
 		<input type="hidden" name="action" value="addExcludedSchool" />
@@ -104,7 +111,7 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 		<%= strSchool %>
 		<select name="school">
 	<% 	
-		ArrayList<School> schoolsToAdd = playoff.getRemainingSchools(tournament.schools);
+		ArrayList<School> schoolsToAdd = Playoff.getRemainingSchools(tournament.schools, playoff.excludedSchools);
 		
 		for(School school : schoolsToAdd)
 		{ %>
@@ -161,4 +168,8 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 		<input type="hidden" name="currentRound" value="<%= currentRound %>" />
 		<input type="submit" value="<%= strDeleteCurrentRound %>" />
 	</form>
+	
+	<iframe src="../playoff?showHeader=false" class="frontendFrame" scrolling="no" frameborder="0" height="1500px" width="1200px"></iframe>
+	
+	<%@include file="footer.jsp" %>
 </body>

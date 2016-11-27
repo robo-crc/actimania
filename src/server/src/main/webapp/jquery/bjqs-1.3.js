@@ -471,7 +471,7 @@
         var conf_markers = function() {
 
             // create a wrapper for our markers
-            $m_wrapper = $('<ol class="bjqs-markers"></ol>');
+            $m_wrapper = $('<ul class="bjqs-markers"></ul>');
 
             // for every slide, create a marker
             $.each($slides, function(key, slide){
@@ -484,13 +484,16 @@
                     gotoslide = key + 2;
                 }
 
-                var marker = $('<li><a href="#">'+ slidenum +'</a></li>');
-
+                var marker = $('<li></li>');
+                
                 // set the first marker to be active
-                if(slidenum === state.currentslide){ marker.addClass('active-marker'); }
+                if(slidenum === state.currentslide)
+                { 
+                    marker.addClass('active-marker'); 
+                }
 
                 // bind the click event
-                marker.on('click','a',function(e){
+                marker.click(function(e){
                     e.preventDefault();
                     if(!state.animating && state.currentslide !== gotoslide){
                         go(false,gotoslide);

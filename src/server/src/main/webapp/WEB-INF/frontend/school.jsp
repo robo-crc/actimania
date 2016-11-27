@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.Skill"%>
 <%@page import="org.joda.time.format.PeriodFormatterBuilder"%>
 <%@page import="org.joda.time.format.PeriodFormatter"%>
 <%@page import="com.backend.models.SkillsCompetition"%>
@@ -17,7 +18,9 @@ School school	= (School) request.getAttribute("school");
 Integer rank 	= (Integer) request.getAttribute("rank");
 Integer score	= (Integer) request.getAttribute("score");
 SkillsCompetition skillsCompetition = (SkillsCompetition) request.getAttribute("skillsCompetition");
-int schoolCount = tournament.schools.size();
+Integer posToDisplay	= (Integer) request.getAttribute("posToDisplay");
+Integer numberOfSchools	= (Integer) request.getAttribute("numberOfSchools");
+Boolean isExcluded	= (Boolean) request.getAttribute("isExcluded");
 
 Locale currentLocale = request.getLocale();
 
@@ -76,19 +79,19 @@ LocalizedString strSchoolScore = new LocalizedString(ImmutableMap.of(
         Locale.FRENCH,  "POINTAGE DE L'ÉCOLE"
         ), currentLocale);
 
-LocalizedString strPickupRace = new LocalizedString(ImmutableMap.of( 	
+LocalizedString strTakeAllPieces = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Pick-up race", 
 		Locale.FRENCH, 	"Ramassage de vitesse"
 		), currentLocale);
 
-LocalizedString strTwoTargetHits = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Two target hits", 
-		Locale.FRENCH, 	"Toucher deux cibles"
+LocalizedString strPlaceThreePieces = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Place three pieces", 
+		Locale.FRENCH, 	"Positionner trois pièce"
 		), currentLocale);
 
-LocalizedString strTwoActuatorChanged = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Two actuator changed", 
-		Locale.FRENCH, 	"Changer deux actuateurs"
+LocalizedString strPlaceHighest = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Place highest", 
+		Locale.FRENCH, 	"Positionner le plus haut"
 		), currentLocale);
 
 LocalizedString strSchool = new LocalizedString(ImmutableMap.of( 	
@@ -125,6 +128,11 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "FINAL", 
 		Locale.FRENCH, 	"FINALE"
 		), currentLocale);
+
+LocalizedString strNoShow = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "No show for playoff", 
+		Locale.FRENCH, 	"Ne se présentera pas aux éliminatoires"
+		), currentLocale);
 %>
 
 <!DOCTYPE html>
@@ -148,10 +156,26 @@ LocalizedString strPlayoffFinal = new LocalizedString(ImmutableMap.of(
 <table class="schoolTable schoolCompetition">
 <tr><th class="whiteBackgroundColor"></th>	<th class="center"><%= strScore %></th></tr>
 <tr><td><%= strTournament %></td>			<td class="center"><%= score %></td></tr>
-<tr><td><%= strPickupRace %></td>			<td class="center"><%= skillsCompetition.getPickballs(school).integer %></td></tr>
-<tr><td><%= strTwoTargetHits %></td>		<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoTargetHits(school).duration.toPeriod()) %></td></tr>
-<tr><td><%= strTwoActuatorChanged %></td>	<td class="center"><%= Helpers.stopwatchFormatter.print(skillsCompetition.getTwoActuatorChanged(school).duration.toPeriod()) %></td></tr>
-<tr><td><b><%= strCumulative %></b></td> 	<td class="center"><b><%=tournament.getPreliminaryRanking(skillsCompetition).indexOf(school) + 1%> / <%= schoolCount %></b></td></tr>
+<%
+for(Skill skill : skillsCompetition.skills)
+{	
+%>
+<tr><td><%= skill.displayName %></td>		<td class="center"><%= skill.getSchoolScore(school).getDisplay() %></td></tr>
+<%
+}
+%>
+<tr><td><b><%= strCumulative %></b></td> 	<td class="center"><b>
+<% if(!isExcluded.booleanValue())
+{
+	out.print(posToDisplay + " / " + numberOfSchools);
+}
+else
+{
+	out.print(strNoShow);
+}
+%>
+</b></td></tr>
+
 </table>
 <br/>
 
@@ -248,10 +272,19 @@ for( Game game : games )
 	
 	<td class="center schoolScore">
 		<div class="<% if( game.blueTeam.contains(school) ) { out.write("blueBackgroundColor"); } else { out.write("yellowBackgroundColor"); }   %> scheduleColor"></div>
-		<div class="schedulePoints"><%= schoolScore %></div><div class="schedulePointsStr"><%= pointsStr %></div>
+		<div class="schedulePoints"><%= schoolScore %></div>
+		<div class="schedulePointsStr"><%= pointsStr %></div>
 	</td>
-	<td class="center schoolScore"><div class="blueBackgroundColor scheduleColor"></div><div class="schedulePoints"><%= blueScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
-	<td class="center schoolScore"><div class="yellowBackgroundColor scheduleColor"></div><div class="schedulePoints"><%= yellowScore %></div><div class="schedulePointsStr"><%= pointsStr %></div></td>
+	<td class="center schoolScore">
+		<div class="blueBackgroundColor scheduleColor"></div>
+		<div class="schedulePoints"><%= blueScore %></div>
+		<div class="schedulePointsStr"><%= pointsStr %></div>
+	</td>
+	<td class="center schoolScore">
+		<div class="yellowBackgroundColor scheduleColor"></div>
+		<div class="schedulePoints"><%= yellowScore %></div>
+		<div class="schedulePointsStr"><%= pointsStr %></div>
+	</td>
 </tr>
 <%
 }

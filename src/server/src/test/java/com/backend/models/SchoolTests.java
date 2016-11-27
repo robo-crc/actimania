@@ -7,6 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.backend.models.enums.Division;
 import com.framework.helpers.Database;
 import com.framework.helpers.Database.DatabaseType;
 import com.framework.models.Essentials;
@@ -39,7 +40,7 @@ public class SchoolTests
 		
 		for(int i = 0; i < 5; i++)
 		{
-			database.save(new School(null, String.valueOf(i)));
+			database.save(new School(null, String.valueOf(i), Division.ONE));
 		}
 		
 		schools = School.getSchools(essentials);
