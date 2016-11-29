@@ -121,7 +121,7 @@ public class GameStateYearly extends GameState
 		
 		ScoreboardUpdateEvent scoreboard = (ScoreboardUpdateEvent) gameEvent;
 		
-		return GetScore(scoreboard.blueField, scoreboard.yellowDispenser1 + scoreboard.yellowDispenser2, scoreboard.blueTeamAllowedSpools, scoreboard.hasMultiplier == TeamEnum.BLUE);
+		return GetScore(scoreboard.yellowField, scoreboard.blueDispenser1 + scoreboard.blueDispenser2, scoreboard.blueTeamAllowedSpools, scoreboard.hasMultiplier == TeamEnum.BLUE);
 	}
 
 	@Override
@@ -138,6 +138,6 @@ public class GameStateYearly extends GameState
 		
 		ScoreboardUpdateEvent scoreboard = (ScoreboardUpdateEvent) gameEvent;
 		
-		return GetScore(scoreboard.yellowField, scoreboard.blueDispenser1 + scoreboard.blueDispenser2, scoreboard.yellowTeamAllowedSpools, scoreboard.hasMultiplier == TeamEnum.YELLOW);
+		return GetScore(scoreboard.blueField, scoreboard.yellowDispenser1 + scoreboard.yellowDispenser2, scoreboard.yellowTeamAllowedSpools, scoreboard.hasMultiplier == TeamEnum.YELLOW);
 	}
 }
