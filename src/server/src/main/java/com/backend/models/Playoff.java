@@ -23,10 +23,21 @@ public class Playoff
 	
 	@JsonIgnore
 	public final IPlayoff iPlayoff;
+	
 	public Playoff(
 			@JsonProperty("_id") 				ObjectId playoffId,
-			@JsonProperty("excludedSchools") 	ArrayList<School> _excludedSchools,
-												IPlayoff _iPlayoff
+			@JsonProperty("excludedSchools") 	ArrayList<School> _excludedSchools
+			)
+	{
+		_id = playoffId;
+		excludedSchools = _excludedSchools;
+		iPlayoff = PlayoffYearly.getPlayoff();
+	}
+	
+	public Playoff(
+			ObjectId playoffId,
+			ArrayList<School> _excludedSchools,
+			IPlayoff _iPlayoff
 			)
 	{
 		_id = playoffId;

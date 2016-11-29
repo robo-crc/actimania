@@ -11,6 +11,7 @@ import org.joda.time.Duration;
 import com.backend.models.ISchoolScore;
 import com.backend.models.School;
 import com.backend.models.SchoolDuration;
+import com.backend.models.SchoolFloatSmallest;
 import com.backend.models.SchoolInteger;
 import com.backend.models.Skill;
 import com.backend.models.SkillsCompetition;
@@ -41,9 +42,9 @@ public class TournamentYearlySetup
 			Locale.FRENCH, 	"Le plus proche de la cible"
 			), Locale.ENGLISH);
 
-	private static final LocalizedString strPlaceHighest = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "Place highest", 
-			Locale.FRENCH, 	"Positionner le plus haut"
+	private static final LocalizedString strQuickest = new LocalizedString(ImmutableMap.of( 	
+			Locale.ENGLISH, "Quickest", 
+			Locale.FRENCH, 	"Le plus rapide"
 			), Locale.ENGLISH);
 	
 	private static final LocalizedString strEmptyChargerCompact = new LocalizedString(ImmutableMap.of( 	
@@ -51,14 +52,14 @@ public class TournamentYearlySetup
 			Locale.FRENCH, 	"VIDER<BR/>LE CHARGEUR"
 			), Locale.ENGLISH);
 
-	private static final LocalizedString strPlaceThreePiecesUpperCompact = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "PLACE THREE<BR/>PIECES", 
-			Locale.FRENCH, 	"POSITIONNER<BR/>TROIS PIÈCES"
+	private static final LocalizedString strClosestToTargetCompact = new LocalizedString(ImmutableMap.of( 	
+			Locale.ENGLISH, "CLOSEST TO<BR/>TARGET", 
+			Locale.FRENCH, 	"LE PLUS PROCHE<BR/>DE LA CIBLE"
 			), Locale.ENGLISH);
 
-	private static final LocalizedString strPlaceHighestUpperCompact = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "PLACE<BR/>HIGHEST", 
-			Locale.FRENCH, 	"PLACER<BR/>LE PLUS HAUT"
+	private static final LocalizedString strQuickestCompact = new LocalizedString(ImmutableMap.of( 	
+			Locale.ENGLISH, "QUICKEST", 
+			Locale.FRENCH, 	"LE PLUS RAPIDE"
 			), Locale.ENGLISH);
 	
 	public static SkillsCompetition setupSkillCompetition(ObjectId id, ArrayList<School> schools, boolean generateRandom)
@@ -71,9 +72,9 @@ public class TournamentYearlySetup
 			random = new Random(0);
 		}
 		
-		skills.add(SetupSkillDuration(schools, strEmptyCharger, 	strEmptyChargerCompact, 		"emptyCharger", random));
-		skills.add(SetupSkillInteger(schools, strClosestToTarget, strPlaceThreePiecesUpperCompact,"placeThreePieces", random));
-		skills.add(SetupSkillDuration(schools, strPlaceHighest, 	strPlaceHighestUpperCompact, 	"placeHighest", random));
+		skills.add(SetupSkillDuration(schools, strEmptyCharger, 		strEmptyChargerCompact, 	"emptyCharger", random));
+		skills.add(SetupSkillFloatSmallest(schools, strClosestToTarget, strClosestToTargetCompact,	"closestToTarget", random));
+		skills.add(SetupSkillDuration(schools, strQuickest, 			strQuickestCompact, 		"quickest", random));
 		
 		SkillsCompetition skillsCompetition = new SkillsCompetition(
 				id,
@@ -119,5 +120,23 @@ public class TournamentYearlySetup
 		
 		return new Skill(schoolsScore, displayName, displayNameUpperCompact, name);
 	}
-	
+
+	private static Skill SetupSkillFloatSmallest(ArrayList<School> schools, LocalizedString displayName, LocalizedString displayNameUpperCompact, String name, Random random)
+	{
+		ArrayList<ISchoolScore> schoolsScore = new ArrayList<ISchoolScore>();
+
+		for(School school : schools)
+		{
+			float value = Float.MAX_VALUE;
+			
+			if(random != null)
+			{
+				value = random.nextInt(100);
+			}
+			
+			schoolsScore.add(new SchoolFloatSmallest(school, value));
+		}
+		
+		return new Skill(schoolsScore, displayName, displayNameUpperCompact, name);
+	}
 }

@@ -42,6 +42,10 @@ public class Skill
 		{
 			return (ArrayList<T>) getOrderedInteger((ArrayList<SchoolInteger>)skillSchools);
 		}
+		else if(skillSchools.get(0) instanceof SchoolFloatSmallest)
+		{
+			return (ArrayList<T>) getOrderedFloatSmallest((ArrayList<SchoolFloatSmallest>)skillSchools);
+		}
 		else if(skillSchools.get(0) instanceof SchoolDuration)
 		{
 			return (ArrayList<T>) getOrderedDuration((ArrayList<SchoolDuration>)skillSchools);
@@ -73,6 +77,21 @@ public class Skill
 	        public int compare(SchoolInteger school1, SchoolInteger school2)
 	        {
 	            return school2.integer - school1.integer;
+	        }
+	    });
+		
+		return schoolsRanking;
+	}
+	
+	private static ArrayList<SchoolFloatSmallest> getOrderedFloatSmallest(final ArrayList<SchoolFloatSmallest> schoolsScore)
+	{
+		ArrayList<SchoolFloatSmallest> schoolsRanking = new ArrayList<SchoolFloatSmallest>(schoolsScore);
+		
+		Collections.sort(schoolsRanking, new Comparator<SchoolFloatSmallest>() {
+	        @Override
+	        public int compare(SchoolFloatSmallest school1, SchoolFloatSmallest school2)
+	        {
+	            return school1.floatSmallest > school2.floatSmallest ? 1 : -1;
 	        }
 	    });
 		

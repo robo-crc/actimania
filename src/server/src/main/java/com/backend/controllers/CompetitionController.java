@@ -22,6 +22,7 @@ import com.backend.models.ISchoolScore;
 import com.backend.models.LiveRefresh;
 import com.backend.models.School;
 import com.backend.models.SchoolDuration;
+import com.backend.models.SchoolFloatSmallest;
 import com.backend.models.SchoolInteger;
 import com.backend.models.Skill;
 import com.backend.models.SkillsCompetition;
@@ -75,6 +76,11 @@ public class CompetitionController extends HttpServlet
 							{
 								Integer value = Integer.parseInt(Helpers.getParameter(parameter, String.class, essentials));
 								schoolScore = new SchoolInteger(school, value);
+							}
+							else if(skill.schoolsScore.get(0) instanceof SchoolFloatSmallest)
+							{
+								Float value = Float.parseFloat(Helpers.getParameter(parameter, String.class, essentials));
+								schoolScore = new SchoolFloatSmallest(school, value);
 							}
 							
 							skill.schoolsScore.add(schoolScore);
