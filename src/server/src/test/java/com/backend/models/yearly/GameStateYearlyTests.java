@@ -98,7 +98,6 @@ public class GameStateYearlyTests
 		GameStateYearly gameStateUpdate4 = new GameStateYearly(gameStateUpdate, scoreboard);
 		Validate.isTrue(gameStateUpdate4.yellowScore == 2620);
 		Validate.isTrue(gameStateUpdate4.blueScore == 855);
-
 	}
 	
 	private void validateInitialState(GameStateYearly gameState)
