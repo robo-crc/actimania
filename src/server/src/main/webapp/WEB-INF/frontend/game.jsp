@@ -73,6 +73,7 @@ if(isLive)
 <%@include file="head.jsp" %>
 <title><%= strH1 %></title>
 <link rel="stylesheet" type="text/css" href="css/game.css"/>
+<link rel="stylesheet" type="text/css" href="css/gameYearly_frontend.css"/>
 <link rel="stylesheet" type="text/css" href="css/bjqs.css"/>
 <link rel="stylesheet" type="text/css" href="css/jquery.countdown.css"/>
 <script type="text/javascript" src="jquery/bjqs-1.3.js"></script>
@@ -324,7 +325,7 @@ if( gameStates.size() == 0)
 					</tr>
 				</table>
 			</div>
-			<%= GameYearlyView.getHtmlForGameState(state) %>
+			<%= GameYearlyView.getHtmlForGameState(state, currentLocale) %>
 			<br/>
 			<div class="clear"></div>
 <%

@@ -1,0 +1,103 @@
+.playingField
+{
+	height: 390px;
+	width: 1180px;
+}
+
+.playingFieldNone
+{
+	background-image: url('../images/playingField.svg');
+}
+.playingFieldBlue
+{
+	background-image: url('../images/playingFieldBlue.svg');
+}
+
+.playingFieldYellow
+{
+	background-image: url('../images/playingFieldYellow.svg');
+}
+
+.Score
+{
+	Position: absolute;
+	text-decoration: none;
+	font-size: 19.8px;
+	font-weight: normal;
+}
+
+.ONE_HUNDRED_BLUE
+{top: 459px;Left: 83px;}
+
+.FORTY_BLUE
+{top: 460px;Left: 379px;}
+
+.THIRTHY_BLUE
+{top: 334px;left: 232px;}
+
+.TWENTY_BIG_BLUE
+{top: 460px;450px: ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢left: 4;left: 526px;}
+
+.TWENTY_SMALL_BLUE
+{top: 460px;left: 210px;}
+
+.TEN_TOP_BLUE
+{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 335px;left: 559px;}
+
+.TEN_BOTTOM_BLUE
+{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 559px;left: 559px;}
+
+.FIVE_TOP_BLUE
+{top: 335px;left: 86px;}
+
+.FIVE_BOTTOM_BLUE
+{top: 586px;left: 86px;}
+
+.ONE_HUNDRED_YELLOW
+{top: 460px;left: 1132px;}
+
+.FORTY_YELLOW
+{top: 458px;left: 840px;}
+
+.THIRTHY_YELLOW
+{top: 334px;left: 985.5px;}
+
+.TWENTY_BIG_YELLOW
+{top: 456px;left: 691px;}
+
+.TWENTY_SMALL_YELLOW
+{top: 460px;left: 1007px;}
+
+.TEN_TOP_YELLOW
+{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 336px;left: 621px;}
+
+
+.TEN_BOTTOM_YELLOW
+{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 559px;left: 622px;}
+
+.FIVE_TOP_YELLOW
+{top: 335px;left: 1132px;}
+
+.FIVE_BOTTOM_YELLOW
+{top: 587px;left: 1132px;}
+
+.blueDispenser1
+{top: 338px;left: 356px;}
+
+.blueDispenser2
+{top: 577px;left: 355px;}
+
+.yellowDispenser1
+{top: 338px;left: 812px;}
+
+.yellowDispenser2
+{top: 577px;left: 813px;}
+
+.blueTeamAllowedSpools
+{top: 263px;left: 350.5px;}
+
+.yellowTeamAllowedSpools
+{top: 263px;left: 805px;}
+
+.allowedSpools
+{top: 257px;left: 234px;position: absolute;}

@@ -42,7 +42,8 @@ public class GameYearlyView
 		strBuilder.append("	<input type=\"hidden\" name=\"gameEvent\" value=\"" + GameEventEnum.SCOREBOARD_UPDATED.toString() + "\" />");
 		strBuilder.append("	<input type=\"hidden\" name=\"id\" value=\"" + game._id + "\" />");
 		strBuilder.append("	<h2>" + strScoreboardUpdate + "</h2>");
-		
+	
+		strBuilder.append("	<div class=\"playingField\"></img>");
 		ScoreboardUpdateEvent scoreboard = ((GameStateYearly)(game.getGameStates().get(game.getGameStates().size() - 1))).currentScoreboard;
 		
 		OutputField(strBuilder, scoreboard.yellowField, scoreboard.yellowDispenser1, scoreboard.yellowDispenser2, TeamEnum.BLUE, scoreboard.hasMultiplier == TeamEnum.BLUE);

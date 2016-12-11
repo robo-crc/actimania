@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="playingField.svg"
+   sodipodi:docname="playingFieldBlue.svg"
    inkscape:export-filename="D:\crc-scoreboard\src\server\src\main\webapp\images\playingField.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
@@ -28,8 +28,8 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="832.40588"
+     inkscape:zoom="1.5"
+     inkscape:cx="508.50797"
      inkscape:cy="87.568723"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -189,30 +189,6 @@
        cx="361.1716"
        cy="760.4834"
        r="16.984552" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:11.16899586px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="180.98297"
-       y="824.24536"
-       id="text4453"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4455"
-         x="180.98297"
-         y="824.24536"
-         style="font-size:17.45155716px">X2</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:11.16899586px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="178.89401"
-       y="954.67023"
-       id="text4453-4"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4455-1"
-         x="178.89401"
-         y="954.67023"
-         style="font-size:17.45155716px">X2</tspan></text>
     <circle
        style="fill:#ffff00;fill-opacity:0;stroke:#000000;stroke-width:1.9896189;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path4335-6-0-6"
@@ -1581,5 +1557,41 @@
          x="1090.1432"
          y="889.14746"
          style="font-size:15.46249962px">100</tspan></text>
+    <path
+       style="opacity:1;fill:#0071bb;fill-opacity:1;stroke:none;stroke-width:2.03200006;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 130.75642,138.83388 c 0.16128,4.71361 0.18973,9.46624 0.42968,14.15625 20.25479,11.4021 39.966,23.83613 60.70964,34.33203 2.62591,0.81973 4.72848,-2.73628 7.17083,-3.30165 17.41643,-10.09122 34.91557,-20.10778 52.26927,-30.26996 0.0538,-4.99134 0.39562,-10.09564 0.27735,-15.01953 -40.27098,0.0686 -80.65809,-0.13706 -120.85677,0.10286 z"
+       id="path4408"
+       inkscape:connector-curvature="0"
+       transform="translate(-1.343599,663.7059)" />
+    <path
+       style="opacity:1;fill:#0071bb;fill-opacity:1;stroke:none;stroke-width:2.03200006;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 161.19261,268.81305 c -10.11786,5.88304 -20.33384,11.66764 -30.39062,17.61198 0.34393,4.803 -0.65121,10.21131 0.63672,14.7513 40.05605,0.67876 80.23717,0.42421 120.23047,0.32161 -0.0325,-5.12933 0.0634,-10.29182 -0.0469,-15.40104 -19.8737,-11.85782 -40.03961,-23.29326 -60.08984,-34.80859 -10.11328,5.84158 -20.22656,11.68316 -30.33985,17.52474 z"
+       id="path4412"
+       inkscape:connector-curvature="0"
+       transform="translate(-1.343599,663.7059)" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:25px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="173.73418"
+       y="830.06226"
+       id="text4453"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4455"
+         x="173.73418"
+         y="830.06226"
+         style="font-size:25px">X2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:25px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="173.7534"
+       y="955.39453"
+       id="text4453-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4455-1"
+         x="173.7534"
+         y="955.39453"
+         style="font-size:25px">X2</tspan></text>
   </g>
 </svg>

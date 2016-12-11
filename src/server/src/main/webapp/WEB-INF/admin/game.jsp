@@ -2,7 +2,6 @@
 <%@page import="com.backend.controllers.GameController"%>
 <%@page import="com.backend.controllers.yearly.GameYearlyController"%>
 <%@page import="com.backend.models.yearly.GameStateYearly"%>
-<%@page import="com.backend.models.yearly.Hole"%>
 <%@page import="com.backend.models.GameEvent.GameEvent"%>
 <%@page import="com.backend.models.enums.TeamEnum"%>
 <%@page import="java.io.IOException"%>
