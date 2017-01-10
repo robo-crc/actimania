@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="shortcut icon" href="images/favicon.ico" />
 <!-- Activate this when online. -->
-<!-- 
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
- -->
-<link href='css/open-sans.css' rel='stylesheet' type='text/css'>
 
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<!-- 
+<link href='css/open-sans.css' rel='stylesheet' type='text/css'>
+-->
 <link rel="stylesheet" type="text/css" href="css/global.css"/>
 <script type="text/javascript" src="jquery/jquery.js"></script>
 <script>

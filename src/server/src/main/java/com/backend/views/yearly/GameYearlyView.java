@@ -22,7 +22,8 @@ public class GameYearlyView
 		StringBuilder strBuilder = new StringBuilder();		
 		
 		strBuilder.append("$(document).ready(function(){");
-		strBuilder.append("	$( '.spinner' ).spinner({classes}));");
+		
+		strBuilder.append("	$( '.spinner' ).spinner();");
 		strBuilder.append("	$( '.spinner' ).numeric();");
 		strBuilder.append("});");
 
@@ -83,7 +84,7 @@ public class GameYearlyView
 		AreaPoints[] areaPoints = AreaPoints.values();
 		for(int i = 0; i < areaPoints.length; i++)
 		{
-			strBuilder.append("<input class=\"spinner score " + areaPoints[i] + "_" + oppositeTeam.name() + "\" type=\"text\" name=\"" + areaPoints[i] + "_" + oppositeTeam.name() + "\" value=\"" + area[i].spoolCount + "\" />\n");
+			strBuilder.append("<div class=\"score " + areaPoints[i] + "_" + oppositeTeam.name() + "\"> <input class=\"spinner \" type=\"text\" name=\"" + areaPoints[i] + "_" + oppositeTeam.name() + "\" value=\"" + area[i].spoolCount + "\" /></div>\n");
 		}
 	}
 }

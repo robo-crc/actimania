@@ -7,7 +7,12 @@
 
 .score
 {
-	/* position: relative; */
+	position: relative;
+}
+
+.ui-spinner
+{
+	width:100px;
 }
 
 .ONE_HUNDRED_BLUE
