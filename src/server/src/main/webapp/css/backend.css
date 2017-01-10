@@ -47,25 +47,3 @@ h2
 {
 	text-align: center;
 }
-
-
-.triangleStateEnum_BLUE
-{
-	background: lightblue;
-}
-
-.triangleStateEnum_YELLOW
-{
-	background-color: yellow;
-}
-
-
-.triangleStateEnum_EMPTY
-{
-	background: white;
-}
-
-.triangle
-{
-	float: left;
-}

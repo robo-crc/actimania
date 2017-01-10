@@ -2,6 +2,8 @@
 {
 	height: 390px;
 	width: 1180px;
+	position: absolute;
+	top: 255px;
 }
 
 .playingFieldNone
@@ -18,86 +20,96 @@
 	background-image: url('../images/playingFieldYellow.svg');
 }
 
+.YELLOW
+{
+	 color: rgb(255,221,0);
+}
+
+.BLUE
+{
+	color: rgb(0,113,187);
+}
+
 .Score
 {
 	Position: absolute;
 	text-decoration: none;
-	font-size: 19.8px;
-	font-weight: normal;
+	font-size: 30px;
+	font-weight: Bold;
 }
 
 .ONE_HUNDRED_BLUE
-{top: 459px;Left: 83px;}
+{top: 457px;Left: 51px;}
 
 .FORTY_BLUE
-{top: 460px;Left: 379px;}
+{top: 458px;Left: 348px;}
 
 .THIRTHY_BLUE
-{top: 334px;left: 232px;}
+{top: 331px;left: 203px;}
 
 .TWENTY_BIG_BLUE
-{top: 460px;450px: ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢left: 4;left: 526px;}
+{top: 458px;left: 496px;}
 
 .TWENTY_SMALL_BLUE
-{top: 460px;left: 210px;}
+{top: 458px;left: 181px;}
 
 .TEN_TOP_BLUE
-{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 335px;left: 559px;}
+{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 365px;left: 559px;}
 
 .TEN_BOTTOM_BLUE
-{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 559px;left: 559px;}
+{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 589px;left: 561px;}
 
 .FIVE_TOP_BLUE
-{top: 335px;left: 86px;}
+{top: 332px;left: 54px;}
 
 .FIVE_BOTTOM_BLUE
-{top: 586px;left: 86px;}
+{top: 584px;left: 54px;}
 
 .ONE_HUNDRED_YELLOW
-{top: 460px;left: 1132px;}
+{top: 458px;left: 1101px;}
 
 .FORTY_YELLOW
-{top: 458px;left: 840px;}
+{top: 455px;left: 809px;}
 
 .THIRTHY_YELLOW
-{top: 334px;left: 985.5px;}
+{top: 331px;left: 956.5px;}
 
 .TWENTY_BIG_YELLOW
-{top: 456px;left: 691px;}
+{top: 452px;left: 659px;}
 
 .TWENTY_SMALL_YELLOW
-{top: 460px;left: 1007px;}
+{top: 458px;left: 977px;}
 
 .TEN_TOP_YELLOW
-{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 336px;left: 621px;}
+{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 365px;left: 620px;}
 
 
 .TEN_BOTTOM_YELLOW
-{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 559px;left: 622px;}
+{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 590px;left: 623px;}
 
 .FIVE_TOP_YELLOW
-{top: 335px;left: 1132px;}
+{top: 332px;left: 1102px;}
 
 .FIVE_BOTTOM_YELLOW
-{top: 587px;left: 1132px;}
+{top: 583px;left: 1100px;}
 
 .blueDispenser1
-{top: 338px;left: 356px;}
+{top: 337px;left: 355px;}
 
 .blueDispenser2
-{top: 577px;left: 355px;}
+{top: 574px;left: 353px;}
 
 .yellowDispenser1
-{top: 338px;left: 812px;}
+{top: 337px;left: 809px;}
 
 .yellowDispenser2
-{top: 577px;left: 813px;}
+{top: 573px;left: 811px;}
 
 .blueTeamAllowedSpools
-{top: 263px;left: 350.5px;}
+{top: 262px;left: 347.5px;font-weight: normal;font-size: 25px;}
 
 .yellowTeamAllowedSpools
-{top: 263px;left: 805px;}
+{top: 263px;left: 802px;font-weight: normal;font-size: 25px;}
 
 .allowedSpools
 {top: 257px;left: 234px;position: absolute;}

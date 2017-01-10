@@ -1,0 +1,87 @@
+.playingField
+{
+	height: 390px;
+	width: 1180px;
+	background-image: url('../images/playingField.svg');
+}
+
+.score
+{
+	/* position: relative; */
+}
+
+.ONE_HUNDRED_BLUE
+{top: -184px;/* Left: 51px; */}
+
+.FORTY_BLUE
+{top: 458px;Left: 348px;}
+
+.THIRTHY_BLUE
+{top: 331px;left: 203px;}
+
+.TWENTY_BIG_BLUE
+{top: 458px;left: 496px;}
+
+.TWENTY_SMALL_BLUE
+{top: 458px;left: 181px;}
+
+.TEN_TOP_BLUE
+{top: 365px;left: 559px;}
+
+.TEN_BOTTOM_BLUE
+{top: 589px;left: 561px;}
+
+.FIVE_TOP_BLUE
+{top: 332px;left: 54px;}
+
+.FIVE_BOTTOM_BLUE
+{top: 584px;left: 54px;}
+
+.ONE_HUNDRED_YELLOW
+{top: 458px;left: 1101px;}
+
+.FORTY_YELLOW
+{top: 455px;left: 809px;}
+
+.THIRTHY_YELLOW
+{top: 331px;left: 956.5px;}
+
+.TWENTY_BIG_YELLOW
+{top: 452px;left: 659px;}
+
+.TWENTY_SMALL_YELLOW
+{top: 458px;left: 977px;}
+
+.TEN_TOP_YELLOW
+{top: 365px;left: 620px;}
+
+.TEN_BOTTOM_YELLOW
+{top: 590px;left: 623px;}
+
+.FIVE_TOP_YELLOW
+{top: 332px;left: 1102px;}
+
+.FIVE_BOTTOM_YELLOW
+{top: 583px;left: 1100px;}
+
+.blueDispenser1
+{top: 337px;left: 355px;}
+
+.blueDispenser2
+{top: 574px;left: 353px;}
+
+.yellowDispenser1
+{top: 337px;left: 809px;}
+
+.yellowDispenser2
+{top: 573px;left: 811px;}
+
+.blueTeamAllowedSpools
+{top: 262px;left: 347.5px;font-weight: normal;font-size: 25px;}
+
+.yellowTeamAllowedSpools
+{top: 263px;left: 802px;font-weight: normal;font-size: 25px;}
+
+.allowedSpools
+{top: 257px;left: 234px;position: absolute;}
+n: absolute;}

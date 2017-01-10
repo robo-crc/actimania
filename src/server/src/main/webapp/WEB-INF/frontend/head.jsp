@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="shortcut icon" href="images/favicon.ico" />
-<link rel="stylesheet" type="text/css" href="css/global.css"/>
+<!-- Activate this when online. -->
+<!-- 
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+ -->
+<link href='css/open-sans.css' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css" href="css/global.css"/>
 <script type="text/javascript" src="jquery/jquery.js"></script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

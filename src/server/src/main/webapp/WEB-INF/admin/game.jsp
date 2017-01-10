@@ -171,6 +171,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 <head>
 <title><%= strH1 %></title>
 <%@include file="head.jsp" %>
+<link href='../css/gameYearly_backend.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <%@include file="header.jsp" %>

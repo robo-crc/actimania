@@ -20,7 +20,12 @@ public class GameYearlyView
 	public static String getScripts()
 	{
 		StringBuilder strBuilder = new StringBuilder();		
-				
+		
+		strBuilder.append("$(document).ready(function(){");
+		strBuilder.append("	$( '.spinner' ).spinner({classes}));");
+		strBuilder.append("	$( '.spinner' ).numeric();");
+		strBuilder.append("});");
+
 		return strBuilder.toString();
 	}
 	
@@ -37,18 +42,32 @@ public class GameYearlyView
 				Locale.FRENCH, 	"Ajouter"
 				), currentLocale);
 
+		LocalizedString strAllowedSpools = new LocalizedString(ImmutableMap.of( 	
+				Locale.ENGLISH, "ALLOWED<br/>SPOOLS", 
+				Locale.FRENCH, 	"BOBINES<br/>ALLOUÉES"
+				), currentLocale);
+
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("<form method=\"post\">");
 		strBuilder.append("	<input type=\"hidden\" name=\"gameEvent\" value=\"" + GameEventEnum.SCOREBOARD_UPDATED.toString() + "\" />");
 		strBuilder.append("	<input type=\"hidden\" name=\"id\" value=\"" + game._id + "\" />");
 		strBuilder.append("	<h2>" + strScoreboardUpdate + "</h2>");
+		
+        ScoreboardUpdateEvent scoreboard = ((GameStateYearly)(game.getGameStates().get(game.getGameStates().size() - 1))).currentScoreboard;
+
+		strBuilder.append("	<div class=\"playingField\"></div>");
+		
+		OutputField(strBuilder, scoreboard.yellowField, TeamEnum.YELLOW, TeamEnum.BLUE);
+		OutputField(strBuilder, scoreboard.blueField, TeamEnum.BLUE, TeamEnum.YELLOW);
 	
-		strBuilder.append("	<div class=\"playingField\"></img>");
-		ScoreboardUpdateEvent scoreboard = ((GameStateYearly)(game.getGameStates().get(game.getGameStates().size() - 1))).currentScoreboard;
-		
-		OutputField(strBuilder, scoreboard.yellowField, scoreboard.yellowDispenser1, scoreboard.yellowDispenser2, TeamEnum.BLUE, scoreboard.hasMultiplier == TeamEnum.BLUE);
-		OutputField(strBuilder, scoreboard.blueField, scoreboard.blueDispenser1, scoreboard.blueDispenser2, TeamEnum.YELLOW, scoreboard.hasMultiplier == TeamEnum.YELLOW);
-		
+		strBuilder.append("<input class=\"spinner\" name=\"blueDispenser1\" value=\"" + scoreboard.blueDispenser1 + "\"></input>");
+		strBuilder.append("<input class=\"spinner\" name=\"blueDispenser2\" value=\"" + scoreboard.blueDispenser2 + "\"></input>");
+		strBuilder.append("<input class=\"spinner\" name=\"yellowDispenser1\" value=\"" + scoreboard.yellowDispenser1 + "\"></input>");
+		strBuilder.append("<input class=\"spinner\" name=\"yellowDispenser2\" value=\"" + scoreboard.yellowDispenser2 + "\"></input>");
+		strBuilder.append("<input class=\"spinner\" name=\"blueTeamAllowedSpools\" value=\"" + (scoreboard.blueTeamAllowedSpools - scoreboard.blueDispenser1 - scoreboard.blueDispenser2) + "\"></input>");
+		strBuilder.append("<input class=\"spinner\" name=\"yellowTeamAllowedSpools\" value=\"" + (scoreboard.yellowTeamAllowedSpools - scoreboard.yellowDispenser1 - scoreboard.yellowDispenser2) + "\"></input>");
+		strBuilder.append("<div class=\"allowedSpools\">" + strAllowedSpools.toString() + "</div>");
+				
 		strBuilder.append("	<div class=\"clear\"></div>");
 		strBuilder.append("	<br/>");
 		strBuilder.append(GameController.outputAddAfterForView(game, currentLocale));
@@ -59,16 +78,12 @@ public class GameYearlyView
 		return strBuilder.toString();
 	}
 	
-	static private void OutputField(StringBuilder strBuilder, Area[] area, int dispenserTop, int dispenserBottom, TeamEnum team, boolean hasMultiplier)
+	static private void OutputField(StringBuilder strBuilder, Area[] area, TeamEnum team, TeamEnum oppositeTeam)
 	{
-		strBuilder.append("<div class=\"" + AreaPoints.ONE_HUNDRED.toString() + "_" + team.name() + "\">" + area[AreaPoints.ONE_HUNDRED.ordinal()].spoolCount + "</div>" );
-		strBuilder.append("<div class=\"" + AreaPoints.FORTY.toString() + "_" + team.name() + "\">" + area[AreaPoints.FORTY.ordinal()].spoolCount + "</div>" );
-		strBuilder.append("<div class=\"" + AreaPoints.THIRTHY.toString() + "_" + team.name() + "\">" + area[AreaPoints.THIRTHY.ordinal()].spoolCount + "</div>" );
-		strBuilder.append("<div class=\"" + AreaPoints.TWENTY_BIG.toString() + "_" + team.name() + "\">" + area[AreaPoints.TWENTY_BIG.ordinal()].spoolCount + "</div>" );
-		strBuilder.append("<div class=\"" + AreaPoints.TWENTY_SMALL.toString() + "_" + team.name() + "\">" + area[AreaPoints.TWENTY_SMALL.ordinal()].spoolCount + "</div>" );
-		strBuilder.append("<div class=\"" + AreaPoints.TEN_TOP.toString() + "_" + team.name() + "\">" + area[AreaPoints.TEN_TOP.ordinal()].spoolCount + "</div>" );
-		strBuilder.append("<div class=\"" + AreaPoints.TEN_BOTTOM.toString() + "_" + team.name() + "\">" + area[AreaPoints.TEN_BOTTOM.ordinal()].spoolCount + "</div>" );
-		strBuilder.append("<div class=\"" + AreaPoints.FIVE_TOP.toString() + "_" + team.name() + "\">" + area[AreaPoints.FIVE_TOP.ordinal()].spoolCount + "</div>" );
-		strBuilder.append("<div class=\"" + AreaPoints.FIVE_BOTTOM.toString() + "_" + team.name() + "\">" + area[AreaPoints.FIVE_BOTTOM.ordinal()].spoolCount + "</div>" );
+		AreaPoints[] areaPoints = AreaPoints.values();
+		for(int i = 0; i < areaPoints.length; i++)
+		{
+			strBuilder.append("<input class=\"spinner score " + areaPoints[i] + "_" + oppositeTeam.name() + "\" type=\"text\" name=\"" + areaPoints[i] + "_" + oppositeTeam.name() + "\" value=\"" + area[i].spoolCount + "\" />\n");
+		}
 	}
 }

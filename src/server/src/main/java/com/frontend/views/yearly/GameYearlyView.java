@@ -42,28 +42,26 @@ public class GameYearlyView
 			break;
 		}
 		
-		OutputField(strBuilder, scoreboard.yellowField, TeamEnum.BLUE);
-		OutputField(strBuilder, scoreboard.blueField, TeamEnum.YELLOW);
+		OutputField(strBuilder, scoreboard.yellowField, TeamEnum.YELLOW, TeamEnum.BLUE);
+		OutputField(strBuilder, scoreboard.blueField, TeamEnum.BLUE, TeamEnum.YELLOW);
 	
-		strBuilder.append("<div class=\"Score blueDispenser1\">" + scoreboard.blueDispenser1 + "</div>");
-		strBuilder.append("<div class=\"Score blueDispenser2\">" + scoreboard.blueDispenser2 + "</div>");
-		strBuilder.append("<div class=\"Score yellowDispenser1\">" + scoreboard.yellowDispenser1 + "</div>");
-		strBuilder.append("<div class=\"Score yellowDispenser2\">" + scoreboard.yellowDispenser2 + "</div>");
-		strBuilder.append("<div class=\"Score blueTeamAllowedSpools\">" + scoreboard.blueTeamAllowedSpools + "</div>");
-		strBuilder.append("<div class=\"Score yellowTeamAllowedSpools\">" + scoreboard.yellowTeamAllowedSpools + "</div>");
+		strBuilder.append("<div class=\"Score BLUE blueDispenser1\">" + scoreboard.blueDispenser1 + "</div>");
+		strBuilder.append("<div class=\"Score BLUE blueDispenser2\">" + scoreboard.blueDispenser2 + "</div>");
+		strBuilder.append("<div class=\"Score YELLOW yellowDispenser1\">" + scoreboard.yellowDispenser1 + "</div>");
+		strBuilder.append("<div class=\"Score YELLOW yellowDispenser2\">" + scoreboard.yellowDispenser2 + "</div>");
+		strBuilder.append("<div class=\"Score BLUE blueTeamAllowedSpools\">" + (scoreboard.blueTeamAllowedSpools - scoreboard.blueDispenser1 - scoreboard.blueDispenser2) + "</div>");
+		strBuilder.append("<div class=\"Score YELLOW yellowTeamAllowedSpools\">" + (scoreboard.yellowTeamAllowedSpools - scoreboard.yellowDispenser1 - scoreboard.yellowDispenser2) + "</div>");
 		strBuilder.append("<div class=\"allowedSpools\">" + strAllowedSpools.toString() + "</div>");
 		
 		return strBuilder.toString();
 	}
 		
-	static private void OutputField(StringBuilder strBuilder, Area[] area, TeamEnum team)
+	static private void OutputField(StringBuilder strBuilder, Area[] area, TeamEnum team, TeamEnum oppositeTeam)
 	{
 		AreaPoints[] areaPoints = AreaPoints.values();
 		for(int i = 0; i < areaPoints.length; i++)
 		{
-			strBuilder.append("<div class=\"Score " + areaPoints[i] + "_" + team.name() + "\">" + area[i].spoolCount + "</div>" );					
+			strBuilder.append("<div class=\"Score " + team.name() + " " + areaPoints[i] + "_" + oppositeTeam.name() + "\">" + area[i].spoolCount + "</div>" );					
 		}
-	}
-	
-	
+	}	
 }

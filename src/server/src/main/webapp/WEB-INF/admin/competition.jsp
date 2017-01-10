@@ -203,7 +203,7 @@ $(document).ready(function(){
 				<th><%= strWebsiteJournalism %></th>
 			</tr>
 			<% for(School school : schools)
-			{ 
+			{
 			%>
 			<tr>
 				<td><%= school.name %></td>
