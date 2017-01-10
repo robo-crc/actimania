@@ -8,6 +8,7 @@
 .score
 {
 	position: relative;
+	width: 120px;
 }
 
 .ui-spinner
@@ -16,77 +17,85 @@
 }
 
 .ONE_HUNDRED_BLUE
-{top: -184px;/* Left: 51px; */}
+{top: -182px;Left: 30px;}
 
 .FORTY_BLUE
-{top: 458px;Left: 348px;}
+{top: -202px;Left: 328px;}
 
 .THIRTHY_BLUE
-{top: 331px;left: 203px;}
+{top: -349px;left: 182px;}
 
 .TWENTY_BIG_BLUE
-{top: 458px;left: 496px;}
+{top: -243px;left: 477px;}
 
 .TWENTY_SMALL_BLUE
-{top: 458px;left: 181px;}
+{top: -264px;left: 161px;}
 
 .TEN_TOP_BLUE
-{top: 365px;left: 559px;}
+{top: -368px;left: 530px;}
 
 .TEN_BOTTOM_BLUE
-{top: 589px;left: 561px;}
+{top: -167px;left: 540px;}
 
 .FIVE_TOP_BLUE
-{top: 332px;left: 54px;}
+{top: -451px;left: 33px;}
 
 .FIVE_BOTTOM_BLUE
-{top: 584px;left: 54px;}
+{top: -220px;left: 33px;}
 
 .ONE_HUNDRED_YELLOW
-{top: 458px;left: 1101px;}
+{top: -366px;left: 1080px;}
 
 .FORTY_YELLOW
-{top: 455px;left: 809px;}
+{top: -389px;left: 787px;}
 
 .THIRTHY_YELLOW
-{top: 331px;left: 956.5px;}
+{top: -534px;left: 935.5px;}
 
 .TWENTY_BIG_YELLOW
-{top: 452px;left: 659px;}
+{top: -432px;left: 636px;}
 
 .TWENTY_SMALL_YELLOW
-{top: 458px;left: 977px;}
+{top: -448px;left: 955px;}
 
 .TEN_TOP_YELLOW
-{top: 365px;left: 620px;}
+{top: -575px;left: 609px;}
 
 .TEN_BOTTOM_YELLOW
-{top: 590px;left: 623px;}
+{top: -373px;left: 611px;}
 
 .FIVE_TOP_YELLOW
-{top: 332px;left: 1102px;}
+{top: -636px;left: 1081px;}
 
 .FIVE_BOTTOM_YELLOW
-{top: 583px;left: 1100px;}
+{top: -404px;left: 1081px;}
 
 .blueDispenser1
-{top: 337px;left: 355px;}
+{top: -672px;left: 349px;}
 
 .blueDispenser2
-{top: 574px;left: 353px;}
+{top: -455px;left: 346px;}
 
 .yellowDispenser1
-{top: 337px;left: 809px;}
+{top: -711px;left: 802px;}
 
 .yellowDispenser2
-{top: 573px;left: 811px;}
+{top: -496px;left: 803px;}
 
 .blueTeamAllowedSpools
-{top: 262px;left: 347.5px;font-weight: normal;font-size: 25px;}
+{top: -837px;left: 347.5px;font-weight: normal;font-size: 25px;}
 
 .yellowTeamAllowedSpools
-{top: 263px;left: 802px;font-weight: normal;font-size: 25px;}
+{top: -867px;left: 802px;font-weight: normal;font-size: 25px;}
 
 .allowedSpools
-{top: 257px;left: 234px;position: absolute;}
-n: absolute;}
+{top: -897px;left: 234px;position: relative;width: 200px;}
+
+.playingFieldForm
+{height: 500px;}
+
+.submitField
+{top: -554px;position: relative;}
+
+.teamMultiplier
+{top: -507px;left: 524px;position: relative;}}

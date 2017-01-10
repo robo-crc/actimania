@@ -6,7 +6,6 @@ import com.backend.controllers.GameController;
 import com.backend.models.Game;
 import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.GameEventEnum;
-import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TeamEnum;
 import com.backend.models.enums.yearly.AreaPoints;
 import com.backend.models.yearly.Area;
@@ -23,9 +22,26 @@ public class GameYearlyView
 		
 		strBuilder.append("$(document).ready(function(){");
 		
-		strBuilder.append("	$( '.spinner' ).spinner();");
-		strBuilder.append("	$( '.spinner' ).numeric();");
-		strBuilder.append("});");
+		strBuilder.append(" $('.selectColor').change(function()");
+        strBuilder.append("        {");
+        strBuilder.append("            if(this.value == \"EMPTY\")");
+        strBuilder.append("            {");
+        strBuilder.append("                $(this).css(\"background-color\", \"white\");    ");
+        strBuilder.append("            }");
+        strBuilder.append("            else if(this.value == \"BLUE\")");
+        strBuilder.append("            {");
+        strBuilder.append("                $(this).css(\"background-color\", \"lightblue\");");
+        strBuilder.append("            }");
+        strBuilder.append("            else if(this.value == \"YELLOW\")");
+        strBuilder.append("            {");
+        strBuilder.append("                $(this).css(\"background-color\", \"yellow\");");
+        strBuilder.append("            }");
+        strBuilder.append("		});");
+		
+		//strBuilder.append("	$( '.spinner' ).spinner();");
+		//strBuilder.append("	$( '.spinner' ).numeric();");
+		
+        strBuilder.append("});");
 
 		return strBuilder.toString();
 	}
@@ -43,13 +59,18 @@ public class GameYearlyView
 				Locale.FRENCH, 	"Ajouter"
 				), currentLocale);
 
+		LocalizedString strMultiplier = new LocalizedString(ImmutableMap.of( 	
+				Locale.ENGLISH, "Multiplier", 
+				Locale.FRENCH, 	"Multiplicateur"
+				), currentLocale);
+
 		LocalizedString strAllowedSpools = new LocalizedString(ImmutableMap.of( 	
 				Locale.ENGLISH, "ALLOWED<br/>SPOOLS", 
 				Locale.FRENCH, 	"BOBINES<br/>ALLOUÉES"
 				), currentLocale);
 
 		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("<form method=\"post\">");
+		strBuilder.append("<form method=\"post\" class=\"playingFieldForm\">");
 		strBuilder.append("	<input type=\"hidden\" name=\"gameEvent\" value=\"" + GameEventEnum.SCOREBOARD_UPDATED.toString() + "\" />");
 		strBuilder.append("	<input type=\"hidden\" name=\"id\" value=\"" + game._id + "\" />");
 		strBuilder.append("	<h2>" + strScoreboardUpdate + "</h2>");
@@ -61,19 +82,36 @@ public class GameYearlyView
 		OutputField(strBuilder, scoreboard.yellowField, TeamEnum.YELLOW, TeamEnum.BLUE);
 		OutputField(strBuilder, scoreboard.blueField, TeamEnum.BLUE, TeamEnum.YELLOW);
 	
-		strBuilder.append("<input class=\"spinner\" name=\"blueDispenser1\" value=\"" + scoreboard.blueDispenser1 + "\"></input>");
-		strBuilder.append("<input class=\"spinner\" name=\"blueDispenser2\" value=\"" + scoreboard.blueDispenser2 + "\"></input>");
-		strBuilder.append("<input class=\"spinner\" name=\"yellowDispenser1\" value=\"" + scoreboard.yellowDispenser1 + "\"></input>");
-		strBuilder.append("<input class=\"spinner\" name=\"yellowDispenser2\" value=\"" + scoreboard.yellowDispenser2 + "\"></input>");
-		strBuilder.append("<input class=\"spinner\" name=\"blueTeamAllowedSpools\" value=\"" + (scoreboard.blueTeamAllowedSpools - scoreboard.blueDispenser1 - scoreboard.blueDispenser2) + "\"></input>");
-		strBuilder.append("<input class=\"spinner\" name=\"yellowTeamAllowedSpools\" value=\"" + (scoreboard.yellowTeamAllowedSpools - scoreboard.yellowDispenser1 - scoreboard.yellowDispenser2) + "\"></input>");
+		strBuilder.append("<div class=\"score blueDispenser1\"><input class=\"spinner\" name=\"blueDispenser1\" value=\"" + scoreboard.blueDispenser1 + "\"></input></div>");
+		strBuilder.append("<div class=\"score blueDispenser2\"><input class=\"spinner\" name=\"blueDispenser2\" value=\"" + scoreboard.blueDispenser2 + "\"></input></div>");
+		strBuilder.append("<div class=\"score yellowDispenser1\"><input class=\"spinner\" name=\"yellowDispenser1\" value=\"" + scoreboard.yellowDispenser1 + "\"></input></div>");
+		strBuilder.append("<div class=\"score yellowDispenser2\"><input class=\"spinner\" name=\"yellowDispenser2\" value=\"" + scoreboard.yellowDispenser2 + "\"></input></div>");
+		strBuilder.append("<div class=\"score blueTeamAllowedSpools\"><input class=\"spinner\" name=\"blueTeamAllowedSpools\" value=\"" + scoreboard.blueTeamAllowedSpools + "\"></input></div>");
+		strBuilder.append("<div class=\"score yellowTeamAllowedSpools\"><input class=\"spinner\" name=\"yellowTeamAllowedSpools\" value=\"" + scoreboard.yellowTeamAllowedSpools + "\"></input></div>");
+		
+		strBuilder.append("<div class=\"teamMultiplier\">" + strMultiplier.toString() + " ");
+		strBuilder.append("<select name=\"teamMultiplier\">");
+		for(TeamEnum teamEnum : TeamEnum.values())
+		{
+			String isSelected = "";
+			if(scoreboard.hasMultiplier.equals(teamEnum))
+			{
+				isSelected = " selected";
+			}
+			
+			strBuilder.append("   <option name=\"" + teamEnum.name() + "\"" + isSelected + ">" + teamEnum.name() + "</option>");
+		}
+		strBuilder.append("</select></div>");
+
 		strBuilder.append("<div class=\"allowedSpools\">" + strAllowedSpools.toString() + "</div>");
-				
-		strBuilder.append("	<div class=\"clear\"></div>");
+
 		strBuilder.append("	<br/>");
+		strBuilder.append("	<div class=\"submitField\">");
+		
 		strBuilder.append(GameController.outputAddAfterForView(game, currentLocale));
 		strBuilder.append("	<br/>");
 		strBuilder.append("	<input type=\"submit\" value=\"" + strAdd + "\" />");
+		strBuilder.append("</div>");
 		strBuilder.append("</form>");
 		
 		return strBuilder.toString();
