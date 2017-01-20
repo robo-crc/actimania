@@ -13,17 +13,16 @@ public class SchoolFloatSmallest extends School implements ISchoolScore
 	public SchoolFloatSmallest(
 			@JsonProperty("_id") 			ObjectId 	_schoolId,
 			@JsonProperty("name") 			String 		_name,
-			@JsonProperty("division") 		Division	_division,
 			@JsonProperty("floatSmallest") 	Float 		_floatSmallest
 			)
 	{
-		super(_schoolId, _name, _division);
+		super(_schoolId, _name);
 		floatSmallest = _floatSmallest;
 	}
 	
 	public SchoolFloatSmallest(School school, Float _floatSmallest)
 	{
-		super(school._id, school.name, school.division);
+		super(school._id, school.name);
 		floatSmallest = _floatSmallest;
 	}
 	

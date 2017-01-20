@@ -9,10 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
 
 import com.backend.models.School;
+import com.backend.models.SchoolExtra;
 import com.backend.models.enums.Division;
-import com.backend.models.enums.TeamEnum;
 import com.framework.helpers.Helpers;
 import com.framework.models.Essentials;
 
@@ -46,14 +47,20 @@ public class SchoolController extends HttpServlet
 			
 			if(action.equals("create") || action.equals("edit"))
 			{
-				Division division 	= Division.valueOf(Helpers.getParameter("division", String.class, essentials));
-				
-				School school = new School(id, schoolName, division);
+				School school = new School(id, schoolName);
 				essentials.database.save(school);
+				
+				Division division = Division.valueOf(Helpers.getParameter("division", String.class, essentials));
+				DateTime designEvalTime = Helpers.getParameter("designEvalTime", DateTime.class, essentials);
+				DateTime constructionEvalTime = Helpers.getParameter("constructionEvalTime", DateTime.class, essentials);
+				
+				SchoolExtra schoolExtra = new SchoolExtra(school, division, designEvalTime, constructionEvalTime);
+				essentials.database.save(schoolExtra);
 			}
 			else if(action.equals("delete"))
 			{
 				essentials.database.remove(School.class, id);
+				essentials.database.remove(SchoolExtra.class, id);
 			}
 			showPage(essentials);
 		}
@@ -61,7 +68,7 @@ public class SchoolController extends HttpServlet
 	
 	private void showPage(Essentials essentials) throws ServletException, IOException
 	{
-		essentials.request.setAttribute("schools", School.getSchools(essentials));
+		essentials.request.setAttribute("schools", SchoolExtra.getSchoolsExtra(essentials));
 		essentials.request.setAttribute("errorList", essentials.errorList);
 		essentials.request.getRequestDispatcher("/WEB-INF/admin/schools.jsp").forward(essentials.request, essentials.response);
 	}

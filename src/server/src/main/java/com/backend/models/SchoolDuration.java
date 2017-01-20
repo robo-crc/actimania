@@ -14,17 +14,16 @@ public class SchoolDuration extends School implements ISchoolScore
 	public SchoolDuration(
 			@JsonProperty("_id") 		ObjectId 	_schoolId,
 			@JsonProperty("name") 		String 		_name,
-			@JsonProperty("division") 	Division	_division,
 			@JsonProperty("duration") 	Duration 	_duration
 			)
 	{
-		super(_schoolId, _name, _division);
+		super(_schoolId, _name);
 		duration 	= _duration;
 	}
 	
 	public SchoolDuration(School school, Duration _duration)
 	{
-		super(school._id, school.name, school.division);
+		super(school._id, school.name);
 		duration 	= _duration;
 	}
 	

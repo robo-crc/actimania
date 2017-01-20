@@ -21,6 +21,7 @@ SkillsCompetition skillsCompetition = (SkillsCompetition) request.getAttribute("
 Integer posToDisplay	= (Integer) request.getAttribute("posToDisplay");
 Integer numberOfSchools	= (Integer) request.getAttribute("numberOfSchools");
 Boolean isExcluded	= (Boolean) request.getAttribute("isExcluded");
+ArrayList<Game> gamesSkippedInScore = (ArrayList<Game>) request.getAttribute("gamesSkippedInScore"); 
 
 Locale currentLocale = request.getLocale();
 
@@ -263,16 +264,22 @@ for( Game game : games )
 		int nbGames = games.size();
 		out.print("<td class=\"scheduleRoundTd roundDiv\" rowspan=\"" + nbGames + "\"><div class=\"scheduleRound\">" + roundTypeDisplay + "</div></td>");
 	}
+	
+	String skipClass = "";
+	if( gamesSkippedInScore.contains(game)) 
+	{ 
+		skipClass = " schoolGameSkippedInScore";
+	}
 	%>
 
-	<td class="center scheduleGameNumber"><a class="scheduleGame" href="game?gameId=<%= game._id %>"><%= strGame + " " + game.gameNumber %></a><br/>
+	<td class="center scheduleGameNumber"><a class="scheduleGame<%= skipClass %>" href="game?gameId=<%= game._id %>"><%= strGame + " " + game.gameNumber %></a><br/>
 	<%= Helpers.dateTimeFormatter.print(game.scheduledTime) %>
 	<% if(gameType != GameTypeEnum.PRELIMINARY) { out.print( "<br/>" + strGroup + " " + game.playoffGroup ); } %>
 	</td>
-	
+
 	<td class="center schoolScore">
-		<div class="<% if( game.blueTeam.contains(school) ) { out.write("blueBackgroundColor"); } else { out.write("yellowBackgroundColor"); }   %> scheduleColor"></div>
-		<div class="schedulePoints"><%= schoolScore %></div>
+		<div class="<% if( game.blueTeam.contains(school) ) { out.write("blueBackgroundColor"); } else { out.write("yellowBackgroundColor"); } %> scheduleColor"></div>
+		<div class="schedulePoints <%= skipClass %> "><%= schoolScore %></div>
 		<div class="schedulePointsStr"><%= pointsStr %></div>
 	</td>
 	<td class="center schoolScore">

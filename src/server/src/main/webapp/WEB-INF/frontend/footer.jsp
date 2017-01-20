@@ -37,6 +37,13 @@ LocalizedString strCRCFooter = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "CRC", 
 		Locale.FRENCH, 	"CRC"
 		), request.getLocale());
+
+LocalizedString strPrinterFriendly = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Printer friendly page", 
+		Locale.FRENCH, 	"Page pour imprimer"
+		), request.getLocale());
+if(request.getParameter("PrinterFriendly") == null) 
+{ 
 %>
 
 <div class="footer grayBackgroundColor">
@@ -47,15 +54,18 @@ LocalizedString strCRCFooter = new LocalizedString(ImmutableMap.of(
 		<a href="https://www.facebook.com/roboCRC"><%= strFacebookFooter %></a><br/>
 		<a href="http://www.instagram.com/robocrc"><%= strInstagramFooter %></a><br/>
 		<a href="http://www.robo-crc.ca/"><%= strCRCFooter %></a><br/>
+		<a href="#" onclick="GoToURLWithParam('PrinterFriendly=true')"><%= strPrinterFriendly %></a><br/>
 	</div>
 	<div class="footerFred">
 		<a href="https://ca.linkedin.com/pub/fr%C3%A9d%C3%A9ric-joanis/3/b06/764" target="_blank">
 			<img class="footerLinkedin" src="images/linkedinWhite.svg" />
 		</a>
-		<a href="https://github.com/fredericjoanis/actimania" target="_blank">
+		<a href="https://github.com/robo-crc/scoreboard" target="_blank">
 			<img class="footerGithub" src="images/githubWhite.png" />
 		</a>
 		<br/>
 		<a href="https://ca.linkedin.com/pub/fr%C3%A9d%C3%A9ric-joanis/3/b06/764" target="_blank"><%= strFred %></a>
 	</div>
 </div>
+
+<% } // PrinterFriendly %>

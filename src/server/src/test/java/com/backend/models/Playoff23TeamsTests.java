@@ -44,7 +44,7 @@ public class Playoff23TeamsTests
 		ArrayList<School> schools = new ArrayList<School>();
 		for(int i = 1; i <= 23; i++)
 		{
-			schools.add(new School(new ObjectId(), String.valueOf(i), Division.ONE));
+			schools.add(new School(new ObjectId(), String.valueOf(i)));
 		}
 		
 		Tournament tournament = new Tournament(schools, new ArrayList<Game>());

@@ -11,7 +11,6 @@ import org.junit.Test;
 import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.StartGameEvent;
-import com.backend.models.enums.Division;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.GameTypeEnum;
 import com.framework.helpers.Database;
@@ -41,13 +40,13 @@ public class GameTests
 		ArrayList<School> blueTeam = new ArrayList<School>();
 		ArrayList<School> yellowTeam = new ArrayList<School>();
 		
-		blueTeam.add(new School(null, "A", Division.ONE));
-		blueTeam.add(new School(null, "B", Division.ONE));
-		blueTeam.add(new School(null, "C", Division.ONE));
+		blueTeam.add(new School(null, "A"));
+		blueTeam.add(new School(null, "B"));
+		blueTeam.add(new School(null, "C"));
 		
-		yellowTeam.add(new School(null, "D", Division.ONE));
-		yellowTeam.add(new School(null, "E", Division.ONE));
-		yellowTeam.add(new School(null, "F", Division.ONE));
+		yellowTeam.add(new School(null, "D"));
+		yellowTeam.add(new School(null, "E"));
+		yellowTeam.add(new School(null, "F"));
 		
 		ArrayList<GameEvent> gameEvents = new ArrayList<GameEvent>();
 		gameEvents.add(new StartGameEvent(DateTime.now()));

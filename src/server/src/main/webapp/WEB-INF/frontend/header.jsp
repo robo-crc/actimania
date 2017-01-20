@@ -23,6 +23,8 @@ LocalizedString strSchedule = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"HORAIRE"
 		), request.getLocale());
 
+if(request.getParameter("PrinterFriendly") == null) 
+{
 %>
 
 <div class="header">
@@ -42,3 +44,5 @@ LocalizedString strSchedule = new LocalizedString(ImmutableMap.of(
 		<a class="headerPlayoff" href="playoff"><%= strPlayoff %></a>
 	</div>
 </div>
+
+<%} // PrinterFriendly %>

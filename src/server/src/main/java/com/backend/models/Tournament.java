@@ -132,7 +132,7 @@ public class Tournament
 		preliminarySchoolScore.clear();
 	}
 	
-	public int getRoundScoreNoCache(final School school, GameTypeEnum gameType)
+	public ArrayList<Game> getSortedGamesNoCache(final School school, GameTypeEnum gameType)
 	{
 		ArrayList<Game> gamesForType = getGamesPlayed(games, school, gameType);
 		
@@ -171,16 +171,23 @@ public class Tournament
 	        }
 	    });
 		
+		return gamesForType;
+	}
+	
+	public int getRoundScoreNoCache(final School school, GameTypeEnum gameType)
+	{
 		int skipGames = 0;
 		if(gameType == GameTypeEnum.PRELIMINARY)
 		{
 			skipGames = PRELIMINARY_GAMES_SKIPPED_IN_SCORE;
 		}
 		
+		ArrayList<Game> sortedGames = getSortedGamesNoCache(school, gameType);
+		
 		int points = 0;
-		for(int i = 0; i < gamesForType.size() - skipGames; i++)
+		for(int i = 0; i < sortedGames.size() - skipGames; i++)
 		{
-			points += gamesForType.get(i).getScore(school);
+			points += sortedGames.get(i).getScore(school);
 		}
 		
 		return points;

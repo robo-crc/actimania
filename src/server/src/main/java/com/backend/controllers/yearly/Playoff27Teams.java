@@ -10,7 +10,7 @@ import com.backend.models.SchoolInteger;
 import com.backend.models.Tournament;
 import com.backend.models.enums.GameTypeEnum;
 
-public class Playoff23Teams implements IPlayoff
+public class Playoff27Teams implements IPlayoff
 {
 	public ArrayList<PlayoffGroup> GenerateNextRound(Tournament tournament, PlayoffRound previousRound, int groupNo, GameTypeEnum gameType, ArrayList<School> preliminaryRanking, ArrayList<School> excludedSchools)
 	{
@@ -19,9 +19,10 @@ public class Playoff23Teams implements IPlayoff
 		switch (gameType)
 		{
 		// REPECHAGE
-		// A 9  12 17 20 23
-		// B 10 13 15 19 22
-		// C 11 14 16 18 21
+		// A 15 19 23 27
+		// B 14 18 22 26
+		// C 13 17 21 25
+		// D 12 16 20 24
 		case PLAYOFF_REPECHAGE:
 		{
 			ArrayList<School> schoolsPoolA = new ArrayList<School>();

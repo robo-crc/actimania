@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.bson.types.ObjectId;
 
+import com.backend.models.Game;
 import com.backend.models.Playoff;
 import com.backend.models.School;
 import com.backend.models.SkillsCompetition;
@@ -50,6 +51,13 @@ public class SchoolController extends HttpServlet
 			{
 				posToDisplay = preliminaryRankingForPlayoff.indexOf(school) + 1;
 			}
+			
+			ArrayList<Game> sortedGames = tournament.getSortedGamesNoCache(school, GameTypeEnum.PRELIMINARY);
+			ArrayList<Game> gamesSkippedInScore = new ArrayList<Game>();
+			for(int i = Tournament.GAME_PER_SCHOOL - Tournament.PRELIMINARY_GAMES_SKIPPED_IN_SCORE; i < sortedGames.size(); i++)
+			{
+				gamesSkippedInScore.add(sortedGames.get(i));
+			}
 
 			essentials.request.setAttribute("tournament", tournament);
 			essentials.request.setAttribute("school", school);
@@ -59,6 +67,7 @@ public class SchoolController extends HttpServlet
 			essentials.request.setAttribute("posToDisplay", posToDisplay);
 			essentials.request.setAttribute("numberOfSchools", preliminaryRankingForPlayoff.size());
 			essentials.request.setAttribute("isExcluded", isExcluded);
+			essentials.request.setAttribute("gamesSkippedInScore", gamesSkippedInScore);
 			essentials.request.getRequestDispatcher("/WEB-INF/frontend/school.jsp").forward(essentials.request, essentials.response);
 		}
 	}

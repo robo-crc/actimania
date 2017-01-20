@@ -329,7 +329,8 @@ if( gameStates.size() == 0)
 			<br/>
 			<div class="clear"></div>
 <%
-if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME)
+// Only play horn for the 10 seconds following the last game event. After that we assume it's correction being made.
+if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME && (DateTime.now().getSecondOfDay() - state.lastGameEvent.getTime().getSecondOfDay() < 10) )
 {
 %>
 	<audio autoplay>

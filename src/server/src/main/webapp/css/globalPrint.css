@@ -1,0 +1,359 @@
+html
+{
+	width: 1190px;
+	margin-left: auto;
+	margin-right: auto;
+	font-weight: lighter;
+	font-family: 'Open Sans', sans-serif;
+}
+
+h1
+{
+	text-align: center;
+	font-size: 52px;
+}
+
+h2
+{
+	text-align: center;
+	font-size: 30px;
+}
+
+table
+{
+	border-spacing: 7px;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: auto;
+	padding-bottom: 35px;
+}
+
+td
+{
+	vertical-align: middle;
+}
+
+td a
+{
+	color: black;
+    text-decoration: none;
+}
+
+td a:hover
+{
+	text-decoration: underline;
+}
+
+th
+{
+	color: black;
+	text-align: center;
+}
+
+
+ul 
+{
+  list-style-type: none;
+  margin:0;
+  padding:10px 0;
+}
+
+ul li 
+{
+  float: left;
+  list-style-type: none;
+  margin: 0 6px;
+}
+
+
+.clear
+{
+	clear: both;
+}
+
+.center
+{
+	text-align: center;
+}
+
+/* Schedule */
+.scheduleGame
+{
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+.scheduleRound, .scheduleRoundTd
+{
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+.scheduleRoundTd
+{
+	max-width: 50px;
+	position: relative;
+	width: 50px;
+}
+
+.scheduleRound
+{
+	transform:rotate(-90deg);
+	-ms-transform: rotate(-90deg); /* IE 9 */
+    
+	-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */
+	font-size: 22px;
+	position: absolute;
+	margin-left: 22px;
+}
+
+.schedulePointsStr
+{
+	font-size: 1.5em;
+}
+
+.scheduleSchoolDiv
+{
+    vertical-align: middle;
+	
+    width: 310px;
+    height: 32px;
+}
+
+.scheduleSchoolText
+{
+    margin-top: 7px;
+	
+    position: absolute;
+    padding-left: 10px;
+    font-size: 14px;
+}
+
+.scheduleSchoolInner
+{
+	width: 32px;
+    float: left;
+    text-align: center;
+}
+
+.schedulePoints
+{
+	font-size: 2em;
+	font-weight: bold;
+}
+
+.scheduleGameNumber
+{
+	width: 210px;
+	min-width: 210px;
+}
+
+.scheduleTeam
+{
+	width: 340px;
+	min-width:340px;
+}
+
+.scheduleScore
+{
+	width: 70px;
+	min-width:70px;
+}
+
+.scheduleColor
+{
+	width: 10px;
+	float: left;
+	height: 100%;
+	overflow: auto;
+}
+
+.scheduleSchool
+{
+	float: left;
+	position: relative;
+	vertical-align: middle;
+	padding-left: 12px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+/* Ranking */
+
+.rank
+{
+	border-spacing: 3px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.rank th
+{
+    margin-bottom: 7px;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-weight: lighter;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.rank td
+{
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.rankAlignLeft
+{
+	padding-left: 7px;
+	padding-right: 7px;
+	padding-right: 20px;
+}
+
+.excludedSchool
+{
+	text-decoration: line-through;
+}
+
+/* School */
+.schoolScore
+{
+	width: 140px;
+}
+
+.schoolTable
+{
+    margin: 0;
+}
+
+.schoolCompetition
+{
+	width: 450px;
+}
+
+.schoolH1
+{    
+}
+
+.schoolLogo
+{left: -50%;position: relative;}
+
+.schoolLogo img
+{
+    margin-top: 40px;
+    margin-right: 20px;
+}
+
+.schoolLogoChild
+{
+    position: relative;
+	
+    left: 50%;
+}
+
+.schoolBar
+{
+    margin-top: 145px;
+}
+
+.schoolGameSkippedInScore
+{
+	text-decoration: line-through;
+}
+
+/* Game */
+.gameH1
+{
+    padding-top: 0px;
+	
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+.gameH2
+{
+    margin-top: 0px;
+	
+    font-weight: normal;
+}
+
+.gameH2NotStarted
+{
+    font-weight: normal;
+    margin-top: 80px;
+}
+
+.gameSchoolInner
+{
+    width: 32px;
+    float: left;
+    text-align: center;
+    padding-left: 30px;
+    padding-right: 10px;
+}
+
+.gameSchoolDiv
+{
+    vertical-align: middle;
+	
+    width: 310px;
+    height: 32px;
+    padding-bottom: 10px;
+}
+
+.gameMisconduct
+{
+	text-decoration: line-through !important;
+}
+
+.gameNumberPage
+{
+	width: 300px;
+}
+
+.gameNumberH1
+{
+	
+    margin-bottom: 0px;
+}
+
+.gameNumberLiveStr
+{
+    margin-top: 30px;
+    margin-bottom: 0px;
+}
+
+.gameNumberBar
+{
+	margin-bottom: 0px;
+}
+
+.gameScoreBlue
+{
+	margin-right: 2px !important;
+}
+
+/* Live */
+.liveOuter
+{
+    position: relative;
+    height: 100%;
+}
+
+.liveGameNumber
+{
+    margin-top: 135px;
+	
+    height: 250px;
+    width: 300px;
+    margin-left: 50px;
+}
+
+.overallFrame
+{
+	margin-left: -450px;
+}}eft: -450px;
+}}}}}}}}}}}t: -450px;
+}}}}}}}}}}}}}t: -450px;
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}

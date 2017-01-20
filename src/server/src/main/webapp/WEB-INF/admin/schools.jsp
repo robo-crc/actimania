@@ -1,3 +1,5 @@
+<%@page import="com.framework.helpers.Helpers"%>
+<%@page import="com.backend.models.SchoolExtra"%>
 <%@page import="com.backend.models.enums.Division"%>
 <%@page import="com.backend.models.School"%>
 <%@page import="java.util.Set"%>
@@ -13,7 +15,7 @@
 ArrayList<LocalizedString> errorList = (ArrayList<LocalizedString>) request.getAttribute("errorList"); 
 
 @SuppressWarnings("unchecked")
-ArrayList<School> schools = (ArrayList<School>) request.getAttribute("schools");
+ArrayList<SchoolExtra> schools = (ArrayList<SchoolExtra>) request.getAttribute("schools");
 
 Locale currentLocale = request.getLocale();
 
@@ -40,6 +42,16 @@ LocalizedString strSchoolName = new LocalizedString(ImmutableMap.of(
 LocalizedString strDivision = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Division", 
 		Locale.FRENCH, 	"Division"
+		), currentLocale);
+
+LocalizedString strDesignEvalTime = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Design evaluation time", 
+		Locale.FRENCH, 	"Heure évaluation du design"
+		), currentLocale);
+
+LocalizedString strConstructionEvalTime = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Construction evaluation time", 
+		Locale.FRENCH, 	"Heure évaluation construction"
 		), currentLocale);
 
 %>
@@ -73,6 +85,11 @@ LocalizedString strDivision = new LocalizedString(ImmutableMap.of(
 				</option>
 		 <% } %>
 		</select>
+		
+		<div><%= strDesignEvalTime %></div>
+		<input type="datetime-local" name="designEvalTime" /> 
+		<div><%= strConstructionEvalTime %></div>
+		<input type="datetime-local" name="constructionEvalTime" /> 
 		<br/>
 		<input type="submit" value="<%= strAddSchool %>" />
 	</form>
@@ -80,7 +97,7 @@ LocalizedString strDivision = new LocalizedString(ImmutableMap.of(
 	<h1><%= strEditSchool %></h1>
 	
 	<% 
-	for( School school : schools)
+	for( SchoolExtra school : schools)
 	{
 	%>
 		<form method="post">
@@ -96,6 +113,12 @@ LocalizedString strDivision = new LocalizedString(ImmutableMap.of(
 					</option>
 			 <% } %>
 			</select>
+			<div><%= strDesignEvalTime %></div>
+			
+			<input type="datetime-local" name="designEvalTime" value="<%= Helpers.html5DateTimePicker.print(school.designEvalTime) %>"/> 
+			<div><%= strConstructionEvalTime %></div>
+			<input type="datetime-local" name="constructionEvalTime" value="<%= Helpers.html5DateTimePicker.print(school.constructionEvalTime) %>" /> 
+				
 			<input type="submit" value="<%= strEditSchool %>" />
 		</form>
 		

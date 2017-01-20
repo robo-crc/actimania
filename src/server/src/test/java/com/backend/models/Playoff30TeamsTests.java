@@ -56,7 +56,7 @@ public class Playoff30TeamsTests
 		ArrayList<School> schools = new ArrayList<School>();
 		for(int i = 1; i <= 30; i++)
 		{
-			schools.add(new School(new ObjectId(), String.valueOf(i), Division.ONE));
+			schools.add(new School(new ObjectId(), String.valueOf(i)));
 		}
 
 		ArrayList<PlayoffGroup> playoffGroups = Playoff30Teams.generateRepechageRound(schools);
@@ -100,7 +100,7 @@ public class Playoff30TeamsTests
 		Validate.isTrue(playoffGroups.get(5).schools.get(2).name.equals("19"));
 		Validate.isTrue(playoffGroups.get(5).schools.get(3).name.equals("25"));
 
-		schools.add(new School(new ObjectId(), "31", Division.ONE));
+		schools.add(new School(new ObjectId(), "31"));
 		playoffGroups = Playoff30Teams.generateRepechageRound(schools);
 		
 		Validate.isTrue(playoffGroups.get(0).schools.get(0).name.equals("7"));
@@ -134,7 +134,7 @@ public class Playoff30TeamsTests
 		Validate.isTrue(playoffGroups.get(5).schools.get(3).name.equals("26"));
 		Validate.isTrue(playoffGroups.get(5).schools.get(4).name.equals("19"));
 		
-		schools.add(new School(new ObjectId(), "32", Division.ONE));
+		schools.add(new School(new ObjectId(), "32"));
 		playoffGroups = Playoff30Teams.generateRepechageRound(schools);
 		
 		Validate.isTrue(playoffGroups.get(0).schools.get(0).name.equals("7"));
@@ -176,7 +176,7 @@ public class Playoff30TeamsTests
 		ArrayList<School> schools = new ArrayList<School>();
 		for(int i = 1; i <= 30; i++)
 		{
-			schools.add(new School(new ObjectId(), String.valueOf(i), Division.ONE));
+			schools.add(new School(new ObjectId(), String.valueOf(i)));
 		}
 
 		ArrayList<PlayoffGroup> repechageGroups = Playoff30Teams.generateRepechageRound(schools);
@@ -277,7 +277,7 @@ public class Playoff30TeamsTests
 		Validate.isTrue(games.get(17).yellowTeam.get(1).name.equals("19"));
 		
 		
-		schools.add(new School(new ObjectId(), "31", Division.ONE));
+		schools.add(new School(new ObjectId(), "31"));
 		
 		repechageGroups = Playoff30Teams.generateRepechageRound(schools);		
 		playoffRound = new PlayoffRound(null, repechageGroups, GameTypeEnum.PLAYOFF_REPECHAGE);
@@ -405,7 +405,7 @@ public class Playoff30TeamsTests
 				}
 				id += String.valueOf(i);
 			}
-			School school = new School(new ObjectId(id), String.valueOf(i), Division.ONE);
+			School school = new School(new ObjectId(id), String.valueOf(i));
 			schools.add(school);
 		}
 		

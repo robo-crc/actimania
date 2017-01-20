@@ -64,7 +64,7 @@ public class Playoff
 			groupNo = previousRound.playoffGroups.get(previousRound.playoffGroups.size() - 1).groupNo + 1;
 		}
 		
-		ArrayList<PlayoffGroup> playoffGroups = iPlayoff.GenerateNextRound(tournament, previousRound, groupNo, gameType, preliminaryRanking);
+		ArrayList<PlayoffGroup> playoffGroups = iPlayoff.GenerateNextRound(tournament, previousRound, groupNo, gameType, preliminaryRanking, excludedSchools);
 		
 		return new PlayoffRound(null, playoffGroups, gameType);
 	}

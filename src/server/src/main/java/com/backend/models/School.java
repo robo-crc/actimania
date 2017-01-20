@@ -16,16 +16,13 @@ public class School implements Comparable<School>
 {
 	public final ObjectId 			_id;
 	public final String 			name;
-	public final Division 			division;
 	
 	public School(	@JsonProperty("_id") 		ObjectId 	_schoolId,
-					@JsonProperty("name") 		String 		_name,
-					@JsonProperty("division") 	Division	_division
+					@JsonProperty("name") 		String 		_name
 					)
 	{
 		_id 		= _schoolId;
 		name 		= _name;
-		division 	= _division;
 	}
 
 	@Override

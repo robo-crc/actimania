@@ -40,7 +40,7 @@ public class SchoolTests
 		
 		for(int i = 0; i < 5; i++)
 		{
-			database.save(new School(null, String.valueOf(i), Division.ONE));
+			database.save(new School(null, String.valueOf(i)));
 		}
 		
 		schools = School.getSchools(essentials);

@@ -17,12 +17,12 @@ public class PlayoffGroup
 		groupNo = _groupNo;
 	}
 	
-	public ArrayList<School> getSchoolsRanked(ArrayList<SchoolInteger> rankedSchools)
+	public ArrayList<School> getSchoolsRanked(ArrayList<SchoolInteger> rankedSchools, ArrayList<School> excludedSchools)
 	{
 		ArrayList<School> toNextRound = new ArrayList<School>();
 		for(School school : rankedSchools)
 		{
-			if(schools.contains(school))
+			if(schools.contains(school) && !excludedSchools.contains(school))
 			{
 				toNextRound.add(school);
 			}

@@ -12,17 +12,16 @@ public class SchoolInteger extends School implements ISchoolScore
 	public SchoolInteger(
 			@JsonProperty("_id") 		ObjectId 	_schoolId,
 			@JsonProperty("name") 		String 		_name,
-			@JsonProperty("division") 	Division	_division,
 			@JsonProperty("integer") 	Integer 	_integer
 			)
 	{
-		super(_schoolId, _name, _division);
+		super(_schoolId, _name);
 		integer 	= _integer;
 	}
 	
 	public SchoolInteger(School school, Integer _integer)
 	{
-		super(school._id, school.name, school.division);
+		super(school._id, school.name);
 		integer 	= _integer;
 	}
 	

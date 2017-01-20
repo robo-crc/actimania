@@ -6,7 +6,13 @@
 <!-- 
 <link href='css/open-sans.css' rel='stylesheet' type='text/css'>
 -->
+
+<% if(request.getParameter("PrinterFriendly") == null) 
+{ %> 
 <link rel="stylesheet" type="text/css" href="css/global.css"/>
+<% } else { %>
+<link rel="stylesheet" type="text/css" href="css/globalPrint.css"/>
+<% } %>
 <script type="text/javascript" src="jquery/jquery.js"></script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -16,4 +22,15 @@
 
   ga('create', 'UA-58398665-1', 'auto');
   ga('send', 'pageview');
+</script>
+
+<script>
+function GoToURLWithParam(param)
+{
+	_url = location.href;
+	_url += (_url.split('?')[1] ? '&' : '?') + param;
+	
+	window.open(_url, '_blank');
+	return false;
+}
 </script>

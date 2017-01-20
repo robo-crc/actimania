@@ -27,6 +27,7 @@ public class Helpers
 {
 	public static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
 	public static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(DATE_FORMAT).withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone("EST")));
+	public static final DateTimeFormatter html5DateTimePicker = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm").withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone("EST")));
 	public static final PeriodFormatter stopwatchFormatter = new PeriodFormatterBuilder()
 	.printZeroAlways()
 	.appendMinutes()
@@ -62,8 +63,7 @@ public class Helpers
 			
 			if(entityType == DateTime.class)
 			{
-				//Long param = Long.valueOf(safeParam);
-				DateTime dateTime = dateTimeFormatter.parseDateTime(safeParam);
+				DateTime dateTime = html5DateTimePicker.parseDateTime(safeParam);
 				
 				return (T)dateTime;
 			}

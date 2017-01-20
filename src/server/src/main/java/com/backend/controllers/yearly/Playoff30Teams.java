@@ -100,7 +100,7 @@ public class Playoff30Teams implements IPlayoff
 		return playoffGroups;
 	}
 			
-	public ArrayList<PlayoffGroup> GenerateNextRound(Tournament tournament, PlayoffRound previousRound, int groupNo, GameTypeEnum gameType, ArrayList<School> preliminaryRanking)
+	public ArrayList<PlayoffGroup> GenerateNextRound(Tournament tournament, PlayoffRound previousRound, int groupNo, GameTypeEnum gameType, ArrayList<School> preliminaryRanking, ArrayList<School> excludedSchools)
 	{
 		ArrayList<PlayoffGroup> playoffGroups = new ArrayList<PlayoffGroup>();
 		
@@ -111,12 +111,12 @@ public class Playoff30Teams implements IPlayoff
 		case PLAYOFF_QUARTER:
 		{
 			ArrayList<SchoolInteger> repechageResults = tournament.getRoundRanking(GameTypeEnum.PLAYOFF_REPECHAGE);
-			ArrayList<School> schoolsPoolA = previousRound.playoffGroups.get(0).getSchoolsRanked(repechageResults);
-			ArrayList<School> schoolsPoolB = previousRound.playoffGroups.get(1).getSchoolsRanked(repechageResults);
-			ArrayList<School> schoolsPoolC = previousRound.playoffGroups.get(2).getSchoolsRanked(repechageResults);
-			ArrayList<School> schoolsPoolD = previousRound.playoffGroups.get(3).getSchoolsRanked(repechageResults);
-			ArrayList<School> schoolsPoolE = previousRound.playoffGroups.get(4).getSchoolsRanked(repechageResults);
-			ArrayList<School> schoolsPoolF = previousRound.playoffGroups.get(5).getSchoolsRanked(repechageResults);
+			ArrayList<School> schoolsPoolA = previousRound.playoffGroups.get(0).getSchoolsRanked(repechageResults, excludedSchools);
+			ArrayList<School> schoolsPoolB = previousRound.playoffGroups.get(1).getSchoolsRanked(repechageResults, excludedSchools);
+			ArrayList<School> schoolsPoolC = previousRound.playoffGroups.get(2).getSchoolsRanked(repechageResults, excludedSchools);
+			ArrayList<School> schoolsPoolD = previousRound.playoffGroups.get(3).getSchoolsRanked(repechageResults, excludedSchools);
+			ArrayList<School> schoolsPoolE = previousRound.playoffGroups.get(4).getSchoolsRanked(repechageResults, excludedSchools);
+			ArrayList<School> schoolsPoolF = previousRound.playoffGroups.get(5).getSchoolsRanked(repechageResults, excludedSchools);
 			
 			ArrayList<School> schoolsPoolG = new ArrayList<School>();
 			schoolsPoolG.add(preliminaryRanking.get(3 - 1));
@@ -150,10 +150,10 @@ public class Playoff30Teams implements IPlayoff
 		case PLAYOFF_DEMI:
 		{
 			ArrayList<SchoolInteger> quarterResults = tournament.getRoundRanking(GameTypeEnum.PLAYOFF_QUARTER);
-			ArrayList<School> schoolsPoolG = previousRound.playoffGroups.get(0).getSchoolsRanked(quarterResults);
-			ArrayList<School> schoolsPoolH = previousRound.playoffGroups.get(1).getSchoolsRanked(quarterResults);
-			ArrayList<School> schoolsPoolI = previousRound.playoffGroups.get(2).getSchoolsRanked(quarterResults);
-			ArrayList<School> schoolsPoolJ = previousRound.playoffGroups.get(3).getSchoolsRanked(quarterResults);
+			ArrayList<School> schoolsPoolG = previousRound.playoffGroups.get(0).getSchoolsRanked(quarterResults, excludedSchools);
+			ArrayList<School> schoolsPoolH = previousRound.playoffGroups.get(1).getSchoolsRanked(quarterResults, excludedSchools);
+			ArrayList<School> schoolsPoolI = previousRound.playoffGroups.get(2).getSchoolsRanked(quarterResults, excludedSchools);
+			ArrayList<School> schoolsPoolJ = previousRound.playoffGroups.get(3).getSchoolsRanked(quarterResults, excludedSchools);
 			
 
 			ArrayList<School> schoolsPoolK = new ArrayList<School>();
@@ -177,8 +177,8 @@ public class Playoff30Teams implements IPlayoff
 		case PLAYOFF_FINAL:
 		{
 			ArrayList<SchoolInteger> demiResults = tournament.getRoundRanking(GameTypeEnum.PLAYOFF_DEMI);
-			ArrayList<School> schoolsPoolK = previousRound.playoffGroups.get(0).getSchoolsRanked(demiResults);
-			ArrayList<School> schoolsPoolL = previousRound.playoffGroups.get(1).getSchoolsRanked(demiResults);
+			ArrayList<School> schoolsPoolK = previousRound.playoffGroups.get(0).getSchoolsRanked(demiResults, excludedSchools);
+			ArrayList<School> schoolsPoolL = previousRound.playoffGroups.get(1).getSchoolsRanked(demiResults, excludedSchools);
 
 			ArrayList<School> schoolsPoolM = new ArrayList<School>();
 			schoolsPoolM.add(schoolsPoolK.get(0));

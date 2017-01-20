@@ -33,10 +33,10 @@ public class CompetitionTests
 	@Test
 	public void compeitionTest()
 	{
-		SchoolInteger school1 = new SchoolInteger(new School(new ObjectId("111111111111111111111111"), "1", Division.ONE), 1);
-		SchoolInteger school2 = new SchoolInteger(new School(new ObjectId("222222222222222222222222"), "2", Division.ONE), 2);
-		SchoolInteger school3 = new SchoolInteger(new School(new ObjectId("333333333333333333333333"), "3", Division.ONE), 3);
-		SchoolInteger school4 = new SchoolInteger(new School(new ObjectId("444444444444444444444444"), "4", Division.ONE), 4);
+		SchoolInteger school1 = new SchoolInteger(new School(new ObjectId("111111111111111111111111"), "1"), 1);
+		SchoolInteger school2 = new SchoolInteger(new School(new ObjectId("222222222222222222222222"), "2"), 2);
+		SchoolInteger school3 = new SchoolInteger(new School(new ObjectId("333333333333333333333333"), "3"), 3);
+		SchoolInteger school4 = new SchoolInteger(new School(new ObjectId("444444444444444444444444"), "4"), 4);
 		
 		ArrayList<SchoolInteger> defaultOrder = new ArrayList<SchoolInteger>();
 		defaultOrder.add(school1);
@@ -44,10 +44,10 @@ public class CompetitionTests
 		defaultOrder.add(school3);
 		defaultOrder.add(school4);
 		
-		school1 = new SchoolInteger(new School(new ObjectId("111111111111111111111111"), "1", Division.ONE), 4);
-		school2 = new SchoolInteger(new School(new ObjectId("222222222222222222222222"), "2", Division.ONE), 3);
-		school3 = new SchoolInteger(new School(new ObjectId("333333333333333333333333"), "3", Division.ONE), 2);
-		school4 = new SchoolInteger(new School(new ObjectId("444444444444444444444444"), "4", Division.ONE), 1);
+		school1 = new SchoolInteger(new School(new ObjectId("111111111111111111111111"), "1"), 4);
+		school2 = new SchoolInteger(new School(new ObjectId("222222222222222222222222"), "2"), 3);
+		school3 = new SchoolInteger(new School(new ObjectId("333333333333333333333333"), "3"), 2);
+		school4 = new SchoolInteger(new School(new ObjectId("444444444444444444444444"), "4"), 1);
 		
 		ArrayList<SchoolInteger> robotDesign = new ArrayList<SchoolInteger>();
 		robotDesign.add(school1);
@@ -55,10 +55,10 @@ public class CompetitionTests
 		robotDesign.add(school3);
 		robotDesign.add(school4);
 		
-		school1 = new SchoolInteger(new School(new ObjectId("111111111111111111111111"), "1", Division.ONE), 3);
-		school2 = new SchoolInteger(new School(new ObjectId("222222222222222222222222"), "2", Division.ONE), 1);
-		school3 = new SchoolInteger(new School(new ObjectId("333333333333333333333333"), "3", Division.ONE), 2);
-		school4 = new SchoolInteger(new School(new ObjectId("444444444444444444444444"), "4", Division.ONE), 4);
+		school1 = new SchoolInteger(new School(new ObjectId("111111111111111111111111"), "1"), 3);
+		school2 = new SchoolInteger(new School(new ObjectId("222222222222222222222222"), "2"), 1);
+		school3 = new SchoolInteger(new School(new ObjectId("333333333333333333333333"), "3"), 2);
+		school4 = new SchoolInteger(new School(new ObjectId("444444444444444444444444"), "4"), 4);
 		
 		ArrayList<SchoolInteger> video = new ArrayList<SchoolInteger>();
 		video.add(school2);
@@ -66,10 +66,10 @@ public class CompetitionTests
 		video.add(school1);
 		video.add(school4);
 		
-		school1 = new SchoolInteger(new School(new ObjectId("111111111111111111111111"), "1", Division.ONE), 1);
-		school2 = new SchoolInteger(new School(new ObjectId("222222222222222222222222"), "2", Division.ONE), 1);
-		school3 = new SchoolInteger(new School(new ObjectId("333333333333333333333333"), "3", Division.ONE), 3);
-		school4 = new SchoolInteger(new School(new ObjectId("444444444444444444444444"), "4", Division.ONE), 0);
+		school1 = new SchoolInteger(new School(new ObjectId("111111111111111111111111"), "1"), 1);
+		school2 = new SchoolInteger(new School(new ObjectId("222222222222222222222222"), "2"), 1);
+		school3 = new SchoolInteger(new School(new ObjectId("333333333333333333333333"), "3"), 3);
+		school4 = new SchoolInteger(new School(new ObjectId("444444444444444444444444"), "4"), 0);
 		
 		ArrayList<SchoolInteger> kiosk = new ArrayList<SchoolInteger>();
 		kiosk.add(school1);

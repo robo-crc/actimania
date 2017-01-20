@@ -6,6 +6,6 @@ public class PlayoffYearly
 {
 	public static IPlayoff getPlayoff()
 	{
-		return new Playoff23Teams();
+		return new Playoff27Teams();
 	}
 }
