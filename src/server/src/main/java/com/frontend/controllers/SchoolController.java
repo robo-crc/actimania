@@ -14,6 +14,7 @@ import org.bson.types.ObjectId;
 import com.backend.models.Game;
 import com.backend.models.Playoff;
 import com.backend.models.School;
+import com.backend.models.SchoolExtra;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
 import com.backend.models.enums.GameTypeEnum;
@@ -33,7 +34,7 @@ public class SchoolController extends HttpServlet
 	{
 		try(Essentials essentials = Essentials.createEssentials(request,  response))
 		{
-			School school = essentials.database.findOne(School.class, Helpers.getParameter("schoolId", ObjectId.class, essentials));
+			SchoolExtra school = essentials.database.findOne(SchoolExtra.class, Helpers.getParameter("schoolId", ObjectId.class, essentials));
 			
 			Tournament tournament = Tournament.getTournament(essentials);
 			SkillsCompetition skillsCompetition = SkillsCompetition.get(essentials.database);

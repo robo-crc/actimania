@@ -436,8 +436,8 @@ table.wrapper
 .gameH2
 {
     margin-top: 0px;
-	
     font-weight: normal;
+    margin-bottom: 0px;
 }
 
 .gameH2NotStarted
@@ -496,6 +496,9 @@ table.wrapper
 	margin-right: 2px !important;
 }
 
+.gameSpace
+{height: 10px;}
+
 /* Live */
 .liveOuter
 {
@@ -518,4 +521,7 @@ table.wrapper
 }-450px;
 }argin-left: -450px;
 }-450px;
+}x;
+}px;
+}x;
 }

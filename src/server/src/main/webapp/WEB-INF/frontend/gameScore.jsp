@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.backend.models.Tournament"%>
 <%@page import="com.backend.models.School"%>
 <%@page import="org.joda.time.DateTime"%>
 <%@page import="com.backend.models.enums.GameEventEnum"%>
@@ -60,11 +61,6 @@ LocalizedString strPoints = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Points"
 		), currentLocale);
 
-LocalizedString strGameNotStarted = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Game has not been played yet", 
-		Locale.FRENCH, 	"Cette parte n'a pas encore été jouée"
-		), currentLocale);
-
 LocalizedString strGame = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Game", 
 		Locale.FRENCH, 	"Partie"
@@ -74,13 +70,17 @@ LocalizedString strGame = new LocalizedString(ImmutableMap.of(
 </head>
 <body>
 <h1 class="grayBackgroundColor whiteColor gameNumberH1">Game/Partie <%= String.valueOf(game.gameNumber) %></h1>
+<h2 class="grayBackgroundColor whiteColor gameH2"><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></h2>
+
 <%
 if(state == null)
 {
+DateTime gameLength = new DateTime(Game.getGameLength().getMillis()); 
 %>
-<h2 class="grayBackgroundColor whiteColor gameH2"><%= Helpers.dateTimeFormatter.print(game.scheduledTime) %></h2>
-<div class="bar grayBackgroundColor gameNumberBar"></div>
-
+<div class="grayBackgroundColor center gameTimerOuter">
+	<div class="timer whiteColor gameTimer"><%= gameLength.getMinuteOfHour() + ":" + (gameLength.getSecondOfMinute() < 10 ? "0" : "") + gameLength.getSecondOfMinute() %></div>
+</div>
+<div class="gameNumberBar"></div>
 	<div class="team blueTeam grayBackgroundColor">
 		<div class="blueBackgroundColor gameBarNotStarted"></div>
 		<table class="wrapperNotStarted">

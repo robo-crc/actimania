@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.SchoolExtra"%>
 <%@page import="com.backend.models.Skill"%>
 <%@page import="org.joda.time.format.PeriodFormatterBuilder"%>
 <%@page import="org.joda.time.format.PeriodFormatter"%>
@@ -14,7 +15,7 @@
 <%@page import="java.util.ArrayList"%>
 <%
 Tournament tournament = (Tournament) request.getAttribute("tournament");
-School school	= (School) request.getAttribute("school");
+SchoolExtra school	= (SchoolExtra) request.getAttribute("school");
 Integer rank 	= (Integer) request.getAttribute("rank");
 Integer score	= (Integer) request.getAttribute("score");
 SkillsCompetition skillsCompetition = (SkillsCompetition) request.getAttribute("skillsCompetition");
@@ -28,6 +29,26 @@ Locale currentLocale = request.getLocale();
 LocalizedString strTournament = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Preliminary games",
 		Locale.FRENCH, 	"Parties préliminaires"
+		), currentLocale);
+
+LocalizedString strAdditionalInfo = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Additional info",
+		Locale.FRENCH, 	"Information supplémentaire"
+		), currentLocale);
+
+LocalizedString strDivision = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Division",
+		Locale.FRENCH, 	"Divison"
+		), currentLocale);
+
+LocalizedString strDesignEvalTime = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Design evaluation time", 
+		Locale.FRENCH, 	"Heure évaluation du design"
+		), currentLocale);
+
+LocalizedString strConstructionEvalTime = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Construction evaluation time", 
+		Locale.FRENCH, 	"Heure évaluation construction"
 		), currentLocale);
 
 LocalizedString strCumulative = new LocalizedString(ImmutableMap.of( 	
@@ -179,6 +200,13 @@ else
 
 </table>
 <br/>
+
+<table>
+<tr><td><%= strAdditionalInfo %></td>			<td class="center"></td></tr>
+<tr><td><%= strDivision %></td> <td><%= school.division.toString().toLowerCase() %></td></tr>
+<tr><td><%= strDesignEvalTime %></td> <td><%= Helpers.dateTimeFormatter.print(school.designEvalTime) %></td></tr>
+<tr><td><%= strConstructionEvalTime %></td> <td><%= Helpers.dateTimeFormatter.print(school.designEvalTime) %></td></tr>
+</table>
 
 <br/>
 <br/>
