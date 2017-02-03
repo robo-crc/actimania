@@ -14,6 +14,7 @@ import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
+import com.backend.models.GameEvent.SchoolPenaltyPercentageEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.enums.Division;
 import com.backend.models.enums.GameTypeEnum;
@@ -41,6 +42,29 @@ public class ScoreTests
 		
 		return gameEvents;
 	}
+	
+	
+	@Test
+	public void testPenaltyPercentage()
+	{
+		School school = new School(new ObjectId("545b6ccf92fc2aed1f73a57b"), "21 Jump Street");
+		
+		ArrayList<School> blueTeam = new ArrayList<School>();
+		blueTeam.add(school);
+		
+		Game game = new Game(null, 1, "", DateTime.now(), GameTypeEnum.PRELIMINARY, blueTeam, new ArrayList<School>(), getGameEvents(), false);
+		Tournament tournament = new Tournament(new ArrayList<School>(), new ArrayList<Game>());
+		tournament.schools.add(school);
+		tournament.games.add(game);
+		
+		Validate.isTrue(game.getScore(school) == 100);
+		
+		SchoolPenaltyPercentageEvent penalty = new SchoolPenaltyPercentageEvent(school, 0.04f, DateTime.now());
+		game.addGameEvent(new StartGameEvent(DateTime.now()));
+		game.addGameEvent(penalty);
+		Validate.isTrue(game.getScore(school) == 96);
+	}
+	
 	
 	@Test
 	public void testGetScore()

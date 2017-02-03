@@ -23,6 +23,7 @@ import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
+import com.backend.models.GameEvent.SchoolPenaltyPercentageEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.GameEvent.TeamPenaltyEvent;
 import com.backend.models.enums.GameEventEnum;
@@ -117,6 +118,15 @@ public class GameController extends HttpServlet
 			School school = essentials.database.findOne(School.class, schoolId);
 			
 			addToGame(essentials, game, new SchoolPenaltyEvent(school, points, DateTime.now()));
+		}
+		else if( gameEvent.equalsIgnoreCase(GameEventEnum.SCHOOL_PENALTY_PERCENTAGE.toString()) )
+		{
+			ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
+			Float percentage = Helpers.getParameter("percentage", Float.class, essentials); 
+			School school = essentials.database.findOne(School.class, schoolId);
+			
+			// The percentage will be given in a 4 format
+			addToGame(essentials, game, new SchoolPenaltyPercentageEvent(school, new Float(percentage.floatValue() / 100.0), DateTime.now()));
 		}
 		else if( gameEvent.equalsIgnoreCase(GameEventEnum.TEAM_PENALTY.toString()) )
 		{

@@ -5,6 +5,7 @@ public enum GameEventEnum
 	START_GAME,
 	POINT_MODIFIER, // If something happens, we can manually impact the score.
 	SCHOOL_PENALTY,
+	SCHOOL_PENALTY_PERCENTAGE,
 	TEAM_PENALTY,
 	MISCONDUCT_PENALTY,
 	DID_NOT_SCORE,

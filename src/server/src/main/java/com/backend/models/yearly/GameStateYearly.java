@@ -6,6 +6,7 @@ import org.bson.types.ObjectId;
 
 import com.backend.models.GameState;
 import com.backend.models.School;
+import com.backend.models.SchoolFloat;
 import com.backend.models.SchoolInteger;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
@@ -28,6 +29,7 @@ public class GameStateYearly extends GameState
 			@JsonProperty("blueScore")				int 						_blueScore,
 			@JsonProperty("yellowScore")			int 						_yellowScore,
 			@JsonProperty("penalties")				ArrayList<SchoolInteger>	_penalties,
+			@JsonProperty("penaltiesPercentage")	ArrayList<SchoolFloat>		_penaltiesPercentage,
 			@JsonProperty("misconductPenalties")	ArrayList<School>			_misconductPenalties,
 			@JsonProperty("didNotScore")			ArrayList<School>			_didNotScore,
 			@JsonProperty("pointModifierBlue")		int							_pointModifierBlue,
@@ -35,7 +37,7 @@ public class GameStateYearly extends GameState
 			@JsonProperty("currentScoreboard")		ScoreboardUpdateEvent		_currentScoreboard
 			)
 	{
-		super(_gameEventId, _lastGameEvent, _blueScore, _yellowScore, _penalties, _misconductPenalties, _didNotScore, _pointModifierBlue, _pointModifierYellow);
+		super(_gameEventId, _lastGameEvent, _blueScore, _yellowScore, _penalties, _penaltiesPercentage, _misconductPenalties, _didNotScore, _pointModifierBlue, _pointModifierYellow);
 		currentScoreboard = _currentScoreboard;
 	}
 	

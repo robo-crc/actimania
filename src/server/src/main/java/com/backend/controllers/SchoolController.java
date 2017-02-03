@@ -53,8 +53,11 @@ public class SchoolController extends HttpServlet
 				Division division = Division.valueOf(Helpers.getParameter("division", String.class, essentials));
 				DateTime designEvalTime = Helpers.getParameter("designEvalTime", DateTime.class, essentials);
 				DateTime constructionEvalTime = Helpers.getParameter("constructionEvalTime", DateTime.class, essentials);
+				String websiteURL = Helpers.getParameter("websiteURL", String.class, essentials);
+				String videoURL = Helpers.getParameter("videoURL", String.class, essentials);
+				String journalURL = Helpers.getParameter("journalURL", String.class, essentials);
 				
-				SchoolExtra schoolExtra = new SchoolExtra(school, division, designEvalTime, constructionEvalTime);
+				SchoolExtra schoolExtra = new SchoolExtra(school, division, designEvalTime, constructionEvalTime, websiteURL, videoURL, journalURL );
 				essentials.database.save(schoolExtra);
 			}
 			else if(action.equals("delete"))

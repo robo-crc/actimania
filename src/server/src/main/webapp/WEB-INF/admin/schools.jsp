@@ -54,6 +54,24 @@ LocalizedString strConstructionEvalTime = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Heure évaluation construction"
 		), currentLocale);
 
+
+LocalizedString strWebsiteURL = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Website URL", 
+		Locale.FRENCH, 	"URL du site web"
+		), currentLocale);
+
+
+LocalizedString strJournalURL = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Journal URL", 
+		Locale.FRENCH, 	"URL du journal"
+		), currentLocale);
+
+
+LocalizedString strVideoURL = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Video URL", 
+		Locale.FRENCH, 	"URL du vidéo"
+		), currentLocale);
+
 %>
 
 <!DOCTYPE html>
@@ -76,6 +94,7 @@ LocalizedString strConstructionEvalTime = new LocalizedString(ImmutableMap.of(
 	<form method="post">
 		<input type="hidden" name="action" value="create" />
 		<span><%= strSchoolName %><input type="text" name="schoolName" /> </span>
+		<br/>
 		<%= strDivision %>
 		<select name="division">
 		<% 	for(Division division : Division.values())
@@ -91,6 +110,12 @@ LocalizedString strConstructionEvalTime = new LocalizedString(ImmutableMap.of(
 		<div><%= strConstructionEvalTime %></div>
 		<input type="datetime-local" name="constructionEvalTime" /> 
 		<br/>
+		<span><%= strWebsiteURL %><input class="schoolInputText" type="text" name="websiteURL" value="" /> </span>
+		<br/>
+		<span><%= strJournalURL %><input class="schoolInputText" type="text" name="journalURL" value="" /> </span>
+		<br/>
+		<span><%= strVideoURL %><input class="schoolInputText" type="text" name="videoURL" value="" /> </span>
+		<br/>
 		<input type="submit" value="<%= strAddSchool %>" />
 	</form>
 	
@@ -104,6 +129,7 @@ LocalizedString strConstructionEvalTime = new LocalizedString(ImmutableMap.of(
 			<input type="hidden" name="action" value="edit" />
 			<input type="hidden" name="id" value="<%= school._id %>" />
 			<span><%= strSchoolName %><input type="text" name="schoolName" value="<%= school.name %>" /> </span>
+			<br/>
 			<%= strDivision %>
 			<select name="division">
 			<% 	for(Division division : Division.values())
@@ -114,11 +140,16 @@ LocalizedString strConstructionEvalTime = new LocalizedString(ImmutableMap.of(
 			 <% } %>
 			</select>
 			<div><%= strDesignEvalTime %></div>
-			
 			<input type="datetime-local" name="designEvalTime" value="<%= Helpers.html5DateTimePicker.print(school.designEvalTime) %>"/> 
 			<div><%= strConstructionEvalTime %></div>
-			<input type="datetime-local" name="constructionEvalTime" value="<%= Helpers.html5DateTimePicker.print(school.constructionEvalTime) %>" /> 
-				
+			<input type="datetime-local" name="constructionEvalTime" value="<%= Helpers.html5DateTimePicker.print(school.constructionEvalTime) %>" />
+			<br/>
+			<span><%= strWebsiteURL %><input class="schoolInputText" type="text" name="websiteURL" value="<%= school.websiteURL %>" /> </span>
+			<br/>
+			<span><%= strJournalURL %><input class="schoolInputText" type="text" name="journalURL" value="<%= school.journalURL %>" /> </span>
+			<br/>
+			<span><%= strVideoURL %><input class="schoolInputText" type="text" name="videoURL" value="<%= school.videoURL %>" /> </span>
+			<br/>
 			<input type="submit" value="<%= strEditSchool %>" />
 		</form>
 		

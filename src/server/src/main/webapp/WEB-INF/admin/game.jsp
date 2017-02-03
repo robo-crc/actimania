@@ -77,6 +77,12 @@ LocalizedString strPointDeduction = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Nombre de point de pénalité"
 		), currentLocale);
 
+
+LocalizedString strPercentDeduction = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "% deduction", 
+		Locale.FRENCH, 	"% déduction"
+		), currentLocale);
+
 LocalizedString strTimeInGame = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Time", 
 		Locale.FRENCH, 	"Temps"
@@ -110,6 +116,11 @@ LocalizedString strActuatorState = new LocalizedString(ImmutableMap.of(
 LocalizedString strSchoolPenalty = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "School Penalty", 
 		Locale.FRENCH, 	"Pénalité à une école"
+		), currentLocale);
+
+LocalizedString strSchoolPenaltyPercentage = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "School Penalty %", 
+		Locale.FRENCH, 	"% Pénalité à une école"
 		), currentLocale);
 
 LocalizedString strTeamPenalty = new LocalizedString(ImmutableMap.of( 	
@@ -254,6 +265,26 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 		</select>
 		<br/>
 		<%= strPointDeduction %><input class="spinner" name="points" value="0" />
+		<br/>
+		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
+		<br/>
+		<input type="submit" value="<%= strAdd %>" />
+	</form>
+	
+	<form method="post">
+		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.SCHOOL_PENALTY_PERCENTAGE.toString() %>" />
+		<input type="hidden" name="id" value="<%= game._id %>" />
+		<h2><%= strSchoolPenaltyPercentage %></h2>
+		
+		<%= strSchool %>
+		<select name="school">
+	<% 	for(School school : game.getSchools())
+		{ %>
+			<option value="<%= school._id %>"> <%= school.name %></option>
+	 <% } %>
+		</select>
+		<br/>
+		<%= strPercentDeduction %><input class="spinner" name="points" value="0" />
 		<br/>
 		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>

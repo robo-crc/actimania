@@ -9,6 +9,7 @@ import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.MisconductPenaltyEvent;
 import com.backend.models.GameEvent.PointModifierEvent;
 import com.backend.models.GameEvent.SchoolPenaltyEvent;
+import com.backend.models.GameEvent.SchoolPenaltyPercentageEvent;
 import com.backend.models.GameEvent.TeamPenaltyEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.TeamEnum;
@@ -21,6 +22,7 @@ public abstract class GameState
 	public final int 						yellowScore;
 	
 	public final ArrayList<SchoolInteger>	penalties;
+	public final ArrayList<SchoolFloat>		penaltiesPercentage;
 	public final ArrayList<School>			misconductPenalties;
 	public final ArrayList<School>			didNotScore;
 	public final int						pointModifierBlue;
@@ -32,6 +34,7 @@ public abstract class GameState
 			int 						_blueScore,
 			int 						_yellowScore,
 			ArrayList<SchoolInteger>	_penalties,
+			ArrayList<SchoolFloat>		_penaltiesPercentage,
 			ArrayList<School>			_misconductPenalties,
 			ArrayList<School>			_didNotScore,
 			int							_pointModifierBlue,
@@ -43,6 +46,7 @@ public abstract class GameState
 		blueScore 			= _blueScore;
 		yellowScore 		= _yellowScore;
 		penalties 			= _penalties;
+		penaltiesPercentage = _penaltiesPercentage;
 		misconductPenalties	= _misconductPenalties;
 		didNotScore			= _didNotScore;
 		pointModifierBlue	= _pointModifierBlue;
@@ -58,12 +62,14 @@ public abstract class GameState
 		int localModifierYellow = 0;
 		
 		ArrayList<SchoolInteger> 	localPenalties = null;
+		ArrayList<SchoolFloat> 		localPenaltiesPercentage = null;
 		ArrayList<School> 			localMisconductPenalties = null;
 		ArrayList<School> 			localDidNotScore = null;
 		
 		if(gameEvent.getGameEventEnum() == GameEventEnum.START_GAME)
 		{
 			localPenalties = new ArrayList<SchoolInteger>();
+			localPenaltiesPercentage = new ArrayList<SchoolFloat>();
 			localMisconductPenalties = new ArrayList<School>();
 			localDidNotScore = new ArrayList<School>();
 		}
@@ -73,6 +79,7 @@ public abstract class GameState
 			localModifierYellow = previousState.pointModifierYellow;
 			
 			localPenalties 				= new ArrayList<SchoolInteger>(previousState.penalties);
+			localPenaltiesPercentage	= new ArrayList<SchoolFloat>(previousState.penaltiesPercentage);
 			localMisconductPenalties	= new ArrayList<School>(previousState.misconductPenalties);
 			localDidNotScore			= new ArrayList<School>(previousState.didNotScore);
 
@@ -92,6 +99,11 @@ public abstract class GameState
 			{
 				SchoolPenaltyEvent schoolPenaltyEvent = (SchoolPenaltyEvent) gameEvent;
 				localPenalties.add(new SchoolInteger(schoolPenaltyEvent.school, schoolPenaltyEvent.pointsDeduction));
+			}
+			else if(gameEvent.getGameEventEnum() == GameEventEnum.SCHOOL_PENALTY_PERCENTAGE)
+			{
+				SchoolPenaltyPercentageEvent schoolPenaltyPercentageEvent = (SchoolPenaltyPercentageEvent) gameEvent;
+				localPenaltiesPercentage.add(new SchoolFloat(schoolPenaltyPercentageEvent.school, schoolPenaltyPercentageEvent.percentageDeduction));
 			}
 			else if(gameEvent.getGameEventEnum() == GameEventEnum.TEAM_PENALTY)
 			{
@@ -124,6 +136,7 @@ public abstract class GameState
 		pointModifierBlue	= localModifierBlue;
 		pointModifierYellow	= localModifierYellow;
 		penalties			= localPenalties;
+		penaltiesPercentage	= localPenaltiesPercentage;
 		misconductPenalties	= localMisconductPenalties;
 		didNotScore			= localDidNotScore;
 		

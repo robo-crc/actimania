@@ -289,11 +289,11 @@ public class Game implements Comparable<Game>
 		int score = 0;
 		if( isBlueTeam )
 		{
-			score = gameState.blueScore;
+			score = gameState.blueScore + gameState.pointModifierBlue;
 		}
 		else if( isYellowTeam )
 		{
-			score = gameState.yellowScore;
+			score = gameState.yellowScore + gameState.pointModifierYellow;
 		}
 		
 		for(SchoolInteger penalty : gameState.penalties)
@@ -304,6 +304,17 @@ public class Game implements Comparable<Game>
 				score -= penalty.integer;
 			}
 		}
+		
+		float penaltyPercentageTotal = 0;
+		for(SchoolFloat penaltyPercentage : gameState.penaltiesPercentage)
+		{
+			// Misconduct penalty is calculated globally
+			if(penaltyPercentage.equals(school))
+			{
+				penaltyPercentageTotal += penaltyPercentage.floatValue;
+			}
+		}
+		score = (int)Math.floor(score - (score * penaltyPercentageTotal));
 		
 		return score;
 	}
