@@ -79,8 +79,8 @@ public class GameYearlyView
 
 		strBuilder.append("	<div class=\"playingField\"></div>");
 		
-		OutputField(strBuilder, scoreboard.yellowField, TeamEnum.YELLOW, TeamEnum.BLUE);
-		OutputField(strBuilder, scoreboard.blueField, TeamEnum.BLUE, TeamEnum.YELLOW);
+		OutputField(strBuilder, scoreboard.blueField, TeamEnum.YELLOW, TeamEnum.BLUE);
+		OutputField(strBuilder, scoreboard.yellowField, TeamEnum.BLUE, TeamEnum.YELLOW);
 	
 		strBuilder.append("<div class=\"score blueDispenser1\"><input class=\"spinner\" name=\"blueDispenser1\" value=\"" + scoreboard.blueDispenser1 + "\"></input></div>");
 		strBuilder.append("<div class=\"score blueDispenser2\"><input class=\"spinner\" name=\"blueDispenser2\" value=\"" + scoreboard.blueDispenser2 + "\"></input></div>");

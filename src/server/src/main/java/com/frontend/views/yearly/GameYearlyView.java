@@ -42,8 +42,8 @@ public class GameYearlyView
 			break;
 		}
 		
-		OutputField(strBuilder, scoreboard.yellowField, TeamEnum.YELLOW, TeamEnum.BLUE);
-		OutputField(strBuilder, scoreboard.blueField, TeamEnum.BLUE, TeamEnum.YELLOW);
+		OutputField(strBuilder, scoreboard.blueField, TeamEnum.YELLOW, TeamEnum.BLUE);
+		OutputField(strBuilder, scoreboard.yellowField, TeamEnum.BLUE, TeamEnum.YELLOW);
 	
 		strBuilder.append("<div class=\"Score BLUE blueDispenser1\">" + scoreboard.blueDispenser1 + "</div>");
 		strBuilder.append("<div class=\"Score BLUE blueDispenser2\">" + scoreboard.blueDispenser2 + "</div>");

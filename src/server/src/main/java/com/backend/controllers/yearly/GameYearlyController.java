@@ -5,7 +5,6 @@ import org.joda.time.DateTime;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.GameEventEnum;
-import com.backend.models.enums.SideEnum;
 import com.backend.models.enums.TeamEnum;
 import com.backend.models.enums.yearly.AreaPoints;
 import com.backend.models.yearly.Area;

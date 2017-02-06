@@ -106,10 +106,10 @@
 {top: 573px;left: 811px;}
 
 .blueTeamAllowedSpools
-{top: 262px;left: 347.5px;font-weight: normal;font-size: 25px;}
+{top: 263px;left: 347.5px;font-weight: normal;font-size: 25px;width: 28px;text-align: center;}
 
 .yellowTeamAllowedSpools
-{top: 263px;left: 802px;font-weight: normal;font-size: 25px;}
+{top: 263px;left: 802px;font-weight: normal;font-size: 25px;width: 28px;text-align: center;}
 
 .allowedSpools
 {top: 257px;left: 234px;position: absolute;}
