@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.enums.Division"%>
 <%@page import="com.backend.models.SchoolExtra"%>
 <%@page import="com.backend.models.SchoolInteger"%>
 <%@page import="com.backend.models.enums.GameTypeEnum"%>
@@ -96,6 +97,11 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 		Locale.ENGLISH, "WEBSITE<br/>JOURNALISM", 
 		Locale.FRENCH, 	"JOURNALISME DU<br/>SITE WEB"
 		), currentLocale);
+
+LocalizedString strNone = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "NONE", 
+		Locale.FRENCH, 	"AUCUN"
+		), currentLocale);
 %>
 
 <!DOCTYPE html>
@@ -105,6 +111,34 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 <title><%= strOverallTitle %></title>
 <link rel="stylesheet" type="text/css" href="../css/template.css">
 <script src="../jquery/sorttable.js"></script>
+
+
+<script>
+function filterTable()
+{
+  var input = document.getElementById("divisionSelect");
+  var filter = input.value.toUpperCase();
+  var table = document.getElementById("tableToFilter");
+  var tr = table.getElementsByTagName("tr");
+  for (var i = 0; i < tr.length; i++) 
+  {
+    var td = tr[i].getElementsByTagName("td")[3];
+    if (td) 
+    {
+   		// None should just reset everything.
+      if (filter == "NONE" || td.innerHTML.toUpperCase().indexOf(filter) > -1) 
+      {
+        tr[i].style.display = "";
+      } 
+      else 
+      {
+        tr[i].style.display = "none";
+      }
+    }      
+  }
+}
+</script>
+
 <style>
 .headerOverall
 {
@@ -117,8 +151,17 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 <body>
 	<h1 class="grayColor"><%= strOverallTitle %></h1>
 	<div class="bar grayBackgroundColor"></div>
-	
-	<table class="sortable rank">
+	<select id="divisionSelect" onchange="filterTable()">
+		<option value="NONE"><%= strNone %></option>
+		<%
+			for(Division division : Division.values())
+			{
+				out.append("<option value=\"" + division.name() + "\">" + division.name() + "</option>" );
+			}
+		%>	
+	</select>
+				
+	<table id="tableToFilter" class="sortable rank">
 		<tr>
 			<th><%= strRank %></th>
 			<th><%= strSchool %></th>
@@ -183,8 +226,8 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 			
 			int playoffInt = heatRanking.indexOf(school) + 1;
 			int playoffPos = getDisplayRank(playoffInt, heatRanking.size() + 1);
-	
 		%>
+		
 			<tr>
 				<td class="rankAlignLeft"><%= String.valueOf(i + 1) %></td>
 				<td class="rankAlignLeft">
