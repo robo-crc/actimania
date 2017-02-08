@@ -182,7 +182,7 @@ table.wrapper
 /* footer */
 .footer
 {
-	height: 190px;
+	height: 215px;
 	margin-right: auto;
 	margin-left: auto;
 	margin-top: 30px;
@@ -203,7 +203,7 @@ table.wrapper
 .footerFred
 {
 	float: right;
-	padding-top: 80px;
+	padding-top: 130px;
 	padding-right: 150px;
 }
 
