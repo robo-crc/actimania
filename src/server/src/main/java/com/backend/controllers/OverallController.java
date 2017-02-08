@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.backend.models.Competition;
+import com.backend.models.SchoolExtra;
 import com.backend.models.Tournament;
 import com.framework.models.Essentials;
 
@@ -27,6 +28,7 @@ public class OverallController extends HttpServlet
 			essentials.request.setAttribute("tournament", tournament);
 			essentials.request.setAttribute("competition", competition);
 			essentials.request.setAttribute("schoolsRanked", competition.getCompetitionRanking(essentials));
+			essentials.request.setAttribute("schoolsExtra", SchoolExtra.getSchoolsExtra(essentials));
 
 			essentials.request.getRequestDispatcher("/WEB-INF/admin/overall.jsp").forward(essentials.request, essentials.response);
 		}

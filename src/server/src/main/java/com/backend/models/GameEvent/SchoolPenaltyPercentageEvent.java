@@ -16,9 +16,9 @@ public class SchoolPenaltyPercentageEvent implements GameEvent
 	public final DateTime	time;
 
 	public SchoolPenaltyPercentageEvent(
-			@JsonProperty("school") 			School	 	_school, 
+			@JsonProperty("school") 				School	 	_school, 
 			@JsonProperty("percentageDeduction") 	float 		_percentageDeduction,
-			@JsonProperty("time")				DateTime	_time
+			@JsonProperty("time")					DateTime	_time
 			)
 	{
 		school 				= _school;
@@ -39,8 +39,8 @@ public class SchoolPenaltyPercentageEvent implements GameEvent
 	public LocalizedString getLocalizedString(Locale locale)
 	{
 		return new LocalizedString(locale,
-				String.valueOf(percentageDeduction) + "% penalty for school " + school.name,
-				 "Pénalitée de " + String.valueOf(percentageDeduction) + "% pour " + school.name
+				String.valueOf(percentageDeduction * 100) + "% penalty for school " + school.name,
+				 "Pénalitée de " + String.valueOf(percentageDeduction * 100) + "% pour " + school.name
 				);
 	}
 }

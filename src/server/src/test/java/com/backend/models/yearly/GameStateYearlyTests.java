@@ -98,6 +98,32 @@ public class GameStateYearlyTests
 		GameStateYearly gameStateUpdate4 = new GameStateYearly(gameStateUpdate, scoreboard);
 		Validate.isTrue(gameStateUpdate4.yellowScore == 2620);
 		Validate.isTrue(gameStateUpdate4.blueScore == 855);
+
+		yellowField[AreaPoints.ONE_HUNDRED.ordinal()].spoolCount 	= 11;
+		yellowField[AreaPoints.FORTY.ordinal()].spoolCount 			= 7;
+		yellowField[AreaPoints.THIRTHY.ordinal()].spoolCount 		= 8;
+		yellowField[AreaPoints.TWENTY_BIG.ordinal()].spoolCount 	= 4;
+		yellowField[AreaPoints.TWENTY_SMALL.ordinal()].spoolCount 	= 9;
+		yellowField[AreaPoints.TEN_TOP.ordinal()].spoolCount 		= 3;
+		yellowField[AreaPoints.TEN_BOTTOM.ordinal()].spoolCount 	= 5;
+		yellowField[AreaPoints.FIVE_TOP.ordinal()].spoolCount 		= 10;
+		yellowField[AreaPoints.FIVE_BOTTOM.ordinal()].spoolCount 	= 12;
+
+		blueField[AreaPoints.ONE_HUNDRED.ordinal()].spoolCount 		= 2;
+		blueField[AreaPoints.FORTY.ordinal()].spoolCount 			= 7;
+		blueField[AreaPoints.THIRTHY.ordinal()].spoolCount 			= 4;
+		blueField[AreaPoints.TWENTY_BIG.ordinal()].spoolCount 		= 10;
+		blueField[AreaPoints.TWENTY_SMALL.ordinal()].spoolCount 	= 5;
+		blueField[AreaPoints.TEN_TOP.ordinal()].spoolCount 			= 9;
+		blueField[AreaPoints.TEN_BOTTOM.ordinal()].spoolCount 		= 11;
+		blueField[AreaPoints.FIVE_TOP.ordinal()].spoolCount 		= 1;
+		blueField[AreaPoints.FIVE_BOTTOM.ordinal()].spoolCount 		= 3;
+
+		scoreboard = new ScoreboardUpdateEvent(yellowField, blueField, 6, 3, 6, 8, 12, 12, TeamEnum.NONE, DateTime.now());
+		GameStateYearly gameStateUpdate5 = new GameStateYearly(gameStateUpdate, scoreboard);
+		Validate.isTrue(gameStateUpdate5.yellowScore == 1570);
+		Validate.isTrue(gameStateUpdate5.blueScore == 2470);
+	
 	}
 	
 	private void validateInitialState(GameStateYearly gameState)

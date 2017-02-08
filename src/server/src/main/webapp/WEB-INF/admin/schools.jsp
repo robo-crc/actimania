@@ -61,12 +61,6 @@ LocalizedString strWebsiteURL = new LocalizedString(ImmutableMap.of(
 		), currentLocale);
 
 
-LocalizedString strJournalURL = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Journal URL", 
-		Locale.FRENCH, 	"URL du journal"
-		), currentLocale);
-
-
 LocalizedString strVideoURL = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Video URL", 
 		Locale.FRENCH, 	"URL du vidéo"
@@ -112,8 +106,6 @@ LocalizedString strVideoURL = new LocalizedString(ImmutableMap.of(
 		<br/>
 		<span><%= strWebsiteURL %><input class="schoolInputText" type="text" name="websiteURL" value="" /> </span>
 		<br/>
-		<span><%= strJournalURL %><input class="schoolInputText" type="text" name="journalURL" value="" /> </span>
-		<br/>
 		<span><%= strVideoURL %><input class="schoolInputText" type="text" name="videoURL" value="" /> </span>
 		<br/>
 		<input type="submit" value="<%= strAddSchool %>" />
@@ -145,8 +137,6 @@ LocalizedString strVideoURL = new LocalizedString(ImmutableMap.of(
 			<input type="datetime-local" name="constructionEvalTime" value="<%= Helpers.html5DateTimePicker.print(school.constructionEvalTime) %>" />
 			<br/>
 			<span><%= strWebsiteURL %><input class="schoolInputText" type="text" name="websiteURL" value="<%= school.websiteURL %>" /> </span>
-			<br/>
-			<span><%= strJournalURL %><input class="schoolInputText" type="text" name="journalURL" value="<%= school.journalURL %>" /> </span>
 			<br/>
 			<span><%= strVideoURL %><input class="schoolInputText" type="text" name="videoURL" value="<%= school.videoURL %>" /> </span>
 			<br/>

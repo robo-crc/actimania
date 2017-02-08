@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.SchoolExtra"%>
 <%@page import="com.backend.models.SchoolInteger"%>
 <%@page import="com.backend.models.enums.GameTypeEnum"%>
 <%@page import="com.backend.models.Tournament"%>
@@ -19,6 +20,8 @@ Tournament tournament 			= (Tournament) request.getAttribute("tournament");
 Competition competition 		= (Competition) request.getAttribute("competition");
 @SuppressWarnings("unchecked")
 ArrayList<School> schoolsRanked 	= (ArrayList<School>) request.getAttribute("schoolsRanked");
+@SuppressWarnings("unchecked")
+ArrayList<SchoolExtra> schoolsExtra = (ArrayList<SchoolExtra>) request.getAttribute("schoolsExtra");
 
 
 Locale currentLocale = request.getLocale();
@@ -28,9 +31,15 @@ LocalizedString strOverallTitle = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"RÉSULTATS FINAUX D'ACTIMANIA"
 		), currentLocale);
 
+
 LocalizedString strSchool = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "SCHOOL", 
 		Locale.FRENCH, 	"ÉCOLE"
+		), currentLocale);
+
+LocalizedString strDivison = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "DIVISION", 
+		Locale.FRENCH, 	"DIVISION"
 		), currentLocale);
 
 LocalizedString strRank = new LocalizedString(ImmutableMap.of( 	
@@ -114,6 +123,7 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 			<th><%= strRank %></th>
 			<th><%= strSchool %></th>
 			<th><%= strScore %></th>
+			<th><%= strDivison %>
 			<th><%= strPlayoff1 %></th>
 			<th><%= strKiosk %></th>
 			<th><%= strProgramming %></th>
@@ -145,6 +155,7 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 		for(int i = 0; i < schoolsRanked.size(); i++)
 		{
 			School school = schoolsRanked.get(i);
+			SchoolExtra schoolExtra = schoolsExtra.get(schoolsExtra.indexOf(school));
 			
 			int kioskInt = Competition.getSchoolInteger(competition.kiosk, school);
 			int kioskPos = getDisplayRank(kioskInt, competition.kiosk.size());
@@ -185,6 +196,7 @@ LocalizedString strWebsiteJournalism = new LocalizedString(ImmutableMap.of(
 					</div>
 				</td>
 				<td class="center"><%= competition.getSchoolScore(heatRanking, school) %></td>
+				<td class="center"><%= schoolExtra.division.toString() %>
 				<td class="center" sorttable_customkey="<%= playoffPos %>"><%= playoffInt %></td>
 				<td class="center" sorttable_customkey="<%= kioskPos %>"><%= kioskInt %></td>
 				<td class="center" sorttable_customkey="<%= programmingPos %>"><%= programmingInt %></td>

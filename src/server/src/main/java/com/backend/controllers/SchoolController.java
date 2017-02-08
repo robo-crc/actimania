@@ -55,9 +55,8 @@ public class SchoolController extends HttpServlet
 				DateTime constructionEvalTime = Helpers.getParameter("constructionEvalTime", DateTime.class, essentials);
 				String websiteURL = Helpers.getParameter("websiteURL", String.class, essentials);
 				String videoURL = Helpers.getParameter("videoURL", String.class, essentials);
-				String journalURL = Helpers.getParameter("journalURL", String.class, essentials);
 				
-				SchoolExtra schoolExtra = new SchoolExtra(school, division, designEvalTime, constructionEvalTime, websiteURL, videoURL, journalURL );
+				SchoolExtra schoolExtra = new SchoolExtra(school, division, designEvalTime, constructionEvalTime, websiteURL, videoURL);
 				essentials.database.save(schoolExtra);
 			}
 			else if(action.equals("delete"))

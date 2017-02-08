@@ -87,17 +87,20 @@ public class GameStateYearly extends GameState
 		
 		for(int i = 0; i < field.length; i++)
 		{
-			// Penalty for using too much spools
-			// Value is sorted from biggest to smallest so 
-			// the penalty is applied properly
-			if(spoolsOverAllowed > 0)
+			for(int j = 0; j < field[i].spoolCount; j++)
 			{
-				spoolsOverAllowed--;
-				score -= SPOOL_DISPENSED_VALUE;
-			}
-			else
-			{
-				score += field[i].spoolCount * field[i].value;
+				// Penalty for using too much spools
+				// Value is sorted from biggest to smallest so 
+				// the penalty is applied properly
+				if(spoolsOverAllowed > 0)
+				{
+					spoolsOverAllowed--;
+					score -= SPOOL_DISPENSED_VALUE;
+				}
+				else
+				{
+					score += field[i].value;
+				}				
 			}
 		}
 		

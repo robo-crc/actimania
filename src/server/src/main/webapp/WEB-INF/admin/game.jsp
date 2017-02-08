@@ -284,7 +284,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 	 <% } %>
 		</select>
 		<br/>
-		<%= strPercentDeduction %><input class="spinner" name="points" value="0" />
+		<%= strPercentDeduction %><input class="spinner" name="percentage" value="0" />
 		<br/>
 		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>

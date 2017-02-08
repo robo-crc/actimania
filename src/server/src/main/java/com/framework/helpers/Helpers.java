@@ -80,6 +80,10 @@ public class Helpers
 			{
 				return (T)Boolean.valueOf(safeParam);
 			}
+			else if(entityType == Float.class)
+			{
+				return (T)Float.valueOf(safeParam);
+			}
 			else
 			{
 				T applicationSpecific = ApplicationSpecific.getParameter(safeParam, entityType);
