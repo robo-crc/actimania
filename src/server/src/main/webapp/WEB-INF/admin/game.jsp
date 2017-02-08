@@ -264,7 +264,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 	 <% } %>
 		</select>
 		<br/>
-		<%= strPointDeduction %><input class="spinner" name="points" value="0" />
+		<%= strPointDeduction %><input type="number" name="points" value="0" />
 		<br/>
 		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
@@ -284,7 +284,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 	 <% } %>
 		</select>
 		<br/>
-		<%= strPercentDeduction %><input class="spinner" name="percentage" value="0" />
+		<%= strPercentDeduction %><input type="number" name="percentage" value="0" />
 		<br/>
 		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
@@ -303,7 +303,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 	 <% } %>
 		</select>
 		<br/>
-		<%= strPointDeduction %><input class="spinner" name="points" value="0" />
+		<%= strPointDeduction %><input type="number" name="points" value="0" />
 		<br/>
 		<% out.write(GameController.outputAddAfterForView(game, currentLocale)); %>
 		<br/>
@@ -322,7 +322,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 	 <% } %>
 		</select>
 		<br/>
-		<%= strPoints %><input class="spinner" name="points" value="0" /><br/>
+		<%= strPoints %><input type="number" name="points" value="0" /><br/>
 		<%= strCommentEnglish %><input type="text" name="commentEn" /><br/>
 		<%= strCommentFrench %><input type="text" name="commentFr" />
 		<br/>

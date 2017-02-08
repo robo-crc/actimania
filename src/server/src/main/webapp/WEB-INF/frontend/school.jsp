@@ -51,6 +51,16 @@ LocalizedString strConstructionEvalTime = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Heure évaluation construction"
 		), currentLocale);
 
+LocalizedString strWebsite = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Website", 
+		Locale.FRENCH, 	"Site web"
+		), currentLocale);
+
+LocalizedString strVideo = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Video", 
+		Locale.FRENCH, 	"Vidéo"
+		), currentLocale);
+
 LocalizedString strCumulative = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Preliminary round position", 
 		Locale.FRENCH, 	"Position ronde préliminaire"
@@ -100,16 +110,6 @@ LocalizedString strSchoolScore = new LocalizedString(ImmutableMap.of(
         Locale.ENGLISH, "SCHOOL SCORE", 
         Locale.FRENCH,  "POINTAGE DE L'ÉCOLE"
         ), currentLocale);
-
-LocalizedString strTakeAllPieces = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Pick-up race", 
-		Locale.FRENCH, 	"Ramassage de vitesse"
-		), currentLocale);
-
-LocalizedString strPlaceThreePieces = new LocalizedString(ImmutableMap.of( 	
-		Locale.ENGLISH, "Place three pieces", 
-		Locale.FRENCH, 	"Positionner trois pièce"
-		), currentLocale);
 
 LocalizedString strPlaceHighest = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Place highest", 
@@ -206,6 +206,7 @@ else
 <tr><td><%= strDivision %></td> <td><%= school.division.toString().toLowerCase() %></td></tr>
 <tr><td><%= strDesignEvalTime %></td> <td><%= Helpers.dateTimeFormatter.print(school.designEvalTime) %></td></tr>
 <tr><td><%= strConstructionEvalTime %></td> <td><%= Helpers.dateTimeFormatter.print(school.designEvalTime) %></td></tr>
+<tr><td><a href="<%= school.videoURL %>"><%= strVideo %></a></td> <td><a href="<%= school.websiteURL %>"><%= strWebsite %></a></td></tr>
 </table>
 
 <br/>
@@ -271,6 +272,7 @@ for( Game game : games )
 	String yellowScore = "";
 	String schoolScore = "";
 	LocalizedString pointsStr = strEmpty;
+	String skipClass = "";
 	
 	if(gameStates.size() > 0)
 	{
@@ -279,6 +281,11 @@ for( Game game : games )
 		yellowScore = String.valueOf(gameState.yellowScore);
 		schoolScore = String.valueOf(game.getScore(school));
 		pointsStr = strPoints;
+		
+		if( gamesSkippedInScore.contains(game)) 
+		{ 
+			skipClass = " schoolGameSkippedInScore";
+		}
 	}
 	
 	%>
@@ -293,11 +300,8 @@ for( Game game : games )
 		out.print("<td class=\"scheduleRoundTd roundDiv\" rowspan=\"" + nbGames + "\"><div class=\"scheduleRound\">" + roundTypeDisplay + "</div></td>");
 	}
 	
-	String skipClass = "";
-	if( gamesSkippedInScore.contains(game)) 
-	{ 
-		skipClass = " schoolGameSkippedInScore";
-	}
+	
+	
 	%>
 
 	<td class="center scheduleGameNumber"><a class="scheduleGame<%= skipClass %>" href="game?gameId=<%= game._id %>"><%= strGame + " " + game.gameNumber %></a><br/>
@@ -308,7 +312,7 @@ for( Game game : games )
 	<td class="center schoolScore">
 		<div class="<% if( game.blueTeam.contains(school) ) { out.write("blueBackgroundColor"); } else { out.write("yellowBackgroundColor"); } %> scheduleColor"></div>
 		<div class="schedulePoints <%= skipClass %> "><%= schoolScore %></div>
-		<div class="schedulePointsStr"><%= pointsStr %></div>
+		<div class="schedulePointsStr"><%= pointsStr %> </div>
 	</td>
 	<td class="center schoolScore">
 		<div class="blueBackgroundColor scheduleColor"></div>

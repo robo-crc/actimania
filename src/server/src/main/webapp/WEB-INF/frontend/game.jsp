@@ -248,7 +248,7 @@ if( gameStates.size() == 0)
 							</div>
 							<a target="_blank" class="scheduleSchoolText <% if(state.misconductPenalties.contains(school)) { out.write("gameMisconduct"); } %>" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 							<%
-							hasPenalty |= state.misconductPenalties.contains(school) || state.penalties.contains(school) || state.didNotScore.contains(school);
+							hasPenalty |= state.misconductPenalties.contains(school) || state.penalties.contains(school) || state.penaltiesPercentage.contains(school) || state.didNotScore.contains(school);
 							%>
 						</div>
 						<%
@@ -297,7 +297,7 @@ if( gameStates.size() == 0)
 								<a target="_blank" class="scheduleSchoolText <% if(state.misconductPenalties.contains(school)) { out.write("gameMisconduct"); } %>" href="school?schoolId=<%= school._id %>"><%= school.name %></a>
 							</div>
 							<%
-								hasPenalty |= state.misconductPenalties.contains(school) || state.penalties.contains(school) || state.didNotScore.contains(school);
+								hasPenalty |= state.misconductPenalties.contains(school) || state.penalties.contains(school) || state.penaltiesPercentage.contains(school) || state.didNotScore.contains(school);
 							}
 							%>
 						</td>

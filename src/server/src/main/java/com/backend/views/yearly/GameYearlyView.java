@@ -37,10 +37,6 @@ public class GameYearlyView
         strBuilder.append("                $(this).css(\"background-color\", \"yellow\");");
         strBuilder.append("            }");
         strBuilder.append("		});");
-		
-		//strBuilder.append("	$( '.spinner' ).spinner();");
-		//strBuilder.append("	$( '.spinner' ).numeric();");
-		
         strBuilder.append("});");
 
 		return strBuilder.toString();
@@ -82,12 +78,12 @@ public class GameYearlyView
 		OutputField(strBuilder, scoreboard.blueField, TeamEnum.YELLOW, TeamEnum.BLUE);
 		OutputField(strBuilder, scoreboard.yellowField, TeamEnum.BLUE, TeamEnum.YELLOW);
 	
-		strBuilder.append("<div class=\"score blueDispenser1\"><input class=\"spinner\" name=\"blueDispenser1\" value=\"" + scoreboard.blueDispenser1 + "\"></input></div>");
-		strBuilder.append("<div class=\"score blueDispenser2\"><input class=\"spinner\" name=\"blueDispenser2\" value=\"" + scoreboard.blueDispenser2 + "\"></input></div>");
-		strBuilder.append("<div class=\"score yellowDispenser1\"><input class=\"spinner\" name=\"yellowDispenser1\" value=\"" + scoreboard.yellowDispenser1 + "\"></input></div>");
-		strBuilder.append("<div class=\"score yellowDispenser2\"><input class=\"spinner\" name=\"yellowDispenser2\" value=\"" + scoreboard.yellowDispenser2 + "\"></input></div>");
-		strBuilder.append("<div class=\"score blueTeamAllowedSpools\"><input class=\"spinner\" name=\"blueTeamAllowedSpools\" value=\"" + scoreboard.blueTeamAllowedSpools + "\"></input></div>");
-		strBuilder.append("<div class=\"score yellowTeamAllowedSpools\"><input class=\"spinner\" name=\"yellowTeamAllowedSpools\" value=\"" + scoreboard.yellowTeamAllowedSpools + "\"></input></div>");
+		strBuilder.append("<div class=\"score blueDispenser1\"><input type=\"Number\" name=\"blueDispenser1\" value=\"" + scoreboard.blueDispenser1 + "\"></input></div>");
+		strBuilder.append("<div class=\"score blueDispenser2\"><input type=\"Number\" name=\"blueDispenser2\" value=\"" + scoreboard.blueDispenser2 + "\"></input></div>");
+		strBuilder.append("<div class=\"score yellowDispenser1\"><input type=\"Number\" name=\"yellowDispenser1\" value=\"" + scoreboard.yellowDispenser1 + "\"></input></div>");
+		strBuilder.append("<div class=\"score yellowDispenser2\"><input type=\"Number\" name=\"yellowDispenser2\" value=\"" + scoreboard.yellowDispenser2 + "\"></input></div>");
+		strBuilder.append("<div class=\"score blueTeamAllowedSpools\"><input type=\"Number\" name=\"blueTeamAllowedSpools\" value=\"" + scoreboard.blueTeamAllowedSpools + "\"></input></div>");
+		strBuilder.append("<div class=\"score yellowTeamAllowedSpools\"><input type=\"Number\" name=\"yellowTeamAllowedSpools\" value=\"" + scoreboard.yellowTeamAllowedSpools + "\"></input></div>");
 		
 		strBuilder.append("<div class=\"teamMultiplier\">" + strMultiplier.toString() + " ");
 		strBuilder.append("<select name=\"teamMultiplier\">");
@@ -122,7 +118,7 @@ public class GameYearlyView
 		AreaPoints[] areaPoints = AreaPoints.values();
 		for(int i = 0; i < areaPoints.length; i++)
 		{
-			strBuilder.append("<div class=\"score " + areaPoints[i] + "_" + oppositeTeam.name() + "\"> <input class=\"spinner \" type=\"text\" name=\"" + areaPoints[i] + "_" + oppositeTeam.name() + "\" value=\"" + area[i].spoolCount + "\" /></div>\n");
+			strBuilder.append("<div class=\"score " + areaPoints[i] + "_" + oppositeTeam.name() + "\"> <input type=\"Number\" name=\"" + areaPoints[i] + "_" + oppositeTeam.name() + "\" value=\"" + area[i].spoolCount + "\" /></div>\n");
 		}
 	}
 }
