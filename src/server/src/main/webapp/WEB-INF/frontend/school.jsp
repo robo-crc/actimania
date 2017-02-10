@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.enums.Division"%>
 <%@page import="com.backend.models.SchoolExtra"%>
 <%@page import="com.backend.models.Skill"%>
 <%@page import="org.joda.time.format.PeriodFormatterBuilder"%>
@@ -206,32 +207,37 @@ else
 </table>
 <br/>
 
-<table>
-<tr><td><%= strAdditionalInfo %></td>			<td class="center"></td></tr>
-<tr><td><%= strDivision %></td> <td><%= school.division.toString().toLowerCase() %></td></tr>
+<table class="schoolTable schoolCompetition">
+<tr><td><b><%= strAdditionalInfo %></b></td></tr>
+<tr><td><%= strDivision %></td> <td><% if(school.division == Division.ONE) { out.write("1"); } else if(school.division == Division.TWO ){ out.write("2"); }%></td></tr>
 <tr><td><%= strDesignEvalTime %></td> <td><%= Helpers.dateTimeFormatter.print(school.designEvalTime) %></td></tr>
-<tr><td><%= strConstructionEvalTime %></td> <td><%= Helpers.dateTimeFormatter.print(school.designEvalTime) %></td></tr>
+<tr><td><%= strConstructionEvalTime %></td> <td><%= Helpers.dateTimeFormatter.print(school.constructionEvalTime) %></td></tr>
+
+
 <% 
-out.write("<tr><td>");
-if(!school.videoURL.isEmpty()) 
+if(!school.videoURL.isEmpty() || !school.websiteURL.isEmpty() || !school.tutorialURL.isEmpty())
 {
+	if(!school.videoURL.isEmpty()) 
+	{
+		out.write("<tr><td>");	
+		out.write("<a href=\"" + school.videoURL + "\">" + strVideo + "</a>");
+		out.write("</td></tr>");
+	}
 	
-	out.write("<a href=\"" + school.videoURL + "\">" + strVideo + "</a>");
-}
-out.write("</td>");
-out.write("<td>");
-if(!school.websiteURL.isEmpty()) 
-{
+	if(!school.websiteURL.isEmpty()) 
+	{
+		out.write("<tr><td>");	
+		out.write("<a href=\"" + school.websiteURL + "\">" + strWebsite + "</a>");
+		out.write("</td></tr>");
+	}
 	
-	out.write("<a href=\"" + school.websiteURL + "\">" + strWebsite + "</a>");
+	if(!school.tutorialURL.isEmpty()) 
+	{
+		out.write("<tr><td>");	
+		out.write("<a href=\"" + school.tutorialURL + "\">" + strTutorial + "</a>");
+		out.write("</td></tr>");
+	}
 }
-out.write("</td></tr>");
-out.write("<tr><td>");
-if(!school.tutorialURL.isEmpty()) 
-{
-	out.write("<a href=\"" + school.tutorialURL + "\">" + strTutorial + "</a>");
-}
-out.write("</td><td></td></tr>");
 %>
 </table>
 
@@ -325,9 +331,6 @@ for( Game game : games )
 		int nbGames = games.size();
 		out.print("<td class=\"scheduleRoundTd roundDiv\" rowspan=\"" + nbGames + "\"><div class=\"scheduleRound\">" + roundTypeDisplay + "</div></td>");
 	}
-	
-	
-	
 	%>
 
 	<td class="center scheduleGameNumber"><a class="scheduleGame<%= skipClass %>" href="game?gameId=<%= game._id %>"><%= strGame + " " + game.gameNumber %></a><br/>
