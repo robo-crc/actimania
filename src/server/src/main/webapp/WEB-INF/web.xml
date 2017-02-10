@@ -27,6 +27,6 @@
     <dispatcher>ERROR</dispatcher>
   </filter-mapping>
   <welcome-file-list>
-    <welcome-file>schedule.jsp</welcome-file>
+    <welcome-file>/schedule</welcome-file>
   </welcome-file-list>
 </web-app>
