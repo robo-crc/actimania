@@ -61,6 +61,11 @@ LocalizedString strVideo = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"Vidéo"
 		), currentLocale);
 
+LocalizedString strTutorial = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Tutorial", 
+		Locale.FRENCH, 	"Tutoriel"
+		), currentLocale);
+
 LocalizedString strCumulative = new LocalizedString(ImmutableMap.of( 	
 		Locale.ENGLISH, "Preliminary round position", 
 		Locale.FRENCH, 	"Position ronde préliminaire"
@@ -206,7 +211,28 @@ else
 <tr><td><%= strDivision %></td> <td><%= school.division.toString().toLowerCase() %></td></tr>
 <tr><td><%= strDesignEvalTime %></td> <td><%= Helpers.dateTimeFormatter.print(school.designEvalTime) %></td></tr>
 <tr><td><%= strConstructionEvalTime %></td> <td><%= Helpers.dateTimeFormatter.print(school.designEvalTime) %></td></tr>
-<tr><td><a href="<%= school.videoURL %>"><%= strVideo %></a></td> <td><a href="<%= school.websiteURL %>"><%= strWebsite %></a></td></tr>
+<% 
+out.write("<tr><td>");
+if(!school.videoURL.isEmpty()) 
+{
+	
+	out.write("<a href=\"" + school.videoURL + "\">" + strVideo + "</a>");
+}
+out.write("</td>");
+out.write("<td>");
+if(!school.websiteURL.isEmpty()) 
+{
+	
+	out.write("<a href=\"" + school.websiteURL + "\">" + strWebsite + "</a>");
+}
+out.write("</td></tr>");
+out.write("<tr><td>");
+if(!school.tutorialURL.isEmpty()) 
+{
+	out.write("<a href=\"" + school.tutorialURL + "\">" + strTutorial + "</a>");
+}
+out.write("</td><td></td></tr>");
+%>
 </table>
 
 <br/>

@@ -66,6 +66,11 @@ LocalizedString strVideoURL = new LocalizedString(ImmutableMap.of(
 		Locale.FRENCH, 	"URL du vidéo"
 		), currentLocale);
 
+LocalizedString strTutorialURL = new LocalizedString(ImmutableMap.of( 	
+		Locale.ENGLISH, "Tutorial URL", 
+		Locale.FRENCH, 	"URL du tutoriel"
+		), currentLocale);
+
 %>
 
 <!DOCTYPE html>
@@ -108,6 +113,8 @@ LocalizedString strVideoURL = new LocalizedString(ImmutableMap.of(
 		<br/>
 		<span><%= strVideoURL %><input class="schoolInputText" type="text" name="videoURL" value="" /> </span>
 		<br/>
+		<span><%= strTutorialURL %><input class="schoolInputText" type="text" name="tutorialURL" value="" /> </span>
+		<br/>
 		<input type="submit" value="<%= strAddSchool %>" />
 	</form>
 	
@@ -139,6 +146,8 @@ LocalizedString strVideoURL = new LocalizedString(ImmutableMap.of(
 			<span><%= strWebsiteURL %><input class="schoolInputText" type="text" name="websiteURL" value="<%= school.websiteURL %>" /> </span>
 			<br/>
 			<span><%= strVideoURL %><input class="schoolInputText" type="text" name="videoURL" value="<%= school.videoURL %>" /> </span>
+			<br/>
+			<span><%= strTutorialURL %><input class="schoolInputText" type="text" name="tutorialURL" value="<%= school.tutorialURL %>" /> </span>
 			<br/>
 			<input type="submit" value="<%= strEditSchool %>" />
 		</form>

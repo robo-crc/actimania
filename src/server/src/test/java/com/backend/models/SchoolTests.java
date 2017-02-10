@@ -41,7 +41,7 @@ public class SchoolTests
 		
 		for(int i = 0; i < schools.size(); i++)
 		{
-			database.save(new SchoolExtra(schools.get(i), Division.ONE, new DateTime(), new DateTime(), "", ""));
+			database.save(new SchoolExtra(schools.get(i), Division.ONE, new DateTime(), new DateTime(), "", "", ""));
 		}
 		
 		//schools = School.getSchools(essentials);

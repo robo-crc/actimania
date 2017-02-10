@@ -17,6 +17,7 @@ public class SchoolExtra extends School
 	public final DateTime			constructionEvalTime;
 	public final String				websiteURL;
 	public final String				videoURL;
+	public final String				tutorialURL;
 	
 	public SchoolExtra(	@JsonProperty("_id") 					ObjectId _schoolId,
 						@JsonProperty("name") 					String _name,
@@ -24,7 +25,8 @@ public class SchoolExtra extends School
 						@JsonProperty("designEvalTime") 		DateTime _designEvalTime,
 						@JsonProperty("constructionEvalTime") 	DateTime _constructionEvalTime,
 						@JsonProperty("websiteURL") 			String	_websiteURL,
-						@JsonProperty("videoURL") 				String	_videoURL
+						@JsonProperty("videoURL") 				String	_videoURL,
+						@JsonProperty("tutorialURL") 			String	_tutorialURL
 					)
 	{
 		super(_schoolId, _name);
@@ -33,6 +35,7 @@ public class SchoolExtra extends School
 		constructionEvalTime = _constructionEvalTime;
 		websiteURL = _websiteURL;
 		videoURL = _videoURL;
+		tutorialURL = _tutorialURL;
 	}
 	
 	public SchoolExtra(	School school, 
@@ -40,7 +43,8 @@ public class SchoolExtra extends School
 						DateTime _designEvalTime,
 						DateTime _constructionEvalTime,
 						String	_websiteURL,
-						String	_videoURL
+						String	_videoURL,
+						String _tutorialURL
 		)
 	{
 		super(school._id, school.name);
@@ -49,6 +53,7 @@ public class SchoolExtra extends School
 		constructionEvalTime = _constructionEvalTime;
 		websiteURL = _websiteURL;
 		videoURL = _videoURL;
+		tutorialURL = _tutorialURL;
 	}
 	
 	public static ArrayList<SchoolExtra> getSchoolsExtra(Essentials essentials)
