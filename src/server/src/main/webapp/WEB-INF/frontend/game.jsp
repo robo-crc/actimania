@@ -1,3 +1,4 @@
+<%@page import="org.joda.time.DateTimeZone"%>
 <%@page import="com.frontend.views.yearly.GameYearlyView"%>
 <%@page import="com.backend.models.SchoolInteger"%>
 <%@page import="com.framework.helpers.Helpers"%>
@@ -328,9 +329,10 @@ if( gameStates.size() == 0)
 			<%= GameYearlyView.getHtmlForGameState(state, currentLocale) %>
 			<br/>
 			<div class="clear"></div>
+			
 <%
 // Only play horn for the 10 seconds following the last game event. After that we assume it's correction being made.
-if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME && (DateTime.now().getSecondOfDay() - state.lastGameEvent.getTime().getSecondOfDay() < 10) )
+if(isLive && state.lastGameEvent.getGameEventEnum() == GameEventEnum.END_GAME && (DateTime.now().withZone(DateTimeZone.UTC).getSecondOfDay() - state.lastGameEvent.getTime().withZone(DateTimeZone.UTC).getSecondOfDay() < 5) )
 {
 %>
 	<audio autoplay>
