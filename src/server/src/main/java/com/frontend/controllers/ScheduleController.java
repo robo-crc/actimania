@@ -14,7 +14,7 @@ import com.framework.models.Essentials;
 // Display the list of games played by the school
 // Can also show the scores in other area
 
-@WebServlet("/schedule")
+@WebServlet(urlPatterns = {"/", "/schedule"})
 public class ScheduleController extends HttpServlet
 {
 	private static final long serialVersionUID = 5614373930998586935L;
