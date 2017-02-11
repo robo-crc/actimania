@@ -15,7 +15,7 @@ import com.google.common.collect.ImmutableMap;
 
 public class GameYearlyView 
 {
-	public final static int GAME_PORTION_HEIGHT = 650;
+	public final static int GAME_PORTION_HEIGHT = 700;
 	
 	public static String getHtmlForGameState(GameState gameState, Locale currentLocale)
 	{		
