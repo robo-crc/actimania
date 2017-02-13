@@ -50,13 +50,6 @@ public class SchoolFloatSmallest extends School implements ISchoolScore
 	
 	public String getDisplayLong()
 	{
-		if(floatSmallest == Float.MAX_VALUE)
-		{
-			return "-";
-		}
-		else
-		{
-			return floatSmallest.toString();
-		}
+		return floatSmallest.toString();
 	}
 }
