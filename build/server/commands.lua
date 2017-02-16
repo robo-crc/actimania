@@ -3,7 +3,7 @@ function preBuild()
 	-- Make sure mongodb is not running.
 	--os.execute("taskkill /IM mongod.exe /F")
 		
-	local logsPath = path.getabsolute("../tmp/mongodb/logs")
+	local logsPath = path.getabsolute("../tmp/mongodb/logs/log.txt")
 	local dataPath = path.getabsolute("../tmp/mongodb/data")
 
 	-- We really need to clean this dir because we don't quit gracefully
