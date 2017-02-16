@@ -181,6 +181,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 <html>
 <head>
 <title><%= strH1 %></title>
+<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
 <%@include file="head.jsp" %>
 <link href='../css/gameYearly_backend.css' rel='stylesheet' type='text/css'>
 </head>
@@ -224,7 +225,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 		<%
 	}
 	%>
-	
+	<br/>
 	<%
 	if(game.containsStartGameEvent())
 	{
@@ -250,7 +251,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
-	
+	<br/>
 	<form method="post">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.SCHOOL_PENALTY.toString() %>" />
 		<input type="hidden" name="id" value="<%= game._id %>" />
@@ -270,7 +271,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
-	
+	<br/>
 	<form method="post">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.SCHOOL_PENALTY_PERCENTAGE.toString() %>" />
 		<input type="hidden" name="id" value="<%= game._id %>" />
@@ -290,7 +291,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
-	
+	<br/>
 	<form method="post">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.TEAM_PENALTY.toString() %>" />
 		<input type="hidden" name="id" value="<%= game._id %>" />
@@ -309,7 +310,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
-	
+	<br/>
 	<form method="post">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.POINT_MODIFIER.toString() %>" />
 		<input type="hidden" name="id" value="<%= game._id %>" />
@@ -330,7 +331,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 		<br/>
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
-	
+	<br/>
 	<form method="post">
 		<input type="hidden" name="gameEvent" value="<%= GameEventEnum.MISCONDUCT_PENALTY.toString() %>" />
 		<input type="hidden" name="id" value="<%= game._id %>" />
@@ -364,7 +365,7 @@ String strH1 = strGameAdmin.get(currentLocale) + " " + String.valueOf(game.gameN
 	<%
 	}
 	%>
-	
+	<br/>
 	<h1><%= strGameEvents %></h1>
 	
 	<table>
