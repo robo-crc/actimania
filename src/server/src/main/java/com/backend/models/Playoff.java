@@ -71,13 +71,7 @@ public class Playoff
 	
 	public static Playoff get(Database database)
 	{
-		Playoff playoff = database.findOne(Playoff.class, "{ }");
-		if(playoff == null)
-		{
-			playoff = new Playoff(null, new ArrayList<School>(), null);
-			database.save(playoff);
-		}
-		return playoff;
+		return database.findOne(Playoff.class, "{ }");
 	}
 	
 	public static ArrayList<School> getRemainingSchools(ArrayList<School> allSchools, ArrayList<School> excludedSchools)
