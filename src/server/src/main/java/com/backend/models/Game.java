@@ -35,7 +35,7 @@ public class Game implements Comparable<Game>
 	private final ArrayList<GameEvent> 		gameEvents;
 	public final boolean					isLive;
 
-	public final static Duration END_LIVE_DELAY	= new Duration(2 * 60 * 1000);
+	public final static Duration END_LIVE_DELAY	= new Duration(4 * 60 * 1000);
 	
 	public Game(
 			@JsonProperty("_id")					ObjectId 					_gameId,
