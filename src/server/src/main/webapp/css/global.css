@@ -307,6 +307,7 @@ table.wrapper
 {
 	width: 340px;
 	min-width:340px;
+	height: 100%;
 }
 
 .scheduleScore
@@ -374,6 +375,7 @@ table.wrapper
 .schoolScore
 {
 	width: 140px;
+	height: 100%;
 }
 
 .schoolTable
@@ -518,10 +520,4 @@ table.wrapper
 .overallFrame
 {
 	margin-left: -450px;
-}-450px;
-}argin-left: -450px;
-}-450px;
-}x;
-}px;
-}x;
 }
