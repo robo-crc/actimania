@@ -1,3 +1,4 @@
+<%@page import="com.backend.models.SchoolDuration"%>
 <%@page import="com.backend.models.Skill"%>
 <%@page import="java.io.IOException"%>
 <%@page import="com.framework.helpers.Helpers"%>
@@ -170,9 +171,15 @@ $(document).ready(function(){
 				<td><%= school.name %></td>
 				
 				<%
+				
 				for(Skill skill : skillsCompetition.skills)
 				{
-					out.write("<td><input type=\"text\" class=\"chrono\" name=\"" + skill.shortName + "_" + school._id + "\" value=\"" + skill.getSchoolScore(school).getDisplayLong() + "\"/></td>");
+					String classChrono = "";
+					if(skill.schoolsScore.get(0) instanceof SchoolDuration)
+					{
+						classChrono = " class=\"chrono\" ";
+					}
+					out.write("<td><input type=\"text\"" + classChrono + "name=\"" + skill.shortName + "_" + school._id + "\" value=\"" + skill.getSchoolScore(school).getDisplayLong() + "\"/></td>");
 				}
 				%>
 			</tr>
