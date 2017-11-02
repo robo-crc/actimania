@@ -1,0 +1,40 @@
+To start with a database from scratch
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+- src\server\src\main\java\com\framework\helpers\ApplicationSpecific.java change getDatabaseName to the game name (ie Loops)
+- Change src\scripts\restore_loops_base.bat to point to the game name (ie. LoopsProduction)
+- src\scripts\start_mongo.bat
+- Run src\scripts\restore_loops_base.bat 
+- Go to /admin/users with e-mail: test@robo-crc.ca pass:test
+- Create your username/password and delete the test username/password
+
+To generate the yearly schedule
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+- Enter the schools in /admin/schools
+- Run src\server\src\main\java\com\main\TournamentSetup.java
+- Backup the database with src\scripts\dmpdatabase.bat
+- Copy the backup from tmp\mongodump to data\backupName
+
+Overall
+¯¯¯¯¯¯¯
+- Change all the files that have yearly in it. This is what is different between the years.
+- src\server\src\main\java\com\backend\controllers\yearly\GameYearlyController.java
+- src\server\src\main\java\com\backend\controllers\yearly\PlayoffYearly.java
+- src\server\src\main\java\com\backend\controllers\yearly\PlayoffYearlyController.java
+- src\server\src\main\java\com\backend\models\yearly\GameStateYearly.java
+- src\server\src\main\java\com\backend\views\yearly\GameYearlyView.java
+- src\server\src\main\java\com\frontend\views\yearly\GameYearlyView.java
+- src\server\src\main\java\com\main\yearly\FakeYearlyTournament.java
+- src\server\src\main\java\com\main\yearly\TournamentYearlySetup.java
+- src\server\src\test\java\com\backend\models\yearly\GameStateYearlyTests.java
+
+You might have to add a custom playoffXYTeam if the number of team was not programmed before.
+The CRC coordinator should give you the playoff schedule.
+
+Competition setup
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+- Ask IT to unblock port 80/8080/27017/27018
+- Create a specific username/password on the server
+- Copy src\scripts\updateLoops.js to ~/username/updateLoops.js on the server. Make sure the line return is Linux complient.
+- Change the info in src\scripts\copy_database_to_web.bat
+- Setup a scheduled task in the task scheduler to launch copy_database_to_web.bat each 2 minutes.
+	- Don't forget to put base directory as src\scripts\ in the task
