@@ -10,29 +10,16 @@ import com.backend.models.GameEvent.EndGameEvent;
 import com.backend.models.GameEvent.StartGameEvent;
 import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.TeamEnum;
-import com.backend.models.yearly.Area;
 import com.backend.models.yearly.GameStateYearly;
 
 public class FakeYearlyTournament 
 {
-	private static Area[] fillArea(Random random)
-	{
-		Area[] field = GameStateYearly.InitializeField();
-		int nbAreaToFill = random.nextInt(8);
-		for(int i = 0; i < nbAreaToFill; i++)
-		{
-			field[random.nextInt(field.length)].spoolCount = random.nextInt(3);
-		}
-		
-		return field;
-	}
-	
 	public static void fillFakeGameEvents(Game currentGame, Random random)
 	{
 		currentGame.addGameEvent(new StartGameEvent(DateTime.now()));
 		
 		int nbEvents = random.nextInt(15) + 5;
-		
+		/*
 		for(int i = 0; i < nbEvents; i++)
 		{
 			Area[] yellowField = fillArea(random);
@@ -50,7 +37,7 @@ public class FakeYearlyTournament
 			
 			currentGame.addGameEvent(new ScoreboardUpdateEvent(yellowField, blueField, yellowDispenserTop, yellowDispenserBottom, blueDispenserTop, blueDispenserBottom, yellowAllowed, blueAllowed, multiplier, DateTime.now()));			
 		}
-		
+		*/
 		currentGame.addGameEvent(new EndGameEvent(DateTime.now()));
 	}
 }

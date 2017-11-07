@@ -3,6 +3,7 @@ package com.backend.models.yearly;
 import java.util.ArrayList;
 
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
 
 import com.backend.models.GameState;
 import com.backend.models.School;
@@ -21,7 +22,13 @@ public class GameStateYearly extends GameState
 	public final ScoreboardUpdateEvent currentScoreboard;
 	
 	@JsonIgnore
-	public final int INITIAL_ALLOWED_SPOOLS = 12;	
+	public final int CYLINDER_GP = 30;
+
+	@JsonIgnore
+	public final int PRISM_GP = 10;
+	
+	@JsonIgnore
+	public final int VSHAPE_GP = 20;
 	
 	public GameStateYearly(
 			@JsonProperty("_id")					ObjectId 					_gameEventId,
@@ -47,7 +54,7 @@ public class GameStateYearly extends GameState
 		if(gameEvent.getGameEventEnum() == GameEventEnum.START_GAME)
 		{
 			// Initialize the score board with a score board update event
-			currentScoreboard = new ScoreboardUpdateEvent(InitializeField(), InitializeField(), 0, 0, 0, 0, INITIAL_ALLOWED_SPOOLS, INITIAL_ALLOWED_SPOOLS, TeamEnum.NONE, gameEvent.getTime());
+			currentScoreboard = new ScoreboardUpdateEvent(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, DateTime.now());
 		}
 		else if(gameEvent.getGameEventEnum() == GameEventEnum.SCOREBOARD_UPDATED)
 		{
@@ -57,59 +64,6 @@ public class GameStateYearly extends GameState
 		{
 			currentScoreboard = ((GameStateYearly)previousState).currentScoreboard;
 		}
-	}
-	
-	public static Area[] InitializeField()
-	{
-		Area[] field = new Area[9];
-		
-		// Important to be sorted from biggest to smallest
-		// For penalty calculations
-		field[AreaPoints.ONE_HUNDRED.ordinal()] = new Area(100, 0);
-		field[AreaPoints.FORTY.ordinal()] 		= new Area(40, 0);
-		field[AreaPoints.THIRTHY.ordinal()] 	= new Area(30, 0);
-		field[AreaPoints.TWENTY_BIG.ordinal()] 	= new Area(20, 0);
-		field[AreaPoints.TWENTY_SMALL.ordinal()] = new Area(20, 0);
-		field[AreaPoints.TEN_TOP.ordinal()] 	= new Area(10, 0);
-		field[AreaPoints.TEN_BOTTOM.ordinal()] 	= new Area(10, 0);
-		field[AreaPoints.FIVE_TOP.ordinal()] 	= new Area(5, 0);
-		field[AreaPoints.FIVE_BOTTOM.ordinal()] = new Area(5, 0);
-		
-		return field;
-	}
-	
-	public static int GetScore(Area[] field, int spoolsUsed, int spoolsAllowed, boolean hasMultiplier)
-	{
-		int spoolsOverAllowed = spoolsUsed - spoolsAllowed;
-		final int SPOOL_DISPENSED_VALUE = 50;
-		
-		int score = SPOOL_DISPENSED_VALUE * spoolsUsed;
-		
-		for(int i = 0; i < field.length; i++)
-		{
-			for(int j = 0; j < field[i].spoolCount; j++)
-			{
-				// Penalty for using too much spools
-				// Value is sorted from biggest to smallest so 
-				// the penalty is applied properly
-				if(spoolsOverAllowed > 0)
-				{
-					spoolsOverAllowed--;
-					score -= SPOOL_DISPENSED_VALUE;
-				}
-				else
-				{
-					score += field[i].value;
-				}				
-			}
-		}
-		
-		if(hasMultiplier)
-		{
-			score *= 2;
-		}
-		
-		return score;
 	}
 
 	@Override
@@ -126,7 +80,11 @@ public class GameStateYearly extends GameState
 		
 		ScoreboardUpdateEvent scoreboard = (ScoreboardUpdateEvent) gameEvent;
 		
-		return GetScore(scoreboard.yellowField, scoreboard.blueDispenser1 + scoreboard.blueDispenser2, scoreboard.blueTeamAllowedSpools, scoreboard.hasMultiplier == TeamEnum.BLUE);
+		int score = scoreboard.cylinderBlue * CYLINDER_GP + scoreboard.prismBlue * PRISM_GP + scoreboard.vShapeBlue * VSHAPE_GP * scoreboard.threeLevelBlue;
+		float divisionUse = scoreboard.gameMultiplierYellow == 0 ? 0.0000001f : scoreboard.gameMultiplierYellow;
+		float multiplierRatio = ((float)scoreboard.gameMultiplierBlue) / divisionUse;
+		score *= Math.max(1, Math.min(multiplierRatio, 2));
+		return score;
 	}
 
 	@Override
@@ -142,7 +100,11 @@ public class GameStateYearly extends GameState
 		}
 		
 		ScoreboardUpdateEvent scoreboard = (ScoreboardUpdateEvent) gameEvent;
-		
-		return GetScore(scoreboard.blueField, scoreboard.yellowDispenser1 + scoreboard.yellowDispenser2, scoreboard.yellowTeamAllowedSpools, scoreboard.hasMultiplier == TeamEnum.YELLOW);
+
+		int score = scoreboard.cylinderYellow * CYLINDER_GP + scoreboard.prismYellow * PRISM_GP + scoreboard.vShapeYellow * VSHAPE_GP * scoreboard.threeLevelYellow;
+		float divisionUse = scoreboard.gameMultiplierBlue == 0 ? 0.0000001f : scoreboard.gameMultiplierBlue;
+		float multiplierRatio = ((float)scoreboard.gameMultiplierYellow) / divisionUse;
+		score *= Math.max(1, Math.min(multiplierRatio, 2));
+		return score;
 	}
 }

@@ -8,7 +8,6 @@ import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.TeamEnum;
 import com.backend.models.enums.yearly.AreaPoints;
-import com.backend.models.yearly.Area;
 import com.backend.models.yearly.GameStateYearly;
 import com.framework.helpers.LocalizedString;
 import com.google.common.collect.ImmutableMap;
@@ -28,7 +27,8 @@ public class GameYearlyView
 		strBuilder.append("<div class=\"clear playground\">");
 		
 		ScoreboardUpdateEvent scoreboard = ((GameStateYearly)gameState).currentScoreboard;
-		
+
+/*
 		switch(scoreboard.hasMultiplier)
 		{
 		case NONE:
@@ -52,11 +52,11 @@ public class GameYearlyView
 		strBuilder.append("<div class=\"Score BLUE blueTeamAllowedSpools\">" + (scoreboard.blueTeamAllowedSpools - scoreboard.blueDispenser1 - scoreboard.blueDispenser2) + "</div>");
 		strBuilder.append("<div class=\"Score YELLOW yellowTeamAllowedSpools\">" + (scoreboard.yellowTeamAllowedSpools - scoreboard.yellowDispenser1 - scoreboard.yellowDispenser2) + "</div>");
 		strBuilder.append("<div class=\"allowedSpools\">" + strAllowedSpools.toString() + "</div>");
-		
+*/		
 		return strBuilder.toString();
 	}
 		
-	static private void OutputField(StringBuilder strBuilder, Area[] area, TeamEnum team, TeamEnum oppositeTeam)
+/*	static private void OutputField(StringBuilder strBuilder, Area[] area, TeamEnum team, TeamEnum oppositeTeam)
 	{
 		AreaPoints[] areaPoints = AreaPoints.values();
 		for(int i = 0; i < areaPoints.length; i++)
@@ -64,4 +64,5 @@ public class GameYearlyView
 			strBuilder.append("<div class=\"Score " + team.name() + " " + areaPoints[i] + "_" + oppositeTeam.name() + "\">" + area[i].spoolCount + "</div>" );					
 		}
 	}	
+	*/
 }

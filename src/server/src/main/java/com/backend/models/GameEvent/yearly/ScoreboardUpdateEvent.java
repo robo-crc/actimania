@@ -6,51 +6,53 @@ import org.joda.time.DateTime;
 
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.enums.GameEventEnum;
-import com.backend.models.enums.TeamEnum;
-import com.backend.models.yearly.Area;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.framework.helpers.LocalizedString;
 
 public class ScoreboardUpdateEvent implements GameEvent
 {
-	public final Area[]	 	yellowField;
-	public final Area[]	 	blueField;
-	public final DateTime	time;
-	public final int 	yellowTeamAllowedSpools;
-	public final int 	blueTeamAllowedSpools;
+	public final int 	cylinderBlue;
+	public final int 	cylinderYellow;
 
-	public final int 	yellowDispenser1;
-	public final int 	yellowDispenser2;
-	public final int 	blueDispenser1;
-	public final int 	blueDispenser2;
+	public final int 	prismBlue;
+	public final int 	prismYellow;
 	
-	public final TeamEnum hasMultiplier;
+	public final int 	vShapeBlue;
+	public final int 	vShapeYellow;
 
+	public final int 	threeLevelBlue;
+	public final int 	threeLevelYellow;
+	
+	public final int 	gameMultiplierBlue;
+	public final int 	gameMultiplierYellow;
+	
+	public final DateTime time;
+	
 	public ScoreboardUpdateEvent(
-			@JsonProperty("yellowField") 			Area[]	 	_yellowField,
-			@JsonProperty("blueField") 				Area[]	 	_blueField,
-			@JsonProperty("yellowDispenser1")		int 		_yellowDispenser1,
-			@JsonProperty("yellowDispenser2")		int 		_yellowDispenser2,
-			@JsonProperty("blueDispenser1")			int 		_blueDispenser1,
-			@JsonProperty("blueDispenser2")			int 		_blueDispenser2,
-			@JsonProperty("yellowTeamAllowedSpools")int 		_yellowTeamAllowedSpools,
-			@JsonProperty("blueTeamAllowedSpools")	int 		_blueTeamAllowedSpools,
-			@JsonProperty("hasMultiplier")			TeamEnum 	_hasMultipler,
+			@JsonProperty("cylinderBlue")			int _cylinderBlue,
+			@JsonProperty("cylinderYellow")			int _cylinderYellow,
+			@JsonProperty("prismBlue")				int _prismBlue,
+			@JsonProperty("prismYellow")			int _prismYellow,
+			@JsonProperty("vShapeBlue")				int _vShapeBlue,
+			@JsonProperty("vShapeYellow")			int _vShapeYellow,
+			@JsonProperty("threeLevelBlue")			int _threeLevelBlue,
+			@JsonProperty("threeLevelYellow")		int _threeLevelYellow,
+			@JsonProperty("gameMultiplierBlue")		int _gameMultiplierBlue,
+			@JsonProperty("gameMultiplierYellow")	int _gameMultiplierYellow,
 			@JsonProperty("time")					DateTime	_time
 			)
 	{
-		yellowField			= _yellowField;
-		blueField 			= _blueField;
-		yellowDispenser1 	= _yellowDispenser1;
-		yellowDispenser2 	= _yellowDispenser2;
-		blueDispenser1 		= _blueDispenser1;
-		blueDispenser2 		= _blueDispenser2;
+		cylinderBlue 		= _cylinderBlue;
+		cylinderYellow 		= _cylinderYellow;
+		prismBlue 			= _prismBlue;
+		prismYellow 		= _prismYellow;
+		vShapeBlue 			= _vShapeBlue;
+		vShapeYellow 		= _vShapeYellow;
+		threeLevelBlue 		= _threeLevelBlue;
+		threeLevelYellow 	= _threeLevelYellow;
+		gameMultiplierBlue 	= _gameMultiplierBlue;
+		gameMultiplierYellow = _gameMultiplierYellow;
 		
-		yellowTeamAllowedSpools = _yellowTeamAllowedSpools;
-		blueTeamAllowedSpools 	= _blueTeamAllowedSpools;
-		
-		hasMultiplier		= _hasMultipler;
-
 		time 				= _time;
 	}
 

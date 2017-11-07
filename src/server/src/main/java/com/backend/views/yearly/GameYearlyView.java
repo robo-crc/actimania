@@ -8,7 +8,6 @@ import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.GameEventEnum;
 import com.backend.models.enums.TeamEnum;
 import com.backend.models.enums.yearly.AreaPoints;
-import com.backend.models.yearly.Area;
 import com.backend.models.yearly.GameStateYearly;
 import com.framework.helpers.LocalizedString;
 import com.google.common.collect.ImmutableMap;
@@ -74,7 +73,7 @@ public class GameYearlyView
         ScoreboardUpdateEvent scoreboard = ((GameStateYearly)(game.getGameStates().get(game.getGameStates().size() - 1))).currentScoreboard;
 
 		strBuilder.append("	<div class=\"playingField\"></div>");
-		
+		/*
 		OutputField(strBuilder, scoreboard.blueField, TeamEnum.YELLOW, TeamEnum.BLUE);
 		OutputField(strBuilder, scoreboard.yellowField, TeamEnum.BLUE, TeamEnum.YELLOW);
 	
@@ -109,16 +108,7 @@ public class GameYearlyView
 		strBuilder.append("	<input type=\"submit\" value=\"" + strAdd + "\" />");
 		strBuilder.append("</div>");
 		strBuilder.append("</form>");
-		
+		*/
 		return strBuilder.toString();
-	}
-	
-	static private void OutputField(StringBuilder strBuilder, Area[] area, TeamEnum team, TeamEnum oppositeTeam)
-	{
-		AreaPoints[] areaPoints = AreaPoints.values();
-		for(int i = 0; i < areaPoints.length; i++)
-		{
-			strBuilder.append("<div class=\"score " + areaPoints[i] + "_" + oppositeTeam.name() + "\"> <input type=\"Number\" name=\"" + areaPoints[i] + "_" + oppositeTeam.name() + "\" value=\"" + area[i].spoolCount + "\" /></div>\n");
-		}
 	}
 }
