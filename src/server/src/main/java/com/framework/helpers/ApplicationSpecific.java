@@ -21,7 +21,7 @@ public class ApplicationSpecific
 	
 	public static String getDatabaseName()
 	{
-		return "Loops";
+		return "Converto";
 	}
 	
 	public static Set<String> getAllRoles()
@@ -60,12 +60,6 @@ public class ApplicationSpecific
 			{
 				permissions.add("*");
 			}
-			/*
-			if( role.equals(AuthorizationRole.school.toString()) )
-			{
-				permissions.add("school:*");
-			}
-			*/
 		}
 		
 		return permissions;
@@ -83,8 +77,6 @@ public class ApplicationSpecific
 	
 	public static void onLoggedIn(Essentials essentials, User login) throws ServletException, IOException
 	{
-		//Subject currentUser = SecurityUtils.getSubject();
-		
 		if(login.roles.contains(AuthorizationRole.admin.name()))
 		{
 			essentials.response.sendRedirect("schedule");

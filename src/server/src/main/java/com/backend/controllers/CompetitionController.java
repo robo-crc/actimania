@@ -129,7 +129,7 @@ public class CompetitionController extends HttpServlet
 					process(essentials, parameter, websiteJournalism, 	websiteJournalismArray);
 				}
 				
-				Competition competitionUpdate = new Competition(competition._id, kioskArray, programmingArray, robotConstructionArray, robotDesignArray, sportsmanshipArray, videoArray, websiteDesignArray, websiteJournalismArray);
+				Competition competitionUpdate = new Competition(competition._id, kioskArray, programmingArray, robotConstructionArray, robotDesignArray, videoArray, websiteDesignArray, websiteJournalismArray);
 				essentials.database.save(competitionUpdate);
 			}
 			

@@ -2,12 +2,8 @@ package com.frontend.views.yearly;
 
 import java.util.Locale;
 
-import com.backend.controllers.GameController;
 import com.backend.models.GameState;
 import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
-import com.backend.models.enums.GameEventEnum;
-import com.backend.models.enums.TeamEnum;
-import com.backend.models.enums.yearly.AreaPoints;
 import com.backend.models.yearly.GameStateYearly;
 import com.framework.helpers.LocalizedString;
 import com.google.common.collect.ImmutableMap;

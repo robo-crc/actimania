@@ -1,6 +1,7 @@
 package com.frontend.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.backend.models.Playoff;
+import com.backend.models.School;
 import com.backend.models.SkillsCompetition;
 import com.backend.models.Tournament;
 import com.backend.models.enums.GameTypeEnum;
@@ -34,7 +36,15 @@ public class PreliminaryRankingController extends HttpServlet
 			essentials.request.setAttribute("heatRanking", tournament.getRoundRanking(GameTypeEnum.PRELIMINARY));
 			essentials.request.setAttribute("cumulativeRanking", tournament.getPreliminaryRanking(skillsCompetition));
 			essentials.request.setAttribute("skillsCompetition", skillsCompetition);
-			essentials.request.setAttribute("excludedSchools", Playoff.get(essentials.database).excludedSchools);
+			Playoff playoff = Playoff.get(essentials.database);
+			if(playoff != null)
+			{
+				essentials.request.setAttribute("excludedSchools", Playoff.get(essentials.database).excludedSchools);
+			}
+			else
+			{
+				essentials.request.setAttribute("excludedSchools", new ArrayList<School>());
+			}
 			
 			essentials.request.getRequestDispatcher("/WEB-INF/frontend/ranking.jsp").forward(essentials.request, essentials.response);
 		}

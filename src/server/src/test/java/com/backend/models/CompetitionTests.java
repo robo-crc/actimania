@@ -105,7 +105,6 @@ public class CompetitionTests
 				robotDesign, 
 				new ArrayList<SchoolInteger>(defaultOrder), 
 				video, 
-				new ArrayList<SchoolInteger>(defaultOrder), 
 				new ArrayList<SchoolInteger>(defaultOrder));
 		
 		// 4 * 2 + 1 + 2 + 4 * 6 = 35

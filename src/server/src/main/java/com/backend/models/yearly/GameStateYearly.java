@@ -12,8 +12,6 @@ import com.backend.models.SchoolInteger;
 import com.backend.models.GameEvent.GameEvent;
 import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.GameEventEnum;
-import com.backend.models.enums.TeamEnum;
-import com.backend.models.enums.yearly.AreaPoints;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

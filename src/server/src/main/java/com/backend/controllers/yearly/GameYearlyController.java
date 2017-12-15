@@ -1,14 +1,7 @@
 package com.backend.controllers.yearly;
 
-import org.joda.time.DateTime;
-
 import com.backend.models.GameEvent.GameEvent;
-import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.GameEventEnum;
-import com.backend.models.enums.TeamEnum;
-import com.backend.models.enums.yearly.AreaPoints;
-import com.backend.models.yearly.GameStateYearly;
-import com.framework.helpers.Helpers;
 import com.framework.models.Essentials;
 
 public class GameYearlyController

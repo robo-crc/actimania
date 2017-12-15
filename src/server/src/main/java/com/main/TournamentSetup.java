@@ -43,7 +43,6 @@ public class TournamentSetup
 				new ArrayList<SchoolInteger>(),
 				new ArrayList<SchoolInteger>(),
 				new ArrayList<SchoolInteger>(),
-				new ArrayList<SchoolInteger>(),
 				new ArrayList<SchoolInteger>());
 		
 		for(School school : schools)
@@ -52,7 +51,6 @@ public class TournamentSetup
 			competition.programming.add(new SchoolInteger(school, 0));
 			competition.robotConstruction.add(new SchoolInteger(school, 0));
 			competition.robotDesign.add(new SchoolInteger(school, 0));
-			competition.sportsmanship.add(new SchoolInteger(school, 0));
 			competition.video.add(new SchoolInteger(school, 0));
 			competition.websiteDesign.add(new SchoolInteger(school, 0));
 			competition.websiteJournalism.add(new SchoolInteger(school, 0));

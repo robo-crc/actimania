@@ -1,18 +1,11 @@
 To start with a database from scratch
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 - src\server\src\main\java\com\framework\helpers\ApplicationSpecific.java change getDatabaseName to the game name (ie Loops)
-- Change src\scripts\restore_loops_base.bat to point to the game name (ie. LoopsProduction)
+- Change src\scripts\restore_base.bat to point to the game name (ie. LoopsProduction)
 - src\scripts\start_mongo.bat
-- Run src\scripts\restore_loops_base.bat 
+- Run src\scripts\restore_yearly_base.bat 
 - Go to /admin/users with e-mail: test@robo-crc.ca pass:test
 - Create your username/password and delete the test username/password
-
-To generate the yearly schedule
-¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-- Enter the schools in /admin/schools
-- Run src\server\src\main\java\com\main\TournamentSetup.java
-- Backup the database with src\scripts\dmpdatabase.bat
-- Copy the backup from tmp\mongodump to data\backupName
 
 Overall
 ¯¯¯¯¯¯¯
@@ -29,6 +22,13 @@ Overall
 
 You might have to add a custom playoffXYTeam if the number of team was not programmed before.
 The CRC coordinator should give you the playoff schedule.
+
+To generate the yearly schedule
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+- Enter the schools in /admin/schools
+- Run src\server\src\main\java\com\main\TournamentSetup.java
+- Backup the database with src\scripts\dmpdatabase.bat
+- Copy the backup from tmp\mongodump to data\backupName
 
 Competition setup
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯

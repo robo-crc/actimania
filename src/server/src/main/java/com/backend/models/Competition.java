@@ -17,7 +17,6 @@ public class Competition
 	public final ArrayList<SchoolInteger> 	programming;
 	public final ArrayList<SchoolInteger> 	robotConstruction;
 	public final ArrayList<SchoolInteger> 	robotDesign;
-	public final ArrayList<SchoolInteger> 	sportsmanship;
 	public final ArrayList<SchoolInteger> 	video;
 	public final ArrayList<SchoolInteger> 	websiteDesign;
 	public final ArrayList<SchoolInteger> 	websiteJournalism;
@@ -28,7 +27,6 @@ public class Competition
 			@JsonProperty("programming") 		ArrayList<SchoolInteger> 	_programming,
 			@JsonProperty("robotConstruction") 	ArrayList<SchoolInteger> 	_robotConstruction,
 			@JsonProperty("robotDesign") 		ArrayList<SchoolInteger> 	_robotDesign,
-			@JsonProperty("sportsmanship") 		ArrayList<SchoolInteger> 	_sportsmanship,
 			@JsonProperty("video") 				ArrayList<SchoolInteger> 	_video,
 			@JsonProperty("websiteDesign") 		ArrayList<SchoolInteger> 	_websiteDesign,
 			@JsonProperty("websiteJournalism") 	ArrayList<SchoolInteger> 	_websiteJournalism
@@ -39,7 +37,6 @@ public class Competition
 		programming 		= _programming;
 		robotConstruction 	= _robotConstruction;
 		robotDesign 		= _robotDesign;
-		sportsmanship		= _sportsmanship;
 		video 				= _video;
 		websiteDesign 		= _websiteDesign;
 		websiteJournalism 	= _websiteJournalism;
@@ -80,7 +77,6 @@ public class Competition
 		score += getAspectPointInteger(websiteDesign, school);
 		score += getAspectPointInteger(websiteJournalism, school);
 		score += getAspectPointInteger(kiosk, school);
-		score += getAspectPointInteger(sportsmanship, school);
 		score += getAspectPointInteger(programming, school);
 		
 		return score;

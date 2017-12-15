@@ -24,39 +24,39 @@ public class TournamentYearlySetup
 	public static DateTime[] getRoundStartTime()
 	{
 		DateTime[] roundStartHour = new DateTime[Tournament.BLOCK_NUMBERS];
-		roundStartHour[0] = new DateTime(2017, 2, 16, 18, 30);
-		roundStartHour[1] = new DateTime(2017, 2, 17, 9, 0);
-		roundStartHour[2] = new DateTime(2017, 2, 17, 13, 00);
-		roundStartHour[3] = new DateTime(2017, 2, 17, 18, 00);
+		roundStartHour[0] = new DateTime(2018, 2, 1, 18, 30);
+		roundStartHour[1] = new DateTime(2018, 2, 2, 9, 0);
+		roundStartHour[2] = new DateTime(2018, 2, 2, 13, 00);
+		roundStartHour[3] = new DateTime(2018, 2, 2, 18, 00);
 		
 		return roundStartHour;
 	}
 	
-	private static final LocalizedString strEmptyCharger = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "Empty charger", 
-			Locale.FRENCH, 	"Vider le chargeur"
+	private static final LocalizedString strDropPieces = new LocalizedString(ImmutableMap.of( 	
+			Locale.ENGLISH, "Drop 3 game pieces",
+			Locale.FRENCH, 	"Déposer 3 pièces de jeux"
 			), Locale.ENGLISH);
 
-	private static final LocalizedString strClosestToTarget = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "Closest to target", 
-			Locale.FRENCH, 	"Le plus proche de la cible"
+	private static final LocalizedString strDropPiecesCompact = new LocalizedString(ImmutableMap.of( 	
+			Locale.ENGLISH, "DROP<BR/>3 PIECES", 
+			Locale.FRENCH, 	"DÉPOSER<BR/>3 PIÈCES"
 			), Locale.ENGLISH);
 
+	private static final LocalizedString strPickupPieces = new LocalizedString(ImmutableMap.of( 	
+			Locale.ENGLISH, "Pick up 3 game pieces", 
+			Locale.FRENCH, 	"Ramasser 3 pièces de jeux"
+			), Locale.ENGLISH);
+
+	private static final LocalizedString strPickupPiecesCompact = new LocalizedString(ImmutableMap.of( 	
+			Locale.ENGLISH, "PICK UP<BR/>3 PIECES", 
+			Locale.FRENCH, 	"RAMASSER<BR/>3 PIÈCES"
+			), Locale.ENGLISH);
+	
 	private static final LocalizedString strQuickest = new LocalizedString(ImmutableMap.of( 	
 			Locale.ENGLISH, "Quickest", 
 			Locale.FRENCH, 	"Le plus rapide"
 			), Locale.ENGLISH);
 	
-	private static final LocalizedString strEmptyChargerCompact = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "EMPTY<BR/>CHARGER", 
-			Locale.FRENCH, 	"VIDER<BR/>LE CHARGEUR"
-			), Locale.ENGLISH);
-
-	private static final LocalizedString strClosestToTargetCompact = new LocalizedString(ImmutableMap.of( 	
-			Locale.ENGLISH, "CLOSEST TO<BR/>TARGET", 
-			Locale.FRENCH, 	"LE PLUS PROCHE<BR/>DE LA CIBLE"
-			), Locale.ENGLISH);
-
 	private static final LocalizedString strQuickestCompact = new LocalizedString(ImmutableMap.of( 	
 			Locale.ENGLISH, "QUICKEST", 
 			Locale.FRENCH, 	"LE PLUS RAPIDE"
@@ -72,9 +72,9 @@ public class TournamentYearlySetup
 			random = new Random(0);
 		}
 		
-		skills.add(SetupSkillDuration(schools, strEmptyCharger, 		strEmptyChargerCompact, 	"emptyCharger", random));
-		skills.add(SetupSkillFloatSmallest(schools, strClosestToTarget, strClosestToTargetCompact,	"closestToTarget", random));
-		skills.add(SetupSkillDuration(schools, strQuickest, 			strQuickestCompact, 		"quickest", random));
+		skills.add(SetupSkillDuration(schools, strPickupPieces, strPickupPiecesCompact, "pickupPieces", random));
+		skills.add(SetupSkillDuration(schools, strDropPieces, 	strDropPiecesCompact,	"dropPieces", random));
+		skills.add(SetupSkillDuration(schools, strQuickest, 	strQuickestCompact, 	"quickest", random));
 		
 		SkillsCompetition skillsCompetition = new SkillsCompetition(
 				id,
