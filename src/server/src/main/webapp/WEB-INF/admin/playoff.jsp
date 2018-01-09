@@ -9,7 +9,6 @@
 
 <% 
 Tournament tournament = (Tournament) request.getAttribute("tournament");
-Playoff playoff = (Playoff) request.getAttribute("playoff");
 @SuppressWarnings("unchecked")
 ArrayList<School> excludedSchools = (ArrayList<School>) request.getAttribute("excludedSchools");
 
@@ -111,7 +110,7 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 		<%= strSchool %>
 		<select name="school">
 	<% 	
-		ArrayList<School> schoolsToAdd = Playoff.getRemainingSchools(tournament.schools, playoff.excludedSchools);
+		ArrayList<School> schoolsToAdd = Playoff.getRemainingSchools(tournament.schools, excludedSchools);
 		
 		for(School school : schoolsToAdd)
 		{ %>
@@ -121,7 +120,7 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 		<input type="submit" value="<%= strAdd %>" />
 	</form>
 	
-	<% if(playoff.excludedSchools.size() > 0)
+	<% if(excludedSchools.size() > 0)
 	{
 	%>
 		<h2><%= strExcludedSchools %></h2>
@@ -141,7 +140,7 @@ LocalizedString strNextRound = new LocalizedString(ImmutableMap.of(
 		<select name="school">
 	<% 	
 		
-		for(School school : playoff.excludedSchools)
+		for(School school : excludedSchools)
 		{ %>
 			<option value="<%= school._id %>"> <%= school.name %></option>
 	 <% } %>

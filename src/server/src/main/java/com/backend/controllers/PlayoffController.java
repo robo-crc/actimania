@@ -136,8 +136,12 @@ public class PlayoffController extends HttpServlet
 		}
 		
 		Playoff playoff = Playoff.get(essentials.database);
-		
-		essentials.request.setAttribute("excludedSchools", playoff.excludedSchools);
+		ArrayList<School> excludedSchools = new ArrayList<School>();
+		if(playoff != null)
+		{
+			excludedSchools = playoff.excludedSchools;
+		}
+		essentials.request.setAttribute("excludedSchools", excludedSchools);
 		essentials.request.setAttribute("currentRound", currentRound );
 		essentials.request.setAttribute("isCurrentRoundStarted", isCurrentRoundStarted);
 		essentials.request.setAttribute("nextRound", nextRound );

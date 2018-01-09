@@ -199,12 +199,28 @@ $(document).ready(function(){
 		<input type="hidden" name="action" value="overallCompetition" />
 		<table class="competitionTable">
 			<tr>
-				<th><%= strRank %></th>
-				<th><%= strKiosk %></th>
+				<th><%= strSchool %></th>
 				<th><%= strProgramming %></th>
 				<th><%= strRobotConstruction %></th>
 				<th><%= strRobotDesign %></th>
-				<th><%= strSportsmanship %></th>
+			</tr>
+			<% for(School school : schools)
+			{
+			%>
+			<tr>
+				<td><%= school.name %></td>
+				<td><input class="spinner competition" type="text" name="programming_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.programming, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="robotConstruction_<%= school._id %>" 	value="<%= Competition.getSchoolInteger(competition.robotConstruction, school) %>" /></td>
+				<td><input class="spinner competition" type="text" name="robotDesign_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.robotDesign, school) %>" /></td>
+			</tr>
+			<%
+			}
+			%>
+		</table>
+		<table class="competitionTable">
+			<tr>
+				<th><%= strSchool %></th>
+				<th><%= strKiosk %></th>
 				<th><%= strVideo %></th>
 				<th><%= strWebsiteDesign %></th>
 				<th><%= strWebsiteJournalism %></th>
@@ -215,10 +231,6 @@ $(document).ready(function(){
 			<tr>
 				<td><%= school.name %></td>
 				<td><input class="spinner competition" type="text" name="kiosk_<%= school._id %>" 				value="<%= Competition.getSchoolInteger(competition.kiosk, school) %>" /></td>
-				<td><input class="spinner competition" type="text" name="programming_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.programming, school) %>" /></td>
-				<td><input class="spinner competition" type="text" name="robotConstruction_<%= school._id %>" 	value="<%= Competition.getSchoolInteger(competition.robotConstruction, school) %>" /></td>
-				<td><input class="spinner competition" type="text" name="robotDesign_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.robotDesign, school) %>" /></td>
-				<td><input class="spinner competition" type="text" name="sportsmanship_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.sportsmanship, school) %>" /></td>
 				<td><input class="spinner competition" type="text" name="video_<%= school._id %>" 				value="<%= Competition.getSchoolInteger(competition.video, school) %>" /></td>
 				<td><input class="spinner competition" type="text" name="websiteDesign_<%= school._id %>" 		value="<%= Competition.getSchoolInteger(competition.websiteDesign, school) %>" /></td>
 				<td><input class="spinner competition" type="text" name="websiteJournalism_<%= school._id %>" 	value="<%= Competition.getSchoolInteger(competition.websiteJournalism, school) %>" /></td>

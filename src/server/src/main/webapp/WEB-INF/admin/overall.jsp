@@ -172,7 +172,6 @@ function filterTable()
 			<th><%= strProgramming %></th>
 			<th><%= strRobotConstruction %></th>
 			<th><%= strRobotDesign %></th>
-			<th><%= strSportsmanship %></th>
 			<th><%= strVideo %></th>
 			<th><%= strWebsiteDesign %></th>
 			<th><%= strWebsiteJournalism %></th>
@@ -211,10 +210,7 @@ function filterTable()
 			
 			int robotDesignInt = Competition.getSchoolInteger(competition.robotDesign, school);
 			int robotDesignPos = getDisplayRank(robotDesignInt, competition.robotDesign.size());
-			
-			int sportsmanshipInt = Competition.getSchoolInteger(competition.sportsmanship, school);
-			int sportsmanshipPos = getDisplayRank(sportsmanshipInt, competition.sportsmanship.size());
-			
+						
 			int videoInt = Competition.getSchoolInteger(competition.video, school);
 			int videoPos = getDisplayRank(videoInt, competition.video.size());
 			
@@ -245,7 +241,6 @@ function filterTable()
 				<td class="center" sorttable_customkey="<%= programmingPos %>"><%= programmingInt %></td>
 				<td class="center" sorttable_customkey="<%= robotConstructionPos %>"><%= robotConstructionInt %></td>
 				<td class="center" sorttable_customkey="<%= robotDesignPos %>"><%= robotDesignInt %></td>
-				<td class="center" sorttable_customkey="<%= sportsmanshipPos %>"><%= sportsmanshipInt %></td>
 				<td class="center" sorttable_customkey="<%= videoPos %>"><%= videoInt %></td>
 				<td class="center" sorttable_customkey="<%= websiteDesignPos %>"><%= websiteDesignInt %></td>
 				<td class="center" sorttable_customkey="<%= websiteJournalismPos %>"><%= websiteJournalismInt %></td>
