@@ -12,16 +12,16 @@ public class PlayoffYearlyController
 		switch(gameType)
 		{
 		case PLAYOFF_REPECHAGE:
-			startTime = new DateTime(2017, 2, 18, 8, 20);
+			startTime = new DateTime(2017, 2, 3, 9, 0);
 			break;
 		case PLAYOFF_QUARTER:
-			startTime = new DateTime(2017, 2, 18, 12, 30);
+			startTime = new DateTime(2017, 2, 3, 12, 0);
 			break;
 		case PLAYOFF_DEMI:
-			startTime = new DateTime(2017, 2, 18, 15, 30);
+			startTime = new DateTime(2017, 2, 3, 14, 30);
 			break;
 		case PLAYOFF_FINAL:
-			startTime = new DateTime(2017, 2, 18, 17, 0);
+			startTime = new DateTime(2017, 2, 3, 16, 30);
 			break;
 		default:
 			break;

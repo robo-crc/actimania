@@ -40,7 +40,13 @@ public class SchoolController extends HttpServlet
 			SkillsCompetition skillsCompetition = SkillsCompetition.get(essentials.database);
 			
 			ArrayList<School> preliminaryRanking = tournament.getPreliminaryRanking(skillsCompetition);
-			ArrayList<School> excludedSchools = Playoff.get(essentials.database).excludedSchools;
+			
+			Playoff playoff = Playoff.get(essentials.database);
+			ArrayList<School> excludedSchools = new ArrayList<School>();
+			if(playoff != null)
+			{
+				excludedSchools = playoff.excludedSchools;
+			}
 			
 			ArrayList<School> preliminaryRankingForPlayoff = Playoff.getRemainingSchools(preliminaryRanking, excludedSchools);
 			
