@@ -2,6 +2,7 @@ package com.backend.controllers.yearly;
 
 import org.joda.time.DateTime;
 
+import com.backend.models.IPlayoff;
 import com.backend.models.enums.GameTypeEnum;
 
 public class PlayoffYearlyController 
@@ -28,5 +29,10 @@ public class PlayoffYearlyController
 		}
 		
 		return startTime;
+	}
+	
+	public static IPlayoff getPlayoff()
+	{
+		return new Playoff26Teams();
 	}
 }

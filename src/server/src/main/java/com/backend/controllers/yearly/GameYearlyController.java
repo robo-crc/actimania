@@ -1,7 +1,11 @@
 package com.backend.controllers.yearly;
 
+import org.joda.time.DateTime;
+
 import com.backend.models.GameEvent.GameEvent;
+import com.backend.models.GameEvent.yearly.ScoreboardUpdateEvent;
 import com.backend.models.enums.GameEventEnum;
+import com.framework.helpers.Helpers;
 import com.framework.models.Essentials;
 
 public class GameYearlyController
@@ -10,18 +14,19 @@ public class GameYearlyController
 	{
 		if( gameEvent.equalsIgnoreCase(GameEventEnum.SCOREBOARD_UPDATED.toString()) )
 		{
-			/*Area[] yellowArea = getAreaPoints(essentials, TeamEnum.YELLOW);
-			Area[] blueArea = getAreaPoints(essentials, TeamEnum.BLUE);
-			int yellowDispenser1 = Helpers.getParameter("yellowDispenser1", Integer.class, essentials);
-			int yellowDispenser2 = Helpers.getParameter("yellowDispenser2", Integer.class, essentials);
-			int blueDispenser1 = Helpers.getParameter("blueDispenser1", Integer.class, essentials);
-			int blueDispenser2 = Helpers.getParameter("blueDispenser2", Integer.class, essentials);
-			int yellowTeamAllowedSpools = Helpers.getParameter("yellowTeamAllowedSpools", Integer.class, essentials);
-			int blueTeamAllowedSpools = Helpers.getParameter("blueTeamAllowedSpools", Integer.class, essentials);
-			TeamEnum teamMultiplier = TeamEnum.valueOf(Helpers.getParameter("teamMultiplier", String.class, essentials));
-			
-			return new ScoreboardUpdateEvent(yellowArea, blueArea, yellowDispenser1, yellowDispenser2, blueDispenser1, blueDispenser2, yellowTeamAllowedSpools, blueTeamAllowedSpools, teamMultiplier, DateTime.now());
-			*/
+			return new ScoreboardUpdateEvent(
+					Helpers.getParameter("cylinderBlue", Integer.class, essentials),
+					Helpers.getParameter("cylinderYellow", Integer.class, essentials),
+					Helpers.getParameter("prismBlue", Integer.class, essentials),
+					Helpers.getParameter("prismYellow", Integer.class, essentials),
+					Helpers.getParameter("vShapeBlue", Integer.class, essentials),
+					Helpers.getParameter("vShapeYellow", Integer.class, essentials),
+					Helpers.getParameter("threeLevelBlue", Integer.class, essentials),
+					Helpers.getParameter("threeLevelYellow", Integer.class, essentials),
+					Helpers.getParameter("gameMultiplierBlue", Integer.class, essentials),
+					Helpers.getParameter("gameMultiplierYellow", Integer.class, essentials),
+					DateTime.now()
+					);
 		}
 		return null;
 	}	

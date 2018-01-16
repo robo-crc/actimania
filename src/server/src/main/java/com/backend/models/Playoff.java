@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.bson.types.ObjectId;
 
-import com.backend.controllers.yearly.PlayoffYearly;
+import com.backend.controllers.yearly.PlayoffYearlyController;
 import com.backend.models.enums.GameTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,7 +31,7 @@ public class Playoff
 	{
 		_id = playoffId;
 		excludedSchools = _excludedSchools;
-		iPlayoff = PlayoffYearly.getPlayoff();
+		iPlayoff = PlayoffYearlyController.getPlayoff();
 	}
 	
 	public Playoff(
@@ -44,7 +44,7 @@ public class Playoff
 		excludedSchools = _excludedSchools;
 		if(_iPlayoff == null)	
 		{
-			iPlayoff = PlayoffYearly.getPlayoff();
+			iPlayoff = PlayoffYearlyController.getPlayoff();
 		}
 		else
 		{
