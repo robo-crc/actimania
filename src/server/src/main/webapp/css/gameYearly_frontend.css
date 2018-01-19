@@ -1,23 +1,10 @@
 .playingField
 {
-	height: 390px;
+	height: 270px;
 	width: 1180px;
 	position: absolute;
 	top: 274px;
-}
-
-.playingFieldNone
-{
 	background-image: url('../images/playingField.svg');
-}
-.playingFieldBlue
-{
-	background-image: url('../images/playingFieldBlue.svg');
-}
-
-.playingFieldYellow
-{
-	background-image: url('../images/playingFieldYellow.svg');
 }
 
 .YELLOW
@@ -36,80 +23,149 @@
 	text-decoration: none;
 	font-size: 30px;
 	font-weight: Bold;
+	text-align: center;
 }
 
-.ONE_HUNDRED_BLUE
-{top: 471px;Left: 51px;}
+.cylinderBlue{top: 393px;left: 776px;width: 60px;}
+.cylinderYellow{top: 394px;left: 340px;width: 60px;}
+.prismBlue{top: 471px;left: 340px;width: 60px;}
+.prismYellow{top: 471px;left: 776px;width: 60px;}
+.vShapeBlue{top: 294px;left: 1078px;width: 60px;}
+.vShapeYellow{top: 294px;left: 51px;width: 60px;}
+.threeLevelBlue0{top: 304px;left: 999px;}
+.threeLevelBlue1{top: 336px;left: 1000px;}
+.threeLevelBlue2{top: 367px;left: 1000px;}
+.threeLevelBlue3{top: 399px;left: 1000px;}
 
-.FORTY_BLUE
-{top: 472px;Left: 348px;}
+.threeLevelYellow0{top: 303px;left: 160px;}
+.threeLevelYellow1{top: 336px;left: 160px;}
+.threeLevelYellow2{top: 366px;left: 160px;}
+.threeLevelYellow3{top: 398px;left: 160px;}
 
-.THIRTHY_BLUE
-{top: 345.5px;left: 202px;}
+.gameMultiplierBlue{top: 467px;left: 597px;width: 60px;text-align: center;}
+.gameMultiplierYellow{top: 467px;left: 520px;width: 60px;align-content: center;text-align: center;}
+}
 
-.TWENTY_BIG_BLUE
-{top: 472px;left: 494px;}
-
-.TWENTY_SMALL_BLUE
-{top: 472px;left: 179px;}
-
-.TEN_TOP_BLUE
-{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 387px;left: 558.5px;}
-
-.TEN_BOTTOM_BLUE
-{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 610px;left: 560px;}
-
-.FIVE_TOP_BLUE
-{top: 346px;left: 54px;}
-
-.FIVE_BOTTOM_BLUE
-{top: 598px;left: 54px;}
-
-.ONE_HUNDRED_YELLOW
-{top: 472px;left: 1100px;}
-
-.FORTY_YELLOW
-{top: 469px;left: 806px;}
-
-.THIRTHY_YELLOW
-{top: 345.5px;left: 955.5px;}
-
-.TWENTY_BIG_YELLOW
-{top: 467px;left: 658px;}
-
-.TWENTY_SMALL_YELLOW
-{top: 472px;left: 975px;}
-
-.TEN_TOP_YELLOW
-{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 385px;left: 619.5px;}
+}
 
 
-.TEN_BOTTOM_YELLOW
-{transform: rotate(-90deg);-ms-transform: rotate(-90deg); /* IE 9 */-webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg); /* Safari, Opera */top: 610px;left: 622px;}
 
-.FIVE_TOP_YELLOW
-{top: 346px;left: 1101px;}
 
-.FIVE_BOTTOM_YELLOW
-{top: 597.5px;left: 1100px;}
 
-.blueDispenser1
-{top: 351px;left: 355px;}
 
-.blueDispenser2
-{top: 588px;left: 353px;}
 
-.yellowDispenser1
-{top: 351px;left: 809px;}
 
-.yellowDispenser2
-{top: 588px;left: 810px;}
 
-.blueTeamAllowedSpools
-{top: 278px;left: 347.5px;font-weight: normal;font-size: 25px;width: 28px;text-align: center;}
 
-.yellowTeamAllowedSpools
-{top: 278px;left: 802px;font-weight: normal;font-size: 25px;width: 28px;text-align: center;}
 
-.allowedSpools
-{top: 274px;left: 234px;position: absolute;}solute;}}ute;}}}}}}}}}}}}}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

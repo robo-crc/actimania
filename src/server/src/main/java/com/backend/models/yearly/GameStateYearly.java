@@ -20,13 +20,13 @@ public class GameStateYearly extends GameState
 	public final ScoreboardUpdateEvent currentScoreboard;
 	
 	@JsonIgnore
-	public final int CYLINDER_GP = 30;
+	public static final int CYLINDER_GP = 30;
 
 	@JsonIgnore
-	public final int PRISM_GP = 10;
+	public static final int PRISM_GP = 10;
 	
 	@JsonIgnore
-	public final int VSHAPE_GP = 20;
+	public static final int VSHAPE_GP = 20;
 	
 	public GameStateYearly(
 			@JsonProperty("_id")					ObjectId 					_gameEventId,
@@ -79,10 +79,14 @@ public class GameStateYearly extends GameState
 		ScoreboardUpdateEvent scoreboard = (ScoreboardUpdateEvent) gameEvent;
 		
 		int score = scoreboard.cylinderBlue * CYLINDER_GP + scoreboard.prismBlue * PRISM_GP + scoreboard.vShapeBlue * VSHAPE_GP * scoreboard.threeLevelBlue;
+		return (int)(score * GetBlueMultiplier(scoreboard));
+	}
+	
+	public static float GetBlueMultiplier(ScoreboardUpdateEvent scoreboard)
+	{
 		float divisionUse = scoreboard.gameMultiplierYellow == 0 ? 0.0000001f : scoreboard.gameMultiplierYellow;
 		float multiplierRatio = ((float)scoreboard.gameMultiplierBlue) / divisionUse;
-		score *= Math.max(1, Math.min(multiplierRatio, 2));
-		return score;
+		return Math.max(1, Math.min(multiplierRatio, 2));
 	}
 
 	@Override
@@ -100,9 +104,13 @@ public class GameStateYearly extends GameState
 		ScoreboardUpdateEvent scoreboard = (ScoreboardUpdateEvent) gameEvent;
 
 		int score = scoreboard.cylinderYellow * CYLINDER_GP + scoreboard.prismYellow * PRISM_GP + scoreboard.vShapeYellow * VSHAPE_GP * scoreboard.threeLevelYellow;
+		return (int)(score * GetYellowMultiplier(scoreboard));
+	}
+	
+	public static float GetYellowMultiplier(ScoreboardUpdateEvent scoreboard)
+	{
 		float divisionUse = scoreboard.gameMultiplierBlue == 0 ? 0.0000001f : scoreboard.gameMultiplierBlue;
 		float multiplierRatio = ((float)scoreboard.gameMultiplierYellow) / divisionUse;
-		score *= Math.max(1, Math.min(multiplierRatio, 2));
-		return score;
+		return Math.max(1, Math.min(multiplierRatio, 2));
 	}
 }
