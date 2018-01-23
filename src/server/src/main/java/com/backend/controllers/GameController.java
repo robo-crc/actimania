@@ -57,6 +57,15 @@ public class GameController extends HttpServlet
 		if( essentials.request.getParameter("insertAfter") != null)
 		{
 			int insertAfter = Helpers.getParameter("insertAfter", Integer.class, essentials).intValue();
+			if(insertAfter == -1)
+			{
+				ArrayList<GameEvent> gameEvents = game.getGameEvents();
+				insertAfter = gameEvents.size();
+				if(gameEvents.size() > 0 && gameEvents.get(gameEvents.size() - 1).getGameEventEnum() == GameEventEnum.END_GAME)
+				{
+					insertAfter--;
+				}
+			}
 			addSuccess = game.addGameEvent(insertAfter, gameEvent);
 		}
 		else
@@ -170,7 +179,7 @@ public class GameController extends HttpServlet
 		}
 		else
 		{
-			GameEvent gameEventYearly = GameYearlyController.processAction(essentials, gameEvent);
+			GameEvent gameEventYearly = GameYearlyController.processAction(essentials, game, gameEvent);
 			if(gameEventYearly != null)
 			{
 				addToGame(essentials, game, gameEventYearly);
@@ -208,14 +217,16 @@ public class GameController extends HttpServlet
 		}
 		for(int i = 0; i < iterationEnd; i++)
 		{
-			String selected = "";
-			if(i == iterationEnd - 1)
-			{
-				selected = "selected=\"selected\"";
-			}
-			
-			strBuilder.append("<option " + selected + " value=\"" + String.valueOf(i + 1) + "\">" + String.valueOf(i + 1) + "</option>");
+			strBuilder.append("<option value=\"" + String.valueOf(i + 1) + "\">" + String.valueOf(i + 1) + "</option>");
 		}
+		
+		LocalizedString strBeforeEnd = new LocalizedString(ImmutableMap.of( 	
+				Locale.ENGLISH, "Last event before end of game", 
+				Locale.FRENCH, 	"Dernier événement avant la fin de la partie"
+				), currentLocale);
+		
+		strBuilder.append("<option selected value=\"-1\">" + strBeforeEnd + "</option>");
+		
 		strBuilder.append("</select>");
 		
 		return strBuilder.toString();

@@ -20,22 +20,9 @@ public class GameYearlyView
 		
 		strBuilder.append("$(document).ready(function(){");
 		
-		strBuilder.append(" $('.selectColor').change(function()");
-        strBuilder.append("        {");
-        strBuilder.append("            if(this.value == \"EMPTY\")");
-        strBuilder.append("            {");
-        strBuilder.append("                $(this).css(\"background-color\", \"white\");    ");
-        strBuilder.append("            }");
-        strBuilder.append("            else if(this.value == \"BLUE\")");
-        strBuilder.append("            {");
-        strBuilder.append("                $(this).css(\"background-color\", \"lightblue\");");
-        strBuilder.append("            }");
-        strBuilder.append("            else if(this.value == \"YELLOW\")");
-        strBuilder.append("            {");
-        strBuilder.append("                $(this).css(\"background-color\", \"yellow\");");
-        strBuilder.append("            }");
-        strBuilder.append("		});");
-        strBuilder.append("});");
+		strBuilder.append("$( '.spinner' ).spinner();");
+		strBuilder.append("$( '.spinner' ).numeric();");
+		strBuilder.append("});");
 
 		return strBuilder.toString();
 	}
@@ -51,6 +38,21 @@ public class GameYearlyView
 		LocalizedString strAdd = new LocalizedString(ImmutableMap.of( 	
 				Locale.ENGLISH, "Add", 
 				Locale.FRENCH, 	"Ajouter"
+				), currentLocale);
+
+		LocalizedString strAddBoth = new LocalizedString(ImmutableMap.of( 	
+				Locale.ENGLISH, "Add Blue and Yellow", 
+				Locale.FRENCH, 	"Ajouter bleu et jaune"
+				), currentLocale);
+
+		LocalizedString strAddBlue = new LocalizedString(ImmutableMap.of( 	
+				Locale.ENGLISH, "Add Blue", 
+				Locale.FRENCH, 	"Ajouter bleu"
+				), currentLocale);
+
+		LocalizedString strAddYellow = new LocalizedString(ImmutableMap.of( 	
+				Locale.ENGLISH, "Add Yellow", 
+				Locale.FRENCH, 	"Ajouter jaune"
 				), currentLocale);
 
 		LocalizedString strMultiplier = new LocalizedString(ImmutableMap.of( 	
@@ -94,26 +96,30 @@ public class GameYearlyView
 		strBuilder.append("		<th>" + TeamEnum.YELLOW + "</th>");
 		strBuilder.append("	</tr>");
 		strBuilder.append("	<tr><td>" + strCylinder + "</td>");
-		strBuilder.append(" <td><input type=\"Number\" name=\"cylinderBlue\" 		   value=\"" + scoreboard.cylinderBlue + "\"></input></td>");
-		strBuilder.append("	<td><input type=\"Number\" name=\"cylinderYellow\" 		   value=\"" + scoreboard.cylinderYellow + "\"></input></td>");
+		strBuilder.append(" <td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"cylinderBlue\" 		   value=\"" + scoreboard.cylinderBlue + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"cylinderYellow\" 		   value=\"" + scoreboard.cylinderYellow + "\"></input></td>");
 		strBuilder.append("	</tr><tr><td>" + strPrism + "</td>");
-		strBuilder.append("	<td><input type=\"Number\" name=\"prismBlue\" 			   value=\"" + scoreboard.prismBlue + "\"></input></td>");
-		strBuilder.append("	<td><input type=\"Number\" name=\"prismYellow\" 		   value=\"" + scoreboard.prismYellow + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"prismBlue\" 			   value=\"" + scoreboard.prismBlue + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"prismYellow\" 		   value=\"" + scoreboard.prismYellow + "\"></input></td>");
 		strBuilder.append("	</tr><tr><td>" + strvShape + "</td>");
-		strBuilder.append("	<td><input type=\"Number\" name=\"vShapeBlue\"             value=\"" + scoreboard.vShapeBlue + "\"></input></td>");
-		strBuilder.append("	<td><input type=\"Number\" name=\"vShapeYellow\"           value=\"" + scoreboard.vShapeYellow + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"vShapeBlue\"             value=\"" + scoreboard.vShapeBlue + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"vShapeYellow\"           value=\"" + scoreboard.vShapeYellow + "\"></input></td>");
 		strBuilder.append("	</tr><tr><td>" + strThreeLevels + "</td>");
-		strBuilder.append("	<td><input type=\"Number\" name=\"threeLevelBlue\"         value=\"" + scoreboard.threeLevelBlue + "\"></input></td>");
-		strBuilder.append("	<td><input type=\"Number\" name=\"threeLevelYellow\"       value=\"" + scoreboard.threeLevelYellow + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Number\" min=\"0\" max=\"3\" class=\"spiner\" name=\"threeLevelBlue\"         value=\"" + scoreboard.threeLevelBlue + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Number\" min=\"0\" max=\"3\" class=\"spiner\" name=\"threeLevelYellow\"       value=\"" + scoreboard.threeLevelYellow + "\"></input></td>");
 		strBuilder.append("	</tr><tr><td>" + strMultiplier + "</td>");
-		strBuilder.append("	<td><input type=\"Number\" name=\"gameMultiplierBlue\"     value=\"" + scoreboard.gameMultiplierBlue + "\"></input></td>");
-		strBuilder.append("	<td><input type=\"Number\" name=\"gameMultiplierYellow\"   value=\"" + scoreboard.gameMultiplierYellow + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"gameMultiplierBlue\"     value=\"" + scoreboard.gameMultiplierBlue + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"gameMultiplierYellow\"   value=\"" + scoreboard.gameMultiplierYellow + "\"></input></td>");
+		strBuilder.append("	</tr>");
+		strBuilder.append("	</tr><tr><td>" + strAdd + "</td>");
+		strBuilder.append("	<td><input name=\"blue\" type=\"submit\" value=\"" + strAddBlue + "\" /></td>");
+		strBuilder.append("	<td><input name=\"yellow\" type=\"submit\" value=\"" + strAddYellow + "\" /></td>");
 		strBuilder.append("	</tr>");
 		strBuilder.append("</table>");
 
 		strBuilder.append(GameController.outputAddAfterForView(game, currentLocale));
 		strBuilder.append("	<br/>");
-		strBuilder.append("	<input type=\"submit\" value=\"" + strAdd + "\" />");
+		strBuilder.append("	<input name=\"both\" type=\"submit\" value=\"" + strAddBoth + "\" />");
 		strBuilder.append("</div>");
 		strBuilder.append("</form>");
 
