@@ -56,28 +56,28 @@ public class GameYearlyView
 				), currentLocale);
 
 		LocalizedString strMultiplier = new LocalizedString(ImmutableMap.of( 	
-				Locale.ENGLISH, "Multiplier", 
-				Locale.FRENCH, 	"Multiplicateur"
+				Locale.ENGLISH, "Multiplier #GP", 
+				Locale.FRENCH, 	"Multiplicateur #PJ"
 				), currentLocale);
 
 		LocalizedString strCylinder = new LocalizedString(ImmutableMap.of( 	
-				Locale.ENGLISH, "Cylinder", 
-				Locale.FRENCH, 	"Cylindre"
+				Locale.ENGLISH, "Cylinder #GP", 
+				Locale.FRENCH, 	"Cylindre #PJ"
 				), currentLocale);
 
 		LocalizedString strPrism = new LocalizedString(ImmutableMap.of( 	
-				Locale.ENGLISH, "Prism", 
-				Locale.FRENCH, 	"Prisme"
+				Locale.ENGLISH, "Prism #GP", 
+				Locale.FRENCH, 	"Prisme #PJ"
 				), currentLocale);
 		
 		LocalizedString strThreeLevels = new LocalizedString(ImmutableMap.of( 	
-				Locale.ENGLISH, "Three Level", 
-				Locale.FRENCH, 	"Trois niveaux"
+				Locale.ENGLISH, "Three Level (0 to 3)", 
+				Locale.FRENCH, 	"Trois niveaux (0 à 3)"
 				), currentLocale);
 
 		LocalizedString strvShape = new LocalizedString(ImmutableMap.of( 	
-				Locale.ENGLISH, "V Shape", 
-				Locale.FRENCH, 	"Forme en V"
+				Locale.ENGLISH, "V Shape #GP", 
+				Locale.FRENCH, 	"Forme en V #PJ"
 				), currentLocale);
 		
 		
@@ -96,20 +96,20 @@ public class GameYearlyView
 		strBuilder.append("		<th>" + TeamEnum.YELLOW + "</th>");
 		strBuilder.append("	</tr>");
 		strBuilder.append("	<tr><td>" + strCylinder + "</td>");
-		strBuilder.append(" <td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"cylinderBlue\" 		   value=\"" + scoreboard.cylinderBlue + "\"></input></td>");
-		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"cylinderYellow\" 		   value=\"" + scoreboard.cylinderYellow + "\"></input></td>");
+		strBuilder.append(" <td><input type=\"Text\" min=\"0\" class=\"spinner\" name=\"cylinderBlue\" 		   value=\"" + scoreboard.cylinderBlue + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Text\" min=\"0\" class=\"spinner\" name=\"cylinderYellow\" 		   value=\"" + scoreboard.cylinderYellow + "\"></input></td>");
 		strBuilder.append("	</tr><tr><td>" + strPrism + "</td>");
-		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"prismBlue\" 			   value=\"" + scoreboard.prismBlue + "\"></input></td>");
-		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"prismYellow\" 		   value=\"" + scoreboard.prismYellow + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Text\" min=\"0\" class=\"spinner\" name=\"prismBlue\" 			   value=\"" + scoreboard.prismBlue + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Text\" min=\"0\" class=\"spinner\" name=\"prismYellow\" 		   value=\"" + scoreboard.prismYellow + "\"></input></td>");
 		strBuilder.append("	</tr><tr><td>" + strvShape + "</td>");
-		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"vShapeBlue\"             value=\"" + scoreboard.vShapeBlue + "\"></input></td>");
-		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"vShapeYellow\"           value=\"" + scoreboard.vShapeYellow + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Text\" min=\"0\" class=\"spinner\" name=\"vShapeBlue\"             value=\"" + scoreboard.vShapeBlue + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Text\" min=\"0\" class=\"spinner\" name=\"vShapeYellow\"           value=\"" + scoreboard.vShapeYellow + "\"></input></td>");
 		strBuilder.append("	</tr><tr><td>" + strThreeLevels + "</td>");
-		strBuilder.append("	<td><input type=\"Number\" min=\"0\" max=\"3\" class=\"spiner\" name=\"threeLevelBlue\"         value=\"" + scoreboard.threeLevelBlue + "\"></input></td>");
-		strBuilder.append("	<td><input type=\"Number\" min=\"0\" max=\"3\" class=\"spiner\" name=\"threeLevelYellow\"       value=\"" + scoreboard.threeLevelYellow + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Text\" min=\"0\" max=\"3\" class=\"spinner\" name=\"threeLevelBlue\"         value=\"" + scoreboard.threeLevelBlue + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Text\" min=\"0\" max=\"3\" class=\"spinner\" name=\"threeLevelYellow\"       value=\"" + scoreboard.threeLevelYellow + "\"></input></td>");
 		strBuilder.append("	</tr><tr><td>" + strMultiplier + "</td>");
-		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"gameMultiplierBlue\"     value=\"" + scoreboard.gameMultiplierBlue + "\"></input></td>");
-		strBuilder.append("	<td><input type=\"Number\" min=\"0\" class=\"spiner\" name=\"gameMultiplierYellow\"   value=\"" + scoreboard.gameMultiplierYellow + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Text\" min=\"0\" class=\"spinner\" name=\"gameMultiplierBlue\"     value=\"" + scoreboard.gameMultiplierBlue + "\"></input></td>");
+		strBuilder.append("	<td><input type=\"Text\" min=\"0\" class=\"spinner\" name=\"gameMultiplierYellow\"   value=\"" + scoreboard.gameMultiplierYellow + "\"></input></td>");
 		strBuilder.append("	</tr>");
 		strBuilder.append("	</tr><tr><td>" + strAdd + "</td>");
 		strBuilder.append("	<td><input name=\"blue\" type=\"submit\" value=\"" + strAddBlue + "\" /></td>");

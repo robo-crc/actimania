@@ -2,10 +2,11 @@
 <link rel="shortcut icon" href="images/favicon.ico" />
 <!-- Activate this when online. -->
 
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <!-- 
-<link href='css/open-sans.css' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 -->
+<link href='css/open-sans.css' rel='stylesheet' type='text/css'>
+
 
 <% if(request.getParameter("PrinterFriendly") == null) 
 { %> 

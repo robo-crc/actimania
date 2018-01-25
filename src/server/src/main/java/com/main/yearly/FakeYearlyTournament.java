@@ -19,25 +19,23 @@ public class FakeYearlyTournament
 		currentGame.addGameEvent(new StartGameEvent(DateTime.now()));
 		
 		int nbEvents = random.nextInt(15) + 5;
-		/*
+		
 		for(int i = 0; i < nbEvents; i++)
 		{
-			Area[] yellowField = fillArea(random);
-			Area[] blueField = fillArea(random);
-			
-			int yellowDispenserTop = random.nextInt(9);
-			int yellowDispenserBottom = random.nextInt(9);
-			int blueDispenserTop = random.nextInt(9);
-			int blueDispenserBottom = random.nextInt(9);
-			
-			int yellowAllowed = 12 + random.nextInt(2);
-			int blueAllowed = 12 + random.nextInt(2);
-			
-			TeamEnum multiplier = TeamEnum.values()[random.nextInt(TeamEnum.values().length)];
-			
-			currentGame.addGameEvent(new ScoreboardUpdateEvent(yellowField, blueField, yellowDispenserTop, yellowDispenserBottom, blueDispenserTop, blueDispenserBottom, yellowAllowed, blueAllowed, multiplier, DateTime.now()));			
+			currentGame.addGameEvent(new ScoreboardUpdateEvent(
+					random.nextInt(9),
+					random.nextInt(9),
+					random.nextInt(9),
+					random.nextInt(9),
+					random.nextInt(9),
+					random.nextInt(9),
+					random.nextInt(3),
+					random.nextInt(3),
+					random.nextInt(9),
+					random.nextInt(9),
+					DateTime.now()));			
 		}
-		*/
+		
 		currentGame.addGameEvent(new EndGameEvent(DateTime.now()));
 	}
 }
