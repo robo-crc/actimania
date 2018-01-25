@@ -14,10 +14,7 @@ public class Playoff
 {
 	@JsonIgnore
 	public static final int SCHOOLS_PER_TEAM = 2;
-	
-	public static final int POSITIONS_SKIP_ROUND_ONE = 6;
-	public static final int POSITIONS_SKIP_ROUND_TWO = 2;
-	
+
 	public final ObjectId _id;
 	public final ArrayList<School> excludedSchools;
 	

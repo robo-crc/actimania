@@ -63,6 +63,11 @@ public class PlayoffController extends HttpServlet
 				GameTypeEnum currentGameType = Helpers.getParameter("currentRound", GameTypeEnum.class, essentials);
 				PlayoffRound currentRound = PlayoffRound.get(essentials.database, currentGameType);
 				
+				if(playoff == null)
+				{
+		            playoff = new Playoff(null, new ArrayList<School>(), null);
+				}
+				
 				PlayoffRound playoffRound = playoff.generatePlayoffRound(essentials.database, tournament, currentRound, nextGameType);
 				
 				DateTime startTime = PlayoffYearlyController.GetPlayoffRoundStartTime(nextGameType);
