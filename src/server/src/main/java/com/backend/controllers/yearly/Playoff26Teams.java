@@ -162,7 +162,7 @@ public class Playoff26Teams implements IPlayoff
 		}
 		
 		// FINAL
-		// J K1 K2 L1 L2
+		// GG K1 K2 L1 L2
 		case PLAYOFF_FINAL:
 		{
 			ArrayList<SchoolInteger> demiResults = tournament.getRoundRanking(GameTypeEnum.PLAYOFF_DEMI);
