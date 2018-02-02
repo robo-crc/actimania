@@ -36,7 +36,7 @@ LocalizedString strLive = new LocalizedString(ImmutableMap.of(
 </head>
 <body>
 <%@include file="header.jsp" %>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Yw2dIghIaEc" class="youtubeStream" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RGMnro0WTHg" class="youtubeStream" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 <div class="clear"></div>
 <%@include file="footer.jsp" %>
 </body>

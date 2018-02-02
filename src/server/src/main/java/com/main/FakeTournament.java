@@ -67,15 +67,22 @@ public class FakeTournament
 			// Make sure to get the tournament again to reset the states. 
 			// There's caching in the tournament which would be problematic if we use the same tournament as previously.
 			Tournament tournament = Tournament.getTournament(essentials);
-			ArrayList<School> excludedSchools = new ArrayList<School>();
-			for(School school : tournament.schools)
+			Playoff playoff = Playoff.get(essentials.database);
+			if(playoff == null)
 			{
-				if(school.name.equals("Bialik High School"))
+				ArrayList<School> excludedSchools = new ArrayList<School>();
+				for(School school : tournament.schools)
 				{
-					excludedSchools.add(school);
+					if(school.name.equals("Dawson College"))
+					{
+						excludedSchools.add(school);
+					}
 				}
+				
+				playoff = new Playoff(null, excludedSchools, null);
+				
+				essentials.database.save(playoff);
 			}
-			Playoff playoff = new Playoff(null, excludedSchools, null);
 			
 			PlayoffRound repechageRound = processRound(essentials.database, playoff, tournament, null, random, GameTypeEnum.PLAYOFF_REPECHAGE);
 			essentials.database.save(repechageRound);

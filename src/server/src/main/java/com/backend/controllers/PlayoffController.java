@@ -85,6 +85,10 @@ public class PlayoffController extends HttpServlet
 				ObjectId schoolId = Helpers.getParameter("school", ObjectId.class, essentials);
 
 				School schoolToAdd = essentials.database.findOne(School.class, schoolId);
+				if(playoff == null)
+				{
+		            playoff = new Playoff(null, new ArrayList<School>(), null);
+				}
 				playoff.excludedSchools.add(schoolToAdd);
 				
 				essentials.database.save(playoff);
