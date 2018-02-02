@@ -19,7 +19,7 @@ public class PlayoffYearlyController
 			startTime = new DateTime(2017, 2, 3, 12, 0);
 			break;
 		case PLAYOFF_DEMI:
-			startTime = new DateTime(2017, 2, 3, 14, 30);
+			startTime = new DateTime(2017, 2, 3, 15, 00);
 			break;
 		case PLAYOFF_FINAL:
 			startTime = new DateTime(2017, 2, 3, 16, 30);
@@ -33,6 +33,6 @@ public class PlayoffYearlyController
 	
 	public static IPlayoff getPlayoff()
 	{
-		return new Playoff26Teams();
+		return new Playoff25Teams();
 	}
 }
