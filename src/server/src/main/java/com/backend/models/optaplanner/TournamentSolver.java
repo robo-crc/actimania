@@ -12,10 +12,8 @@ import com.framework.models.Essentials;
 
 public class TournamentSolver
 {
-	public static TournamentSolution solve(Essentials essentials, int multiplier, int schoolsPerAssignment, String configXML)
-	{
-		ArrayList<School> schools = School.getSchools(essentials);
-		
+	public static TournamentSolution solve(ArrayList<School> schools, int multiplier, int schoolsPerAssignment, String configXML)
+	{	
 		ArrayList<TeamAssignment> teamAssignments = new ArrayList<TeamAssignment>();
 		for(int i = 0; i < schools.size() * multiplier; i++)
 		{
